@@ -13,7 +13,7 @@ You can view the Official API docs at:
 
 To get the latest version run this command:
 
-```sh
+```bash
 go get github.com/mongodb/go-client-mongodb-ops-manager
 ```
 
@@ -44,7 +44,7 @@ import (
 	"log"
 	"os"
 
-    "github.com/Sectorbob/mlab-ns2/gae/ns/digest"
+	"github.com/Sectorbob/mlab-ns2/gae/ns/digest"
 	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
 )
 
