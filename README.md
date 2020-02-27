@@ -94,4 +94,4 @@ See our [CONTRIBUTING.md](CONTRIBUTING.md) Guide.
 
 # License
 
-MongoDB CLI is released under the Apache 2.0 license. See [LICENSE](LICENSE)
+MongoDB Ops Manager Go Client is released under the Apache 2.0 license. See [LICENSE](LICENSE)

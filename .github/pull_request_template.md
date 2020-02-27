@@ -1,7 +1,7 @@
 <!--
-Thanks for contributing to MongoDB CLI!
+Thanks for contributing to MongoDB Ops Manager Go Client!
 
-Before you submit your pull request, please be sure that you've reviewed our contributing guidelines: https://github.com/mongodb/mongocli/blob/master/CONTRIBUTING.md
+Before you submit your pull request, please be sure that you've reviewed our contributing guidelines: https://github.com/mongodb/go-client-mongodb-ops-manager/blob/master/CONTRIBUTING.md
 
 Please fill out the information below to help speed the review along, and hopefully
 the merge of your pull request!
@@ -17,7 +17,7 @@ If it fixes a bug or resolves a feature request, be sure to link to that issue.
 _Jira ticket:_ [Name of ticket](https://jira.mongodb.org/browse/[name-of-ticket])
 
 <!--
-What MongoDB CLI issue does this PR address? (for example, #1234), remove this section if none
+What MongoDB Ops Manager Go Client issue does this PR address? (for example, #1234), remove this section if none
 -->
 
 Closes #[issue number]
@@ -39,5 +39,5 @@ don't hesitate to ask. We're here to help! This is simply a reminder of what we 
 <!--
 If this is a relatively large or complex change, kick off the discussion by explaining why you chose the solution you did and what alternatives you considered, etc...
 
-Alternatively, if this is a very minor, and self-explanitory change, feel free to remove this section.
+Alternatively, if this is a very minor, and self-explanatory change, feel free to remove this section.
 -->
