@@ -2,15 +2,14 @@ package opsmngr
 
 import (
 	"context"
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 	"net/http"
+
+	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
 const (
 	clustersBasePath = "clusters"
 )
-
-
 
 // ClustersService is an interface for interfacing with Clusters in MongoDB Ops Manager APIs
 type AllClustersService interface {
@@ -21,39 +20,35 @@ type AllClustersServiceOp struct {
 	client *Client
 }
 
-
 type AllClustersProject struct {
-	GroupName				 string					   `json:"groupName,omitempty"`
-	OrgName				     string					   `json:"orgName,omitempty"`
-	PlanType				 string					   `json:"planType,omitempty"`
-	GroupID                  string                    `json:"groupId,omitempty"`
-	OrgID					 string					   `json:"orgId,omitempty"`
-	Tags					 []string				   `json:"tags,omitempty"`
-	Clusters                 []AllClustersCluster     `json:"clusters,omitempty"`
+	GroupName string               `json:"groupName,omitempty"`
+	OrgName   string               `json:"orgName,omitempty"`
+	PlanType  string               `json:"planType,omitempty"`
+	GroupID   string               `json:"groupId,omitempty"`
+	OrgID     string               `json:"orgId,omitempty"`
+	Tags      []string             `json:"tags,omitempty"`
+	Clusters  []AllClustersCluster `json:"clusters,omitempty"`
 }
 
 // Cluster represents MongoDB cluster.
 type AllClustersCluster struct {
-	ClusterID                string                   `json:"clusterId,omitempty"`
-	Name                     string                   `json:"name,omitempty"`
-	Type 					 string                   `json:"type,omitempty"`
-	Availability		     string					  `json:"availability,omitempty"`
-	Versions				 []string 				  `json:"versions,omitempty"`
-	BackupEnabled            *bool                    `json:"backupEnabled,omitempty"`
-	AuthEnabled				 *bool					  `json:"authEnabled,omitempty"`
-	SSLEnabled				 *bool					  `json:"sslEnabled,omitempty"`
-	AlertCount				 int64					  `json:"alertCount,omitempty"`
-	DataSizeBytes			 int64					  `json:"dataSizeBytes,omitempty"`
-	NodeCount				 int64					  `json:"nodeCount,omitempty"`
-
+	ClusterID     string   `json:"clusterId,omitempty"`
+	Name          string   `json:"name,omitempty"`
+	Type          string   `json:"type,omitempty"`
+	Availability  string   `json:"availability,omitempty"`
+	Versions      []string `json:"versions,omitempty"`
+	BackupEnabled *bool    `json:"backupEnabled,omitempty"`
+	AuthEnabled   *bool    `json:"authEnabled,omitempty"`
+	SSLEnabled    *bool    `json:"sslEnabled,omitempty"`
+	AlertCount    int64    `json:"alertCount,omitempty"`
+	DataSizeBytes int64    `json:"dataSizeBytes,omitempty"`
+	NodeCount     int64    `json:"nodeCount,omitempty"`
 }
-
 
 type allClustersResponse struct {
-	Content      			 []AllClustersProject    `json:"content,omitempty"`
-	Status 					 *int64      			  `json:"status,omitempty"`
+	Content []AllClustersProject `json:"content,omitempty"`
+	Status  *int64               `json:"status,omitempty"`
 }
-
 
 //List all clusters in the project.
 func (s *AllClustersServiceOp) List(ctx context.Context) ([]AllClustersProject, *atlas.Response, error) {
@@ -67,7 +62,6 @@ func (s *AllClustersServiceOp) List(ctx context.Context) ([]AllClustersProject, 
 	if err != nil {
 		return nil, resp, err
 	}
-
 
 	return root.Content, resp, nil
 }

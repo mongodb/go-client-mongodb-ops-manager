@@ -47,7 +47,7 @@ type Client struct {
 	AutomationConfig   AutomationConfigService
 	AutomationStatus   AutomationStatusService
 	UnauthUsers        UnauthUsersService
-	AllCusters		   AllClustersService
+	AllCusters         AllClustersService
 	onRequestCompleted RequestCompletionCallback
 }
 
