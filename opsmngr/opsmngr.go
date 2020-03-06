@@ -42,12 +42,12 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations    OrganizationsService
-	Projects         ProjectsService
-	AutomationConfig AutomationConfigService
-	AutomationStatus AutomationStatusService
-	UnauthUsers      UnauthUsersService
-
+	Organizations      OrganizationsService
+	Projects           ProjectsService
+	AutomationConfig   AutomationConfigService
+	AutomationStatus   AutomationStatusService
+	UnauthUsers        UnauthUsersService
+	AllCusters		   AllClustersService
 	onRequestCompleted RequestCompletionCallback
 }
 
@@ -73,6 +73,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.AutomationConfig = &AutomationConfigServiceOp{client: c}
 	c.AutomationStatus = &AutomationStatusServiceOp{client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{client: c}
+	c.AllCusters = &AllClustersServiceOp{client: c}
 
 	return c
 }
