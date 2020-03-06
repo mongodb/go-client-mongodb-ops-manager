@@ -36,20 +36,20 @@ type AutomationConfigService interface {
 
 // AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
 type AutomationConfigServiceOp struct {
-	client *Client
+	Client atlas.RequestDoer
 }
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#get-the-automation-configuration
 func (s *AutomationConfigServiceOp) Get(ctx context.Context, groupID string) (*AutomationConfig, *atlas.Response, error) {
 	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
 
-	req, err := s.client.NewRequest(ctx, http.MethodGet, basePath, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, basePath, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(AutomationConfig)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -61,12 +61,12 @@ func (s *AutomationConfigServiceOp) Get(ctx context.Context, groupID string) (*A
 func (s *AutomationConfigServiceOp) Update(ctx context.Context, groupID string, updateRequest *AutomationConfig) (*atlas.Response, error) {
 	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
 
-	req, err := s.client.NewRequest(ctx, http.MethodPut, basePath, updateRequest)
+	req, err := s.Client.NewRequest(ctx, http.MethodPut, basePath, updateRequest)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.Client.Do(ctx, req, nil)
 
 	return resp, err
 }

@@ -30,9 +30,9 @@ import (
 const (
 	Version          = "0.1" // Version for client
 	CloudURL         = "https://cloud.mongodb.com"
-	DefaultBaseURL   = CloudURL + APIPublicV1Path                                            // DefaultBaseURL API default base URL for cloud manager
-	APIPublicV1Path  = "/api/public/v1.0/"                                                   // DefaultAPIPath default root path for all API endpoints
-	DefaultUserAgent = "pcgc/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")" // DefaultUserAgent To be submitted by the client
+	DefaultBaseURL   = CloudURL + APIPublicV1Path                                                             // DefaultBaseURL API default base URL for cloud manager
+	APIPublicV1Path  = "/api/public/v1.0/"                                                                    // DefaultAPIPath default root path for all API endpoints
+	DefaultUserAgent = "go-client-ops-manager/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")" // DefaultUserAgent To be submitted by the client
 	mediaType        = "application/json"
 )
 
@@ -42,17 +42,14 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations    OrganizationsService
-	Projects         ProjectsService
-	AutomationConfig AutomationConfigService
-	AutomationStatus AutomationStatusService
-	UnauthUsers      UnauthUsersService
-
-	onRequestCompleted RequestCompletionCallback
+	Organizations       OrganizationsService
+	Projects            ProjectsService
+	AutomationConfig    AutomationConfigService
+	AutomationStatus    AutomationStatusService
+	UnauthUsers         UnauthUsersService
+	AlertConfigurations atlas.AlertConfigurationsService
+	onRequestCompleted  atlas.RequestCompletionCallback
 }
-
-// RequestCompletionCallback defines the type of the request callback function
-type RequestCompletionCallback func(*http.Request, *http.Response)
 
 // NewClient returns a new Ops Manager API Client
 func NewClient(httpClient *http.Client) *Client {
@@ -68,11 +65,12 @@ func NewClient(httpClient *http.Client) *Client {
 		UserAgent: DefaultUserAgent,
 	}
 
-	c.Organizations = &OrganizationsServiceOp{client: c}
-	c.Projects = &ProjectsServiceOp{client: c}
-	c.AutomationConfig = &AutomationConfigServiceOp{client: c}
-	c.AutomationStatus = &AutomationStatusServiceOp{client: c}
-	c.UnauthUsers = &UnauthUsersServiceOp{client: c}
+	c.Organizations = &OrganizationsServiceOp{Client: c}
+	c.Projects = &ProjectsServiceOp{Client: c}
+	c.AutomationConfig = &AutomationConfigServiceOp{Client: c}
+	c.AutomationStatus = &AutomationStatusServiceOp{Client: c}
+	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
+	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}
 
 	return c
 }
@@ -144,7 +142,7 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 }
 
 // OnRequestCompleted sets the DO API request completion callback
-func (c *Client) OnRequestCompleted(rc RequestCompletionCallback) {
+func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
 	c.onRequestCompleted = rc
 }
 
