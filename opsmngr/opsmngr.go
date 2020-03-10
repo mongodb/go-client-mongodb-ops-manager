@@ -48,6 +48,7 @@ type Client struct {
 	AutomationStatus    AutomationStatusService
 	UnauthUsers         UnauthUsersService
 	AlertConfigurations atlas.AlertConfigurationsService
+	ContinuousBackup    atlas.CountiousBackupService
 	onRequestCompleted  atlas.RequestCompletionCallback
 }
 
@@ -71,6 +72,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.AutomationStatus = &AutomationStatusServiceOp{Client: c}
 	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}
+	c.ContinuousBackup = &atlas.CountiousBackupService{Client c}
 
 	return c
 }
