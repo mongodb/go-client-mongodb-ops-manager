@@ -11,9 +11,9 @@ const (
 	allClustersBasePath = "clusters"
 )
 
-// ClustersService is an interface for interfacing with Clusters in MongoDB Ops Manager APIs
+// AllClustersService is an interface for interfacing with Clusters in MongoDB Ops Manager APIs
 type AllClustersService interface {
-	List(ctx context.Context) ([]AllClustersProject, *atlas.Response, error)
+	List(ctx context.Context) ([]*AllClustersProject, *atlas.Response, error)
 }
 
 type AllClustersServiceOp struct {
@@ -45,20 +45,21 @@ type AllClustersCluster struct {
 	NodeCount     int64    `json:"nodeCount,omitempty"`
 }
 
-type allClustersResponse struct {
-	Content []AllClustersProject `json:"content,omitempty"`
-	Status  *int64               `json:"status,omitempty"`
+type AllClustersProjects struct {
+	Links      []*atlas.Link         `json:"links"`
+	Results    []*AllClustersProject `json:"results"`
+	TotalCount int                   `json:"totalCount"`
 }
 
 //List all clusters in the project.
-func (s *AllClustersServiceOp) List(ctx context.Context) ([]AllClustersProject, *atlas.Response, error) {
+func (s *AllClustersServiceOp) List(ctx context.Context) ([]*AllClustersProject, *atlas.Response, error) {
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, allClustersBasePath, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	root := new(allClustersResponse)
+	root := new(AllClustersProjects)
 	resp, err := s.Client.Do(ctx, req, root)
 
-	return root.Content, resp, err
+	return root.Results, resp, err
 }

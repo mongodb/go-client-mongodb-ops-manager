@@ -18,7 +18,7 @@ func TestAllClusters_List(t *testing.T) {
 
 	mux.HandleFunc("/clusters", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
-				 "content": [
+				 "results": [
 				{
 				  "groupName": "AtlasGroup1",
 				  "orgName": "TestAtlasOrg1",
@@ -118,7 +118,8 @@ func TestAllClusters_List(t *testing.T) {
 				  ]
 				}
 			  ],
-			  "status": 200
+			  "links": [],
+			  "totalCount": 2
 		}`)
 	})
 
@@ -127,7 +128,7 @@ func TestAllClusters_List(t *testing.T) {
 		t.Fatalf("client.AllCusters returned error: %v", err)
 	}
 
-	expected := []AllClustersProject{
+	expected := []*AllClustersProject{
 		{
 			GroupName: "AtlasGroup1",
 			OrgName:   "TestAtlasOrg1",
