@@ -34,7 +34,7 @@ type UnauthUsersService interface {
 
 // UnauthUsersServiceOp handles communication with the unauthenticated API
 type UnauthUsersServiceOp struct {
-	client *Client
+	Client atlas.RequestDoer
 }
 
 // CreateFirstUser creates the first user for a new installation
@@ -51,13 +51,13 @@ func (s *UnauthUsersServiceOp) CreateFirstUser(ctx context.Context, user *User, 
 		basePath = fmt.Sprintf("%s?%s", unauthUsersBasePath, v.Encode())
 	}
 
-	req, err := s.client.NewRequest(ctx, http.MethodPost, basePath, user)
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, basePath, user)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(CreateUserResponse)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}

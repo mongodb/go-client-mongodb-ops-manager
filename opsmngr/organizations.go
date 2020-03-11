@@ -40,7 +40,7 @@ type OrganizationsService interface {
 // OrganizationsServiceOp handles communication with the Projects related methods of the
 // MongoDB Atlas API
 type OrganizationsServiceOp struct {
-	client *Client
+	Client atlas.RequestDoer
 }
 
 var _ OrganizationsService = &OrganizationsServiceOp{}
@@ -63,13 +63,13 @@ type Organizations struct {
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/organizations/organization-get-all/
 func (s *OrganizationsServiceOp) GetAllOrganizations(ctx context.Context) (*Organizations, *atlas.Response, error) {
 
-	req, err := s.client.NewRequest(ctx, http.MethodGet, orgsBasePath, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, orgsBasePath, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(Organizations)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -90,13 +90,13 @@ func (s *OrganizationsServiceOp) GetOneOrganization(ctx context.Context, orgID s
 
 	path := fmt.Sprintf("%s/%s", orgsBasePath, orgID)
 
-	req, err := s.client.NewRequest(ctx, http.MethodGet, path, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(Organization)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -113,13 +113,13 @@ func (s *OrganizationsServiceOp) GetProjects(ctx context.Context, orgID string) 
 
 	path := fmt.Sprintf("%s/%s/groups", orgsBasePath, orgID)
 
-	req, err := s.client.NewRequest(ctx, http.MethodGet, path, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(Projects)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -134,13 +134,13 @@ func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *Orga
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
 
-	req, err := s.client.NewRequest(ctx, http.MethodPost, orgsBasePath, createRequest)
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, orgsBasePath, createRequest)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(Organization)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -157,12 +157,12 @@ func (s *OrganizationsServiceOp) Delete(ctx context.Context, orgID string) (*atl
 
 	basePath := fmt.Sprintf("%s/%s", orgsBasePath, orgID)
 
-	req, err := s.client.NewRequest(ctx, http.MethodDelete, basePath, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodDelete, basePath, nil)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := s.client.Do(ctx, req, nil)
+	resp, err := s.Client.Do(ctx, req, nil)
 
 	return resp, err
 }

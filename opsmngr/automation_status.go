@@ -35,20 +35,20 @@ type AutomationStatusService interface {
 
 // AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
 type AutomationStatusServiceOp struct {
-	client *Client
+	Client atlas.RequestDoer
 }
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-status/#resource
 func (s *AutomationStatusServiceOp) Get(ctx context.Context, groupID string) (*AutomationStatus, *atlas.Response, error) {
 	basePath := fmt.Sprintf(automationStatusBasePath, groupID)
 
-	req, err := s.client.NewRequest(ctx, http.MethodGet, basePath, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, basePath, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(AutomationStatus)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
