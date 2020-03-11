@@ -124,7 +124,7 @@ func TestAllClusters_List(t *testing.T) {
 
 	clusters, _, err := client.AllCusters.List(ctx)
 	if err != nil {
-		t.Fatalf("Unauth.CreateFirstUser returned error: %v", err)
+		t.Fatalf("client.AllCusters returned error: %v", err)
 	}
 
 	expected := []AllClustersProject{

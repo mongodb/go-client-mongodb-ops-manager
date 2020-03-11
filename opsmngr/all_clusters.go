@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	clustersBasePath = "clusters"
+	allClustersBasePath = "clusters"
 )
 
 // ClustersService is an interface for interfacing with Clusters in MongoDB Ops Manager APIs
@@ -30,7 +30,7 @@ type AllClustersProject struct {
 	Clusters  []AllClustersCluster `json:"clusters,omitempty"`
 }
 
-// Cluster represents MongoDB cluster.
+// AllClustersCluster represents MongoDB cluster.
 type AllClustersCluster struct {
 	ClusterID     string   `json:"clusterId,omitempty"`
 	Name          string   `json:"name,omitempty"`
@@ -52,16 +52,13 @@ type allClustersResponse struct {
 
 //List all clusters in the project.
 func (s *AllClustersServiceOp) List(ctx context.Context) ([]AllClustersProject, *atlas.Response, error) {
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, clustersBasePath, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, allClustersBasePath, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(allClustersResponse)
 	resp, err := s.Client.Do(ctx, req, root)
-	if err != nil {
-		return nil, resp, err
-	}
 
-	return root.Content, resp, nil
+	return root.Content, resp, err
 }
