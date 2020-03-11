@@ -17,7 +17,7 @@ type AllClustersService interface {
 }
 
 type AllClustersServiceOp struct {
-	client *Client
+	Client atlas.RequestDoer
 }
 
 type AllClustersProject struct {
@@ -52,13 +52,13 @@ type allClustersResponse struct {
 
 //List all clusters in the project.
 func (s *AllClustersServiceOp) List(ctx context.Context) ([]AllClustersProject, *atlas.Response, error) {
-	req, err := s.client.NewRequest(ctx, http.MethodGet, clustersBasePath, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, clustersBasePath, nil)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	root := new(allClustersResponse)
-	resp, err := s.client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}

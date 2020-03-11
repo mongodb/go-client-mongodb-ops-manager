@@ -42,12 +42,12 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations    OrganizationsService
-	Projects         ProjectsService
-	AutomationConfig AutomationConfigService
-	AutomationStatus AutomationStatusService
-	UnauthUsers      UnauthUsersService
-	AllCusters         AllClustersService
+	Organizations       OrganizationsService
+	Projects            ProjectsService
+	AutomationConfig    AutomationConfigService
+	AutomationStatus    AutomationStatusService
+	UnauthUsers         UnauthUsersService
+	AllCusters          AllClustersService
 	AlertConfigurations atlas.AlertConfigurationsService
 	onRequestCompleted  atlas.RequestCompletionCallback
 }
