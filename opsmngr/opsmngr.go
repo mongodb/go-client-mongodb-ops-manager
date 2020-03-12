@@ -47,9 +47,10 @@ type Client struct {
 	AutomationConfig    AutomationConfigService
 	AutomationStatus    AutomationStatusService
 	UnauthUsers         UnauthUsersService
-	AllCusters          AllClustersService
 	AlertConfigurations atlas.AlertConfigurationsService
 	onRequestCompleted  atlas.RequestCompletionCallback
+	ContinuousSnapshotsService atlas.ContinuousSnapshotsService
+	AllCusters          AllClustersService
 }
 
 // NewClient returns a new Ops Manager API Client
@@ -73,6 +74,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}
 	c.AllCusters = &AllClustersServiceOp{Client: c}
+	c.ContinuousSnapshotsService = &atlas.ContinuousSnapshotsServiceOp{Client: c}
 
 	return c
 }
