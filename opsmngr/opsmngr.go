@@ -42,14 +42,16 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations              OrganizationsService
-	Projects                   ProjectsService
-	AutomationConfig           AutomationConfigService
-	AutomationStatus           AutomationStatusService
-	UnauthUsers                UnauthUsersService
-	AlertConfigurations        atlas.AlertConfigurationsService
-	ContinuousSnapshotsService atlas.ContinuousSnapshotsService
-	onRequestCompleted         atlas.RequestCompletionCallback
+	Organizations         OrganizationsService
+	Projects              ProjectsService
+	AutomationConfig      AutomationConfigService
+	AutomationStatus      AutomationStatusService
+	UnauthUsers           UnauthUsersService
+	AlertConfigurations   atlas.AlertConfigurationsService
+	ContinuousSnapshots   atlas.ContinuousSnapshotsService
+	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
+
+	onRequestCompleted atlas.RequestCompletionCallback
 }
 
 // NewClient returns a new Ops Manager API Client
@@ -72,8 +74,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.AutomationStatus = &AutomationStatusServiceOp{Client: c}
 	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}
-	c.ContinuousSnapshotsService = &atlas.ContinuousSnapshotsServiceOp{Client: c}
-
+	c.ContinuousSnapshots = &atlas.ContinuousSnapshotsServiceOp{Client: c}
+	c.ContinuousRestoreJobs = &atlas.ContinuousRestoreJobsServiceOp{Client: c}
 	return c
 }
 
