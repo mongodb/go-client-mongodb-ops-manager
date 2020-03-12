@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"testing"
 
+	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+
 	"github.com/go-test/deep"
 )
 
@@ -128,91 +130,95 @@ func TestAllClusters_List(t *testing.T) {
 		t.Fatalf("client.AllCusters returned error: %v", err)
 	}
 
-	expected := []*AllClustersProject{
-		{
-			GroupName: "AtlasGroup1",
-			OrgName:   "TestAtlasOrg1",
-			PlanType:  "Atlas",
-			GroupID:   "5e5fbc29e76c9a4be2ed3d39",
-			OrgID:     "5e5fbc29e76c9a4be2ed3d36",
-			Clusters: []AllClustersCluster{
-				{
-					ClusterID:     "5e5fbc29e76c9a4be2ed3d4d",
-					Name:          "AtlasCluster1",
-					Type:          "sharded cluster",
-					Availability:  "unavailable",
-					Versions:      []string{"3.4.2"},
-					BackupEnabled: &trueValue,
-					AuthEnabled:   &trueValue,
-					SSLEnabled:    &trueValue,
-					AlertCount:    0,
-					DataSizeBytes: 1000000,
-					NodeCount:     7,
+	expected := &AllClustersProjects{
+		Links: []*atlas.Link{},
+		Results: []*AllClustersProject{
+			{
+				GroupName: "AtlasGroup1",
+				OrgName:   "TestAtlasOrg1",
+				PlanType:  "Atlas",
+				GroupID:   "5e5fbc29e76c9a4be2ed3d39",
+				OrgID:     "5e5fbc29e76c9a4be2ed3d36",
+				Clusters: []AllClustersCluster{
+					{
+						ClusterID:     "5e5fbc29e76c9a4be2ed3d4d",
+						Name:          "AtlasCluster1",
+						Type:          "sharded cluster",
+						Availability:  "unavailable",
+						Versions:      []string{"3.4.2"},
+						BackupEnabled: &trueValue,
+						AuthEnabled:   &trueValue,
+						SSLEnabled:    &trueValue,
+						AlertCount:    0,
+						DataSizeBytes: 1000000,
+						NodeCount:     7,
+					},
+					{
+						ClusterID:     "5e5fbc29e76c9a4be2ed3d4f",
+						Name:          "AtlasReplSet1",
+						Type:          "replica set",
+						Availability:  "dead",
+						Versions:      []string{"3.4.1"},
+						BackupEnabled: &falseValue,
+						AuthEnabled:   &trueValue,
+						SSLEnabled:    &trueValue,
+						AlertCount:    0,
+						DataSizeBytes: 1300000,
+						NodeCount:     2,
+					},
 				},
-				{
-					ClusterID:     "5e5fbc29e76c9a4be2ed3d4f",
-					Name:          "AtlasReplSet1",
-					Type:          "replica set",
-					Availability:  "dead",
-					Versions:      []string{"3.4.1"},
-					BackupEnabled: &falseValue,
-					AuthEnabled:   &trueValue,
-					SSLEnabled:    &trueValue,
-					AlertCount:    0,
-					DataSizeBytes: 1300000,
-					NodeCount:     2,
+			},
+			{
+				GroupName: "CloudGroup1",
+				OrgName:   "TestCloudOrg1",
+				PlanType:  "Cloud Manager",
+				GroupID:   "5e5fbc29e76c9a4be2ed3d38",
+				OrgID:     "5e5fbc29e76c9a4be2ed3d34",
+				Tags:      []string{"some tag 1", "some tag 2"},
+				Clusters: []AllClustersCluster{
+					{
+						ClusterID:     "5e5fbc29e76c9a4be2ed3d42",
+						Name:          "cluster1",
+						Type:          "sharded cluster",
+						Availability:  "warning",
+						Versions:      []string{"3.4.1", "2.4.3"},
+						BackupEnabled: &trueValue,
+						AuthEnabled:   &falseValue,
+						SSLEnabled:    &falseValue,
+						AlertCount:    0,
+						DataSizeBytes: 1000000,
+						NodeCount:     6,
+					},
+					{
+						ClusterID:     "5e5fbc29e76c9a4be2ed3d3c",
+						Name:          "replica_set",
+						Type:          "replica set",
+						Availability:  "available",
+						Versions:      []string{"3.4.1"},
+						BackupEnabled: &trueValue,
+						AuthEnabled:   &trueValue,
+						SSLEnabled:    &trueValue,
+						AlertCount:    0,
+						DataSizeBytes: 500000,
+						NodeCount:     2,
+					},
+					{
+						ClusterID:     "da303f3fec69b2100bacf10dd9e6d5e0",
+						Name:          "standalone:27017",
+						Type:          "standalone",
+						Availability:  "unavailable",
+						Versions:      []string{"2.4.3"},
+						BackupEnabled: nil,
+						AuthEnabled:   &falseValue,
+						SSLEnabled:    &trueValue,
+						AlertCount:    0,
+						DataSizeBytes: 2000000,
+						NodeCount:     1,
+					},
 				},
 			},
 		},
-		{
-			GroupName: "CloudGroup1",
-			OrgName:   "TestCloudOrg1",
-			PlanType:  "Cloud Manager",
-			GroupID:   "5e5fbc29e76c9a4be2ed3d38",
-			OrgID:     "5e5fbc29e76c9a4be2ed3d34",
-			Tags:      []string{"some tag 1", "some tag 2"},
-			Clusters: []AllClustersCluster{
-				{
-					ClusterID:     "5e5fbc29e76c9a4be2ed3d42",
-					Name:          "cluster1",
-					Type:          "sharded cluster",
-					Availability:  "warning",
-					Versions:      []string{"3.4.1", "2.4.3"},
-					BackupEnabled: &trueValue,
-					AuthEnabled:   &falseValue,
-					SSLEnabled:    &falseValue,
-					AlertCount:    0,
-					DataSizeBytes: 1000000,
-					NodeCount:     6,
-				},
-				{
-					ClusterID:     "5e5fbc29e76c9a4be2ed3d3c",
-					Name:          "replica_set",
-					Type:          "replica set",
-					Availability:  "available",
-					Versions:      []string{"3.4.1"},
-					BackupEnabled: &trueValue,
-					AuthEnabled:   &trueValue,
-					SSLEnabled:    &trueValue,
-					AlertCount:    0,
-					DataSizeBytes: 500000,
-					NodeCount:     2,
-				},
-				{
-					ClusterID:     "da303f3fec69b2100bacf10dd9e6d5e0",
-					Name:          "standalone:27017",
-					Type:          "standalone",
-					Availability:  "unavailable",
-					Versions:      []string{"2.4.3"},
-					BackupEnabled: nil,
-					AuthEnabled:   &falseValue,
-					SSLEnabled:    &trueValue,
-					AlertCount:    0,
-					DataSizeBytes: 2000000,
-					NodeCount:     1,
-				},
-			},
-		},
+		TotalCount: 2,
 	}
 
 	if diff := deep.Equal(clusters, expected); diff != nil {
