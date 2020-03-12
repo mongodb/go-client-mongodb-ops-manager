@@ -42,15 +42,15 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations       OrganizationsService
-	Projects            ProjectsService
-	AutomationConfig    AutomationConfigService
-	AutomationStatus    AutomationStatusService
-	UnauthUsers         UnauthUsersService
-	AlertConfigurations atlas.AlertConfigurationsService
-	onRequestCompleted  atlas.RequestCompletionCallback
+	Organizations              OrganizationsService
+	Projects                   ProjectsService
+	AutomationConfig           AutomationConfigService
+	AutomationStatus           AutomationStatusService
+	UnauthUsers                UnauthUsersService
+	AlertConfigurations        atlas.AlertConfigurationsService
+	onRequestCompleted         atlas.RequestCompletionCallback
 	ContinuousSnapshotsService atlas.ContinuousSnapshotsService
-	AllCusters          AllClustersService
+	AllCusters                 AllClustersService
 }
 
 // NewClient returns a new Ops Manager API Client
