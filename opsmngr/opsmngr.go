@@ -50,10 +50,9 @@ type Client struct {
 	AlertConfigurations   atlas.AlertConfigurationsService
 	ContinuousSnapshots   atlas.ContinuousSnapshotsService
 	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
-  AllCusters                 AllClustersService
-  
-	onRequestCompleted atlas.RequestCompletionCallback
+	AllCusters            AllClustersService
 
+	onRequestCompleted atlas.RequestCompletionCallback
 }
 
 // NewClient returns a new Ops Manager API Client
@@ -172,7 +171,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 		}
 	}()
 
-	response := newResponse(resp)
+	response := &atlas.Response{Response: resp}
 
 	err = atlas.CheckResponse(resp)
 	if err != nil {
@@ -187,11 +186,4 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 		err = json.NewDecoder(resp.Body).Decode(v)
 	}
 	return response, err
-}
-
-// newResponse creates a new Response for the provided http.Response
-func newResponse(r *http.Response) *atlas.Response {
-	response := atlas.Response{Response: r}
-
-	return &response
 }
