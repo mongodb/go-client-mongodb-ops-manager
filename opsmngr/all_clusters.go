@@ -37,9 +37,9 @@ type AllClustersCluster struct {
 	Type          string   `json:"type"`
 	Availability  string   `json:"availability"`
 	Versions      []string `json:"versions"`
-	BackupEnabled *bool    `json:"backupEnabled,omitempty"`
-	AuthEnabled   *bool    `json:"authEnabled,omitempty"`
-	SSLEnabled    *bool    `json:"sslEnabled,omitempty"`
+	BackupEnabled bool     `json:"backupEnabled"`
+	AuthEnabled   bool     `json:"authEnabled"`
+	SSLEnabled    bool     `json:"sslEnabled"`
 	AlertCount    int64    `json:"alertCount"`
 	DataSizeBytes int64    `json:"dataSizeBytes"`
 	NodeCount     int64    `json:"nodeCount"`

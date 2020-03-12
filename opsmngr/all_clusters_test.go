@@ -15,9 +15,6 @@ func TestAllClusters_List(t *testing.T) {
 
 	defer teardown()
 
-	var trueValue = true
-	var falseValue = false
-
 	mux.HandleFunc("/clusters", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 				 "results": [
@@ -98,7 +95,7 @@ func TestAllClusters_List(t *testing.T) {
 					  "type": "replica set"
 					},
 					{
-					  "backupEnabled": null,
+					  "backupEnabled": false,
 					  "authEnabled": false,
 					  "alertCount": 0,
 					  "versions": [
@@ -146,9 +143,9 @@ func TestAllClusters_List(t *testing.T) {
 						Type:          "sharded cluster",
 						Availability:  "unavailable",
 						Versions:      []string{"3.4.2"},
-						BackupEnabled: &trueValue,
-						AuthEnabled:   &trueValue,
-						SSLEnabled:    &trueValue,
+						BackupEnabled: true,
+						AuthEnabled:   true,
+						SSLEnabled:    true,
 						AlertCount:    0,
 						DataSizeBytes: 1000000,
 						NodeCount:     7,
@@ -159,9 +156,9 @@ func TestAllClusters_List(t *testing.T) {
 						Type:          "replica set",
 						Availability:  "dead",
 						Versions:      []string{"3.4.1"},
-						BackupEnabled: &falseValue,
-						AuthEnabled:   &trueValue,
-						SSLEnabled:    &trueValue,
+						BackupEnabled: false,
+						AuthEnabled:   true,
+						SSLEnabled:    true,
 						AlertCount:    0,
 						DataSizeBytes: 1300000,
 						NodeCount:     2,
@@ -182,9 +179,9 @@ func TestAllClusters_List(t *testing.T) {
 						Type:          "sharded cluster",
 						Availability:  "warning",
 						Versions:      []string{"3.4.1", "2.4.3"},
-						BackupEnabled: &trueValue,
-						AuthEnabled:   &falseValue,
-						SSLEnabled:    &falseValue,
+						BackupEnabled: true,
+						AuthEnabled:   false,
+						SSLEnabled:    false,
 						AlertCount:    0,
 						DataSizeBytes: 1000000,
 						NodeCount:     6,
@@ -195,9 +192,9 @@ func TestAllClusters_List(t *testing.T) {
 						Type:          "replica set",
 						Availability:  "available",
 						Versions:      []string{"3.4.1"},
-						BackupEnabled: &trueValue,
-						AuthEnabled:   &trueValue,
-						SSLEnabled:    &trueValue,
+						BackupEnabled: true,
+						AuthEnabled:   true,
+						SSLEnabled:    true,
 						AlertCount:    0,
 						DataSizeBytes: 500000,
 						NodeCount:     2,
@@ -208,9 +205,9 @@ func TestAllClusters_List(t *testing.T) {
 						Type:          "standalone",
 						Availability:  "unavailable",
 						Versions:      []string{"2.4.3"},
-						BackupEnabled: nil,
-						AuthEnabled:   &falseValue,
-						SSLEnabled:    &trueValue,
+						BackupEnabled: false,
+						AuthEnabled:   false,
+						SSLEnabled:    true,
 						AlertCount:    0,
 						DataSizeBytes: 2000000,
 						NodeCount:     1,
