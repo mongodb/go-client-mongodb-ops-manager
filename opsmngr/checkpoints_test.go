@@ -127,9 +127,9 @@ func TestCheckpoints_List(t *testing.T) {
 		)
 	})
 
-	snapshots, _, err := client.OpsManagerCheckpoints.List(ctx, groupID, clusterName, nil)
+	snapshots, _, err := client.Checkpoints.List(ctx, groupID, clusterName, nil)
 	if err != nil {
-		t.Fatalf("OpsManagerCheckpoints.List returned error: %v", err)
+		t.Fatalf("Checkpoints.List returned error: %v", err)
 	}
 
 	expected := &atlas.Checkpoints{
@@ -306,9 +306,9 @@ func TestCheckpoints_Get(t *testing.T) {
 		}`)
 	})
 
-	cloudProviderSnapshot, _, err := client.OpsManagerCheckpoints.Get(ctx, groupID, clusterName, checkpointID)
+	cloudProviderSnapshot, _, err := client.Checkpoints.Get(ctx, groupID, clusterName, checkpointID)
 	if err != nil {
-		t.Fatalf("OpsManagerCheckpoints.Get returned error: %v", err)
+		t.Fatalf("Checkpoints.Get returned error: %v", err)
 	}
 
 	expected := &atlas.Checkpoint{
