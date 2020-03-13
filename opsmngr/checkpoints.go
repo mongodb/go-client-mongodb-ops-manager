@@ -12,22 +12,22 @@ const (
 	checkpoints = "groups/%s/clusters/%s/checkpoints"
 )
 
-// OpsManagerCheckpointsService is an interface for interfacing with the Checkpoint
+// CheckpointsService is an interface for interfacing with the Checkpoint
 // endpoints of the MongoDB Atlas API.
-type OpsManagerCheckpointsService interface {
+type CheckpointsService interface {
 	List(context.Context, string, string, *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error)
 	Get(context.Context, string, string, string) (*atlas.Checkpoint, *atlas.Response, error)
 }
 
-// OpsManagerCheckpointsServiceOp handles communication with the checkpoint related methods of the
+// CheckpointsServiceOp handles communication with the checkpoint related methods of the
 // MongoDB Atlas API
-type OpsManagerCheckpointsServiceOp struct {
+type CheckpointsServiceOp struct {
 	Client atlas.RequestDoer
 }
 
-var _ OpsManagerCheckpointsService = &OpsManagerCheckpointsServiceOp{}
+var _ CheckpointsService = &CheckpointsServiceOp{}
 
-func (s OpsManagerCheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error) {
+func (s CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -48,7 +48,7 @@ func (s OpsManagerCheckpointsServiceOp) List(ctx context.Context, groupID, clust
 	return root, resp, err
 }
 
-func (s OpsManagerCheckpointsServiceOp) Get(ctx context.Context, groupID, clusterName, checkpointID string) (*atlas.Checkpoint, *atlas.Response, error) {
+func (s CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterName, checkpointID string) (*atlas.Checkpoint, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}

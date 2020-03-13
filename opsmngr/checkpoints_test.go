@@ -147,33 +147,36 @@ func TestCheckpoints_List(t *testing.T) {
 				},
 				Parts: []*atlas.Part{
 					{
-						ReplicaSetName:  "Cluster0-shard-1",
-						TypeName:        "REPLICA_SET",
-						ShardName:       "Cluster0-shard-1",
-						TokenDiscovered: true,
-						TokenTimestamp: atlas.SnapshotTimestamp{
-							Date:      "2018-02-08T23:20:25Z",
-							Increment: 1,
-						},
+						ReplicaSetName: "Cluster0-shard-1",
+						TypeName:       "REPLICA_SET",
+						CheckpointPart: atlas.CheckpointPart{
+							ShardName:       "Cluster0-shard-1",
+							TokenDiscovered: true,
+							TokenTimestamp: atlas.SnapshotTimestamp{
+								Date:      "2018-02-08T23:20:25Z",
+								Increment: 1,
+							}},
 					},
 					{
-						ReplicaSetName:  "Cluster0-shard-0",
-						TypeName:        "REPLICA_SET",
-						ShardName:       "Cluster0-shard-0",
-						TokenDiscovered: true,
-						TokenTimestamp: atlas.SnapshotTimestamp{
-							Date:      "2018-02-08T23:20:25Z",
-							Increment: 1,
-						},
+						ReplicaSetName: "Cluster0-shard-0",
+						TypeName:       "REPLICA_SET",
+						CheckpointPart: atlas.CheckpointPart{
+							ShardName:       "Cluster0-shard-0",
+							TokenDiscovered: true,
+							TokenTimestamp: atlas.SnapshotTimestamp{
+								Date:      "2018-02-08T23:20:25Z",
+								Increment: 1,
+							}},
 					},
 					{
-						ReplicaSetName:  "Cluster0-config-0",
-						TypeName:        "CONFIG_SERVER_REPLICA_SET",
-						TokenDiscovered: true,
-						TokenTimestamp: atlas.SnapshotTimestamp{
-							Date:      "2018-02-08T23:20:25Z",
-							Increment: 2,
-						},
+						ReplicaSetName: "Cluster0-config-0",
+						TypeName:       "CONFIG_SERVER_REPLICA_SET",
+						CheckpointPart: atlas.CheckpointPart{
+							TokenDiscovered: true,
+							TokenTimestamp: atlas.SnapshotTimestamp{
+								Date:      "2018-02-08T23:20:25Z",
+								Increment: 2,
+							}},
 					},
 				},
 				Restorable: true,
@@ -193,33 +196,36 @@ func TestCheckpoints_List(t *testing.T) {
 				},
 				Parts: []*atlas.Part{
 					{
-						ReplicaSetName:  "Cluster0-shard-1",
-						TypeName:        "REPLICA_SET",
-						ShardName:       "Cluster0-shard-1",
-						TokenDiscovered: true,
-						TokenTimestamp: atlas.SnapshotTimestamp{
-							Date:      "2018-02-09T14:50:33Z",
-							Increment: 1,
-						},
+						ReplicaSetName: "Cluster0-shard-1",
+						TypeName:       "REPLICA_SET",
+						CheckpointPart: atlas.CheckpointPart{
+							ShardName:       "Cluster0-shard-1",
+							TokenDiscovered: true,
+							TokenTimestamp: atlas.SnapshotTimestamp{
+								Date:      "2018-02-09T14:50:33Z",
+								Increment: 1,
+							}},
 					},
 					{
-						ReplicaSetName:  "Cluster0-shard-0",
-						TypeName:        "REPLICA_SET",
-						ShardName:       "Cluster0-shard-0",
-						TokenDiscovered: true,
-						TokenTimestamp: atlas.SnapshotTimestamp{
-							Date:      "2018-02-09T14:50:33Z",
-							Increment: 2,
-						},
+						ReplicaSetName: "Cluster0-shard-0",
+						TypeName:       "REPLICA_SET",
+						CheckpointPart: atlas.CheckpointPart{
+							ShardName:       "Cluster0-shard-0",
+							TokenDiscovered: true,
+							TokenTimestamp: atlas.SnapshotTimestamp{
+								Date:      "2018-02-09T14:50:33Z",
+								Increment: 2,
+							}},
 					},
 					{
-						ReplicaSetName:  "Cluster0-config-0",
-						TypeName:        "CONFIG_SERVER_REPLICA_SET",
-						TokenDiscovered: true,
-						TokenTimestamp: atlas.SnapshotTimestamp{
-							Date:      "2018-02-09T14:50:33Z",
-							Increment: 4,
-						},
+						ReplicaSetName: "Cluster0-config-0",
+						TypeName:       "CONFIG_SERVER_REPLICA_SET",
+						CheckpointPart: atlas.CheckpointPart{
+							TokenDiscovered: true,
+							TokenTimestamp: atlas.SnapshotTimestamp{
+								Date:      "2018-02-09T14:50:33Z",
+								Increment: 4,
+							}},
 					},
 				},
 				Restorable: true,
@@ -317,34 +323,39 @@ func TestCheckpoints_Get(t *testing.T) {
 			},
 		},
 		Parts: []*atlas.Part{
+
 			{
-				ReplicaSetName:  "Cluster0-shard-1",
-				TypeName:        "REPLICA_SET",
-				ShardName:       "Cluster0-shard-1",
-				TokenDiscovered: true,
-				TokenTimestamp: atlas.SnapshotTimestamp{
-					Date:      "2018-02-08T23:20:25Z",
-					Increment: 1,
+				ReplicaSetName: "Cluster0-shard-1",
+				TypeName:       "REPLICA_SET",
+				CheckpointPart: atlas.CheckpointPart{
+					ShardName:       "Cluster0-shard-1",
+					TokenDiscovered: true,
+					TokenTimestamp: atlas.SnapshotTimestamp{
+						Date:      "2018-02-08T23:20:25Z",
+						Increment: 1,
+					},
 				},
 			},
 			{
-				ReplicaSetName:  "Cluster0-shard-0",
-				TypeName:        "REPLICA_SET",
-				ShardName:       "Cluster0-shard-0",
-				TokenDiscovered: true,
-				TokenTimestamp: atlas.SnapshotTimestamp{
-					Date:      "2018-02-08T23:20:25Z",
-					Increment: 1,
-				},
+				ReplicaSetName: "Cluster0-shard-0",
+				TypeName:       "REPLICA_SET",
+				CheckpointPart: atlas.CheckpointPart{
+					ShardName:       "Cluster0-shard-0",
+					TokenDiscovered: true,
+					TokenTimestamp: atlas.SnapshotTimestamp{
+						Date:      "2018-02-08T23:20:25Z",
+						Increment: 1,
+					}},
 			},
 			{
-				ReplicaSetName:  "Cluster0-config-0",
-				TypeName:        "CONFIG_SERVER_REPLICA_SET",
-				TokenDiscovered: true,
-				TokenTimestamp: atlas.SnapshotTimestamp{
-					Date:      "2018-02-08T23:20:25Z",
-					Increment: 2,
-				},
+				ReplicaSetName: "Cluster0-config-0",
+				TypeName:       "CONFIG_SERVER_REPLICA_SET",
+				CheckpointPart: atlas.CheckpointPart{
+					TokenDiscovered: true,
+					TokenTimestamp: atlas.SnapshotTimestamp{
+						Date:      "2018-02-08T23:20:25Z",
+						Increment: 2,
+					}},
 			},
 		},
 		Restorable: true,
