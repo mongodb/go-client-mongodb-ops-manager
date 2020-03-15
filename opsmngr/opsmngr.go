@@ -50,7 +50,9 @@ type Client struct {
 	AlertConfigurations   atlas.AlertConfigurationsService
 	ContinuousSnapshots   atlas.ContinuousSnapshotsService
 	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
-	AllCusters            AllClustersService
+	AllClusters           AllClustersService
+	Agents                AgentService
+	AgentAPIKeys          AgentAPIKeysService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -75,9 +77,11 @@ func NewClient(httpClient *http.Client) *Client {
 	c.AutomationStatus = &AutomationStatusServiceOp{Client: c}
 	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}
-	c.AllCusters = &AllClustersServiceOp{Client: c}
+	c.AllClusters = &AllClustersServiceOp{Client: c}
 	c.ContinuousSnapshots = &atlas.ContinuousSnapshotsServiceOp{Client: c}
 	c.ContinuousRestoreJobs = &atlas.ContinuousRestoreJobsServiceOp{Client: c}
+	c.Agents = &AgentsServiceOp{Client: c}
+	c.AgentAPIKeys = &AgentAPIKeysServiceOp{Client: c}
 
 	return c
 }
