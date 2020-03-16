@@ -13,8 +13,8 @@ const (
 )
 
 type AgentAPIKeysService interface {
-	Create(context.Context, string, AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error)
-	List(context.Context, string) (*[]AgentAPIKey, *atlas.Response, error)
+	Create(context.Context, string, *AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error)
+	List(context.Context, string) ([]*AgentAPIKey, *atlas.Response, error)
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
@@ -27,8 +27,8 @@ type AgentAPIKey struct {
 	Key           string  `json:"key"`
 	Desc          string  `json:"desc"`
 	CreatedTime   int64   `json:"createdTime"`
-	CreatedUserID *string `json:"createdUserId,omitempty"`
-	CreatedIPAddr *string `json:"createdIpAddr,omitempty"`
+	CreatedUserID *string `json:"createdUserId"`
+	CreatedIPAddr *string `json:"createdIpAddr"`
 	CreatedBy     string  `json:"createdBy"`
 }
 
@@ -37,7 +37,7 @@ type AgentAPIKeysRequest struct {
 }
 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/create-one-agent-api-key/
-func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string, agent AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error) {
+func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string, agent *AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error) {
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, agent)
@@ -55,7 +55,7 @@ func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string, ag
 }
 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/get-all-agent-api-keys-for-project/
-func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) (*[]AgentAPIKey, *atlas.Response, error) {
+func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) ([]*AgentAPIKey, *atlas.Response, error) {
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -63,8 +63,8 @@ func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) (*[]
 		return nil, nil, err
 	}
 
-	root := new([]AgentAPIKey)
-	resp, err := s.Client.Do(ctx, req, root)
+	root := make([]*AgentAPIKey, 0)
+	resp, err := s.Client.Do(ctx, req, &root)
 
 	if err != nil {
 		return nil, resp, err

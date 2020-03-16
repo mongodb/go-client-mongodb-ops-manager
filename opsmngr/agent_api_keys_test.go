@@ -49,7 +49,7 @@ func TestAgentAPIKeys_List(t *testing.T) {
 	CreatedUserID := "21"
 	CreatedIPAddr := "1"
 
-	expected := &[]AgentAPIKey{
+	expected := []*AgentAPIKey{
 		{
 			ID:            "1",
 			Key:           "****************************8b87",
@@ -100,7 +100,7 @@ func TestAgentAPIKeys_Create(t *testing.T) {
 	})
 
 	agentRequest := AgentAPIKeysRequest{Desc: "TEST"}
-	agentAPIKey, _, err := client.AgentAPIKeys.Create(ctx, projectID, agentRequest)
+	agentAPIKey, _, err := client.AgentAPIKeys.Create(ctx, projectID, &agentRequest)
 
 	if err != nil {
 		t.Fatalf("client.AgentAPIKeys.Create returned error: %v", err)
