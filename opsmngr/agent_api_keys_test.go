@@ -108,7 +108,7 @@ func TestAgentAPIKeys_Create(t *testing.T) {
 
 	agentAPIKey, _, err := client.AgentAPIKeys.Create(ctx, projectID)
 	if err != nil {
-		t.Fatalf("client.Agents.List returned error: %v", err)
+		t.Fatalf("client.AgentAPIKeys.Create returned error: %v", err)
 	}
 
 	CreatedUserID := "21"
@@ -140,6 +140,6 @@ func TestAgentAPIKeys_Delete(t *testing.T) {
 
 	_, err := client.AgentAPIKeys.Delete(ctx, projectID, agentAPIKey)
 	if err != nil {
-		t.Fatalf("client.Agents.List returned error: %v", err)
+		t.Fatalf("client.AgentAPIKeys.Delete returned error: %v", err)
 	}
 }
