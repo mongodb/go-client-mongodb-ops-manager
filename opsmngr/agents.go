@@ -12,15 +12,15 @@ const (
 	agentsBasePath = "groups/%s/agents"
 )
 
-// AgentService is an interface for interfacing with the Agents
+// AgentsService is an interface for interfacing with the Agents
 // endpoints of the MongoDB Cloud API.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents/
-type AgentService interface {
+type AgentsService interface {
 	List(context.Context, string, string) (*Agents, *atlas.Response, error)
 	ListLinks(context.Context, string) (*Agents, *atlas.Response, error)
 }
 
-// AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
+// AgentsServiceOp handles communication with the Agent related methods of the MongoDB Cloud API
 type AgentsServiceOp struct {
 	Client atlas.RequestDoer
 }

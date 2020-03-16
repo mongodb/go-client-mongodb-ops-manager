@@ -51,7 +51,7 @@ type Client struct {
 	ContinuousSnapshots   atlas.ContinuousSnapshotsService
 	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
 	AllClusters           AllClustersService
-	Agents                AgentService
+	Agents                AgentsService
 	AgentAPIKeys          AgentAPIKeysService
 
 	onRequestCompleted atlas.RequestCompletionCallback
