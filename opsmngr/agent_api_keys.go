@@ -38,6 +38,7 @@ type AgentAPIKeys struct {
 	TotalCount int            `json:"totalCount"`
 }
 
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/create-one-agent-api-key/
 func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string) (*AgentAPIKey, *atlas.Response, error) {
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
@@ -55,6 +56,7 @@ func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string) (*
 	return root, resp, err
 }
 
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/get-all-agent-api-keys-for-project/
 func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) (*AgentAPIKeys, *atlas.Response, error) {
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
@@ -72,6 +74,7 @@ func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) (*Ag
 	return root, resp, err
 }
 
+// See more: hhttps://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/delete-one-agent-api-key/
 func (s *AgentAPIKeysServiceOp) Delete(ctx context.Context, projectID, agentAPIKey string) (*atlas.Response, error) {
 	basePath := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 	path := fmt.Sprintf("%s/%s", basePath, agentAPIKey)
