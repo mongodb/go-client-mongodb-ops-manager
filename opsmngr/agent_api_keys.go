@@ -13,8 +13,8 @@ const (
 )
 
 type AgentAPIKeysService interface {
-	Create(context.Context, string) (*AgentAPIKey, *atlas.Response, error)
-	List(context.Context, string) (*AgentAPIKeys, *atlas.Response, error)
+	Create(context.Context, string, AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error)
+	List(context.Context, string) (*[]AgentAPIKey, *atlas.Response, error)
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
@@ -23,26 +23,24 @@ type AgentAPIKeysServiceOp struct {
 }
 
 type AgentAPIKey struct {
-	ID            string  `json:"id"`
+	ID            string  `json:"_id"`
 	Key           string  `json:"key"`
 	Desc          string  `json:"desc"`
-	CreatedTime   string  `json:"createdTime"`
-	CreatedUserID *string `json:"createdUserId"`
-	CreatedIPAddr *string `json:"createdIpAddr"`
+	CreatedTime   int64   `json:"createdTime"`
+	CreatedUserID *string `json:"createdUserId,omitempty"`
+	CreatedIPAddr *string `json:"createdIpAddr,omitempty"`
 	CreatedBy     string  `json:"createdBy"`
 }
 
-type AgentAPIKeys struct {
-	Links      []*atlas.Link  `json:"links"`
-	Results    []*AgentAPIKey `json:"results"`
-	TotalCount int            `json:"totalCount"`
+type AgentAPIKeysRequest struct {
+	Desc string `json:"desc"`
 }
 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/create-one-agent-api-key/
-func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string) (*AgentAPIKey, *atlas.Response, error) {
+func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string, agent AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error) {
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
-	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, agent)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -57,7 +55,7 @@ func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string) (*
 }
 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/get-all-agent-api-keys-for-project/
-func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) (*AgentAPIKeys, *atlas.Response, error) {
+func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) (*[]AgentAPIKey, *atlas.Response, error) {
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -65,8 +63,9 @@ func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) (*Ag
 		return nil, nil, err
 	}
 
-	root := new(AgentAPIKeys)
+	root := new([]AgentAPIKey)
 	resp, err := s.Client.Do(ctx, req, root)
+
 	if err != nil {
 		return nil, resp, err
 	}
