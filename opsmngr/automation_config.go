@@ -105,17 +105,40 @@ type SSL struct {
 
 // Auth authentication config
 type Auth struct {
-	AutoAuthMechanism        string                   `json:"autoAuthMechanism"`
-	AutoUser                 string                   `json:"autoUser,omitempty"`
-	AutoPwd                  string                   `json:"autoPwd,omitempty"`
-	DeploymentAuthMechanisms []string                 `json:"deploymentAuthMechanisms"`
-	Key                      string                   `json:"key,omitempty"`
-	Keyfile                  string                   `json:"keyfile,omitempty"`
-	KeyfileWindows           string                   `json:"keyfileWindows,omitempty"`
-	UsersDeleted             []interface{}            `json:"usersDeleted"`
-	UsersWanted              []map[string]interface{} `json:"usersWanted"`
-	AuthoritativeSet         bool                     `json:"authoritativeSet"`
-	Disabled                 bool                     `json:"disabled"`
+	Users                    []*MongoDBUser `json:"usersWanted,omitempty"` // Users is a list which contains the desired users at the project level.
+	Disabled                 bool           `json:"disabled"`
+	AuthoritativeSet         bool           `json:"authoritativeSet"`                   // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of Users
+	AutoAuthMechanisms       []string       `json:"autoAuthMechanisms,omitempty"`       // AutoAuthMechanisms is a list of auth mechanisms the Automation Agent is able to use
+	AutoAuthMechanism        string         `json:"autoAuthMechanism"`                  // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
+	DeploymentAuthMechanisms []string       `json:"deploymentAuthMechanisms,omitempty"` // DeploymentAuthMechanisms is a list of possible auth mechanisms that can be used within deployments
+	AutoUser                 string         `json:"autoUser,omitempty"`                 // AutoUser is the MongoDB Automation Agent user, when x509 is enabled, it should be set to the subject of the AA's certificate
+	Key                      string         `json:"key,omitempty"`                      // Key is the contents of the KeyFile, the automation agent will ensure this a KeyFile with these contents exists at the `KeyFile` path
+	KeyFile                  string         `json:"keyfile,omitempty"`                  // KeyFile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
+	KeyFileWindows           string         `json:"keyfileWindows,omitempty"`           // KeyFileWindows is required if `Disabled=false` even if the value is not used
+	AutoPwd                  string         `json:"autoPwd,omitempty"`                  // AutoPwd is a required field when going from `Disabled=false` to `Disabled=true`
+}
+
+type MongoDBUser struct {
+	Mechanisms                 []string       `json:"mechanisms"`
+	Roles                      []*Role        `json:"roles"`
+	Username                   string         `json:"user"`
+	Database                   string         `json:"db"`
+	AuthenticationRestrictions []string       `json:"authenticationRestrictions,omitempty"`
+	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
+	ScramSha256Creds           *ScramShaCreds `json:"scramSha256Creds,omitempty"`
+	ScramSha1Creds             *ScramShaCreds `json:"scramSha1Creds,omitempty"`
+}
+
+type Role struct {
+	Role     string `json:"role"`
+	Database string `json:"db"`
+}
+
+type ScramShaCreds struct {
+	IterationCount int    `json:"iterationCount"`
+	Salt           string `json:"salt"`
+	ServerKey      string `json:"serverKey"`
+	StoredKey      string `json:"storedKey"`
 }
 
 // Member configs
