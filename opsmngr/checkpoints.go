@@ -27,7 +27,7 @@ type CheckpointsServiceOp struct {
 
 var _ CheckpointsService = &CheckpointsServiceOp{}
 
-func (s CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error) {
+func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -48,7 +48,7 @@ func (s CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName str
 	return root, resp, err
 }
 
-func (s CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterName, checkpointID string) (*atlas.Checkpoint, *atlas.Response, error) {
+func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterName, checkpointID string) (*atlas.Checkpoint, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
