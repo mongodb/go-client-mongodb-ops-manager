@@ -53,6 +53,7 @@ type Client struct {
 	AllClusters           AllClustersService
 	Agents                AgentsService
 	AgentAPIKeys          AgentAPIKeysService
+	Checkpoints           CheckpointsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -82,6 +83,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.ContinuousRestoreJobs = &atlas.ContinuousRestoreJobsServiceOp{Client: c}
 	c.Agents = &AgentsServiceOp{Client: c}
 	c.AgentAPIKeys = &AgentAPIKeysServiceOp{Client: c}
+	c.Checkpoints = &CheckpointsServiceOp{Client: c}
 
 	return c
 }
