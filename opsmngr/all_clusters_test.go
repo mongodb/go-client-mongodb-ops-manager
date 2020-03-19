@@ -122,9 +122,9 @@ func TestAllClusters_List(t *testing.T) {
 		}`)
 	})
 
-	clusters, _, err := client.AllCusters.List(ctx)
+	clusters, _, err := client.AllClusters.List(ctx)
 	if err != nil {
-		t.Fatalf("client.AllCusters returned error: %v", err)
+		t.Fatalf("client.AllClusters returned error: %v", err)
 	}
 
 	expected := &AllClustersProjects{
