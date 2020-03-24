@@ -51,7 +51,7 @@ type AllClustersProjects struct {
 	TotalCount int                   `json:"totalCount"`
 }
 
-//List all clusters in the project.
+// List all clusters in the project.
 func (s *AllClustersServiceOp) List(ctx context.Context) (*AllClustersProjects, *atlas.Response, error) {
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, allClustersBasePath, nil)
 	if err != nil {
