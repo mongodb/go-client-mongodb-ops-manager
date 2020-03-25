@@ -5,9 +5,8 @@ import (
 	"net/http"
 	"testing"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
-
 	"github.com/go-test/deep"
+	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
 func TestGlobalAlerts_List(t *testing.T) {
@@ -47,7 +46,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 		Status: "CLOSED",
 	}
 
-	alerts, _, err := client.GlobalAlerts.List(ctx, opts)
+	alerts, _, err := client.GlobalAlerts.List(ctx, &opts)
 	if err != nil {
 		t.Fatalf("client.GlobalAlerts returned error: %v", err)
 	}

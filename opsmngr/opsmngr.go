@@ -200,7 +200,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 	return response, err
 }
 
-func setListOptions(s string, opt interface{}) (string, error) {
+func setQueryParams(s string, opt interface{}) (string, error) {
 	v := reflect.ValueOf(opt)
 
 	if v.Kind() == reflect.Ptr && v.IsNil() {

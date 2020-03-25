@@ -36,7 +36,7 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 	}
 
 	basePath := fmt.Sprintf(checkpoints, groupID, clusterName)
-	path, err := setListOptions(basePath, listOptions)
+	path, err := setQueryParams(basePath, listOptions)
 	if err != nil {
 		return nil, nil, err
 	}
