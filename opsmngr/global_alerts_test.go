@@ -42,7 +42,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 		}`)
 	})
 
-	opts := AlertsListOptions{
+	opts := atlas.AlertsListOptions{
 		Status: "CLOSED",
 	}
 
