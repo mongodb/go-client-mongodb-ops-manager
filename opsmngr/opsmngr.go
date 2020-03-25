@@ -22,8 +22,10 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"reflect"
 	"runtime"
 
+	"github.com/google/go-querystring/query"
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
@@ -55,6 +57,7 @@ type Client struct {
 	Agents                AgentsService
 	AgentAPIKeys          AgentAPIKeysService
 	Checkpoints           CheckpointsService
+	GlobalAlerts          GlobalAlertsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -86,6 +89,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.AgentAPIKeys = &AgentAPIKeysServiceOp{Client: c}
 	c.Checkpoints = &CheckpointsServiceOp{Client: c}
 	c.Alerts = &atlas.AlertsServiceOp{Client: c}
+	c.GlobalAlerts = &GlobalAlertsServiceOp{Client: c}
 
 	return c
 }
@@ -194,4 +198,31 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 		err = json.NewDecoder(resp.Body).Decode(v)
 	}
 	return response, err
+}
+
+func setListOptions(s string, opt interface{}) (string, error) {
+	v := reflect.ValueOf(opt)
+
+	if v.Kind() == reflect.Ptr && v.IsNil() {
+		return s, nil
+	}
+
+	origURL, err := url.Parse(s)
+	if err != nil {
+		return s, err
+	}
+
+	origValues := origURL.Query()
+
+	newValues, err := query.Values(opt)
+	if err != nil {
+		return s, err
+	}
+
+	for k, v := range newValues {
+		origValues[k] = v
+	}
+
+	origURL.RawQuery = origValues.Encode()
+	return origURL.String(), nil
 }

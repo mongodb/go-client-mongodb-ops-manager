@@ -35,7 +35,11 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 		return nil, nil, atlas.NewArgError("clusterName", "must be set")
 	}
 
-	path := fmt.Sprintf(checkpoints, groupID, clusterName)
+	basePath := fmt.Sprintf(checkpoints, groupID, clusterName)
+	path, err := setListOptions(basePath, listOptions)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, listOptions)
 	if err != nil {
