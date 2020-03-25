@@ -41,7 +41,7 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 		return nil, nil, err
 	}
 
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, listOptions)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
