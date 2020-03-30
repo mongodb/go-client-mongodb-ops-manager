@@ -18,6 +18,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -134,16 +135,17 @@ func SetUserAgent(ua string) ClientOpt {
 // BaseURL of the Client. Relative URLS should always be specified without a preceding slash. If specified, the
 // value pointed to by body is JSON encoded and included in as the request body.
 func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body interface{}) (*http.Request, error) {
-	rel, err := url.Parse(urlStr)
+	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
 	}
 
-	u := c.BaseURL.ResolveReference(rel)
-
-	buf := new(bytes.Buffer)
+	var buf io.ReadWriter
 	if body != nil {
-		err = json.NewEncoder(buf).Encode(body)
+		buf = &bytes.Buffer{}
+		enc := json.NewEncoder(buf)
+		enc.SetEscapeHTML(false)
+		err := enc.Encode(body)
 		if err != nil {
 			return nil, err
 		}
@@ -154,9 +156,13 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 		return nil, err
 	}
 
-	req.Header.Add("Content-Type", mediaType)
+	if body != nil {
+		req.Header.Set("Content-Type", mediaType)
+	}
 	req.Header.Add("Accept", mediaType)
-	req.Header.Add("User-Agent", c.UserAgent)
+	if c.UserAgent != "" {
+		req.Header.Set("User-Agent", c.UserAgent)
+	}
 	return req, nil
 }
 
@@ -169,19 +175,30 @@ func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
 // pointed to by v, or returned as an error if an API error has occurred. If v implements the io.Writer interface,
 // the raw response will be written to v, without attempting to decode it.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atlas.Response, error) {
-	resp, err := atlas.DoRequestWithClient(ctx, c.client, req)
+	if ctx == nil {
+		return nil, errors.New("context must be non-nil")
+	}
+
+	req = req.WithContext(ctx)
+
+	resp, err := c.client.Do(req)
 	if err != nil {
+		fmt.Println(err)
+		// If we got an error, and the context has been canceled,
+		// the context's error is probably more useful.
+		select {
+		case <-ctx.Done():
+			return nil, ctx.Err()
+		default:
+		}
+
 		return nil, err
 	}
 	if c.onRequestCompleted != nil {
 		c.onRequestCompleted(req, resp)
 	}
 
-	defer func() {
-		if rerr := resp.Body.Close(); err == nil {
-			err = rerr
-		}
-	}()
+	defer resp.Body.Close()
 
 	response := &atlas.Response{Response: resp}
 
@@ -190,12 +207,18 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 		return response, err
 	}
 
-	switch t := v.(type) {
-	case nil:
-	case io.Writer:
-		_, err = io.Copy(t, resp.Body)
-	default:
-		err = json.NewDecoder(resp.Body).Decode(v)
+	if v != nil {
+		if w, ok := v.(io.Writer); ok {
+			_, _ = io.Copy(w, resp.Body)
+		} else {
+			decErr := json.NewDecoder(resp.Body).Decode(v)
+			if decErr == io.EOF {
+				decErr = nil // ignore EOF errors caused by empty response body
+			}
+			if decErr != nil {
+				err = decErr
+			}
+		}
 	}
 	return response, err
 }
