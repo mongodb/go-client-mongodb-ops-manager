@@ -1,13 +1,13 @@
 # Contributing to MongoDB Ops Manager Go Client
 
 Thanks for your interest in contributing to this project, 
-this document describe the necessary steps to get a development environment going and the best way to contribute back to the project
+this document describe the necessary steps to get a development environment going and the best way to contribute back to the project.
 
 ## Development setup
 
 ### Prerequisite Tools 
 - [Git](https://git-scm.com/)
-- [Go (at least Go 1.13)](https://golang.org/dl/)
+- [Go (at least Go 1.12)](https://golang.org/dl/)
 
 ### Environment
 - Fork the repository.

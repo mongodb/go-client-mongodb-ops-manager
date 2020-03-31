@@ -1,6 +1,5 @@
 # MongoDB Ops Manager Go Client
 
-[![Build Status](https://cloud.drone.io/api/badges/mongodb/go-client-mongodb-ops-manager/status.svg)](https://cloud.drone.io/mongodb/go-client-mongodb-ops-manager)
 
 An HTTP client for [Ops Manager](https://docs.opsmanager.mongodb.com/master/reference/api/) 
 and [Cloud Manager](https://docs.cloudmanager.mongodb.com/reference/api/) Public API endpoints.
@@ -50,10 +49,10 @@ import (
 
 func newClient(publicKey, privateKey string) (*mongodbatlas.Client, error) {
 
-	//Setup a transport to handle digest
+	// Setup a transport to handle digest
 	transport := digest.NewTransport(publicKey, privateKey)
 
-	//Initialize the client
+	// Initialize the client
 	client, err := transport.Client()
 	if err != nil {
 		return nil, err
@@ -88,10 +87,16 @@ func main() {
 }
 ```
 
-# Contributing
+## Roadmap
+
+This library is being initially developed for [mongocli](https://github.com/mongodb/mongocli),
+so API methods will likely be implemented in the order that they are
+needed by that application.
+
+## Contributing
 
 See our [CONTRIBUTING.md](CONTRIBUTING.md) Guide.
 
-# License
+## License
 
 MongoDB Ops Manager Go Client is released under the Apache 2.0 license. See [LICENSE](LICENSE)
