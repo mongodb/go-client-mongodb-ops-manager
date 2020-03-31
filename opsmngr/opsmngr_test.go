@@ -17,7 +17,6 @@ package opsmngr
 import (
 	"context"
 	"fmt"
-	"github.com/go-test/deep"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -26,6 +25,8 @@ import (
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/go-test/deep"
 )
 
 var (
