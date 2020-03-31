@@ -1,5 +1,5 @@
 # MongoDB Ops Manager Go Client
-
+[![Build Status](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager.svg?branch=master)](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager)
 
 An HTTP client for [Ops Manager](https://docs.opsmanager.mongodb.com/master/reference/api/) 
 and [Cloud Manager](https://docs.cloudmanager.mongodb.com/reference/api/) Public API endpoints.

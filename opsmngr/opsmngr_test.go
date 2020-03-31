@@ -17,6 +17,7 @@ package opsmngr
 import (
 	"context"
 	"fmt"
+	"github.com/go-test/deep"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -249,8 +250,8 @@ func TestDo_completion_callback(t *testing.T) {
 	if err != nil {
 		t.Fatalf("Do(): %v", err)
 	}
-	if !reflect.DeepEqual(req, completedReq) {
-		t.Errorf("Completed request = %v, expected %v", completedReq, req)
+	if diff := deep.Equal(req, completedReq); diff != nil {
+		t.Error(diff)
 	}
 	expected := `{"A":"a"}`
 	if !strings.Contains(completedResp, expected) {
