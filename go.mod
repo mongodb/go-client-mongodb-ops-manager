@@ -5,5 +5,5 @@ go 1.12
 require (
 	github.com/go-test/deep v1.0.5
 	github.com/google/go-querystring v1.0.0
-	github.com/mongodb/go-client-mongodb-atlas v0.1.4-0.20200325161849-bca1d320f71c
+	github.com/mongodb/go-client-mongodb-atlas v0.1.4-0.20200402143647-b2e23a196304
 )
