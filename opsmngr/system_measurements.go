@@ -13,13 +13,13 @@ const (
 )
 
 // SystemMeasurementsService is an interface for interfacing with the System Measurements
-// endpoints of the MongoDB Atlas API.
+// endpoints of the MongoDB Ops Manager API.
 type SystemMeasurementsService interface {
 	List(context.Context, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error)
 }
 
 // ServiceMeasurementsServiceOp handles communication with the system measurements related methods of the
-// MongoDB Atlas API
+// MongoDB Ops Manager API
 type ServiceMeasurementsServiceOp struct {
 	Client atlas.RequestDoer
 }
