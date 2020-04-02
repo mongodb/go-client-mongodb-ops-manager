@@ -61,6 +61,7 @@ type Client struct {
 	AgentAPIKeys          AgentAPIKeysService
 	Checkpoints           CheckpointsService
 	GlobalAlerts          GlobalAlertsService
+	SystemMeasurements    SystemMeasurementsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -93,6 +94,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Checkpoints = &CheckpointsServiceOp{Client: c}
 	c.Alerts = &atlas.AlertsServiceOp{Client: c}
 	c.GlobalAlerts = &GlobalAlertsServiceOp{Client: c}
+	c.SystemMeasurements = &ServiceMeasurementsServiceOp{Client: c}
 
 	return c
 }
