@@ -56,6 +56,7 @@ type Client struct {
 	Alerts                atlas.AlertsService
 	ContinuousSnapshots   atlas.ContinuousSnapshotsService
 	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
+	Events                atlas.EventsService
 	AllClusters           AllClustersService
 	Agents                AgentsService
 	AgentAPIKeys          AgentAPIKeysService
@@ -93,6 +94,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Checkpoints = &CheckpointsServiceOp{Client: c}
 	c.Alerts = &atlas.AlertsServiceOp{Client: c}
 	c.GlobalAlerts = &GlobalAlertsServiceOp{Client: c}
+	c.Events = &atlas.EventsServiceOp{Client: c}
 
 	return c
 }
