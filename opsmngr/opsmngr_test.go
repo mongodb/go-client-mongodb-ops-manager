@@ -155,7 +155,7 @@ func TestNewRequest_withCustomUserAgent(t *testing.T) {
 	}
 }
 
-func TestDo(t *testing.T) {
+func TestClient_Do(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -183,7 +183,7 @@ func TestDo(t *testing.T) {
 	}
 }
 
-func TestDo_httpError(t *testing.T) {
+func TestClient_Do_httpError(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -201,7 +201,7 @@ func TestDo_httpError(t *testing.T) {
 
 // Test handling of an error caused by the internal http client's Do()
 // function.
-func TestDo_redirectLoop(t *testing.T) {
+func TestClient_Do_redirectLoop(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -220,7 +220,7 @@ func TestDo_redirectLoop(t *testing.T) {
 	}
 }
 
-func TestDo_completion_callback(t *testing.T) {
+func TestClient_OnRequestCompleted(t *testing.T) {
 	setup()
 	defer teardown()
 
@@ -260,7 +260,7 @@ func TestDo_completion_callback(t *testing.T) {
 	}
 }
 
-func TestCustomUserAgent(t *testing.T) {
+func TestSetUserAgent(t *testing.T) {
 	ua := "testing/0.0.1"
 	c, err := New(nil, SetUserAgent(ua))
 
@@ -274,7 +274,7 @@ func TestCustomUserAgent(t *testing.T) {
 	}
 }
 
-func TestCustomBaseURL(t *testing.T) {
+func TestSetBaseURL(t *testing.T) {
 	baseURL := "http://localhost/foo"
 	c, err := New(nil, SetBaseURL(baseURL))
 
@@ -288,9 +288,25 @@ func TestCustomBaseURL(t *testing.T) {
 	}
 }
 
-func TestCustomBaseURL_badURL(t *testing.T) {
+func TestSetBaseURL_badURL(t *testing.T) {
 	baseURL := ":"
 	_, err := New(nil, SetBaseURL(baseURL))
 
 	testURLParseError(t, err)
+}
+
+func TestOptionSkipVerify(t *testing.T) {
+	_, err := New(nil, OptionSkipVerify)
+
+	if err != nil {
+		t.Fatalf("New() unexpected error: %v", err)
+	}
+}
+
+func TestOptionCAValidate(t *testing.T) {
+	_, err := New(nil, OptionCAValidate(""))
+
+	if err != nil {
+		t.Fatalf("New() unexpected error: %v", err)
+	}
 }
