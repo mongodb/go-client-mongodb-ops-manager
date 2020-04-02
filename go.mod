@@ -1,6 +1,6 @@
 module github.com/mongodb/go-client-mongodb-ops-manager
 
-go 1.13
+go 1.12
 
 require (
 	github.com/go-test/deep v1.0.5

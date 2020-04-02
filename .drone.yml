@@ -24,19 +24,6 @@ steps:
       event:
         - push
 
-  - name: test
-    image: golang:1.13
-    commands:
-      - make test
-    volumes:
-      - name: deps
-        path: /go
-
-  - name: lint
-    image: golangci/golangci-lint:v1.23.6
-    commands:
-      - make lint
-
 volumes:
   - name: deps
     temp: {}
@@ -44,6 +31,3 @@ volumes:
 trigger:
   branch:
     - master
-  event:
-    - push
-    - pull_request
