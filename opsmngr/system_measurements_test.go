@@ -15,9 +15,9 @@ func TestSystemMeasurements_List(t *testing.T) {
 	defer teardown()
 
 	projectID := "6b8cd3c380eef5349ef77gf7"
-	host := "host"
+	hostID := "hostID"
 
-	path := fmt.Sprintf("/groups/%s/hosts/%s/measurements", projectID, host)
+	path := fmt.Sprintf("/groups/%s/hosts/%s/measurements", projectID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -25,7 +25,7 @@ func TestSystemMeasurements_List(t *testing.T) {
 					  "end": "2018-07-31T16:29:24Z",
 					  "granularity": "P1T12H",
 					  "groupId": "6b8cd3c380eef5349ef77gf7",
-					  "hostId": "host",
+					  "hostId": "hostID",
 					  "links": [],
 					  "measurements": [{
 						"dataPoints": [{
@@ -55,7 +55,7 @@ func TestSystemMeasurements_List(t *testing.T) {
 		)
 	})
 
-	snapshots, _, err := client.SystemMeasurements.List(ctx, projectID, host, nil)
+	snapshots, _, err := client.SystemMeasurements.List(ctx, projectID, hostID, nil)
 	if err != nil {
 		t.Fatalf("Checkpoints.List returned error: %v", err)
 	}
@@ -66,7 +66,7 @@ func TestSystemMeasurements_List(t *testing.T) {
 		End:         "2018-07-31T16:29:24Z",
 		Granularity: "P1T12H",
 		GroupID:     "6b8cd3c380eef5349ef77gf7",
-		HostID:      "host",
+		HostID:      "hostID",
 		Links:       []*atlas.Link{},
 		Measurements: []*atlas.Measurements{
 			{

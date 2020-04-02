@@ -28,15 +28,15 @@ var _ SystemMeasurementsService = &ServiceMeasurementsServiceOp{}
 
 // List lists system and process measurements on the CPU usage of the hosts that run MongoDB.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-host-process-system-measurements/
-func (s *ServiceMeasurementsServiceOp) List(ctx context.Context, projectID, host string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error) {
+func (s *ServiceMeasurementsServiceOp) List(ctx context.Context, projectID, hostID string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("projectID", "must be set")
 	}
-	if host == "" {
-		return nil, nil, atlas.NewArgError("host", "must be set")
+	if hostID == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
 	}
 
-	basePath := fmt.Sprintf(systemMeasurements, projectID, host)
+	basePath := fmt.Sprintf(systemMeasurements, projectID, hostID)
 	path, err := setQueryParams(basePath, listOptions)
 	if err != nil {
 		return nil, nil, err
