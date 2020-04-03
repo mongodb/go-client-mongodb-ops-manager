@@ -28,40 +28,40 @@ type HostServiceOp struct {
 
 type Host struct {
 	Aliases            []string      `json:"aliases,omitempty"`
-	AuthMechanismName  string        `json:"authMechanismName"`
+	AuthMechanismName  string        `json:"authMechanismName,omitempty"`
 	ClusterID          string        `json:"clusterId,omitempty"`
-	Created            string        `json:"created"`
-	GroupID            string        `json:"groupId"`
+	Created            string        `json:"created,omitempty"`
+	GroupID            string        `json:"groupId,omitempty"`
 	Hostname           string        `json:"hostname"`
-	ID                 string        `json:"id"`
-	IPAddress          string        `json:"ipAddress"`
-	LastPing           string        `json:"lastPing"`
+	ID                 string        `json:"id,omitempty"`
+	IPAddress          string        `json:"ipAddress,omitempty"`
+	LastPing           string        `json:"lastPing,omitempty"`
 	LastRestart        string        `json:"lastRestart,omitempty"`
 	ReplicaSetName     string        `json:"replicaSetName,omitempty"`
 	ReplicaStateName   string        `json:"replicaStateName,omitempty"`
 	ShardName          string        `json:"shardName,omitempty"`
 	TypeName           string        `json:"typeName,omitempty"`
-	Version            string        `json:"version"`
+	Version            string        `json:"version,omitempty"`
 	Username           string        `json:"username,omitempty"`
 	Password           string        `json:"password,omitempty"`
-	AlertsEnabled      bool          `json:"alertsEnabled"`
-	Deactivated        bool          `json:"deactivated"`
-	HasStartupWarnings bool          `json:"hasStartupWarnings"`
-	Hidden             bool          `json:"hidden"`
-	HiddenSecondary    bool          `json:"hiddenSecondary"`
-	HostEnabled        bool          `json:"hostEnabled"`
-	JournalingEnabled  bool          `json:"journalingEnabled"`
-	LogsEnabled        bool          `json:"logsEnabled"`
-	LowUlimit          bool          `json:"lowUlimit"`
-	MuninEnabled       bool          `json:"muninEnabled"`
-	ProfilerEnabled    bool          `json:"profilerEnabled"`
-	SSLEnabled         bool          `json:"sslEnabled"`
-	LastDataSizeBytes  float64       `json:"lastDataSizeBytes"`
-	LastIndexSizeBytes float64       `json:"lastIndexSizeBytes"`
+	AlertsEnabled      bool          `json:"alertsEnabled,omitempty"`
+	Deactivated        bool          `json:"deactivated,omitempty"`
+	HasStartupWarnings bool          `json:"hasStartupWarnings,omitempty"`
+	Hidden             bool          `json:"hidden,omitempty"`
+	HiddenSecondary    bool          `json:"hiddenSecondary,omitempty"`
+	HostEnabled        bool          `json:"hostEnabled,omitempty"`
+	JournalingEnabled  bool          `json:"journalingEnabled,omitempty"`
+	LogsEnabled        bool          `json:"logsEnabled,omitempty"`
+	LowUlimit          bool          `json:"lowUlimit,omitempty"`
+	MuninEnabled       bool          `json:"muninEnabled,omitempty"`
+	ProfilerEnabled    bool          `json:"profilerEnabled,omitempty"`
+	SSLEnabled         bool          `json:"sslEnabled,omitempty"`
+	LastDataSizeBytes  float64       `json:"lastDataSizeBytes,omitempty"`
+	LastIndexSizeBytes float64       `json:"lastIndexSizeBytes,omitempty"`
 	MuninPort          int32         `json:"muninPort,omitempty"`
 	Port               int32         `json:"port"`
-	SlaveDelaySec      int64         `json:"slaveDelaySec"`
-	UptimeMsec         int64         `json:"uptimeMsec"`
+	SlaveDelaySec      int64         `json:"slaveDelaySec,omitempty"`
+	UptimeMsec         int64         `json:"uptimeMsec,omitempty"`
 	Links              []*atlas.Link `json:"links,omitempty"`
 }
 
