@@ -250,9 +250,9 @@ func TestHost_GetByHostName(t *testing.T) {
 					}`)
 	})
 
-	alerts, _, err := client.Hosts.GetByHostName(ctx, projectID, hostName, port)
+	alerts, _, err := client.Hosts.GetByHostname(ctx, projectID, hostName, port)
 	if err != nil {
-		t.Fatalf("Hosts.GetByHostName returned error: %v", err)
+		t.Fatalf("Hosts.GetByHostname returned error: %v", err)
 	}
 
 	expected := &Host{

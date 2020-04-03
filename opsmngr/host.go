@@ -15,7 +15,7 @@ const (
 // HostService is an interface for interfacing with Hosts in MongoDB Ops Manager APIs
 type HostService interface {
 	Get(context.Context, string, string) (*Host, *atlas.Response, error)
-	GetByHostName(context.Context, string, string, int) (*Host, *atlas.Response, error)
+	GetByHostname(context.Context, string, string, int) (*Host, *atlas.Response, error)
 	List(context.Context, string, *HostListOptions) (*Hosts, *atlas.Response, error)
 	Monitoring(context.Context, string, *Host) (*Host, *atlas.Response, error)
 	UpdateMonitoring(context.Context, string, string, *Host) (*Host, *atlas.Response, error)
@@ -94,12 +94,12 @@ func (s *HostServiceOp) Get(ctx context.Context, projectID, hostID string) (*Hos
 	return root, resp, err
 }
 
-// GetByHostName gets a single MongoDB process by its hostname and port combination.
+// GetByHostname gets a single MongoDB process by its hostname and port combination.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-one-host-by-id/
-func (s *HostServiceOp) GetByHostName(ctx context.Context, projectID, hostName string, port int) (*Host, *atlas.Response, error) {
+func (s *HostServiceOp) GetByHostname(ctx context.Context, projectID, hostname string, port int) (*Host, *atlas.Response, error) {
 
-	basePath := fmt.Sprintf(hostBasePath+"/byName", projectID)
-	path := fmt.Sprintf("%s/%s:%d", basePath, hostName, port)
+	basePath := fmt.Sprintf(hostBasePath, projectID)
+	path := fmt.Sprintf("%s/byName/%s:%d", basePath, hostname, port)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
