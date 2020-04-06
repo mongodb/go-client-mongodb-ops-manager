@@ -9,11 +9,12 @@ import (
 )
 
 const (
-	hostBasePath = "groups/%s/hosts"
+	hostsBasePath = "groups/%s/hosts"
 )
 
-// HostService is an interface for interfacing with Hosts in MongoDB Ops Manager APIs
-type HostService interface {
+// HostsService is an interface for interfacing with Hosts in MongoDB Ops Manager APIs
+// https://docs.opsmanager.mongodb.com/current/reference/api/hosts/
+type HostsService interface {
 	Get(context.Context, string, string) (*Host, *atlas.Response, error)
 	GetByHostname(context.Context, string, string, int) (*Host, *atlas.Response, error)
 	List(context.Context, string, *HostListOptions) (*Hosts, *atlas.Response, error)
@@ -22,7 +23,7 @@ type HostService interface {
 	StopMonitoring(context.Context, string, string) (*atlas.Response, error)
 }
 
-type HostServiceOp struct {
+type HostsServiceOp struct {
 	Client atlas.RequestDoer
 }
 
@@ -78,9 +79,8 @@ type HostListOptions struct {
 
 // Get gets the MongoDB process with the specified host ID.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-one-host-by-id/
-func (s *HostServiceOp) Get(ctx context.Context, projectID, hostID string) (*Host, *atlas.Response, error) {
-
-	basePath := fmt.Sprintf(hostBasePath, projectID)
+func (s *HostsServiceOp) Get(ctx context.Context, projectID, hostID string) (*Host, *atlas.Response, error) {
+	basePath := fmt.Sprintf(hostsBasePath, projectID)
 	path := fmt.Sprintf("%s/%s", basePath, hostID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -96,9 +96,8 @@ func (s *HostServiceOp) Get(ctx context.Context, projectID, hostID string) (*Hos
 
 // GetByHostname gets a single MongoDB process by its hostname and port combination.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-one-host-by-id/
-func (s *HostServiceOp) GetByHostname(ctx context.Context, projectID, hostname string, port int) (*Host, *atlas.Response, error) {
-
-	basePath := fmt.Sprintf(hostBasePath, projectID)
+func (s *HostsServiceOp) GetByHostname(ctx context.Context, projectID, hostname string, port int) (*Host, *atlas.Response, error) {
+	basePath := fmt.Sprintf(hostsBasePath, projectID)
 	path := fmt.Sprintf("%s/byName/%s:%d", basePath, hostname, port)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -114,9 +113,8 @@ func (s *HostServiceOp) GetByHostname(ctx context.Context, projectID, hostname s
 
 // List lists all MongoDB hosts in a project.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-all-hosts-in-group/
-func (s *HostServiceOp) List(ctx context.Context, projectID string, opts *HostListOptions) (*Hosts, *atlas.Response, error) {
-
-	basePath := fmt.Sprintf(hostBasePath, projectID)
+func (s *HostsServiceOp) List(ctx context.Context, projectID string, opts *HostListOptions) (*Hosts, *atlas.Response, error) {
+	basePath := fmt.Sprintf(hostsBasePath, projectID)
 	path, err := setQueryParams(basePath, opts)
 	if err != nil {
 		return nil, nil, err
@@ -135,8 +133,8 @@ func (s *HostServiceOp) List(ctx context.Context, projectID string, opts *HostLi
 
 // Monitoring starts monitoring a new MongoDB process.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/create-one-host/
-func (s *HostServiceOp) Monitoring(ctx context.Context, projectID string, host *Host) (*Host, *atlas.Response, error) {
-	path := fmt.Sprintf(hostBasePath, projectID)
+func (s *HostsServiceOp) Monitoring(ctx context.Context, projectID string, host *Host) (*Host, *atlas.Response, error) {
+	path := fmt.Sprintf(hostsBasePath, projectID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, host)
 	if err != nil {
@@ -151,8 +149,8 @@ func (s *HostServiceOp) Monitoring(ctx context.Context, projectID string, host *
 
 // UpdateMonitoring updates the configuration of a monitored MongoDB process..
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/update-one-host/
-func (s *HostServiceOp) UpdateMonitoring(ctx context.Context, projectID, hostID string, host *Host) (*Host, *atlas.Response, error) {
-	basePath := fmt.Sprintf(hostBasePath, projectID)
+func (s *HostsServiceOp) UpdateMonitoring(ctx context.Context, projectID, hostID string, host *Host) (*Host, *atlas.Response, error) {
+	basePath := fmt.Sprintf(hostsBasePath, projectID)
 	path := fmt.Sprintf("%s/%s", basePath, hostID)
 	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, host)
 	if err != nil {
@@ -167,8 +165,8 @@ func (s *HostServiceOp) UpdateMonitoring(ctx context.Context, projectID, hostID 
 
 // StopMonitoring stops the Monitoring from monitoring the MongoDB process on the hostname and port you specify..
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/delete-one-host/
-func (s *HostServiceOp) StopMonitoring(ctx context.Context, projectID, hostID string) (*atlas.Response, error) {
-	basePath := fmt.Sprintf(hostBasePath, projectID)
+func (s *HostsServiceOp) StopMonitoring(ctx context.Context, projectID, hostID string) (*atlas.Response, error) {
+	basePath := fmt.Sprintf(hostsBasePath, projectID)
 	path := fmt.Sprintf("%s/%s", basePath, hostID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
