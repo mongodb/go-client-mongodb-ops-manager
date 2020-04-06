@@ -44,21 +44,21 @@ type Host struct {
 	Version            string        `json:"version,omitempty"`
 	Username           string        `json:"username,omitempty"`
 	Password           string        `json:"password,omitempty"`
-	AlertsEnabled      bool          `json:"alertsEnabled,omitempty"`
 	Deactivated        bool          `json:"deactivated,omitempty"`
 	HasStartupWarnings bool          `json:"hasStartupWarnings,omitempty"`
 	Hidden             bool          `json:"hidden,omitempty"`
 	HiddenSecondary    bool          `json:"hiddenSecondary,omitempty"`
 	HostEnabled        bool          `json:"hostEnabled,omitempty"`
 	JournalingEnabled  bool          `json:"journalingEnabled,omitempty"`
-	LogsEnabled        bool          `json:"logsEnabled,omitempty"`
 	LowUlimit          bool          `json:"lowUlimit,omitempty"`
 	MuninEnabled       bool          `json:"muninEnabled,omitempty"`
-	ProfilerEnabled    bool          `json:"profilerEnabled,omitempty"`
-	SSLEnabled         bool          `json:"sslEnabled,omitempty"`
+	LogsEnabled        *bool         `json:"logsEnabled,omitempty"`
+	AlertsEnabled      *bool         `json:"alertsEnabled,omitempty"`
+	ProfilerEnabled    *bool         `json:"profilerEnabled,omitempty"`
+	SSLEnabled         *bool         `json:"sslEnabled,omitempty"`
 	LastDataSizeBytes  float64       `json:"lastDataSizeBytes,omitempty"`
 	LastIndexSizeBytes float64       `json:"lastIndexSizeBytes,omitempty"`
-	MuninPort          int32         `json:"muninPort,omitempty"`
+	MuninPort          *int32        `json:"muninPort,omitempty"`
 	Port               int32         `json:"port"`
 	SlaveDelaySec      int64         `json:"slaveDelaySec,omitempty"`
 	UptimeMsec         int64         `json:"uptimeMsec,omitempty"`

@@ -65,6 +65,11 @@ func TestHost_List(t *testing.T) {
 		t.Fatalf("Hosts.List returned error: %v", err)
 	}
 
+	alertsEnabled := true
+	logsEnabled := false
+	profilerEnabled := false
+	sslEnabled := true
+
 	expected := &Hosts{
 		Links: nil,
 		Results: []*Host{
@@ -72,7 +77,7 @@ func TestHost_List(t *testing.T) {
 				Aliases: []string{
 					"{HOSTNAME}:26000", "{IP-ADDRESS}:26000",
 				},
-				AlertsEnabled:      true,
+				AlertsEnabled:      &alertsEnabled,
 				AuthMechanismName:  "SCRAM-SHA-1",
 				ClusterID:          "1",
 				Created:            "2014-04-22T19:56:50Z",
@@ -89,14 +94,14 @@ func TestHost_List(t *testing.T) {
 				LastIndexSizeBytes: 101420524,
 				LastPing:           "2016-08-18T11:23:41Z",
 				Links:              []*atlas.Link{},
-				LogsEnabled:        false,
+				LogsEnabled:        &logsEnabled,
 				LowUlimit:          false,
 				MuninEnabled:       false,
 				Port:               26000,
-				ProfilerEnabled:    false,
+				ProfilerEnabled:    &profilerEnabled,
 				ReplicaSetName:     "rs1",
 				ReplicaStateName:   "PRIMARY",
-				SSLEnabled:         true,
+				SSLEnabled:         &sslEnabled,
 				TypeName:           "REPLICA_PRIMARY",
 				UptimeMsec:         1827300394,
 				Version:            "3.2.0",
@@ -162,12 +167,16 @@ func TestHost_Get(t *testing.T) {
 		t.Fatalf("Hosts.Get returned error: %v", err)
 	}
 
-	expected := &Host{
+	alertsEnabled := true
+	logsEnabled := false
+	profilerEnabled := false
+	sslEnabled := true
 
+	expected := &Host{
 		Aliases: []string{
 			"{HOSTNAME}:26000", "{IP-ADDRESS}:26000",
 		},
-		AlertsEnabled:      true,
+		AlertsEnabled:      &alertsEnabled,
 		AuthMechanismName:  "SCRAM-SHA-1",
 		ClusterID:          "1",
 		Created:            "2014-04-22T19:56:50Z",
@@ -184,14 +193,14 @@ func TestHost_Get(t *testing.T) {
 		LastIndexSizeBytes: 101420524,
 		LastPing:           "2016-08-18T11:23:41Z",
 		Links:              []*atlas.Link{},
-		LogsEnabled:        false,
+		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		MuninEnabled:       false,
 		Port:               26000,
-		ProfilerEnabled:    false,
+		ProfilerEnabled:    &profilerEnabled,
 		ReplicaSetName:     "rs1",
 		ReplicaStateName:   "PRIMARY",
-		SSLEnabled:         true,
+		SSLEnabled:         &sslEnabled,
 		TypeName:           "REPLICA_PRIMARY",
 		UptimeMsec:         1827300394,
 		Version:            "3.2.0",
@@ -255,11 +264,16 @@ func TestHost_GetByHostName(t *testing.T) {
 		t.Fatalf("Hosts.GetByHostname returned error: %v", err)
 	}
 
+	alertsEnabled := true
+	logsEnabled := false
+	profilerEnabled := false
+	sslEnabled := true
+
 	expected := &Host{
 		Aliases: []string{
 			"{HOSTNAME}:26000", "{IP-ADDRESS}:26000",
 		},
-		AlertsEnabled:      true,
+		AlertsEnabled:      &alertsEnabled,
 		AuthMechanismName:  "SCRAM-SHA-1",
 		ClusterID:          "1",
 		Created:            "2014-04-22T19:56:50Z",
@@ -276,14 +290,14 @@ func TestHost_GetByHostName(t *testing.T) {
 		LastIndexSizeBytes: 101420524,
 		LastPing:           "2016-08-18T11:23:41Z",
 		Links:              []*atlas.Link{},
-		LogsEnabled:        false,
+		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		MuninEnabled:       false,
 		Port:               26000,
-		ProfilerEnabled:    false,
+		ProfilerEnabled:    &profilerEnabled,
 		ReplicaSetName:     "rs1",
 		ReplicaStateName:   "PRIMARY",
-		SSLEnabled:         true,
+		SSLEnabled:         &sslEnabled,
 		TypeName:           "REPLICA_PRIMARY",
 		UptimeMsec:         1827300394,
 		Version:            "3.2.0",
@@ -339,8 +353,13 @@ func TestHost_Monitoring(t *testing.T) {
 		t.Fatalf("Hosts.Monitoring returned error: %v", err)
 	}
 
+	alertsEnabled := true
+	logsEnabled := false
+	profilerEnabled := false
+	sslEnabled := false
+
 	expected := &Host{
-		AlertsEnabled:      true,
+		AlertsEnabled:      &alertsEnabled,
 		AuthMechanismName:  "SCRAM-SHA-1",
 		Created:            "2014-04-22T19:56:50Z",
 		GroupID:            projectID,
@@ -351,12 +370,12 @@ func TestHost_Monitoring(t *testing.T) {
 		ID:                 "22",
 		JournalingEnabled:  false,
 		Links:              []*atlas.Link{},
-		LogsEnabled:        false,
+		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		MuninEnabled:       false,
 		Port:               port,
-		ProfilerEnabled:    false,
-		SSLEnabled:         false,
+		ProfilerEnabled:    &profilerEnabled,
+		SSLEnabled:         &sslEnabled,
 	}
 
 	if diff := deep.Equal(alerts, expected); diff != nil {
@@ -409,8 +428,13 @@ func TestHost_UpdateMonitoring(t *testing.T) {
 		t.Fatalf("Hosts.Monitoring returned error: %v", err)
 	}
 
+	alertsEnabled := true
+	logsEnabled := false
+	profilerEnabled := false
+	sslEnabled := false
+
 	expected := &Host{
-		AlertsEnabled:      true,
+		AlertsEnabled:      &alertsEnabled,
 		AuthMechanismName:  "SCRAM-SHA-1",
 		Created:            "2014-04-22T19:56:50Z",
 		GroupID:            projectID,
@@ -421,12 +445,12 @@ func TestHost_UpdateMonitoring(t *testing.T) {
 		ID:                 "22",
 		JournalingEnabled:  false,
 		Links:              []*atlas.Link{},
-		LogsEnabled:        false,
+		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		MuninEnabled:       false,
 		Port:               port,
-		ProfilerEnabled:    false,
-		SSLEnabled:         false,
+		ProfilerEnabled:    &profilerEnabled,
+		SSLEnabled:         &sslEnabled,
 	}
 
 	if diff := deep.Equal(alerts, expected); diff != nil {
