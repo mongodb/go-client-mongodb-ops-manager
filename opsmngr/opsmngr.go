@@ -236,7 +236,6 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 
 	resp, err := c.client.Do(req)
 	if err != nil {
-		fmt.Println(err)
 		// If we got an error, and the context has been canceled,
 		// the context's error is probably more useful.
 		select {
