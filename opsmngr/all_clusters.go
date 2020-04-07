@@ -27,7 +27,7 @@ const (
 
 // AllClustersService is an interface for interfacing with Clusters in MongoDB Ops Manager APIs
 type AllClustersService interface {
-	List(ctx context.Context) (*AllClustersProjects, *atlas.Response, error)
+	List(context.Context) (*AllClustersProjects, *atlas.Response, error)
 }
 
 type AllClustersServiceOp struct {
