@@ -1,8 +1,7 @@
 # A Self-Documenting Makefile: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 
 SOURCE_FILES?=./...
-PKG_NAME=opsmngr
-GOLANGCI_VERSION=v1.23.6
+GOLANGCI_VERSION=v1.24.0
 COVERAGE=coverage.out
 
 export PATH := ./bin:$(PATH)
@@ -22,8 +21,7 @@ link-git-hooks: ## Install git hooks
 .PHONY: fmt
 fmt: ## Format code
 	@echo "==> Formatting all files..."
-	gofmt -w -s ${PKG_NAME}
-	goimports -w ${PKG_NAME}
+	find . -name '*.go' | while read -r file; do gofmt -w -s "$$file"; goimports -w "$$file"; done
 
 .PHONY: test
 test: ## Run tests
