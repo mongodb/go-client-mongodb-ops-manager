@@ -27,7 +27,8 @@ const (
 )
 
 // CheckpointsService is an interface for interfacing with the Checkpoint
-// endpoints of the MongoDB Atlas API.
+// endpoints of the MongoDB Ops Manager API.
+// https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/
 type CheckpointsService interface {
 	List(context.Context, string, string, *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error)
 	Get(context.Context, string, string, string) (*atlas.Checkpoint, *atlas.Response, error)
@@ -41,6 +42,8 @@ type CheckpointsServiceOp struct {
 
 var _ CheckpointsService = &CheckpointsServiceOp{}
 
+// List lists checkpoints
+// See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-all-checkpoints
 func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
@@ -66,18 +69,20 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 	return root, resp, err
 }
 
-func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterName, checkpointID string) (*atlas.Checkpoint, *atlas.Response, error) {
+// Get gets a checkpoint
+// See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-one-checkpoint
+func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterID, checkpointID string) (*atlas.Checkpoint, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
-	if clusterName == "" {
-		return nil, nil, atlas.NewArgError("clusterName", "must be set")
+	if clusterID == "" {
+		return nil, nil, atlas.NewArgError("clusterID", "must be set")
 	}
 	if checkpointID == "" {
 		return nil, nil, atlas.NewArgError("checkpointID", "must be set")
 	}
 
-	basePath := fmt.Sprintf(checkpoints, groupID, clusterName)
+	basePath := fmt.Sprintf(checkpoints, groupID, clusterID)
 	path := fmt.Sprintf("%s/%s", basePath, checkpointID)
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 

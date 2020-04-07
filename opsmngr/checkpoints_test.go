@@ -29,119 +29,119 @@ func TestCheckpoints_List(t *testing.T) {
 	defer teardown()
 
 	groupID := "6b8cd3c380eef5349ef77gf7"
-	clusterName := "Cluster0"
+	clusterID := "6b8cd61180eef547110159d9"
 
-	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints", groupID, clusterName)
+	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints", groupID, clusterID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
-				  "links":[
-					{
-					  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
-					  "rel":"self"
-					}
-				  ],
-				  "results":[
-					{
-					  "clusterId":"6b8cd61180eef547110159d9",
-					  "completed":"2018-02-08T23:20:25Z",
-					  "groupId":"6b8cd3c380eef5349ef77gf7",
-					  "id":"5a7cdb3980eef53de5bffdcf",
-					  "links":[
-						{
-						  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
-						  "rel":"self"
-						}
-					  ],
-					  "parts":[
-						{
-						  "replicaSetName":"Cluster0-shard-1",
-						  "shardName":"Cluster0-shard-1",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-08T23:20:25Z",
-							"increment":1
-						  },
-						  "typeName":"REPLICA_SET"
-						},
-						{
-						  "replicaSetName":"Cluster0-shard-0",
-						  "shardName":"Cluster0-shard-0",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-08T23:20:25Z",
-							"increment":1
-						  },
-						  "typeName":"REPLICA_SET"
-						},
-						{
-						  "replicaSetName":"Cluster0-config-0",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-08T23:20:25Z",
-							"increment":2
-						  },
-						  "typeName":"CONFIG_SERVER_REPLICA_SET"
-						}
-					  ],
-					  "restorable":true,
-					  "started":"2018-02-08T23:20:25Z",
-					  "timestamp":"2018-02-08T23:19:37Z"
-					},
-					{
-					  "clusterId":"6b8cd61180eef547110159d9",
-					  "completed":"2018-02-09T14:50:33Z",
-					  "groupId":"6b8cd3c380eef5349ef77gf7",
-					  "id":"5a7db53987d9d64fe298ff46",
-					  "links":[
-						{
-						  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pretty=true",
-						  "rel":"self"
-						}
-					  ],
-					  "parts":[
-						{
-						  "replicaSetName":"Cluster0-shard-1",
-						  "shardName":"Cluster0-shard-1",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-09T14:50:33Z",
-							"increment":1
-						  },
-						  "typeName":"REPLICA_SET"
-						},
-						{
-						  "replicaSetName":"Cluster0-shard-0",
-						  "shardName":"Cluster0-shard-0",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-09T14:50:33Z",
-							"increment":2
-						  },
-						  "typeName":"REPLICA_SET"
-						},
-						{
-						  "replicaSetName":"Cluster0-config-0",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-09T14:50:33Z",
-							"increment":4
-						  },
-						  "typeName":"CONFIG_SERVER_REPLICA_SET"
-						}
-					  ],
-					  "restorable":true,
-					  "started":"2018-02-09T14:50:33Z",
-					  "timestamp":"2018-02-09T14:50:18Z"
-					}
-				  ],
-				  "totalCount":2
-				}`,
+		  "links":[
+			{
+			  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
+			  "rel":"self"
+			}
+		  ],
+		  "results":[
+			{
+			  "clusterId":"6b8cd61180eef547110159d9",
+			  "completed":"2018-02-08T23:20:25Z",
+			  "groupId":"6b8cd3c380eef5349ef77gf7",
+			  "id":"5a7cdb3980eef53de5bffdcf",
+			  "links":[
+				{
+				  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
+				  "rel":"self"
+				}
+			  ],
+			  "parts":[
+				{
+				  "replicaSetName":"Cluster0-shard-1",
+				  "shardName":"Cluster0-shard-1",
+				  "tokenDiscovered":true,
+				  "tokenTimestamp":{
+					"date":"2018-02-08T23:20:25Z",
+					"increment":1
+				  },
+				  "typeName":"REPLICA_SET"
+				},
+				{
+				  "replicaSetName":"Cluster0-shard-0",
+				  "shardName":"Cluster0-shard-0",
+				  "tokenDiscovered":true,
+				  "tokenTimestamp":{
+					"date":"2018-02-08T23:20:25Z",
+					"increment":1
+				  },
+				  "typeName":"REPLICA_SET"
+				},
+				{
+				  "replicaSetName":"Cluster0-config-0",
+				  "tokenDiscovered":true,
+				  "tokenTimestamp":{
+					"date":"2018-02-08T23:20:25Z",
+					"increment":2
+				  },
+				  "typeName":"CONFIG_SERVER_REPLICA_SET"
+				}
+			  ],
+			  "restorable":true,
+			  "started":"2018-02-08T23:20:25Z",
+			  "timestamp":"2018-02-08T23:19:37Z"
+			},
+			{
+			  "clusterId":"6b8cd61180eef547110159d9",
+			  "completed":"2018-02-09T14:50:33Z",
+			  "groupId":"6b8cd3c380eef5349ef77gf7",
+			  "id":"5a7db53987d9d64fe298ff46",
+			  "links":[
+				{
+				  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pretty=true",
+				  "rel":"self"
+				}
+			  ],
+			  "parts":[
+				{
+				  "replicaSetName":"Cluster0-shard-1",
+				  "shardName":"Cluster0-shard-1",
+				  "tokenDiscovered":true,
+				  "tokenTimestamp":{
+					"date":"2018-02-09T14:50:33Z",
+					"increment":1
+				  },
+				  "typeName":"REPLICA_SET"
+				},
+				{
+				  "replicaSetName":"Cluster0-shard-0",
+				  "shardName":"Cluster0-shard-0",
+				  "tokenDiscovered":true,
+				  "tokenTimestamp":{
+					"date":"2018-02-09T14:50:33Z",
+					"increment":2
+				  },
+				  "typeName":"REPLICA_SET"
+				},
+				{
+				  "replicaSetName":"Cluster0-config-0",
+				  "tokenDiscovered":true,
+				  "tokenTimestamp":{
+					"date":"2018-02-09T14:50:33Z",
+					"increment":4
+				  },
+				  "typeName":"CONFIG_SERVER_REPLICA_SET"
+				}
+			  ],
+			  "restorable":true,
+			  "started":"2018-02-09T14:50:33Z",
+			  "timestamp":"2018-02-09T14:50:18Z"
+			}
+		  ],
+		  "totalCount":2
+		}`,
 		)
 	})
 
-	snapshots, _, err := client.Checkpoints.List(ctx, groupID, clusterName, nil)
+	snapshots, _, err := client.Checkpoints.List(ctx, groupID, clusterID, nil)
 	if err != nil {
 		t.Fatalf("Checkpoints.List returned error: %v", err)
 	}
@@ -266,61 +266,61 @@ func TestCheckpoints_Get(t *testing.T) {
 	defer teardown()
 
 	groupID := "6b8cd3c380eef5349ef77gf7"
-	clusterName := "Cluster0"
+	clusterID := "6b8cd61180eef547110159d9"
 	checkpointID := "6b8cd61180eef547110159d9"
-	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints/%s", groupID, clusterName, checkpointID)
+	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints/%s", groupID, clusterID, checkpointID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
-					  "clusterId":"6b8cd61180eef547110159d9",
-					  "completed":"2018-02-08T23:20:25Z",
-					  "groupId":"6b8cd3c380eef5349ef77gf7",
-					  "id":"5a7cdb3980eef53de5bffdcf",
-					  "links":[
-						{
-						  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
-						  "rel":"self"
-						}
-					  ],
-					  "parts":[
-						{
-						  "replicaSetName":"Cluster0-shard-1",
-						  "shardName":"Cluster0-shard-1",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-08T23:20:25Z",
-							"increment":1
-						  },
-						  "typeName":"REPLICA_SET"
-						},
-						{
-						  "replicaSetName":"Cluster0-shard-0",
-						  "shardName":"Cluster0-shard-0",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-08T23:20:25Z",
-							"increment":1
-						  },
-						  "typeName":"REPLICA_SET"
-						},
-						{
-						  "replicaSetName":"Cluster0-config-0",
-						  "tokenDiscovered":true,
-						  "tokenTimestamp":{
-							"date":"2018-02-08T23:20:25Z",
-							"increment":2
-						  },
-						  "typeName":"CONFIG_SERVER_REPLICA_SET"
-						}
-					  ],
-					  "restorable":true,
-					  "started":"2018-02-08T23:20:25Z",
-					  "timestamp":"2018-02-08T23:19:37Z"
+		  "clusterId":"6b8cd61180eef547110159d9",
+		  "completed":"2018-02-08T23:20:25Z",
+		  "groupId":"6b8cd3c380eef5349ef77gf7",
+		  "id":"5a7cdb3980eef53de5bffdcf",
+		  "links":[
+			{
+			  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
+			  "rel":"self"
+			}
+		  ],
+		  "parts":[
+			{
+			  "replicaSetName":"Cluster0-shard-1",
+			  "shardName":"Cluster0-shard-1",
+			  "tokenDiscovered":true,
+			  "tokenTimestamp":{
+				"date":"2018-02-08T23:20:25Z",
+				"increment":1
+			  },
+			  "typeName":"REPLICA_SET"
+			},
+			{
+			  "replicaSetName":"Cluster0-shard-0",
+			  "shardName":"Cluster0-shard-0",
+			  "tokenDiscovered":true,
+			  "tokenTimestamp":{
+				"date":"2018-02-08T23:20:25Z",
+				"increment":1
+			  },
+			  "typeName":"REPLICA_SET"
+			},
+			{
+			  "replicaSetName":"Cluster0-config-0",
+			  "tokenDiscovered":true,
+			  "tokenTimestamp":{
+				"date":"2018-02-08T23:20:25Z",
+				"increment":2
+			  },
+			  "typeName":"CONFIG_SERVER_REPLICA_SET"
+			}
+		  ],
+		  "restorable":true,
+		  "started":"2018-02-08T23:20:25Z",
+		  "timestamp":"2018-02-08T23:19:37Z"
 		}`)
 	})
 
-	cloudProviderSnapshot, _, err := client.Checkpoints.Get(ctx, groupID, clusterName, checkpointID)
+	checkpoint, _, err := client.Checkpoints.Get(ctx, groupID, clusterID, checkpointID)
 	if err != nil {
 		t.Fatalf("Checkpoints.Get returned error: %v", err)
 	}
@@ -377,7 +377,7 @@ func TestCheckpoints_Get(t *testing.T) {
 		Timestamp:  "2018-02-08T23:19:37Z",
 	}
 
-	if diff := deep.Equal(cloudProviderSnapshot, expected); diff != nil {
+	if diff := deep.Equal(checkpoint, expected); diff != nil {
 		t.Error(diff)
 	}
 }
