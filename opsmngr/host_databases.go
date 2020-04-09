@@ -37,7 +37,7 @@ type HostDatabasesServiceOp struct {
 	Client atlas.RequestDoer
 }
 
-// Get gets the MongoDB dtaabses with the specified host ID and database name.
+// Get gets the MongoDB databases with the specified host ID and database name.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
 func (s *HostDatabasesServiceOp) Get(ctx context.Context, projectID, hostID, partitionName string) (*atlas.ProcessDatabase, *atlas.Response, error) {
 	basePath := fmt.Sprintf(hostsDatabasesBasePath, projectID, hostID)
