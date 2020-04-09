@@ -69,7 +69,7 @@ func TestSystemMeasurements_List(t *testing.T) {
 		)
 	})
 
-	snapshots, _, err := client.SystemMeasurements.List(ctx, projectID, hostID, nil)
+	snapshots, _, err := client.HostMeasurements.List(ctx, projectID, hostID, nil)
 	if err != nil {
 		t.Fatalf("Checkpoints.List returned error: %v", err)
 	}

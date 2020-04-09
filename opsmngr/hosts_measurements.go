@@ -23,26 +23,26 @@ import (
 )
 
 const (
-	systemMeasurements = "groups/%s/hosts/%s/measurements"
+	hostMeasurementsBasePath = "groups/%s/hosts/%s/measurements"
 )
 
-// SystemMeasurementsService is an interface for interfacing with the System Measurements
+// HostMeasurementsService is an interface for interfacing with the System Measurements
 // endpoints of the MongoDB Ops Manager API.
-type SystemMeasurementsService interface {
+type HostMeasurementsService interface {
 	List(context.Context, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error)
 }
 
-// ServiceMeasurementsServiceOp handles communication with the system measurements related methods of the
+// HostMeasurementsServiceOp handles communication with the system measurements related methods of the
 // MongoDB Ops Manager API
-type ServiceMeasurementsServiceOp struct {
+type HostMeasurementsServiceOp struct {
 	Client atlas.RequestDoer
 }
 
-var _ SystemMeasurementsService = &ServiceMeasurementsServiceOp{}
+var _ HostMeasurementsService = &HostMeasurementsServiceOp{}
 
 // List lists system and process measurements on the CPU usage of the hosts that run MongoDB.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-host-process-system-measurements/
-func (s *ServiceMeasurementsServiceOp) List(ctx context.Context, projectID, hostID string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error) {
+func (s *HostMeasurementsServiceOp) List(ctx context.Context, projectID, hostID string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("projectID", "must be set")
 	}
@@ -50,7 +50,7 @@ func (s *ServiceMeasurementsServiceOp) List(ctx context.Context, projectID, host
 		return nil, nil, atlas.NewArgError("hostID", "must be set")
 	}
 
-	basePath := fmt.Sprintf(systemMeasurements, projectID, hostID)
+	basePath := fmt.Sprintf(hostMeasurementsBasePath, projectID, hostID)
 	path, err := setQueryParams(basePath, listOptions)
 	if err != nil {
 		return nil, nil, err

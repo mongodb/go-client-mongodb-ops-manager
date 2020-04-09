@@ -62,10 +62,11 @@ type Client struct {
 	AgentAPIKeys          AgentAPIKeysService
 	Checkpoints           CheckpointsService
 	GlobalAlerts          GlobalAlertsService
-	SystemMeasurements    SystemMeasurementsService
 	Hosts                 HostsService
 	HostDisks             HostDisksService
 	HostDatabases         HostDatabasesService
+	HostMeasurements      HostMeasurementsService
+	HostDiskMeasurements  HostDiskMeasurementsService
 	Clusters              ClustersService
 
 	onRequestCompleted atlas.RequestCompletionCallback
@@ -100,10 +101,11 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Alerts = &atlas.AlertsServiceOp{Client: c}
 	c.GlobalAlerts = &GlobalAlertsServiceOp{Client: c}
 	c.Events = &atlas.EventsServiceOp{Client: c}
-	c.SystemMeasurements = &ServiceMeasurementsServiceOp{Client: c}
 	c.Hosts = &HostsServiceOp{Client: c}
 	c.HostDisks = &HostDisksServiceOp{Client: c}
 	c.HostDatabases = &HostDatabasesServiceOp{Client: c}
+	c.HostMeasurements = &HostMeasurementsServiceOp{Client: c}
+	c.HostDiskMeasurements = &HostDiskMeasurementsServiceOp{Client: c}
 	c.Clusters = &ClustersServiceOp{Client: c}
 
 	return c
