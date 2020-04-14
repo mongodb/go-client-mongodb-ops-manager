@@ -47,27 +47,28 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations         OrganizationsService
-	Projects              ProjectsService
-	AutomationConfig      AutomationConfigService
-	AutomationStatus      AutomationStatusService
-	UnauthUsers           UnauthUsersService
-	AlertConfigurations   atlas.AlertConfigurationsService
-	Alerts                atlas.AlertsService
-	ContinuousSnapshots   atlas.ContinuousSnapshotsService
-	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
-	Events                atlas.EventsService
-	AllClusters           AllClustersService
-	Agents                AgentsService
-	AgentAPIKeys          AgentAPIKeysService
-	Checkpoints           CheckpointsService
-	GlobalAlerts          GlobalAlertsService
-	Hosts                 HostsService
-	HostDisks             HostDisksService
-	HostDatabases         HostDatabasesService
-	HostMeasurements      HostMeasurementsService
-	HostDiskMeasurements  HostDiskMeasurementsService
-	Clusters              ClustersService
+	Organizations            OrganizationsService
+	Projects                 ProjectsService
+	AutomationConfig         AutomationConfigService
+	AutomationStatus         AutomationStatusService
+	UnauthUsers              UnauthUsersService
+	AlertConfigurations      atlas.AlertConfigurationsService
+	Alerts                   atlas.AlertsService
+	ContinuousSnapshots      atlas.ContinuousSnapshotsService
+	ContinuousRestoreJobs    atlas.ContinuousRestoreJobsService
+	Events                   atlas.EventsService
+	AllClusters              AllClustersService
+	Agents                   AgentsService
+	AgentAPIKeys             AgentAPIKeysService
+	Checkpoints              CheckpointsService
+	GlobalAlerts             GlobalAlertsService
+	Hosts                    HostsService
+	HostDisks                HostDisksService
+	HostDatabases            HostDatabasesService
+	HostDatabaseMeasurements HostDatabaseMeasurementsService
+	HostMeasurements         HostMeasurementsService
+	HostDiskMeasurements     HostDiskMeasurementsService
+	Clusters                 ClustersService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -104,6 +105,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Hosts = &HostsServiceOp{Client: c}
 	c.HostDisks = &HostDisksServiceOp{Client: c}
 	c.HostDatabases = &HostDatabasesServiceOp{Client: c}
+	c.HostDatabaseMeasurements = &HostDatabaseMeasurementsServiceOp{Client: c}
 	c.HostMeasurements = &HostMeasurementsServiceOp{Client: c}
 	c.HostDiskMeasurements = &HostDiskMeasurementsServiceOp{Client: c}
 	c.Clusters = &ClustersServiceOp{Client: c}
