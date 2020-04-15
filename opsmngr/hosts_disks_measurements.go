@@ -31,7 +31,7 @@ type HostDiskMeasurementsService interface {
 	List(context.Context, string, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDiskMeasurements, *atlas.Response, error)
 }
 
-// HostDiskMeasurementsServiceOp handles communication with the process disk measurements related methods of the
+// HostDiskMeasurementsServiceOp handles communication with the host disk measurements related methods of the
 // MongoDB API
 type HostDiskMeasurementsServiceOp struct {
 	Client atlas.RequestDoer
