@@ -79,7 +79,7 @@ type AutomationConfig struct {
 	BackupVersions     []*map[string]interface{} `json:"backupVersions,omitempty"`
 	Balancer           *map[string]interface{}   `json:"balancer,omitempty"`
 	CPSModules         []*map[string]interface{} `json:"cpsModules,omitempty"`
-	IndexConfigs       []*map[string]interface{} `json:"indexConfigs,omitempty"`
+	IndexConfigs       []*IndexConfigs           `json:"indexConfigs,omitempty"`
 	Kerberos           *map[string]interface{}   `json:"kerberos,omitempty"`
 	LDAP               *map[string]interface{}   `json:"ldap,omitempty"`
 	MongoDBVersions    []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
@@ -94,6 +94,16 @@ type AutomationConfig struct {
 	SSL                *SSL                      `json:"ssl,omitempty"`
 	UIBaseURL          string                    `json:"uiBaseUrl,omitempty"`
 	Version            int                       `json:"version,omitempty"`
+}
+
+// IndexConfiguration represents a new index requests for a given database and collection.
+type IndexConfigs struct {
+	DBName         string                  `json:"dbName"`             // Database that is indexed
+	CollectionName string                  `json:"collectionName"`     // Collection that is indexed
+	RSName         string                  `json:"rsName"`             // The replica set that the index is built on
+	Key            [][]string              `json:"key"`                // Keys array of keys to index and their type, sorting of keys is important for an index
+	Options        *atlas.IndexOptions     `json:"options,omitempty"`  // Options MongoDB index options
+	Collation      *atlas.CollationOptions `json:"collation,omitempty"`// Collation Mongo collation index options
 }
 
 // SSL config properties
