@@ -176,7 +176,7 @@ func TestAddIndexConfig(t *testing.T) {
 	u := indexConfig()
 	AddIndexConfig(config, u)
 	if len(config.IndexConfigs) != 2 {
-		t.Error("User not added\n")
+		t.Error("index not added\n")
 	}
 }
 
