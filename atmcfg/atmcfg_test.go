@@ -178,6 +178,11 @@ func TestAddIndexConfig(t *testing.T) {
 	if len(config.IndexConfigs) != 2 {
 		t.Error("index not added\n")
 	}
+
+	AddIndexConfig(config, nil)
+	if len(config.IndexConfigs) != 3 {
+		t.Error("index not added\n")
+	}
 }
 
 func TestRemoveUser(t *testing.T) {
