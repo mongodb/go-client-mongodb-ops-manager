@@ -55,6 +55,12 @@ func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 	out.Auth.Users = append(out.Auth.Users, u)
 }
 
+
+// AddIndexConfig adds an IndexConfig to the authentication config
+func AddIndexConfig(out *opsmngr.AutomationConfig, u *opsmngr.IndexConfigs) {
+	out.IndexConfigs = append(out.IndexConfigs, u)
+}
+
 // RemoveUser removes a MongoDBUser from the authentication config
 func RemoveUser(out *opsmngr.AutomationConfig, username string, database string) error {
 	pos, found := search.MongoDBUsers(out.Auth.Users, func(p *opsmngr.MongoDBUser) bool {

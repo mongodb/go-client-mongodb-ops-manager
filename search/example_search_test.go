@@ -173,6 +173,18 @@ var fixture = &opsmngr.AutomationConfig{
 			},
 		},
 	},
+	IndexConfigs: []*opsmngr.IndexConfigs{
+		{
+			DBName:         "test",
+			CollectionName: "test",
+			RSName:         "myReplicaSet_1",
+			Key: [][]string{
+				{"test", "1"},
+			},
+			Options:   nil,
+			Collation: nil,
+		},
+	},
 	Version:   1,
 	UIBaseURL: "",
 }

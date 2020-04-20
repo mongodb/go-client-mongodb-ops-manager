@@ -69,3 +69,16 @@ func MongoDBUsers(a []*opsmngr.MongoDBUser, f func(*opsmngr.MongoDBUser) bool) (
 	}
 	return len(a), false
 }
+
+// MongoDBIndexes return the smallest index i
+// in [0, n) at which f(i) is true, assuming that on the range [0, n),
+// f(i) == true implies f(i+1) == true.
+// returns the first true index. If there is no such index, MongoDBUsers returns n and false
+func MongoDBIndexes(a []*opsmngr.IndexConfigs, f func(configs *opsmngr.IndexConfigs) bool) (int, bool) {
+	for i, m := range a {
+		if f(m) {
+			return i, true
+		}
+	}
+	return len(a), false
+}

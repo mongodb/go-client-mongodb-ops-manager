@@ -84,6 +84,27 @@ func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
 	}
 }
 
+
+func automationConfigWithIndexConfig() *opsmngr.AutomationConfig {
+	return &opsmngr.AutomationConfig{
+		Auth: opsmngr.Auth{
+			AutoAuthMechanism: "MONGODB-CR",
+			Disabled:          true,
+			AuthoritativeSet:  false,
+			Users:             make([]*opsmngr.MongoDBUser, 0),
+		},
+		IndexConfigs: []*opsmngr.IndexConfigs{
+			{
+				DBName:         "test",
+				CollectionName: "test",
+				RSName:         "myReplicaSet",
+				Key:            nil,
+				Options:        nil,
+				Collation:      nil,
+			}},
+	}
+}
+
 func automationConfigWithMongoDBUsers() *opsmngr.AutomationConfig {
 	return &opsmngr.AutomationConfig{
 		Auth: opsmngr.Auth{
@@ -108,6 +129,17 @@ func mongoDBUsers() *opsmngr.MongoDBUser {
 		},
 		Username: "test",
 		Database: "test",
+	}
+}
+
+func indexConfig() *opsmngr.IndexConfigs{
+	return &opsmngr.IndexConfigs{
+		DBName:         "test",
+		CollectionName: "test",
+		RSName:         "myReplicaSet_1",
+		Key:            nil,
+		Options:        nil,
+		Collation:      nil,
 	}
 }
 
@@ -136,6 +168,15 @@ func TestAddUser(t *testing.T) {
 	u := mongoDBUsers()
 	AddUser(config, u)
 	if len(config.Auth.Users) != 1 {
+		t.Error("User not added\n")
+	}
+}
+
+func TestAddIndexConfig(t *testing.T) {
+	config := automationConfigWithIndexConfig()
+	u := indexConfig()
+	AddIndexConfig(config, u)
+	if len(config.IndexConfigs) != 2 {
 		t.Error("User not added\n")
 	}
 }
