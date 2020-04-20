@@ -84,7 +84,6 @@ func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
 	}
 }
 
-
 func automationConfigWithIndexConfig() *opsmngr.AutomationConfig {
 	return &opsmngr.AutomationConfig{
 		Auth: opsmngr.Auth{
@@ -132,7 +131,7 @@ func mongoDBUsers() *opsmngr.MongoDBUser {
 	}
 }
 
-func indexConfig() *opsmngr.IndexConfigs{
+func indexConfig() *opsmngr.IndexConfigs {
 	return &opsmngr.IndexConfigs{
 		DBName:         "test",
 		CollectionName: "test",

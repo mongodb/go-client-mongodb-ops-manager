@@ -55,7 +55,6 @@ func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 	out.Auth.Users = append(out.Auth.Users, u)
 }
 
-
 // AddIndexConfig adds an IndexConfig to the authentication config
 func AddIndexConfig(out *opsmngr.AutomationConfig, u *opsmngr.IndexConfigs) {
 	out.IndexConfigs = append(out.IndexConfigs, u)
