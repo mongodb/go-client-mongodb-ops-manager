@@ -174,7 +174,7 @@ func TestAddIndexConfig(t *testing.T) {
 	t.Run("AutomationConfig not initialized", func(t *testing.T) {
 		err := AddIndexConfig(nil, newIndex)
 		if err == nil {
-			t.Error("AddIndexConfig should return an exception")
+			t.Error("AddIndexConfig should return an error")
 		}
 	})
 
@@ -239,12 +239,8 @@ func TestAddIndexConfig(t *testing.T) {
 		}
 		err := AddIndexConfig(config, index)
 
-		if err != nil {
-			t.Fatalf("AutomationConfig() returned an unexpected error: %v", err)
-		}
-
-		if len(config.IndexConfigs) != 1 {
-			t.Error("the same indexConfig has been added to the AutomationConfig")
+		if err == nil {
+			t.Fatalf("AddIndexConfig should return an error")
 		}
 	})
 

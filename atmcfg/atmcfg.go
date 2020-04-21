@@ -62,9 +62,11 @@ func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig
 		return errors.New("the Automation Config has not been initialized")
 	}
 	_, exists := search.MongoDBIndexes(out.IndexConfigs, compareIndexConfig(newIndex))
-	if !exists {
-		out.IndexConfigs = append(out.IndexConfigs, newIndex)
+
+	if exists {
+		return errors.New("index already exists")
 	}
+	out.IndexConfigs = append(out.IndexConfigs, newIndex)
 
 	return nil
 }
