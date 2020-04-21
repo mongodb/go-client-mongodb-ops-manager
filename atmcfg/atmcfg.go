@@ -15,6 +15,7 @@
 package atmcfg
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
@@ -56,8 +57,29 @@ func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 }
 
 // AddIndexConfig adds an IndexConfig to the authentication config
-func AddIndexConfig(out *opsmngr.AutomationConfig, u *opsmngr.IndexConfigs) {
-	out.IndexConfigs = append(out.IndexConfigs, u)
+func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfigs) error {
+	if out == nil {
+		return errors.New("the Automation Config has not been initialized")
+	}
+	_, exists := search.MongoDBIndexes(out.IndexConfigs, func(index *opsmngr.IndexConfigs) bool {
+		if index.RSName == newIndex.RSName && index.CollectionName == newIndex.CollectionName && index.DBName == newIndex.DBName && len(index.Key) == len(newIndex.Key) {
+			// if keys are the equal the two indexes are considered to be the same
+			for i := 0; i < len(index.Key); i++ {
+				if index.Key[i][0] != newIndex.Key[i][0] || index.Key[i][1] != newIndex.Key[i][1] {
+					return false
+				}
+			}
+
+			return true
+		}
+
+		return false
+	})
+	if !exists {
+		out.IndexConfigs = append(out.IndexConfigs, newIndex)
+	}
+
+	return nil
 }
 
 // RemoveUser removes a MongoDBUser from the authentication config

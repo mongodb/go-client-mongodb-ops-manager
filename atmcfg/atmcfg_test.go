@@ -131,17 +131,6 @@ func mongoDBUsers() *opsmngr.MongoDBUser {
 	}
 }
 
-func indexConfig() *opsmngr.IndexConfigs {
-	return &opsmngr.IndexConfigs{
-		DBName:         "test",
-		CollectionName: "test",
-		RSName:         "myReplicaSet_1",
-		Key:            nil,
-		Options:        nil,
-		Collation:      nil,
-	}
-}
-
 func TestShutdown(t *testing.T) {
 	name := "cluster_1"
 	config := automationConfigWithOneReplicaSet(name, false)
@@ -173,16 +162,42 @@ func TestAddUser(t *testing.T) {
 
 func TestAddIndexConfig(t *testing.T) {
 	config := automationConfigWithIndexConfig()
-	u := indexConfig()
-	AddIndexConfig(config, u)
-	if len(config.IndexConfigs) != 2 {
-		t.Error("index not added\n")
+	index := &opsmngr.IndexConfigs{
+		DBName:         "test1",
+		CollectionName: "test2",
+		RSName:         "test2",
+		Key: [][]string{
+			{
+				"test", "test",
+			},
+		},
+		Options:   nil,
+		Collation: nil,
 	}
 
-	AddIndexConfig(config, nil)
-	if len(config.IndexConfigs) != 3 {
-		t.Error("index not added\n")
-	}
+	var err error
+
+	t.Run("AutomationConfig not initialized", func(t *testing.T) {
+		err = AddIndexConfig(nil, index)
+		if err == nil {
+			t.Error("AddIndexConfig did not throw an exception")
+		}
+	})
+
+	t.Run("add an index", func(t *testing.T) {
+		err = AddIndexConfig(config, index)
+		if err != nil || len(config.IndexConfigs) != 2 {
+			t.Error("indexConfig has not been added to the AutomationConfig")
+		}
+	})
+
+	t.Run("trying to add the same index in the AutomationConfig", func(t *testing.T) {
+		err = AddIndexConfig(config, index)
+		if err != nil || len(config.IndexConfigs) != 2 {
+			t.Error("the same indexConfig has been added to the AutomationConfig")
+		}
+	})
+
 }
 
 func TestRemoveUser(t *testing.T) {

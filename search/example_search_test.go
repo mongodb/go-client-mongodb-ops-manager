@@ -244,3 +244,20 @@ func ExampleMongoDBUsers() {
 	// Output:
 	// found test at index 0
 }
+
+// This example demonstrates searching an index by RSName.
+func ExampleMongoDBIndexes() {
+	a := fixture
+	x := "myReplicaSet_1"
+	i, found := search.MongoDBIndexes(a.IndexConfigs, func(r *opsmngr.IndexConfigs) bool {
+		return r.RSName == x
+	})
+
+	if i < len(a.IndexConfigs) && found {
+		fmt.Printf("found %v at index %d\n", x, i)
+	} else {
+		fmt.Printf("%s not found\n", x)
+	}
+	// Output:
+	// found myReplicaSet_1 at index 0
+}
