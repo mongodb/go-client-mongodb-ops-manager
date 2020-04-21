@@ -160,12 +160,12 @@ func TestAddUser(t *testing.T) {
 
 func TestAddIndexConfig(t *testing.T) {
 	newIndex := &opsmngr.IndexConfig{
-		DBName:         "test1",
-		CollectionName: "test2",
-		RSName:         "test2",
+		DBName:         "test",
+		CollectionName: "test",
+		RSName:         "myReplicaSet",
 		Key: [][]string{
 			{
-				"test", "test",
+				"test1", "test",
 			},
 		},
 		Options:   nil,
@@ -189,7 +189,30 @@ func TestAddIndexConfig(t *testing.T) {
 		}
 	})
 
-	t.Run("add an index", func(t *testing.T) {
+	t.Run("add an index with different keys", func(t *testing.T) {
+		config := automationConfigWithIndexConfig()
+		err := AddIndexConfig(config, newIndex)
+		if err != nil {
+			t.Fatalf("AutomationConfig() returned an unexpected error: %v", err)
+		}
+		if len(config.IndexConfigs) != 2 {
+			t.Error("indexConfig has not been added to the AutomationConfig")
+		}
+	})
+
+	t.Run("add an index with different rsName", func(t *testing.T) {
+		newIndex := &opsmngr.IndexConfig{
+			DBName:         "test",
+			CollectionName: "test",
+			RSName:         "myReplicaSet_1",
+			Key: [][]string{
+				{
+					"test1", "test",
+				},
+			},
+			Options:   nil,
+			Collation: nil,
+		}
 		config := automationConfigWithIndexConfig()
 		err := AddIndexConfig(config, newIndex)
 		if err != nil {
