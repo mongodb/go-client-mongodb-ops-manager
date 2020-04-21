@@ -27,6 +27,7 @@ import (
 	"net/url"
 	"reflect"
 	"runtime"
+	"strings"
 
 	"github.com/google/go-querystring/query"
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
@@ -34,9 +35,9 @@ import (
 
 const (
 	Version          = "0.1" // Version for client
-	CloudURL         = "https://cloud.mongodb.com"
+	CloudURL         = "https://cloud.mongodb.com/"
 	DefaultBaseURL   = CloudURL + APIPublicV1Path                                                             // DefaultBaseURL API default base URL for cloud manager
-	APIPublicV1Path  = "/api/public/v1.0/"                                                                    // DefaultAPIPath default root path for all API endpoints
+	APIPublicV1Path  = "api/public/v1.0/"                                                                     // DefaultAPIPath default root path for all API endpoints
 	DefaultUserAgent = "go-client-ops-manager/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")" // DefaultUserAgent To be submitted by the client
 	mediaType        = "application/json"
 )
@@ -194,6 +195,9 @@ func OptionCAValidate(ca string) ClientOpt {
 // BaseURL of the Client. Relative URLS should always be specified without a preceding slash. If specified, the
 // value pointed to by body is JSON encoded and included in as the request body.
 func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body interface{}) (*http.Request, error) {
+	if !strings.HasSuffix(c.BaseURL.Path, "/") {
+		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
+	}
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
 		return nil, err
