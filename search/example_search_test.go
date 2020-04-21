@@ -173,7 +173,7 @@ var fixture = &opsmngr.AutomationConfig{
 			},
 		},
 	},
-	IndexConfigs: []*opsmngr.IndexConfigs{
+	IndexConfigs: []*opsmngr.IndexConfig{
 		{
 			DBName:         "test",
 			CollectionName: "test",
@@ -249,7 +249,7 @@ func ExampleMongoDBUsers() {
 func ExampleMongoDBIndexes() {
 	a := fixture
 	x := "myReplicaSet_1"
-	i, found := search.MongoDBIndexes(a.IndexConfigs, func(r *opsmngr.IndexConfigs) bool {
+	i, found := search.MongoDBIndexes(a.IndexConfigs, func(r *opsmngr.IndexConfig) bool {
 		return r.RSName == x
 	})
 

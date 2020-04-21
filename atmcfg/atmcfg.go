@@ -57,7 +57,7 @@ func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 }
 
 // AddIndexConfig adds an IndexConfig to the authentication config
-func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfigs) error {
+func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig) error {
 	if out == nil {
 		return errors.New("the Automation Config has not been initialized")
 	}
@@ -70,8 +70,8 @@ func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig
 }
 
 // compareIndexConfig returns a function that compares two indexConfig struts
-func compareIndexConfig(newIndex *opsmngr.IndexConfigs) func(index *opsmngr.IndexConfigs) bool {
-	return func(index *opsmngr.IndexConfigs) bool {
+func compareIndexConfig(newIndex *opsmngr.IndexConfig) func(index *opsmngr.IndexConfig) bool {
+	return func(index *opsmngr.IndexConfig) bool {
 		if newIndex.RSName == index.RSName && newIndex.CollectionName == index.CollectionName && newIndex.DBName == index.DBName && len(newIndex.Key) == len(index.Key) {
 			// if keys are equal the two indexes are considered to be the same
 			for i := 0; i < len(newIndex.Key); i++ {

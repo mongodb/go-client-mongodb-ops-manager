@@ -86,7 +86,7 @@ func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
 
 func automationConfigWithIndexConfig() *opsmngr.AutomationConfig {
 	return &opsmngr.AutomationConfig{
-		IndexConfigs: []*opsmngr.IndexConfigs{
+		IndexConfigs: []*opsmngr.IndexConfig{
 			{
 				DBName:         "test",
 				CollectionName: "test",
@@ -159,7 +159,7 @@ func TestAddUser(t *testing.T) {
 }
 
 func TestAddIndexConfig(t *testing.T) {
-	newIndex := &opsmngr.IndexConfigs{
+	newIndex := &opsmngr.IndexConfig{
 		DBName:         "test1",
 		CollectionName: "test2",
 		RSName:         "test2",
@@ -178,7 +178,7 @@ func TestAddIndexConfig(t *testing.T) {
 		}
 	})
 
-	t.Run("empty IndexConfigs", func(t *testing.T) {
+	t.Run("empty IndexConfig", func(t *testing.T) {
 		a := &opsmngr.AutomationConfig{}
 		err := AddIndexConfig(a, newIndex)
 		if err != nil {
@@ -202,7 +202,7 @@ func TestAddIndexConfig(t *testing.T) {
 
 	t.Run("trying to add an index that is already in the AutomationConfig", func(t *testing.T) {
 		config := automationConfigWithIndexConfig()
-		index := &opsmngr.IndexConfigs{
+		index := &opsmngr.IndexConfig{
 			DBName:         "test",
 			CollectionName: "test",
 			RSName:         "myReplicaSet",

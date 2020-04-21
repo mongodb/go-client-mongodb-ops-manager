@@ -79,7 +79,7 @@ type AutomationConfig struct {
 	BackupVersions     []*map[string]interface{} `json:"backupVersions,omitempty"`
 	Balancer           *map[string]interface{}   `json:"balancer,omitempty"`
 	CPSModules         []*map[string]interface{} `json:"cpsModules,omitempty"`
-	IndexConfigs       []*IndexConfigs           `json:"indexConfigs,omitempty"`
+	IndexConfigs       []*IndexConfig            `json:"indexConfigs,omitempty"`
 	Kerberos           *map[string]interface{}   `json:"kerberos,omitempty"`
 	LDAP               *map[string]interface{}   `json:"ldap,omitempty"`
 	MongoDBVersions    []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
@@ -96,8 +96,8 @@ type AutomationConfig struct {
 	Version            int                       `json:"version,omitempty"`
 }
 
-// IndexConfiguration represents a new index requests for a given database and collection.
-type IndexConfigs struct {
+// IndexConfig represents a new index requests for a given database and collection.
+type IndexConfig struct {
 	DBName         string                  `json:"dbName"`              // Database that is indexed
 	CollectionName string                  `json:"collectionName"`      // Collection that is indexed
 	RSName         string                  `json:"rsName"`              // The replica set that the index is built on
