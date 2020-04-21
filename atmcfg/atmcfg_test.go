@@ -86,20 +86,18 @@ func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
 
 func automationConfigWithIndexConfig() *opsmngr.AutomationConfig {
 	return &opsmngr.AutomationConfig{
-		Auth: opsmngr.Auth{
-			AutoAuthMechanism: "MONGODB-CR",
-			Disabled:          true,
-			AuthoritativeSet:  false,
-			Users:             make([]*opsmngr.MongoDBUser, 0),
-		},
 		IndexConfigs: []*opsmngr.IndexConfigs{
 			{
 				DBName:         "test",
 				CollectionName: "test",
 				RSName:         "myReplicaSet",
-				Key:            nil,
-				Options:        nil,
-				Collation:      nil,
+				Key: [][]string{
+					{
+						"test", "test",
+					},
+				},
+				Options:   nil,
+				Collation: nil,
 			}},
 	}
 }
@@ -161,8 +159,7 @@ func TestAddUser(t *testing.T) {
 }
 
 func TestAddIndexConfig(t *testing.T) {
-	config := automationConfigWithIndexConfig()
-	index := &opsmngr.IndexConfigs{
+	newIndex := &opsmngr.IndexConfigs{
 		DBName:         "test1",
 		CollectionName: "test2",
 		RSName:         "test2",
@@ -174,26 +171,56 @@ func TestAddIndexConfig(t *testing.T) {
 		Options:   nil,
 		Collation: nil,
 	}
-
-	var err error
-
 	t.Run("AutomationConfig not initialized", func(t *testing.T) {
-		err = AddIndexConfig(nil, index)
+		err := AddIndexConfig(nil, newIndex)
 		if err == nil {
-			t.Error("AddIndexConfig did not throw an exception")
+			t.Error("AddIndexConfig should return an exception")
 		}
 	})
 
-	t.Run("add an index", func(t *testing.T) {
-		err = AddIndexConfig(config, index)
-		if err != nil || len(config.IndexConfigs) != 2 {
+	t.Run("empty IndexConfigs", func(t *testing.T) {
+		a := &opsmngr.AutomationConfig{}
+		err := AddIndexConfig(a, newIndex)
+		if err != nil {
+			t.Fatalf("AddIndexConfig unexpected error: %v", err)
+		}
+		if len(a.IndexConfigs) != 1 {
 			t.Error("indexConfig has not been added to the AutomationConfig")
 		}
 	})
 
-	t.Run("trying to add the same index in the AutomationConfig", func(t *testing.T) {
-		err = AddIndexConfig(config, index)
-		if err != nil || len(config.IndexConfigs) != 2 {
+	t.Run("add an index", func(t *testing.T) {
+		config := automationConfigWithIndexConfig()
+		err := AddIndexConfig(config, newIndex)
+		if err != nil {
+			t.Fatalf("AutomationConfig() returned an unexpected error: %v", err)
+		}
+		if len(config.IndexConfigs) != 2 {
+			t.Error("indexConfig has not been added to the AutomationConfig")
+		}
+	})
+
+	t.Run("trying to add an index that is already in the AutomationConfig", func(t *testing.T) {
+		config := automationConfigWithIndexConfig()
+		index := &opsmngr.IndexConfigs{
+			DBName:         "test",
+			CollectionName: "test",
+			RSName:         "myReplicaSet",
+			Key: [][]string{
+				{
+					"test", "test",
+				},
+			},
+			Options:   nil,
+			Collation: nil,
+		}
+		err := AddIndexConfig(config, index)
+
+		if err != nil {
+			t.Fatalf("AutomationConfig() returned an unexpected error: %v", err)
+		}
+
+		if len(config.IndexConfigs) != 1 {
 			t.Error("the same indexConfig has been added to the AutomationConfig")
 		}
 	})

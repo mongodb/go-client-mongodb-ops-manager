@@ -61,25 +61,30 @@ func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig
 	if out == nil {
 		return errors.New("the Automation Config has not been initialized")
 	}
-	_, exists := search.MongoDBIndexes(out.IndexConfigs, func(index *opsmngr.IndexConfigs) bool {
-		if index.RSName == newIndex.RSName && index.CollectionName == newIndex.CollectionName && index.DBName == newIndex.DBName && len(index.Key) == len(newIndex.Key) {
-			// if keys are the equal the two indexes are considered to be the same
-			for i := 0; i < len(index.Key); i++ {
-				if index.Key[i][0] != newIndex.Key[i][0] || index.Key[i][1] != newIndex.Key[i][1] {
+	_, exists := search.MongoDBIndexes(out.IndexConfigs, compareIndexConfig(newIndex))
+	if !exists {
+		out.IndexConfigs = append(out.IndexConfigs, newIndex)
+	}
+
+	return nil
+}
+
+// compareIndexConfig returns a function that compares two indexConfig struts
+func compareIndexConfig(newIndex *opsmngr.IndexConfigs) func(index *opsmngr.IndexConfigs) bool {
+	return func(index *opsmngr.IndexConfigs) bool {
+		if newIndex.RSName == index.RSName && newIndex.CollectionName == index.CollectionName && newIndex.DBName == index.DBName && len(newIndex.Key) == len(index.Key) {
+			// if keys are equal the two indexes are considered to be the same
+			for i := 0; i < len(newIndex.Key); i++ {
+				if newIndex.Key[i][0] != index.Key[i][0] || newIndex.Key[i][1] != index.Key[i][1] {
 					return false
 				}
 			}
 
 			return true
 		}
-
 		return false
-	})
-	if !exists {
-		out.IndexConfigs = append(out.IndexConfigs, newIndex)
 	}
 
-	return nil
 }
 
 // RemoveUser removes a MongoDBUser from the authentication config
