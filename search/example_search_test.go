@@ -173,6 +173,18 @@ var fixture = &opsmngr.AutomationConfig{
 			},
 		},
 	},
+	IndexConfigs: []*opsmngr.IndexConfig{
+		{
+			DBName:         "test",
+			CollectionName: "test",
+			RSName:         "myReplicaSet_1",
+			Key: [][]string{
+				{"test", "1"},
+			},
+			Options:   nil,
+			Collation: nil,
+		},
+	},
 	Version:   1,
 	UIBaseURL: "",
 }
@@ -231,4 +243,21 @@ func ExampleMongoDBUsers() {
 	}
 	// Output:
 	// found test at index 0
+}
+
+// This example demonstrates searching an index by RSName.
+func ExampleMongoDBIndexes() {
+	a := fixture
+	x := "myReplicaSet_1"
+	i, found := search.MongoDBIndexes(a.IndexConfigs, func(r *opsmngr.IndexConfig) bool {
+		return r.RSName == x
+	})
+
+	if i < len(a.IndexConfigs) && found {
+		fmt.Printf("found %v at index %d\n", x, i)
+	} else {
+		fmt.Printf("%s not found\n", x)
+	}
+	// Output:
+	// found myReplicaSet_1 at index 0
 }

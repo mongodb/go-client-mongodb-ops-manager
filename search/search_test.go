@@ -104,3 +104,24 @@ func TestMongoDBUsers(t *testing.T) {
 		}
 	})
 }
+
+func TestMongoDBIndexes(t *testing.T) {
+	indexConfigs := fixture.IndexConfigs
+	t.Run("value exists", func(t *testing.T) {
+		_, e := search.MongoDBIndexes(indexConfigs, func(p *opsmngr.IndexConfig) bool {
+			return p.RSName == "myReplicaSet_1"
+		})
+		if !e {
+			t.Error("MongoDBIndexes() should find the value")
+		}
+	})
+
+	t.Run("value does not exists", func(t *testing.T) {
+		i, e := search.MongoDBIndexes(indexConfigs, func(p *opsmngr.IndexConfig) bool {
+			return p.RSName == "myReplicaSet_4"
+		})
+		if e {
+			t.Errorf("MongoDBIndexes() found at: %d", i)
+		}
+	})
+}

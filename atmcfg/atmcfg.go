@@ -15,6 +15,7 @@
 package atmcfg
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
@@ -53,6 +54,39 @@ func Startup(out *opsmngr.AutomationConfig, name string) {
 // AddUser adds a MongoDBUser to the authentication config
 func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 	out.Auth.Users = append(out.Auth.Users, u)
+}
+
+// AddIndexConfig adds an IndexConfig to the authentication config
+func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig) error {
+	if out == nil {
+		return errors.New("the Automation Config has not been initialized")
+	}
+	_, exists := search.MongoDBIndexes(out.IndexConfigs, compareIndexConfig(newIndex))
+
+	if exists {
+		return errors.New("index already exists")
+	}
+	out.IndexConfigs = append(out.IndexConfigs, newIndex)
+
+	return nil
+}
+
+// compareIndexConfig returns a function that compares two indexConfig struts
+func compareIndexConfig(newIndex *opsmngr.IndexConfig) func(index *opsmngr.IndexConfig) bool {
+	return func(index *opsmngr.IndexConfig) bool {
+		if newIndex.RSName == index.RSName && newIndex.CollectionName == index.CollectionName && newIndex.DBName == index.DBName && len(newIndex.Key) == len(index.Key) {
+			// if keys are equal the two indexes are considered to be the same
+			for i := 0; i < len(newIndex.Key); i++ {
+				if newIndex.Key[i][0] != index.Key[i][0] || newIndex.Key[i][1] != index.Key[i][1] {
+					return false
+				}
+			}
+
+			return true
+		}
+		return false
+	}
+
 }
 
 // RemoveUser removes a MongoDBUser from the authentication config
