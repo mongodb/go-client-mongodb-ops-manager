@@ -23,7 +23,7 @@ import (
 )
 
 func TestAgentAPIKeys_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 	projectID := "5e66185d917b220fbd8bb4d1"
@@ -97,8 +97,7 @@ func TestAgentAPIKeys_List(t *testing.T) {
 }
 
 func TestAgentAPIKeys_Create(t *testing.T) {
-	setup()
-
+	client, mux, _, teardown := setup()
 	defer teardown()
 	projectID := "5e66185d917b220fbd8bb4d1"
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, r *http.Request) {
@@ -138,7 +137,7 @@ func TestAgentAPIKeys_Create(t *testing.T) {
 	}
 }
 func TestAgentAPIKeys_Delete(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 	projectID := "5e66185d917b220fbd8bb4d1"

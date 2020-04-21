@@ -24,7 +24,7 @@ import (
 )
 
 func TestAgents_ListLinks(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 	projectID := "5e66185d917b220fbd8bb4d1"
@@ -95,7 +95,7 @@ func TestAgents_ListLinks(t *testing.T) {
 }
 
 func TestAgents_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 	projectID := "5e66185d917b220fbd8bb4d1"

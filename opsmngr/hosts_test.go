@@ -24,7 +24,7 @@ import (
 )
 
 func TestHost_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 
@@ -131,7 +131,7 @@ func TestHost_List(t *testing.T) {
 }
 
 func TestHost_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 
@@ -227,7 +227,7 @@ func TestHost_Get(t *testing.T) {
 }
 
 func TestHost_GetByHostName(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 
@@ -324,7 +324,7 @@ func TestHost_GetByHostName(t *testing.T) {
 }
 
 func TestHost_Monitoring(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 
@@ -398,7 +398,7 @@ func TestHost_Monitoring(t *testing.T) {
 }
 
 func TestHost_UpdateMonitoring(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 
@@ -473,7 +473,7 @@ func TestHost_UpdateMonitoring(t *testing.T) {
 }
 
 func TestHost_StopMonitoring(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 

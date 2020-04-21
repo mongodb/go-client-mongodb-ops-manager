@@ -173,7 +173,7 @@ const jsonBlob = `{
 }`
 
 func TestAutomationConfig_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"
@@ -335,7 +335,7 @@ func TestAutomationConfig_Get(t *testing.T) {
 }
 
 func TestAutomationConfig_Update(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"

@@ -24,7 +24,7 @@ import (
 )
 
 func TestGlobalAlerts_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 
@@ -102,7 +102,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 }
 
 func TestGlobalAlerts_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 
@@ -160,7 +160,7 @@ func TestGlobalAlerts_Get(t *testing.T) {
 	}
 }
 func TestGlobalAlerts_Acknowledge(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 
 	defer teardown()
 

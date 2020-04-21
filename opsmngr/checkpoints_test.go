@@ -25,7 +25,7 @@ import (
 )
 
 func TestCheckpoints_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	groupID := "6b8cd3c380eef5349ef77gf7"
@@ -262,7 +262,7 @@ func TestCheckpoints_List(t *testing.T) {
 }
 
 func TestCheckpoints_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	groupID := "6b8cd3c380eef5349ef77gf7"

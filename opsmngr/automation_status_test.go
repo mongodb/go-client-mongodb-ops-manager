@@ -47,7 +47,7 @@ const statusBlob = `{
 }`
 
 func TestAutomationStatus_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"

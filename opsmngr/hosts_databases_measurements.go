@@ -22,7 +22,7 @@ import (
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
-const hostDatabaseMeasurementsPath = "/groups/%s/hosts/%s/databases/%s/measurements"
+const hostDatabaseMeasurementsPath = "groups/%s/hosts/%s/databases/%s/measurements"
 
 // HostDatabaseMeasurementsService is an interface for interfacing with the host database measurements
 // endpoints of the MongoDB API.

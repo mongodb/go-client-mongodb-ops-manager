@@ -25,7 +25,7 @@ import (
 )
 
 func TestClusters_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	groupID := "6b8cd3c380eef5349ef77gf7"
@@ -74,7 +74,7 @@ func TestClusters_List(t *testing.T) {
 }
 
 func TestClusters_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	groupID := "6b8cd3c380eef5349ef77gf7"

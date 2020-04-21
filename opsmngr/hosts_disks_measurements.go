@@ -22,7 +22,7 @@ import (
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
-const hostDiskMeasurementsPath = "/groups/%s/hosts/%s/disks/%s/measurements"
+const hostDiskMeasurementsPath = "groups/%s/hosts/%s/disks/%s/measurements"
 
 // HostDiskMeasurementsService is an interface for interfacing with the host disk measurements
 // endpoints of the MongoDB API.

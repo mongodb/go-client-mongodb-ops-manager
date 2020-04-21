@@ -25,7 +25,7 @@ import (
 )
 
 func TestSystemMeasurements_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 
 	projectID := "6b8cd3c380eef5349ef77gf7"

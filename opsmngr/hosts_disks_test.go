@@ -24,7 +24,7 @@ import (
 )
 
 func TestHostDisksService_Get(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/groups/12345678/hosts/1/disks/xvdb", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -60,7 +60,7 @@ func TestHostDisksService_Get(t *testing.T) {
 }
 
 func TestHostDisksService_List(t *testing.T) {
-	setup()
+	client, mux, _, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/groups/12345678/hosts/1/disks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
