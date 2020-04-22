@@ -19,9 +19,8 @@ import (
 	"net/http"
 	"testing"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
-
 	"github.com/go-test/deep"
+	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
 func TestAllClusters_List(t *testing.T) {
