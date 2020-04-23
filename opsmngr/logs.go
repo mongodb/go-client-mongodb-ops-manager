@@ -132,7 +132,7 @@ func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts 
 	return root, resp, err
 }
 
-// Get gets a log.
+// Get gets a log collection job.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-one/
 func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string, opts *LogListOptions) (*LogCollectionJob, *atlas.Response, error) {
 	if groupID == "" {
