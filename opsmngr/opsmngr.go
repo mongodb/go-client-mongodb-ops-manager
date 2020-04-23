@@ -43,11 +43,6 @@ const (
 	gzipMediaType    = "application/gzip"
 )
 
-type RequestDoer interface {
-	atlas.RequestDoer
-	NewGZipRequest(context.Context, string, string) (*http.Request, error)
-}
-
 // Client manages communication with v1.0 API
 type Client struct {
 	client    *http.Client
@@ -77,6 +72,7 @@ type Client struct {
 	HostDiskMeasurements     HostDiskMeasurementsService
 	Clusters                 ClustersService
 	Logs                     LogsService
+	LogCollections           LogCollectionService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -118,6 +114,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.HostDiskMeasurements = &HostDiskMeasurementsServiceOp{Client: c}
 	c.Clusters = &ClustersServiceOp{Client: c}
 	c.Logs = &LogsServiceOp{Client: c}
+	c.LogCollections = &LogCollectionServiceOp{Client: c}
 
 	return c
 }

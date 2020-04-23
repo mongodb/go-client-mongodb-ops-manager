@@ -27,49 +27,62 @@ const (
 	logsBasePath = "groups/%s/logCollectionJobs"
 )
 
-// LogsService is an interface for interfacing with the Log Collection Jobs
+// LogCollectionService is an interface for interfacing with the Log Collection Jobs
 // endpoints of the MongoDB Ops Manager API.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
-type LogsService interface {
-	List(context.Context, string, *LogListOptions) (*Logs, *atlas.Response, error)
-	Get(context.Context, string, string, *LogListOptions) (*Log, *atlas.Response, error)
+type LogCollectionService interface {
+	List(context.Context, string, *LogListOptions) (*LogCollectionJobs, *atlas.Response, error)
+	Get(context.Context, string, string, *LogListOptions) (*LogCollectionJob, *atlas.Response, error)
 	Retry(context.Context, string, string) (*atlas.Response, error)
-	Download(context.Context, string, string, io.Writer) (*atlas.Response, error)
-	Create(context.Context, string, *Log) (*Log, *atlas.Response, error)
-	Extend(context.Context, string, string, *Log) (*atlas.Response, error)
+	Create(context.Context, string, *LogCollectionJob) (*LogCollectionJob, *atlas.Response, error)
+	Extend(context.Context, string, string, *LogCollectionJob) (*atlas.Response, error)
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
-// LogsServiceOp handles communication with the Log Collection Jobs related methods of the
+// LogCollectionService is an interface for interfacing with the Log Collection Jobs
+// endpoints of the MongoDB Ops Manager API.
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
+type LogsService interface {
+	Download(context.Context, string, string, io.Writer) (*atlas.Response, error)
+}
+
+// LogCollectionServiceOp handles communication with the Log Collection Jobs related methods of the
+// MongoDB Ops Manager API
+type LogCollectionServiceOp struct {
+	Client atlas.RequestDoer
+}
+
+// LogCollectionServiceOp handles communication with the Log Collection Jobs download method of the
 // MongoDB Ops Manager API
 type LogsServiceOp struct {
-	Client RequestDoer
+	Client atlas.GZipRequestDoer
 }
 
+var _ LogCollectionService = &LogCollectionServiceOp{}
 var _ LogsService = &LogsServiceOp{}
 
-// Log represents a Log Collection Job in the MongoDB Ops Manager API.
-type Log struct {
-	ID                         string      `json:"id,omitempty"`
-	GroupID                    string      `json:"groupId,omitempty"`
-	UserID                     string      `json:"userId,omitempty"`
-	CreationDate               string      `json:"creationDate,omitempty"`
-	ExpirationDate             string      `json:"expirationDate,omitempty"`
-	Status                     string      `json:"status,omitempty"`
-	ResourceType               string      `json:"resourceType,omitempty"`
-	ResourceName               string      `json:"resourceName,omitempty"`
-	RootResourceName           string      `json:"rootResourceName,omitempty"`
-	RootResourceType           string      `json:"rootResourceType,omitempty"`
-	URL                        string      `json:"downloadUrl,omitempty"`
-	Redacted                   *bool       `json:"redacted,omitempty"`
-	LogTypes                   []string    `json:"logTypes,omitempty"`
-	SizeRequestedPerFileBytes  int64       `json:"sizeRequestedPerFileBytes,omitempty"`
-	UncompressedDiskSpaceBytes int64       `json:"uncompressedSizeTotalBytes,omitempty"`
-	ChildJob                   []*ChildJob `json:"childJobs,omitempty"` //included if verbose is true
+// LogCollectionJob represents a Log Collection Job in the MongoDB Ops Manager API.
+type LogCollectionJob struct {
+	ID                         string       `json:"id,omitempty"`
+	GroupID                    string       `json:"groupId,omitempty"`
+	UserID                     string       `json:"userId,omitempty"`
+	CreationDate               string       `json:"creationDate,omitempty"`
+	ExpirationDate             string       `json:"expirationDate,omitempty"`
+	Status                     string       `json:"status,omitempty"`
+	ResourceType               string       `json:"resourceType,omitempty"`
+	ResourceName               string       `json:"resourceName,omitempty"`
+	RootResourceName           string       `json:"rootResourceName,omitempty"`
+	RootResourceType           string       `json:"rootResourceType,omitempty"`
+	URL                        string       `json:"downloadUrl,omitempty"`
+	Redacted                   *bool        `json:"redacted"`
+	LogTypes                   []string     `json:"logTypes,omitempty"`
+	SizeRequestedPerFileBytes  int64        `json:"sizeRequestedPerFileBytes,omitempty"`
+	UncompressedDiskSpaceBytes int64        `json:"uncompressedSizeTotalBytes,omitempty"`
+	ChildJob                   []*ChildJobs `json:"childJobs,omitempty"` //included if verbose is true
 }
 
-// ChildJob represents a ChildJob in the MongoDB Ops Manager API.
-type ChildJob struct {
+// ChildJobs represents a ChildJobs in the MongoDB Ops Manager API.
+type ChildJobs struct {
 	AutomationAgentID          string `json:"automationAgentId,omitempty"`
 	ErrorMessage               string `json:"errorMessage,omitempty"`
 	FinishDate                 string `json:"finishDate"`
@@ -81,11 +94,11 @@ type ChildJob struct {
 	UncompressedDiskSpaceBytes int64  `json:"uncompressedDiskSpaceBytes"`
 }
 
-// Logs represents a array of Logs
-type Logs struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*Log        `json:"results"`
-	TotalCount int           `json:"totalCount"`
+// LogCollectionJobs represents a array of LogCollectionJobs
+type LogCollectionJobs struct {
+	Links      []*atlas.Link       `json:"links"`
+	Results    []*LogCollectionJob `json:"results"`
+	TotalCount int                 `json:"totalCount"`
 }
 
 // LogListOptions specifies the optional parameters to List methods that
@@ -97,7 +110,7 @@ type LogListOptions struct {
 
 // List gets all logs.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-all/
-func (s *LogsServiceOp) List(ctx context.Context, groupID string, opts *LogListOptions) (*Logs, *atlas.Response, error) {
+func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts *LogListOptions) (*LogCollectionJobs, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -113,7 +126,7 @@ func (s *LogsServiceOp) List(ctx context.Context, groupID string, opts *LogListO
 		return nil, nil, err
 	}
 
-	root := new(Logs)
+	root := new(LogCollectionJobs)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -121,7 +134,7 @@ func (s *LogsServiceOp) List(ctx context.Context, groupID string, opts *LogListO
 
 // Get gets a log.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-one/
-func (s *LogsServiceOp) Get(ctx context.Context, groupID, jobID string, opts *LogListOptions) (*Log, *atlas.Response, error) {
+func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string, opts *LogListOptions) (*LogCollectionJob, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -143,7 +156,7 @@ func (s *LogsServiceOp) Get(ctx context.Context, groupID, jobID string, opts *Lo
 		return nil, nil, err
 	}
 
-	root := new(Log)
+	root := new(LogCollectionJob)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -151,7 +164,7 @@ func (s *LogsServiceOp) Get(ctx context.Context, groupID, jobID string, opts *Lo
 
 // Create creates a log.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-submit/
-func (s *LogsServiceOp) Create(ctx context.Context, groupID string, log *Log) (*Log, *atlas.Response, error) {
+func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log *LogCollectionJob) (*LogCollectionJob, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -166,7 +179,7 @@ func (s *LogsServiceOp) Create(ctx context.Context, groupID string, log *Log) (*
 		return nil, nil, err
 	}
 
-	root := new(Log)
+	root := new(LogCollectionJob)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -174,7 +187,7 @@ func (s *LogsServiceOp) Create(ctx context.Context, groupID string, log *Log) (*
 
 // Extend extends the expiration data of a log.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-update-one/
-func (s *LogsServiceOp) Extend(ctx context.Context, groupID, jobID string, log *Log) (*atlas.Response, error) {
+func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID string, log *LogCollectionJob) (*atlas.Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -201,7 +214,7 @@ func (s *LogsServiceOp) Extend(ctx context.Context, groupID, jobID string, log *
 
 // Retry retries a single failed log collection job.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-retry/
-func (s *LogsServiceOp) Retry(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
+func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -225,7 +238,7 @@ func (s *LogsServiceOp) Retry(ctx context.Context, groupID, jobID string) (*atla
 
 // Delete removes a log.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
-func (s *LogsServiceOp) Delete(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
+func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}

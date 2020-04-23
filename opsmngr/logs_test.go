@@ -107,15 +107,15 @@ func TestLogs_List(t *testing.T) {
 			}`)
 	})
 
-	logs, _, err := client.Logs.List(ctx, groupID, nil)
+	logs, _, err := client.LogCollections.List(ctx, groupID, nil)
 	if err != nil {
-		t.Fatalf("Logs.List returned error: %v", err)
+		t.Fatalf("LogCollectionJobs.List returned error: %v", err)
 	}
 
 	redacted := true
 
-	expected := &Logs{
-		Results: []*Log{
+	expected := &LogCollectionJobs{
+		Results: []*LogCollectionJob{
 			{
 				ID:               "5c810cc4ff7a256345ff97b7",
 				GroupID:          groupID,
@@ -135,7 +135,7 @@ func TestLogs_List(t *testing.T) {
 				},
 				SizeRequestedPerFileBytes:  1000,
 				UncompressedDiskSpaceBytes: 63326,
-				ChildJob: []*ChildJob{
+				ChildJob: []*ChildJobs{
 					{
 						AutomationAgentID:          "5c810cc4ff7a256345ff97bf",
 						ErrorMessage:               "null",
@@ -169,7 +169,7 @@ func TestLogs_List(t *testing.T) {
 				},
 				SizeRequestedPerFileBytes:  1000,
 				UncompressedDiskSpaceBytes: 44518,
-				ChildJob: []*ChildJob{
+				ChildJob: []*ChildJobs{
 					{
 						AutomationAgentID:          "5c81086e014b76a3d85e1117",
 						ErrorMessage:               "null",
@@ -244,13 +244,13 @@ func TestLogs_Get(t *testing.T) {
 		Verbose: true,
 	}
 
-	logs, _, err := client.Logs.Get(ctx, groupID, ID, &opts)
+	logs, _, err := client.LogCollections.Get(ctx, groupID, ID, &opts)
 	if err != nil {
-		t.Fatalf("Logs.Get returned error: %v", err)
+		t.Fatalf("LogCollectionJobs.Get returned error: %v", err)
 	}
 
 	redacted := true
-	expected := &Log{
+	expected := &LogCollectionJob{
 		ID:               ID,
 		GroupID:          groupID,
 		UserID:           "5c80f75fcf09a246878f67a4",
@@ -269,7 +269,7 @@ func TestLogs_Get(t *testing.T) {
 		},
 		SizeRequestedPerFileBytes:  1000,
 		UncompressedDiskSpaceBytes: 63326,
-		ChildJob: []*ChildJob{
+		ChildJob: []*ChildJobs{
 			{
 				AutomationAgentID:          "5c810cc4ff7a256345ff97bf",
 				ErrorMessage:               "null",
@@ -305,7 +305,7 @@ func TestLogs_Create(t *testing.T) {
 	})
 
 	redacted := true
-	log := &Log{
+	log := &LogCollectionJob{
 		ResourceName: "my_deployment_1",
 		ResourceType: "PROCESS",
 		Redacted:     &redacted,
@@ -317,12 +317,12 @@ func TestLogs_Create(t *testing.T) {
 		SizeRequestedPerFileBytes: 10000000,
 	}
 
-	logs, _, err := client.Logs.Create(ctx, groupID, log)
+	logs, _, err := client.LogCollections.Create(ctx, groupID, log)
 	if err != nil {
-		t.Fatalf("Logs.Create returned error: %v", err)
+		t.Fatalf("LogCollectionJobs.Create returned error: %v", err)
 	}
 
-	expected := &Log{
+	expected := &LogCollectionJob{
 		ID: "5c81086e014b76a3d85e1113",
 	}
 
@@ -344,13 +344,13 @@ func TestLogs_Extend(t *testing.T) {
 		testMethod(t, r, http.MethodPatch)
 	})
 
-	log := &Log{
+	log := &LogCollectionJob{
 		ExpirationDate: "2019-04-06T12:02:54Z",
 	}
 
-	_, err := client.Logs.Extend(ctx, groupID, ID, log)
+	_, err := client.LogCollections.Extend(ctx, groupID, ID, log)
 	if err != nil {
-		t.Fatalf("Logs.Extend returned error: %v", err)
+		t.Fatalf("LogCollectionJobs.Extend returned error: %v", err)
 	}
 
 }
@@ -368,9 +368,9 @@ func TestLogs_Retry(t *testing.T) {
 		testMethod(t, r, http.MethodPut)
 	})
 
-	_, err := client.Logs.Retry(ctx, groupID, ID)
+	_, err := client.LogCollections.Retry(ctx, groupID, ID)
 	if err != nil {
-		t.Fatalf("Logs.Retry returned error: %v", err)
+		t.Fatalf("LogCollectionJobs.Retry returned error: %v", err)
 	}
 
 }
@@ -388,9 +388,9 @@ func TestLogs_Delete(t *testing.T) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Logs.Delete(ctx, groupID, ID)
+	_, err := client.LogCollections.Delete(ctx, groupID, ID)
 	if err != nil {
-		t.Fatalf("Logs.Delete returned error: %v", err)
+		t.Fatalf("LogCollectionJobs.Delete returned error: %v", err)
 	}
 
 }
@@ -416,7 +416,7 @@ func TestLogs_Download(t *testing.T) {
 	}
 
 	if buf.String() != "test" {
-		t.Fatalf("Logs.Get returned error: %v", err)
+		t.Fatalf("LogCollectionJobs.Get returned error: %v", err)
 	}
 
 }
