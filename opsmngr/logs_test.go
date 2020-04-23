@@ -135,7 +135,7 @@ func TestLogs_List(t *testing.T) {
 				},
 				SizeRequestedPerFileBytes:  1000,
 				UncompressedDiskSpaceBytes: 63326,
-				ChildJob: []*ChildJobs{
+				ChildJobs: []*ChildJob{
 					{
 						AutomationAgentID:          "5c810cc4ff7a256345ff97bf",
 						ErrorMessage:               "null",
@@ -169,7 +169,7 @@ func TestLogs_List(t *testing.T) {
 				},
 				SizeRequestedPerFileBytes:  1000,
 				UncompressedDiskSpaceBytes: 44518,
-				ChildJob: []*ChildJobs{
+				ChildJobs: []*ChildJob{
 					{
 						AutomationAgentID:          "5c81086e014b76a3d85e1117",
 						ErrorMessage:               "null",
@@ -269,7 +269,7 @@ func TestLogs_Get(t *testing.T) {
 		},
 		SizeRequestedPerFileBytes:  1000,
 		UncompressedDiskSpaceBytes: 63326,
-		ChildJob: []*ChildJobs{
+		ChildJobs: []*ChildJob{
 			{
 				AutomationAgentID:          "5c810cc4ff7a256345ff97bf",
 				ErrorMessage:               "null",

@@ -35,7 +35,7 @@ import (
 
 const (
 	Version          = "0.1" // Version for client
-	CloudURL         = "https://cloud.mongodb.com/"
+	CloudURL         = "http://localhost:8080/"
 	DefaultBaseURL   = CloudURL + APIPublicV1Path                                                             // DefaultBaseURL API default base URL for cloud manager
 	APIPublicV1Path  = "api/public/v1.0/"                                                                     // DefaultAPIPath default root path for all API endpoints
 	DefaultUserAgent = "go-client-ops-manager/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")" // DefaultUserAgent To be submitted by the client
