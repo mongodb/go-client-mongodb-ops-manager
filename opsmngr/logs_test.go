@@ -112,6 +112,8 @@ func TestLogs_List(t *testing.T) {
 		t.Fatalf("Logs.List returned error: %v", err)
 	}
 
+	redacted:= true
+
 	expected := &Logs{
 		Results: []*Log{
 			{
@@ -126,7 +128,7 @@ func TestLogs_List(t *testing.T) {
 				RootResourceName: "myReplicaSet",
 				RootResourceType: "replicaset",
 				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
-				Redacted:         true,
+				Redacted:         &redacted,
 				LogTypes: []string{
 					"AUTOMATION_AGENT",
 					"MONGODB",
@@ -159,7 +161,7 @@ func TestLogs_List(t *testing.T) {
 				RootResourceName: "myReplicaSet",
 				RootResourceType: "replicaset",
 				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
-				Redacted:         true,
+				Redacted:         &redacted,
 				LogTypes: []string{
 					"MONGODB",
 					"FTDC",
@@ -247,6 +249,7 @@ func TestLogs_Get(t *testing.T) {
 		t.Fatalf("Logs.Get returned error: %v", err)
 	}
 
+	redacted:= true
 	expected := &Log{
 		ID:               ID,
 		GroupID:          groupID,
@@ -259,7 +262,7 @@ func TestLogs_Get(t *testing.T) {
 		RootResourceName: "myReplicaSet",
 		RootResourceType: "replicaset",
 		URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
-		Redacted:         true,
+		Redacted:         &redacted,
 		LogTypes: []string{
 			"AUTOMATION_AGENT",
 			"MONGODB",
@@ -301,10 +304,11 @@ func TestLogs_Create(t *testing.T) {
 			}`)
 	})
 
+	redacted:= true
 	log := &Log{
 		ResourceName: "my_deployment_1",
 		ResourceType: "PROCESS",
-		Redacted:     true,
+		Redacted:     &redacted,
 		LogTypes: []string{
 			"FTDC",
 			"MONGODB",
