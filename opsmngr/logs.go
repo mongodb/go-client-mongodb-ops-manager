@@ -39,7 +39,7 @@ type LogCollectionService interface {
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
-// LogCollectionService is an interface for interfacing with the Log Collection Jobs
+// LogsService is an interface for interfacing with the Log Collection Jobs
 // endpoints of the MongoDB Ops Manager API.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
 type LogsService interface {
