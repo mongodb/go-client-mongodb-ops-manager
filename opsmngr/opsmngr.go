@@ -40,7 +40,13 @@ const (
 	APIPublicV1Path  = "api/public/v1.0/"                                                                     // DefaultAPIPath default root path for all API endpoints
 	DefaultUserAgent = "go-client-ops-manager/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")" // DefaultUserAgent To be submitted by the client
 	mediaType        = "application/json"
+	gzipMediaType    = "application/gzip"
 )
+
+type RequestDoer interface {
+	atlas.RequestDoer
+	NewGZipRequest(context.Context, string, string) (*http.Request, error)
+}
 
 // Client manages communication with v1.0 API
 type Client struct {
@@ -70,6 +76,7 @@ type Client struct {
 	HostMeasurements         HostMeasurementsService
 	HostDiskMeasurements     HostDiskMeasurementsService
 	Clusters                 ClustersService
+	Logs                     LogsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -110,6 +117,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.HostMeasurements = &HostMeasurementsServiceOp{Client: c}
 	c.HostDiskMeasurements = &HostDiskMeasurementsServiceOp{Client: c}
 	c.Clusters = &ClustersServiceOp{Client: c}
+	c.Logs = &LogsServiceOp{Client: c}
 
 	return c
 }
@@ -223,6 +231,28 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 		req.Header.Set("Content-Type", mediaType)
 	}
 	req.Header.Add("Accept", mediaType)
+	if c.UserAgent != "" {
+		req.Header.Set("User-Agent", c.UserAgent)
+	}
+	return req, nil
+}
+
+// NewGZipRequest creates an API request that accepts gzip. A relative URL can be provided in urlStr, which will be resolved to the
+// BaseURL of the Client. Relative URLS should always be specified without a preceding slash.
+func (c *Client) NewGZipRequest(ctx context.Context, method, urlStr string) (*http.Request, error) {
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return nil, err
+	}
+
+	u := c.BaseURL.ResolveReference(rel)
+
+	req, err := http.NewRequest(method, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Accept", gzipMediaType)
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
 	}
