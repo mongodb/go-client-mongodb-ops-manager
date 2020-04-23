@@ -61,7 +61,7 @@ type Log struct {
 	RootResourceName           string      `json:"rootResourceName,omitempty"`
 	RootResourceType           string      `json:"rootResourceType,omitempty"`
 	URL                        string      `json:"downloadUrl,omitempty"`
-	Redacted                   *bool        `json:"redacted,omitempty"`
+	Redacted                   *bool       `json:"redacted,omitempty"`
 	LogTypes                   []string    `json:"logTypes,omitempty"`
 	SizeRequestedPerFileBytes  int64       `json:"sizeRequestedPerFileBytes,omitempty"`
 	UncompressedDiskSpaceBytes int64       `json:"uncompressedSizeTotalBytes,omitempty"`

@@ -112,7 +112,7 @@ func TestLogs_List(t *testing.T) {
 		t.Fatalf("Logs.List returned error: %v", err)
 	}
 
-	redacted:= true
+	redacted := true
 
 	expected := &Logs{
 		Results: []*Log{
@@ -249,7 +249,7 @@ func TestLogs_Get(t *testing.T) {
 		t.Fatalf("Logs.Get returned error: %v", err)
 	}
 
-	redacted:= true
+	redacted := true
 	expected := &Log{
 		ID:               ID,
 		GroupID:          groupID,
@@ -304,7 +304,7 @@ func TestLogs_Create(t *testing.T) {
 			}`)
 	})
 
-	redacted:= true
+	redacted := true
 	log := &Log{
 		ResourceName: "my_deployment_1",
 		ResourceType: "PROCESS",
