@@ -41,7 +41,7 @@ const (
 	baseURLPath = "/api-v1"
 )
 
-// setup sets up a test HTTP server along with a github.Client that is
+// setup sets up a test HTTP server along with a opsmngr.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
 func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown func()) {
@@ -50,7 +50,7 @@ func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown fun
 
 	// We want to ensure that tests catch mistakes where the endpoint URL is
 	// specified as absolute rather than relative. It only makes a difference
-	// when there's a non-empty base URL path. So, use that. See issue #752.
+	// when there's a non-empty base URL path. So, use that.
 	apiHandler := http.NewServeMux()
 	apiHandler.Handle(baseURLPath+"/", http.StripPrefix(baseURLPath, mux))
 	apiHandler.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
