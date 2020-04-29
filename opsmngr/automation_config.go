@@ -32,6 +32,7 @@ const (
 type AutomationConfigService interface {
 	Get(context.Context, string) (*AutomationConfig, *atlas.Response, error)
 	Update(context.Context, string, *AutomationConfig) (*atlas.Response, error)
+	UpdateAgent(context.Context, string) (*AutomationConfigAgent,*atlas.Response, error)
 }
 
 // AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
@@ -71,7 +72,27 @@ func (s *AutomationConfigServiceOp) Update(ctx context.Context, groupID string, 
 	return resp, err
 }
 
+// See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#update-the-automation-configuration
+func (s *AutomationConfigServiceOp) UpdateAgent(ctx context.Context, groupID string) (*AutomationConfigAgent, *atlas.Response, error) {
+	basePath := fmt.Sprintf(automationConfigBasePath + "/updateAgentVersions", groupID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, basePath, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	agent :=  new(AutomationConfigAgent)
+	resp, err := s.Client.Do(ctx, req, agent)
+
+	return agent, resp, err
+}
+
 var _ AutomationConfigService = new(AutomationConfigServiceOp)
+
+type AutomationConfigAgent struct{
+	AutomationAgentVersion string `json:"automationAgentVersion"`
+	BiConnectorVersion string `json:"biConnectorVersion"`
+}
 
 type AutomationConfig struct {
 	AgentVersion       *map[string]interface{}   `json:"agentVersion,omitempty"`

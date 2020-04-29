@@ -496,3 +496,35 @@ func TestAutomationConfig_Update(t *testing.T) {
 		t.Fatalf("AutomationConfig.Update returned error: %v", err)
 	}
 }
+
+func TestAutomationConfig_UpdateAgent(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	projectID := "5a0a1e7e0f2912c554080adc"
+
+	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig/updateAgentVersions", projectID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPost)
+		_, _ = fmt.Fprint(w,
+			`{
+				  "automationAgentVersion": "10.2.7.5898",
+                  "biConnectorVersion": "2.6.1"
+				}`,
+		)
+	})
+
+	agent, _, err := client.AutomationConfig.UpdateAgent(ctx, projectID)
+	if err != nil {
+		t.Fatalf("AutomationConfig.UpdateAgent returned error: %v", err)
+	}
+
+	expected := &AutomationConfigAgent{
+		AutomationAgentVersion: "10.2.7.5898",
+		BiConnectorVersion:     "2.6.1",
+	}
+
+	if diff := deep.Equal(agent, expected); diff != nil {
+		t.Error(diff)
+	}
+
+}
