@@ -80,6 +80,10 @@ func (s *AutomationConfigServiceOp) Update(ctx context.Context, groupID string, 
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#update-the-automation-configuration
 func (s *AutomationConfigServiceOp) UpdateAgent(ctx context.Context, groupID string) (*AutomationConfigAgent, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+
 	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, "updateAgentVersions")
 
