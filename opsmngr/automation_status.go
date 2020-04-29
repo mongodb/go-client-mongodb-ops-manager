@@ -40,6 +40,9 @@ type AutomationStatusServiceOp struct {
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-status/#resource
 func (s *AutomationStatusServiceOp) Get(ctx context.Context, groupID string) (*AutomationStatus, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
 	basePath := fmt.Sprintf(automationStatusBasePath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, basePath, nil)

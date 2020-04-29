@@ -39,8 +39,14 @@ type HostDisksServiceOp struct {
 
 // Get gets the MongoDB disks with the specified host ID and partition name.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
-func (s *HostDisksServiceOp) Get(ctx context.Context, projectID, hostID, partitionName string) (*atlas.ProcessDisk, *atlas.Response, error) {
-	basePath := fmt.Sprintf(hostsDisksBasePath, projectID, hostID)
+func (s *HostDisksServiceOp) Get(ctx context.Context, groupID, hostID, partitionName string) (*atlas.ProcessDisk, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if hostID == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
+	}
+	basePath := fmt.Sprintf(hostsDisksBasePath, groupID, hostID)
 	path := fmt.Sprintf("%s/%s", basePath, partitionName)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -56,8 +62,14 @@ func (s *HostDisksServiceOp) Get(ctx context.Context, projectID, hostID, partiti
 
 // List lists all MongoDB partitions in a host.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disks-get-all/
-func (s *HostDisksServiceOp) List(ctx context.Context, projectID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDisksResponse, *atlas.Response, error) {
-	basePath := fmt.Sprintf(hostsDisksBasePath, projectID, hostID)
+func (s *HostDisksServiceOp) List(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDisksResponse, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if hostID == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
+	}
+	basePath := fmt.Sprintf(hostsDisksBasePath, groupID, hostID)
 	path, err := setQueryParams(basePath, opts)
 	if err != nil {
 		return nil, nil, err
