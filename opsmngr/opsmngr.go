@@ -73,7 +73,7 @@ type Client struct {
 	Clusters                 ClustersService
 	Logs                     LogsService
 	LogCollections           LogCollectionService
-	Diagnostics 			DiagnosticsService
+	Diagnostics              DiagnosticsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -116,7 +116,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Clusters = &ClustersServiceOp{Client: c}
 	c.Logs = &LogsServiceOp{Client: c}
 	c.LogCollections = &LogCollectionServiceOp{Client: c}
-	c.Diagnostics = &DiagnosticsServiceOp{Client:c}
+	c.Diagnostics = &DiagnosticsServiceOp{Client: c}
 
 	return c
 }

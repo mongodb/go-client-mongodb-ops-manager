@@ -52,4 +52,3 @@ func TestDiagnostics_List(t *testing.T) {
 	}
 
 }
-
