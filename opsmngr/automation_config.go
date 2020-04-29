@@ -42,6 +42,9 @@ type AutomationConfigServiceOp struct {
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#get-the-automation-configuration
 func (s *AutomationConfigServiceOp) Get(ctx context.Context, groupID string) (*AutomationConfig, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
 	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, basePath, nil)
@@ -60,6 +63,9 @@ func (s *AutomationConfigServiceOp) Get(ctx context.Context, groupID string) (*A
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#update-the-automation-configuration
 func (s *AutomationConfigServiceOp) Update(ctx context.Context, groupID string, updateRequest *AutomationConfig) (*atlas.Response, error) {
+	if groupID == "" {
+		return nil, atlas.NewArgError("groupID", "must be set")
+	}
 	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPut, basePath, updateRequest)

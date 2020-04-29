@@ -55,6 +55,9 @@ type GlobalAlerts struct {
 // Get gets a global alert.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*GlobalAlert, *atlas.Response, error) {
+	if alertID == "" {
+		return nil, nil, atlas.NewArgError("alertID", "must be set")
+	}
 	path := fmt.Sprintf("%s/%s", globalAlertsBasePath, alertID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -90,6 +93,9 @@ func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsList
 // Acknowledge acknowledges a global alert.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 func (s *GlobalAlertsServiceOp) Acknowledge(ctx context.Context, alertID string, body *atlas.AcknowledgeRequest) (*GlobalAlert, *atlas.Response, error) {
+	if alertID == "" {
+		return nil, nil, atlas.NewArgError("alertID", "must be set")
+	}
 	path := fmt.Sprintf("%s/%s", globalAlertsBasePath, alertID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, body)
