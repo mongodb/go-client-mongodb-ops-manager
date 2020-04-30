@@ -17,7 +17,7 @@ package atmcfg
 import (
 	"testing"
 
-	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
+	"go.mongodb.org/ops-manager/opsmngr"
 )
 
 func automationConfigWithOneReplicaSet(name string, disabled bool) *opsmngr.AutomationConfig {

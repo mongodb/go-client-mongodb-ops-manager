@@ -18,8 +18,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
-	"github.com/mongodb/go-client-mongodb-ops-manager/search"
+	"go.mongodb.org/ops-manager/opsmngr"
+	"go.mongodb.org/ops-manager/search"
 )
 
 func setDisabledByClusterName(out *opsmngr.AutomationConfig, name string, disabled bool) {

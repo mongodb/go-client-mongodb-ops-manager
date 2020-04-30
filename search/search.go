@@ -15,7 +15,7 @@
 package search
 
 import (
-	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
+	"go.mongodb.org/ops-manager/opsmngr"
 )
 
 // Processes return the smallest index i

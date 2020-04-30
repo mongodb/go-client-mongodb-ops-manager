@@ -17,8 +17,8 @@ package search_test
 import (
 	"fmt"
 
-	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
-	"github.com/mongodb/go-client-mongodb-ops-manager/search"
+	"go.mongodb.org/ops-manager/opsmngr"
+	"go.mongodb.org/ops-manager/search"
 )
 
 var fixture = &opsmngr.AutomationConfig{
