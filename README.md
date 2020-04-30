@@ -13,13 +13,13 @@ You can view the Official API docs at:
 To get the latest version run this command:
 
 ```bash
-go get github.com/mongodb/go-client-mongodb-ops-manager
+go get go.mongodb.org/ops-manager
 ```
 
 ## Usage
 
 ```go
-import "github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
+import "go.mongodb.org/ops-manager/opsmngr"
 ```
 
 ## Authentication 

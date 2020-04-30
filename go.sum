@@ -7,6 +7,8 @@ github.com/google/go-querystring v1.0.0 h1:Xkwi/a1rcvNg1PPYe5vI8GbeBY/jrVuDX5ASu
 github.com/google/go-querystring v1.0.0/go.mod h1:odCYkC5MyYFN7vkCjXpyrEuKhc/BUO6wN/zVPAxq5ck=
 github.com/mongodb/go-client-mongodb-atlas v0.2.1-0.20200427191133-b5e334932f44 h1:PUOc5BwUVOqGVQqX5vs2MPiJJ6PEZ+jA7TYtna1gOLo=
 github.com/mongodb/go-client-mongodb-atlas v0.2.1-0.20200427191133-b5e334932f44/go.mod h1:LS8O0YLkA+sbtOb3fZLF10yY3tJM+1xATXMJ3oU35LU=
+github.com/mongodb/go-client-mongodb-ops-manager v0.2.2 h1:xQoyeLjRJmOjvCkjCwbnkzIvugpm6eNozDw4Auk84to=
+github.com/mongodb/go-client-mongodb-ops-manager v0.2.2/go.mod h1:RrXnfBx3CyKN64jXkXFEO07CnMBEYa5CdlHOQ/30a5A=
 github.com/mwielbut/pointy v1.1.0 h1:U5/YEfoIkaGCHv0St3CgjduqXID4FNRoyZgLM1kY9vg=
 github.com/mwielbut/pointy v1.1.0/go.mod h1:MvvO+uMFj9T5DMda33HlvogsFBX7pWWKAkFIn4teYwY=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
