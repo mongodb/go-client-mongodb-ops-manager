@@ -30,9 +30,7 @@ type AllClustersService interface {
 	List(context.Context) (*AllClustersProjects, *atlas.Response, error)
 }
 
-type AllClustersServiceOp struct {
-	Client atlas.RequestDoer
-}
+type AllClustersServiceOp service
 
 type AllClustersProject struct {
 	GroupName string               `json:"groupName"`

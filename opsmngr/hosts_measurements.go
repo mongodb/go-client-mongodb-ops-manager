@@ -34,9 +34,7 @@ type HostMeasurementsService interface {
 
 // HostMeasurementsServiceOp handles communication with the system measurements related methods of the
 // MongoDB Ops Manager API
-type HostMeasurementsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type HostMeasurementsServiceOp service
 
 var _ HostMeasurementsService = &HostMeasurementsServiceOp{}
 

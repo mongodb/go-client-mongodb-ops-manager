@@ -39,7 +39,7 @@ const (
 	DefaultBaseURL   = CloudURL + APIPublicV1Path                                                             // DefaultBaseURL API default base URL for cloud manager
 	APIPublicV1Path  = "api/public/v1.0/"                                                                     // DefaultAPIPath default root path for all API endpoints
 	DefaultUserAgent = "go-client-ops-manager/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")" // DefaultUserAgent To be submitted by the client
-	mediaType        = "application/json"
+	jsonMediaType    = "application/json"
 	gzipMediaType    = "application/gzip"
 )
 
@@ -75,6 +75,10 @@ type Client struct {
 	LogCollections           LogCollectionService
 
 	onRequestCompleted atlas.RequestCompletionCallback
+}
+
+type service struct {
+	Client atlas.RequestDoer
 }
 
 // NewClient returns a new Ops Manager API Client
@@ -225,9 +229,9 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 	}
 
 	if body != nil {
-		req.Header.Set("Content-Type", mediaType)
+		req.Header.Set("Content-Type", jsonMediaType)
 	}
-	req.Header.Add("Accept", mediaType)
+	req.Header.Add("Accept", jsonMediaType)
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
 	}

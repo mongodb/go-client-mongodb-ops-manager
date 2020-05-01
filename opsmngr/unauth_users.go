@@ -33,9 +33,7 @@ type UnauthUsersService interface {
 }
 
 // UnauthUsersServiceOp handles communication with the unauthenticated API
-type UnauthUsersServiceOp struct {
-	Client atlas.RequestDoer
-}
+type UnauthUsersServiceOp service
 
 // CreateFirstUser creates the first user for a new installation
 // See more: https://docs.opsmanager.mongodb.com/master/reference/api/user-create-first/

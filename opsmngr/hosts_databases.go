@@ -33,9 +33,7 @@ type HostDatabasesService interface {
 	List(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error)
 }
 
-type HostDatabasesServiceOp struct {
-	Client atlas.RequestDoer
-}
+type HostDatabasesServiceOp service
 
 // Get gets the MongoDB databases with the specified host ID and database name.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/

@@ -33,9 +33,7 @@ type HostDatabaseMeasurementsService interface {
 
 // HostDatabaseMeasurementsServiceOp handles communication with the Process Disk Measurements related methods of the
 // MongoDB API
-type HostDatabaseMeasurementsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type HostDatabaseMeasurementsServiceOp service
 
 var _ HostDatabaseMeasurementsService = &HostDatabaseMeasurementsServiceOp{}
 

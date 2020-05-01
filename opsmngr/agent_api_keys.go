@@ -32,9 +32,7 @@ type AgentAPIKeysService interface {
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
-type AgentAPIKeysServiceOp struct {
-	Client atlas.RequestDoer
-}
+type AgentAPIKeysServiceOp service
 
 type AgentAPIKey struct {
 	ID            string  `json:"_id"`

@@ -33,9 +33,7 @@ type ClustersService interface {
 	List(context.Context, string, *atlas.ListOptions) (*Clusters, *atlas.Response, error)
 }
 
-type ClustersServiceOp struct {
-	Client atlas.RequestDoer
-}
+type ClustersServiceOp service
 
 // Cluster a cluster details
 type Cluster struct {

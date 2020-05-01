@@ -34,9 +34,7 @@ type AutomationStatusService interface {
 }
 
 // AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
-type AutomationStatusServiceOp struct {
-	Client atlas.RequestDoer
-}
+type AutomationStatusServiceOp service
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-status/#resource
 func (s *AutomationStatusServiceOp) Get(ctx context.Context, groupID string) (*AutomationStatus, *atlas.Response, error) {

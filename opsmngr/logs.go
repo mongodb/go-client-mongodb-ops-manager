@@ -48,9 +48,7 @@ type LogsService interface {
 
 // LogCollectionServiceOp handles communication with the Log Collection Jobs related methods of the
 // MongoDB Ops Manager API
-type LogCollectionServiceOp struct {
-	Client atlas.RequestDoer
-}
+type LogCollectionServiceOp service
 
 // LogCollectionServiceOp handles communication with the Log Collection Jobs download method of the
 // MongoDB Ops Manager API
