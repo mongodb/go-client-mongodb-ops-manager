@@ -39,8 +39,14 @@ type HostDatabasesServiceOp struct {
 
 // Get gets the MongoDB databases with the specified host ID and database name.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
-func (s *HostDatabasesServiceOp) Get(ctx context.Context, projectID, hostID, partitionName string) (*atlas.ProcessDatabase, *atlas.Response, error) {
-	basePath := fmt.Sprintf(hostsDatabasesBasePath, projectID, hostID)
+func (s *HostDatabasesServiceOp) Get(ctx context.Context, groupID, hostID, partitionName string) (*atlas.ProcessDatabase, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if hostID == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
+	}
+	basePath := fmt.Sprintf(hostsDatabasesBasePath, groupID, hostID)
 	path := fmt.Sprintf("%s/%s", basePath, partitionName)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
@@ -56,8 +62,14 @@ func (s *HostDatabasesServiceOp) Get(ctx context.Context, projectID, hostID, par
 
 // List lists all MongoDB databases in a host.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/databases-get-all-on-host/
-func (s *HostDatabasesServiceOp) List(ctx context.Context, projectID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error) {
-	basePath := fmt.Sprintf(hostsDatabasesBasePath, projectID, hostID)
+func (s *HostDatabasesServiceOp) List(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if hostID == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
+	}
+	basePath := fmt.Sprintf(hostsDatabasesBasePath, groupID, hostID)
 	path, err := setQueryParams(basePath, opts)
 	if err != nil {
 		return nil, nil, err

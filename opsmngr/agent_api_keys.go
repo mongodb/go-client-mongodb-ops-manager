@@ -69,8 +69,11 @@ func (s *AgentAPIKeysServiceOp) Create(ctx context.Context, projectID string, ag
 }
 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/get-all-agent-api-keys-for-project/
-func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) ([]*AgentAPIKey, *atlas.Response, error) {
-	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
+func (s *AgentAPIKeysServiceOp) List(ctx context.Context, groupID string) ([]*AgentAPIKey, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	path := fmt.Sprintf(agentAPIKeysBasePath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
@@ -88,8 +91,14 @@ func (s *AgentAPIKeysServiceOp) List(ctx context.Context, projectID string) ([]*
 }
 
 // See more: hhttps://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/delete-one-agent-api-key/
-func (s *AgentAPIKeysServiceOp) Delete(ctx context.Context, projectID, agentAPIKey string) (*atlas.Response, error) {
-	basePath := fmt.Sprintf(agentAPIKeysBasePath, projectID)
+func (s *AgentAPIKeysServiceOp) Delete(ctx context.Context, groupID, agentAPIKey string) (*atlas.Response, error) {
+	if groupID == "" {
+		return nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if agentAPIKey == "" {
+		return nil, atlas.NewArgError("agentAPIKey", "must be set")
+	}
+	basePath := fmt.Sprintf(agentAPIKeysBasePath, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, agentAPIKey)
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {

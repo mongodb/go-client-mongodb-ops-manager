@@ -17,8 +17,8 @@ package search_test
 import (
 	"testing"
 
-	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
-	"github.com/mongodb/go-client-mongodb-ops-manager/search"
+	"go.mongodb.org/ops-manager/opsmngr"
+	"go.mongodb.org/ops-manager/search"
 )
 
 func TestProcesses(t *testing.T) {

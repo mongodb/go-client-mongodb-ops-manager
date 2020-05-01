@@ -58,8 +58,11 @@ type Agents struct {
 }
 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-all/
-func (s *AgentsServiceOp) ListLinks(ctx context.Context, projectID string) (*Agents, *atlas.Response, error) {
-	path := fmt.Sprintf(agentsBasePath, projectID)
+func (s *AgentsServiceOp) ListLinks(ctx context.Context, groupID string) (*Agents, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	path := fmt.Sprintf(agentsBasePath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
@@ -76,8 +79,14 @@ func (s *AgentsServiceOp) ListLinks(ctx context.Context, projectID string) (*Age
 }
 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-by-type/
-func (s *AgentsServiceOp) List(ctx context.Context, projectID, agentType string) (*Agents, *atlas.Response, error) {
-	basePath := fmt.Sprintf(agentsBasePath, projectID)
+func (s *AgentsServiceOp) List(ctx context.Context, groupID, agentType string) (*Agents, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if agentType == "" {
+		return nil, nil, atlas.NewArgError("agentType", "must be set")
+	}
+	basePath := fmt.Sprintf(agentsBasePath, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, agentType)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)

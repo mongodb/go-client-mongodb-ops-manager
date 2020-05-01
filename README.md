@@ -1,4 +1,5 @@
 # MongoDB Ops Manager Go Client
+[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/go.mongodb.org/ops-manager/opsmngr)
 [![Build Status](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager.svg?branch=master)](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager)
 
 An HTTP client for [Ops Manager](https://docs.opsmanager.mongodb.com/master/reference/api/) 
@@ -13,13 +14,13 @@ You can view the Official API docs at:
 To get the latest version run this command:
 
 ```bash
-go get github.com/mongodb/go-client-mongodb-ops-manager
+go get go.mongodb.org/ops-manager
 ```
 
 ## Usage
 
 ```go
-import "github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
+import "go.mongodb.org/ops-manager/opsmngr"
 ```
 
 ## Authentication 
@@ -44,7 +45,7 @@ import (
 	"os"
 
 	"github.com/Sectorbob/mlab-ns2/gae/ns/digest"
-	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
+	"go.mongodb.org/ops-manager/opsmngr"
 )
 
 func newClient(publicKey, privateKey string) (*mongodbatlas.Client, error) {
