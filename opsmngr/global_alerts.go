@@ -33,9 +33,7 @@ type GlobalAlertsService interface {
 	Acknowledge(context.Context, string, *atlas.AcknowledgeRequest) (*GlobalAlert, *atlas.Response, error)
 }
 
-type GlobalAlertsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type GlobalAlertsServiceOp service
 
 type GlobalAlert struct {
 	atlas.Alert

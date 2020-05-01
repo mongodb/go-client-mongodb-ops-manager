@@ -39,9 +39,7 @@ type ProjectsService interface {
 
 // ProjectsServiceOp handles communication with the Projects related methods of the
 // MongoDB Cloud/Ops Manager API
-type ProjectsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type ProjectsServiceOp service
 
 var _ ProjectsService = &ProjectsServiceOp{}
 

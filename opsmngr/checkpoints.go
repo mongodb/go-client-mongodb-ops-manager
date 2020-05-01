@@ -36,9 +36,7 @@ type CheckpointsService interface {
 
 // CheckpointsServiceOp handles communication with the checkpoint related methods of the
 // MongoDB Atlas API
-type CheckpointsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type CheckpointsServiceOp service
 
 var _ CheckpointsService = &CheckpointsServiceOp{}
 

@@ -37,9 +37,7 @@ type HostsService interface {
 	StopMonitoring(context.Context, string, string) (*atlas.Response, error)
 }
 
-type HostsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type HostsServiceOp service
 
 type Host struct {
 	Aliases            []string      `json:"aliases,omitempty"`

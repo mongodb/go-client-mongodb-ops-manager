@@ -33,9 +33,7 @@ type HostDisksService interface {
 	List(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDisksResponse, *atlas.Response, error)
 }
 
-type HostDisksServiceOp struct {
-	Client atlas.RequestDoer
-}
+type HostDisksServiceOp service
 
 // Get gets the MongoDB disks with the specified host ID and partition name.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/

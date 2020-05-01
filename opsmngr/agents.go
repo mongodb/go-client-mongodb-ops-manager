@@ -35,9 +35,7 @@ type AgentsService interface {
 }
 
 // AgentsServiceOp handles communication with the Agent related methods of the MongoDB Cloud API
-type AgentsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type AgentsServiceOp service
 
 type Agent struct {
 	TypeName  string  `json:"typeName"`

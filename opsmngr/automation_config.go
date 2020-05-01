@@ -36,9 +36,7 @@ type AutomationConfigService interface {
 }
 
 // AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
-type AutomationConfigServiceOp struct {
-	Client atlas.RequestDoer
-}
+type AutomationConfigServiceOp service
 
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#get-the-automation-configuration
 func (s *AutomationConfigServiceOp) Get(ctx context.Context, groupID string) (*AutomationConfig, *atlas.Response, error) {

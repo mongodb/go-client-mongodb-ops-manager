@@ -39,9 +39,7 @@ type OrganizationsService interface {
 
 // OrganizationsServiceOp handles communication with the Projects related methods of the
 // MongoDB Atlas API
-type OrganizationsServiceOp struct {
-	Client atlas.RequestDoer
-}
+type OrganizationsServiceOp service
 
 var _ OrganizationsService = &OrganizationsServiceOp{}
 
