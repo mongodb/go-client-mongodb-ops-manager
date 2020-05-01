@@ -31,24 +31,3 @@ func TestDiagnostics_Get(t *testing.T) {
 	}
 
 }
-
-func TestDiagnostics_List(t *testing.T) {
-	client, mux, _, teardown := setup()
-	defer teardown()
-
-	mux.HandleFunc("/admin/diagnostics", func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, "test")
-	})
-
-	buf := new(bytes.Buffer)
-	_, err := client.Diagnostics.List(ctx, buf)
-	if err != nil {
-		t.Fatalf("Diagnostics.List returned error: %v", err)
-	}
-
-	if buf.String() != "test" {
-		t.Fatalf("Diagnostics.List returned error: %v", err)
-	}
-
-}

@@ -24,15 +24,13 @@ import (
 )
 
 const (
-	diagnosticsBasePath  = "groups/%s/diagnostics"
-	diagnosticsAdminPath = "admin/diagnostics"
+	diagnosticsBasePath = "groups/%s/diagnostics"
 )
 
 // DiagnosticsService is an interface for interfacing with Diagnostic Archives in MongoDB Ops Manager APIs
 // https://docs.opsmanager.mongodb.com/current/reference/api/diagnostic-archives/
 type DiagnosticsService interface {
 	Get(context.Context, string, io.Writer) (*atlas.Response, error)
-	List(context.Context, io.Writer) (*atlas.Response, error)
 }
 
 type DiagnosticsServiceOp struct {
@@ -44,19 +42,6 @@ type DiagnosticsServiceOp struct {
 func (s *DiagnosticsServiceOp) Get(ctx context.Context, projectID string, out io.Writer) (*atlas.Response, error) {
 	path := fmt.Sprintf(diagnosticsBasePath, projectID)
 	req, err := s.Client.NewGZipRequest(ctx, http.MethodGet, path)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := s.Client.Do(ctx, req, out)
-
-	return resp, err
-}
-
-// List retrieves all projects’ diagnostics archive file.
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/diagnostics/get-global-diagnostic-archive/
-func (s *DiagnosticsServiceOp) List(ctx context.Context, out io.Writer) (*atlas.Response, error) {
-	req, err := s.Client.NewGZipRequest(ctx, http.MethodGet, diagnosticsAdminPath)
 	if err != nil {
 		return nil, err
 	}
