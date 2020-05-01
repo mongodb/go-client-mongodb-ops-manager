@@ -38,8 +38,8 @@ type DiagnosticsServiceOp struct {
 }
 
 type DiagnosticsListOpts struct {
-	Limit   int64 `json:"limit"`
-	Minutes int64 `json:"minutes"`
+	Limit   int64 `json:"limit,omitempty"`
+	Minutes int64 `json:"minutes,omitempty"`
 }
 
 // Get retrieves the project’s diagnostics archive file.
