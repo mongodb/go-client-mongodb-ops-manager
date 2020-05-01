@@ -44,8 +44,12 @@ type DiagnosticsListOpts struct {
 
 // Get retrieves the project’s diagnostics archive file.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/diagnostics/get-project-diagnostic-archive/
-func (s *DiagnosticsServiceOp) Get(ctx context.Context, projectID string, opts *DiagnosticsListOpts, out io.Writer) (*atlas.Response, error) {
-	basePath := fmt.Sprintf(diagnosticsBasePath, projectID)
+func (s *DiagnosticsServiceOp) Get(ctx context.Context, groupID string, opts *DiagnosticsListOpts, out io.Writer) (*atlas.Response, error) {
+	if groupID == "" {
+		return nil, atlas.NewArgError("groupID", "must be set")
+	}
+
+	basePath := fmt.Sprintf(diagnosticsBasePath, groupID)
 	path, err := setQueryParams(basePath, opts)
 	if err != nil {
 		return nil, err
