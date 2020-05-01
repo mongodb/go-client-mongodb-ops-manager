@@ -416,7 +416,7 @@ func TestLogs_Download(t *testing.T) {
 	}
 
 	if buf.String() != "test" {
-		t.Fatalf("LogCollectionJobs.Get returned error: %v", err)
+		t.Fatalf("Logs.Download returned error: %v", err)
 	}
 
 }
