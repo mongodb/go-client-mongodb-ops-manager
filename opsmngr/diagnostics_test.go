@@ -21,7 +21,7 @@ func TestDiagnostics_Get(t *testing.T) {
 	})
 
 	buf := new(bytes.Buffer)
-	_, err := client.Diagnostics.Get(ctx, groupID, buf)
+	_, err := client.Diagnostics.Get(ctx, groupID, nil, buf)
 	if err != nil {
 		t.Fatalf("Diagnostics.Get returned error: %v", err)
 	}

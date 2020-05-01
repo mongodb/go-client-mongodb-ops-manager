@@ -30,17 +30,27 @@ const (
 // DiagnosticsService is an interface for interfacing with Diagnostic Archives in MongoDB Ops Manager APIs
 // https://docs.opsmanager.mongodb.com/current/reference/api/diagnostic-archives/
 type DiagnosticsService interface {
-	Get(context.Context, string, io.Writer) (*atlas.Response, error)
+	Get(context.Context, string, *DiagnosticsListOpts, io.Writer) (*atlas.Response, error)
 }
 
 type DiagnosticsServiceOp struct {
 	Client atlas.GZipRequestDoer
 }
 
+type DiagnosticsListOpts struct {
+	Limit   int64 `json:"limit"`
+	Minutes int64 `json:"minutes"`
+}
+
 // Get retrieves the project’s diagnostics archive file.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/diagnostics/get-project-diagnostic-archive/
-func (s *DiagnosticsServiceOp) Get(ctx context.Context, projectID string, out io.Writer) (*atlas.Response, error) {
-	path := fmt.Sprintf(diagnosticsBasePath, projectID)
+func (s *DiagnosticsServiceOp) Get(ctx context.Context, projectID string, opts *DiagnosticsListOpts, out io.Writer) (*atlas.Response, error) {
+	basePath := fmt.Sprintf(diagnosticsBasePath, projectID)
+	path, err := setQueryParams(basePath, opts)
+	if err != nil {
+		return nil, err
+	}
+
 	req, err := s.Client.NewGZipRequest(ctx, http.MethodGet, path)
 	if err != nil {
 		return nil, err
