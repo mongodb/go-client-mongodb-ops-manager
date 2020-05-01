@@ -44,7 +44,7 @@ import (
 	"os"
 
 	"github.com/Sectorbob/mlab-ns2/gae/ns/digest"
-	"github.com/mongodb/go-client-mongodb-ops-manager/opsmngr"
+	"go.mongodb.org/ops-manager/opsmngr"
 )
 
 func newClient(publicKey, privateKey string) (*mongodbatlas.Client, error) {
