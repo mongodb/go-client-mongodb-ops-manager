@@ -23,7 +23,7 @@ import (
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
-func TestHost_List(t *testing.T) {
+func TestDeployments_ListHosts(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -74,9 +74,9 @@ func TestHost_List(t *testing.T) {
 
 	opts := HostListOptions{}
 
-	alerts, _, err := client.Hosts.List(ctx, projectID, &opts)
+	alerts, _, err := client.Deployments.ListHosts(ctx, projectID, &opts)
 	if err != nil {
-		t.Fatalf("Hosts.List returned error: %v", err)
+		t.Fatalf("Deployments.ListHosts returned error: %v", err)
 	}
 
 	alertsEnabled := true
@@ -130,7 +130,7 @@ func TestHost_List(t *testing.T) {
 	}
 }
 
-func TestHost_Get(t *testing.T) {
+func TestDeployments_GetHost(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -176,9 +176,9 @@ func TestHost_Get(t *testing.T) {
 					}`)
 	})
 
-	alerts, _, err := client.Hosts.Get(ctx, projectID, hostID)
+	alerts, _, err := client.Deployments.GetHost(ctx, projectID, hostID)
 	if err != nil {
-		t.Fatalf("Hosts.Get returned error: %v", err)
+		t.Fatalf("Deployments.GetHost returned error: %v", err)
 	}
 
 	alertsEnabled := true
@@ -226,7 +226,7 @@ func TestHost_Get(t *testing.T) {
 	}
 }
 
-func TestHost_GetByHostName(t *testing.T) {
+func TestDeployments_GetHostByHostname(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -273,9 +273,9 @@ func TestHost_GetByHostName(t *testing.T) {
 					}`)
 	})
 
-	alerts, _, err := client.Hosts.GetByHostname(ctx, projectID, hostName, port)
+	alerts, _, err := client.Deployments.GetHostByHostname(ctx, projectID, hostName, port)
 	if err != nil {
-		t.Fatalf("Hosts.GetByHostname returned error: %v", err)
+		t.Fatalf("Deployments.GetHostByHostname returned error: %v", err)
 	}
 
 	alertsEnabled := true
@@ -323,7 +323,7 @@ func TestHost_GetByHostName(t *testing.T) {
 	}
 }
 
-func TestHost_Monitoring(t *testing.T) {
+func TestDeployments_StartMonitoring(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -362,9 +362,9 @@ func TestHost_Monitoring(t *testing.T) {
 		Port:     port,
 	}
 
-	alerts, _, err := client.Hosts.Monitoring(ctx, projectID, host)
+	alerts, _, err := client.Deployments.StartMonitoring(ctx, projectID, host)
 	if err != nil {
-		t.Fatalf("Hosts.Monitoring returned error: %v", err)
+		t.Fatalf("Deployments.StartMonitoring returned error: %v", err)
 	}
 
 	alertsEnabled := true
@@ -397,7 +397,7 @@ func TestHost_Monitoring(t *testing.T) {
 	}
 }
 
-func TestHost_UpdateMonitoring(t *testing.T) {
+func TestDeployments_UpdateMonitoring(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -437,9 +437,9 @@ func TestHost_UpdateMonitoring(t *testing.T) {
 		Port:     port,
 	}
 
-	alerts, _, err := client.Hosts.UpdateMonitoring(ctx, projectID, hostID, host)
+	alerts, _, err := client.Deployments.UpdateMonitoring(ctx, projectID, hostID, host)
 	if err != nil {
-		t.Fatalf("Hosts.Monitoring returned error: %v", err)
+		t.Fatalf("Deployments.UpdateMonitoring returned error: %v", err)
 	}
 
 	alertsEnabled := true
@@ -472,7 +472,7 @@ func TestHost_UpdateMonitoring(t *testing.T) {
 	}
 }
 
-func TestHost_StopMonitoring(t *testing.T) {
+func TestDeployments_StopMonitoring(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -485,8 +485,8 @@ func TestHost_StopMonitoring(t *testing.T) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Hosts.StopMonitoring(ctx, projectID, hostID)
+	_, err := client.Deployments.StopMonitoring(ctx, projectID, hostID)
 	if err != nil {
-		t.Fatalf("Hosts.Monitoring returned error: %v", err)
+		t.Fatalf("Deployments.StopMonitoring returned error: %v", err)
 	}
 }

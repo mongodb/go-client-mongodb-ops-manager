@@ -26,17 +26,23 @@ const (
 	agentsBasePath = "groups/%s/agents"
 )
 
-// AgentsService is an interface for interfacing with the Agents
-// endpoints of the MongoDB Cloud API.
+// AgentsService provides access to the agent related functions in the Ops Manager API.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents/
 type AgentsService interface {
-	List(context.Context, string, string) (*Agents, *atlas.Response, error)
-	ListLinks(context.Context, string) (*Agents, *atlas.Response, error)
+	ListAgentLinks(context.Context, string) (*Agents, *atlas.Response, error)
+	ListAgentsByType(context.Context, string, string) (*Agents, *atlas.Response, error)
+	CreateAgentAPIKey(context.Context, string, *AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error)
+	ListAgentAPIKeys(context.Context, string) ([]*AgentAPIKey, *atlas.Response, error)
+	DeleteAgentAPIKey(context.Context, string, string) (*atlas.Response, error)
 }
 
-// AgentsServiceOp handles communication with the Agent related methods of the MongoDB Cloud API
+// AgentsServiceOp provides an implementation of the AgentsService interface
 type AgentsServiceOp service
 
+var _ AgentsService = new(AgentsServiceOp)
+
+// Agent represents an Ops Manager agent
 type Agent struct {
 	TypeName  string  `json:"typeName"`
 	Hostname  string  `json:"hostname"`
@@ -49,14 +55,17 @@ type Agent struct {
 	Tag       *string `json:"tag"`
 }
 
+// Agents is a paginated collection of Agent
 type Agents struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Agent      `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
 
+// ListAgentLinks gets links to monitoring, backup, and automation agent resources for a project.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-all/
-func (s *AgentsServiceOp) ListLinks(ctx context.Context, groupID string) (*Agents, *atlas.Response, error) {
+func (s *AgentsServiceOp) ListAgentLinks(ctx context.Context, groupID string) (*Agents, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -76,8 +85,10 @@ func (s *AgentsServiceOp) ListLinks(ctx context.Context, groupID string) (*Agent
 	return root, resp, err
 }
 
+// List gets agents of a specified type (i.e. Monitoring, Backup, or Automation) for a project.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-by-type/
-func (s *AgentsServiceOp) List(ctx context.Context, groupID, agentType string) (*Agents, *atlas.Response, error) {
+func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentType string) (*Agents, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

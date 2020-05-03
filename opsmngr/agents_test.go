@@ -23,7 +23,7 @@ import (
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
-func TestAgents_ListLinks(t *testing.T) {
+func TestAgents_ListAgentLinks(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -57,9 +57,9 @@ func TestAgents_ListLinks(t *testing.T) {
 		}`)
 	})
 
-	links, _, err := client.Agents.ListLinks(ctx, projectID)
+	links, _, err := client.Agents.ListAgentLinks(ctx, projectID)
 	if err != nil {
-		t.Fatalf("client.Agents.ListLinks returned error: %v", err)
+		t.Fatalf("Agents.ListAgentLinks returned error: %v", err)
 	}
 
 	expected := &Agents{
@@ -94,7 +94,7 @@ func TestAgents_ListLinks(t *testing.T) {
 	}
 }
 
-func TestAgents_List(t *testing.T) {
+func TestAgents_ListAgentsByType(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -119,9 +119,9 @@ func TestAgents_List(t *testing.T) {
 						}`)
 	})
 
-	agent, _, err := client.Agents.List(ctx, projectID, agentType)
+	agent, _, err := client.Agents.ListAgentsByType(ctx, projectID, agentType)
 	if err != nil {
-		t.Fatalf("client.Agents.List returned error: %v", err)
+		t.Fatalf("Agents.ListAgentsByType returned error: %v", err)
 	}
 
 	expected := &Agents{

@@ -35,7 +35,8 @@ type UnauthUsersService interface {
 // UnauthUsersServiceOp handles communication with the unauthenticated API
 type UnauthUsersServiceOp service
 
-// CreateFirstUser creates the first user for a new installation
+// CreateFirstUser creates the first user for a new installation.
+//
 // See more: https://docs.opsmanager.mongodb.com/master/reference/api/user-create-first/
 func (s *UnauthUsersServiceOp) CreateFirstUser(ctx context.Context, user *User, opts *WhitelistOpts) (*CreateUserResponse, *atlas.Response, error) {
 	// if a whitelist was not specified, do not pass the parameter

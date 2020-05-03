@@ -26,19 +26,18 @@ const (
 	projectBasePath = "groups"
 )
 
-// ProjectsService is an interface for interfacing with the Projects
-// endpoints of the MongoDB Cloud/Ops Manager API.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/groups/
+// ProjectsService provides access to the project related functions in the Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/
 type ProjectsService interface {
-	GetAllProjects(context.Context) (*Projects, *atlas.Response, error)
-	GetOneProject(context.Context, string) (*Project, *atlas.Response, error)
-	GetOneProjectByName(context.Context, string) (*Project, *atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*Projects, *atlas.Response, error)
+	Get(context.Context, string) (*Project, *atlas.Response, error)
+	GetByName(context.Context, string) (*Project, *atlas.Response, error)
 	Create(context.Context, *Project) (*Project, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// ProjectsServiceOp handles communication with the Projects related methods of the
-// MongoDB Cloud/Ops Manager API
+// ProjectsServiceOp provides an implementation of the ProjectsService interface
 type ProjectsServiceOp service
 
 var _ ProjectsService = &ProjectsServiceOp{}
@@ -76,11 +75,15 @@ type Projects struct {
 	TotalCount int           `json:"totalCount"`
 }
 
-// GetAllProjects gets all projects.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/groups/get-all-groups-for-current-user/
-func (s *ProjectsServiceOp) GetAllProjects(ctx context.Context) (*Projects, *atlas.Response, error) {
-
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, projectBasePath, nil)
+// List gets all projects.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-groups-for-current-user/
+func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*Projects, *atlas.Response, error) {
+	path, err := setQueryParams(projectBasePath, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -98,14 +101,15 @@ func (s *ProjectsServiceOp) GetAllProjects(ctx context.Context) (*Projects, *atl
 	return root, resp, nil
 }
 
-// GetOneProject gets a single project.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/groups/get-one-group-by-id/
-func (s *ProjectsServiceOp) GetOneProject(ctx context.Context, projectID string) (*Project, *atlas.Response, error) {
-	if projectID == "" {
-		return nil, nil, atlas.NewArgError("projectID", "must be set")
+// Get gets a single project.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-one-group-by-id/
+func (s *ProjectsServiceOp) Get(ctx context.Context, groupID string) (*Project, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
 
-	path := fmt.Sprintf("%s/%s", projectBasePath, projectID)
+	path := fmt.Sprintf("%s/%s", projectBasePath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
@@ -121,14 +125,15 @@ func (s *ProjectsServiceOp) GetOneProject(ctx context.Context, projectID string)
 	return root, resp, err
 }
 
-// GetOneProjectByName gets a single project by its name.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/groups/get-one-group-by-name/
-func (s *ProjectsServiceOp) GetOneProjectByName(ctx context.Context, projectName string) (*Project, *atlas.Response, error) {
-	if projectName == "" {
-		return nil, nil, atlas.NewArgError("projectName", "must be set")
+// GetByName gets a single project by its name.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-one-group-by-name/
+func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*Project, *atlas.Response, error) {
+	if groupName == "" {
+		return nil, nil, atlas.NewArgError("groupName", "must be set")
 	}
 
-	path := fmt.Sprintf("%s/byName/%s", projectBasePath, projectName)
+	path := fmt.Sprintf("%s/byName/%s", projectBasePath, groupName)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
@@ -145,7 +150,8 @@ func (s *ProjectsServiceOp) GetOneProjectByName(ctx context.Context, projectName
 }
 
 // Create creates a project.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/groups/create-one-group/
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/create-one-group/
 func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project) (*Project, *atlas.Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
@@ -166,7 +172,8 @@ func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project) 
 }
 
 // Delete deletes a project.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/groups/delete-one-group/
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/delete-one-group/
 func (s *ProjectsServiceOp) Delete(ctx context.Context, projectID string) (*atlas.Response, error) {
 	if projectID == "" {
 		return nil, atlas.NewArgError("projectID", "must be set")

@@ -46,7 +46,7 @@ const statusBlob = `{
   "goalVersion": 2
 }`
 
-func TestAutomationStatus_Get(t *testing.T) {
+func TestAutomation_GetStatus(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -57,9 +57,9 @@ func TestAutomationStatus_Get(t *testing.T) {
 		_, _ = fmt.Fprint(w, statusBlob)
 	})
 
-	config, _, err := client.AutomationStatus.Get(ctx, projectID)
+	config, _, err := client.Automation.GetStatus(ctx, projectID)
 	if err != nil {
-		t.Fatalf("AutomationStatus.Get returned error: %v", err)
+		t.Fatalf("Automation.GetStatus returned error: %v", err)
 	}
 
 	expected := &AutomationStatus{

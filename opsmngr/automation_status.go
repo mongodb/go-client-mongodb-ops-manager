@@ -26,18 +26,12 @@ const (
 	automationStatusBasePath = "groups/%s/automationStatus"
 )
 
-// AutomationStatusService is an interface for interfacing with the Automation Status
-// endpoints of the MongoDB CLoud API.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-status/
-type AutomationStatusService interface {
-	Get(context.Context, string) (*AutomationStatus, *atlas.Response, error)
-}
-
-// AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
-type AutomationStatusServiceOp service
-
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-status/#resource
-func (s *AutomationStatusServiceOp) Get(ctx context.Context, groupID string) (*AutomationStatus, *atlas.Response, error) {
+// GetStatus lets you see whether each MongoDB process is up-to-date with the current automation configuration.
+// The endpoint returns the goalVersion field to report the current version of the automation configuration
+// and the lastGoalVersionAchieved fields to report the versions of the configuration running on each server.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-status/
+func (s *AutomationServiceOp) GetStatus(ctx context.Context, groupID string) (*AutomationStatus, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -56,8 +50,6 @@ func (s *AutomationStatusServiceOp) Get(ctx context.Context, groupID string) (*A
 
 	return root, resp, err
 }
-
-var _ AutomationStatusService = new(AutomationStatusServiceOp)
 
 type AutomationStatus struct {
 	Processes   []ProcessStatus `json:"processes"`

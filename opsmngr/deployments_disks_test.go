@@ -23,35 +23,35 @@ import (
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
-func TestHostDatabasesService_Get(t *testing.T) {
+func TestDeployments_GetPartition(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
-	mux.HandleFunc("/groups/12345678/hosts/1/databases/xvdb", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/groups/12345678/hosts/1/disks/xvdb", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			 "links":[
 				{
-				   "href":"https://local/api/public/v1.0/groups/12345678/hosts/1/databases/xvdb",
+				   "href":"https://local/api/public/v1.0/groups/12345678/hosts/1/disks/xvdb",
 				   "rel":"self"
 				}
 			 ],
-			 "databaseName":"xvdb"
+			 "partitionName":"xvdb"
 		}`)
 	})
 
-	disks, _, err := client.HostDatabases.Get(ctx, "12345678", "1", "xvdb")
+	disks, _, err := client.Deployments.GetPartition(ctx, "12345678", "1", "xvdb")
 	if err != nil {
-		t.Fatalf("HostDatabases.Get returned error: %v", err)
+		t.Fatalf("Deployments.GetPartition returned error: %v", err)
 	}
 
-	expected := &atlas.ProcessDatabase{
+	expected := &atlas.ProcessDisk{
 		Links: []*atlas.Link{
 			{
 				Rel:  "self",
-				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/databases/xvdb",
+				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/disks/xvdb",
 			},
 		},
-		DatabaseName: "xvdb",
+		PartitionName: "xvdb",
 	}
 
 	if diff := deep.Equal(disks, expected); diff != nil {
@@ -59,15 +59,15 @@ func TestHostDatabasesService_Get(t *testing.T) {
 	}
 }
 
-func TestHostDatabasesService_List(t *testing.T) {
+func TestDeployments_ListPartitions(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
-	mux.HandleFunc("/groups/12345678/hosts/1/databases", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/groups/12345678/hosts/1/disks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 		   "links":[
 			  {
-				 "href":"https://local/api/public/v1.0/groups/12345678/hosts/1/databases?pageNum=1&itemsPerPage=100",
+				 "href":"https://local/api/public/v1.0/groups/12345678/hosts/1/disks?pageNum=1&itemsPerPage=100",
 				 "rel":"self"
 			  }
 		   ],
@@ -75,38 +75,38 @@ func TestHostDatabasesService_List(t *testing.T) {
 			  {
 				 "links":[
 					{
-					   "href":"https://local/api/public/v1.0/groups/12345678/hosts/1/databases/xvdb",
+					   "href":"https://local/api/public/v1.0/groups/12345678/hosts/1/disks/xvdb",
 					   "rel":"self"
 					}
 				 ],
-				 "databaseName":"xvdb"
+				 "partitionName":"xvdb"
 			  }
 		   ],
 		   "totalCount":1
 		}`)
 	})
 
-	disks, _, err := client.HostDatabases.List(ctx, "12345678", "1", nil)
+	disks, _, err := client.Deployments.ListPartitions(ctx, "12345678", "1", nil)
 	if err != nil {
-		t.Fatalf("HostDatabases.List returned error: %v", err)
+		t.Fatalf("Deployments.ListPartitions returned error: %v", err)
 	}
 
-	expected := &atlas.ProcessDatabasesResponse{
+	expected := &atlas.ProcessDisksResponse{
 		Links: []*atlas.Link{
 			{
 				Rel:  "self",
-				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/databases?pageNum=1&itemsPerPage=100",
+				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/disks?pageNum=1&itemsPerPage=100",
 			},
 		},
-		Results: []*atlas.ProcessDatabase{
+		Results: []*atlas.ProcessDisk{
 			{
 				Links: []*atlas.Link{
 					{
 						Rel:  "self",
-						Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/databases/xvdb",
+						Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/disks/xvdb",
 					},
 				},
-				DatabaseName: "xvdb",
+				PartitionName: "xvdb",
 			},
 		},
 		TotalCount: 1,

@@ -22,24 +22,13 @@ import (
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
-const hostDiskMeasurementsPath = "groups/%s/hosts/%s/disks/%s/measurements"
+const hostDatabaseMeasurementsPath = "groups/%s/hosts/%s/databases/%s/measurements"
 
-// HostDiskMeasurementsService is an interface for interfacing with the host disk measurements
-// endpoints of the MongoDB API.
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-disk-measurements/
-type HostDiskMeasurementsService interface {
-	List(context.Context, string, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDiskMeasurements, *atlas.Response, error)
-}
-
-// HostDiskMeasurementsServiceOp handles communication with the host disk measurements related methods of the
-// MongoDB API
-type HostDiskMeasurementsServiceOp service
-
-var _ HostDiskMeasurementsService = &HostDiskMeasurementsServiceOp{}
-
-// List gets measurements for a specific host MongoDB disk.
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-disk-measurements/
-func (s *HostDiskMeasurementsServiceOp) List(ctx context.Context, groupID, hostID string, diskName string, opts *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDiskMeasurements, *atlas.Response, error) {
+// Database measurements provide statistics on database performance and storage.
+// The Monitoring collects database measurements through the dbStats command.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-database-measurements/
+func (s *MeasurementsServiceOp) Database(ctx context.Context, groupID, hostID, databaseName string, opts *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDatabaseMeasurements, *atlas.Response, error) {
 
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -49,11 +38,11 @@ func (s *HostDiskMeasurementsServiceOp) List(ctx context.Context, groupID, hostI
 		return nil, nil, atlas.NewArgError("hostID", "must be set")
 	}
 
-	if diskName == "" {
+	if databaseName == "" {
 		return nil, nil, atlas.NewArgError("diskName", "must be set")
 	}
 
-	basePath := fmt.Sprintf(hostDiskMeasurementsPath, groupID, hostID, diskName)
+	basePath := fmt.Sprintf(hostDatabaseMeasurementsPath, groupID, hostID, databaseName)
 
 	//Add query params from listOptions
 	path, err := setQueryParams(basePath, opts)
@@ -66,7 +55,7 @@ func (s *HostDiskMeasurementsServiceOp) List(ctx context.Context, groupID, hostI
 		return nil, nil, err
 	}
 
-	root := new(atlas.ProcessDiskMeasurements)
+	root := new(atlas.ProcessDatabaseMeasurements)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

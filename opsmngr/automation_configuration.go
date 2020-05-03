@@ -26,20 +26,10 @@ const (
 	automationConfigBasePath = "groups/%s/automationConfig"
 )
 
-// AutomationConfigService is an interface for interfacing with the Automation Config
-// endpoints of the MongoDB CLoud API.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/
-type AutomationConfigService interface {
-	Get(context.Context, string) (*AutomationConfig, *atlas.Response, error)
-	Update(context.Context, string, *AutomationConfig) (*atlas.Response, error)
-	UpdateAgent(context.Context, string) (*AutomationConfigAgent, *atlas.Response, error)
-}
-
-// AutomationConfigServiceOp handles communication with the Automation config related methods of the MongoDB Cloud API
-type AutomationConfigServiceOp service
-
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#get-the-automation-configuration
-func (s *AutomationConfigServiceOp) Get(ctx context.Context, groupID string) (*AutomationConfig, *atlas.Response, error) {
+// Get retrieve the current automation configuration for a project.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-the-automation-configuration
+func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*AutomationConfig, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -59,8 +49,12 @@ func (s *AutomationConfigServiceOp) Get(ctx context.Context, groupID string) (*A
 	return root, resp, err
 }
 
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#update-the-automation-configuration
-func (s *AutomationConfigServiceOp) Update(ctx context.Context, groupID string, updateRequest *AutomationConfig) (*atlas.Response, error) {
+// UpdateConfig updates a project’s automation configuration.
+// When you submit updates, Ops Manager makes internal modifications to the data
+// and then saves your new configuration version.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#update-the-automation-configuration
+func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, updateRequest *AutomationConfig) (*atlas.Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -76,8 +70,10 @@ func (s *AutomationConfigServiceOp) Update(ctx context.Context, groupID string, 
 	return resp, err
 }
 
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/automation-config/#update-the-automation-configuration
-func (s *AutomationConfigServiceOp) UpdateAgent(ctx context.Context, groupID string) (*AutomationConfigAgent, *atlas.Response, error) {
+// UpdateAgentVersion updates the MongoDB Agent and tools to the latest versions available at the time of the request.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#update-agend-versions-example
+func (s *AutomationServiceOp) UpdateAgentVersion(ctx context.Context, groupID string) (*AutomationConfigAgent, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -96,13 +92,14 @@ func (s *AutomationConfigServiceOp) UpdateAgent(ctx context.Context, groupID str
 	return agent, resp, err
 }
 
-var _ AutomationConfigService = new(AutomationConfigServiceOp)
-
 type AutomationConfigAgent struct {
 	AutomationAgentVersion string `json:"automationAgentVersion"`
 	BiConnectorVersion     string `json:"biConnectorVersion"`
 }
 
+// AutomationConfig represents an Ops Manager project automation config.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/cluster-configuration/
 type AutomationConfig struct {
 	AgentVersion       *map[string]interface{}   `json:"agentVersion,omitempty"`
 	Auth               Auth                      `json:"auth"`

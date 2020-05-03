@@ -26,21 +26,11 @@ const (
 	hostMeasurementsBasePath = "groups/%s/hosts/%s/measurements"
 )
 
-// HostMeasurementsService is an interface for interfacing with the System Measurements
-// endpoints of the MongoDB Ops Manager API.
-type HostMeasurementsService interface {
-	List(context.Context, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error)
-}
-
-// HostMeasurementsServiceOp handles communication with the system measurements related methods of the
-// MongoDB Ops Manager API
-type HostMeasurementsServiceOp service
-
-var _ HostMeasurementsService = &HostMeasurementsServiceOp{}
-
-// List lists system and process measurements on the CPU usage of the hosts that run MongoDB.
+// Host measurements provide data on the state of the MongoDB process.
+// The Monitoring collects host measurements through the MongoDB serverStatus and dbStats commands.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-host-process-system-measurements/
-func (s *HostMeasurementsServiceOp) List(ctx context.Context, projectID, hostID string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error) {
+func (s *MeasurementsServiceOp) Host(ctx context.Context, projectID, hostID string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("projectID", "must be set")
 	}

@@ -23,7 +23,7 @@ import (
 	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
 )
 
-func TestSystemMeasurements_List(t *testing.T) {
+func TestMeasurements_Host(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -68,9 +68,9 @@ func TestSystemMeasurements_List(t *testing.T) {
 		)
 	})
 
-	snapshots, _, err := client.HostMeasurements.List(ctx, projectID, hostID, nil)
+	snapshots, _, err := client.Measurements.Host(ctx, projectID, hostID, nil)
 	if err != nil {
-		t.Fatalf("Checkpoints.List returned error: %v", err)
+		t.Fatalf("Measurements.Host returned error: %v", err)
 	}
 
 	var value float32 = 5.0

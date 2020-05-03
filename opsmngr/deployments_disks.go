@@ -26,41 +26,10 @@ const (
 	hostsDisksBasePath = "groups/%s/hosts/%s/disks"
 )
 
-// HostDisksService is an interface for interfacing with Hosts in MongoDB Ops Manager APIs
-// https://docs.opsmanager.mongodb.com/current/reference/api/disks/
-type HostDisksService interface {
-	Get(context.Context, string, string, string) (*atlas.ProcessDisk, *atlas.Response, error)
-	List(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDisksResponse, *atlas.Response, error)
-}
-
-type HostDisksServiceOp service
-
-// Get gets the MongoDB disks with the specified host ID and partition name.
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
-func (s *HostDisksServiceOp) Get(ctx context.Context, groupID, hostID, partitionName string) (*atlas.ProcessDisk, *atlas.Response, error) {
-	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
-	}
-	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
-	}
-	basePath := fmt.Sprintf(hostsDisksBasePath, groupID, hostID)
-	path := fmt.Sprintf("%s/%s", basePath, partitionName)
-
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	root := new(atlas.ProcessDisk)
-	resp, err := s.Client.Do(ctx, req, root)
-
-	return root, resp, err
-}
-
-// List lists all MongoDB partitions in a host.
+// ListPartitions retrieves all disk partitions on the specified host.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disks-get-all/
-func (s *HostDisksServiceOp) List(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDisksResponse, *atlas.Response, error) {
+func (s *DeploymentsServiceOp) ListPartitions(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDisksResponse, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -79,6 +48,33 @@ func (s *HostDisksServiceOp) List(ctx context.Context, groupID, hostID string, o
 	}
 
 	root := new(atlas.ProcessDisksResponse)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// GetPartition retrieves a disk partition.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
+func (s *DeploymentsServiceOp) GetPartition(ctx context.Context, groupID, hostID, name string) (*atlas.ProcessDisk, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if hostID == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
+	}
+	if name == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
+	}
+	basePath := fmt.Sprintf(hostsDisksBasePath, groupID, hostID)
+	path := fmt.Sprintf("%s/%s", basePath, name)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(atlas.ProcessDisk)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err

@@ -28,6 +28,7 @@ const (
 )
 
 // DiagnosticsService is an interface for interfacing with Diagnostic Archives in MongoDB Ops Manager APIs
+//
 // https://docs.opsmanager.mongodb.com/current/reference/api/diagnostic-archives/
 type DiagnosticsService interface {
 	Get(context.Context, string, *DiagnosticsListOpts, io.Writer) (*atlas.Response, error)
@@ -43,6 +44,7 @@ type DiagnosticsListOpts struct {
 }
 
 // Get retrieves the project’s diagnostics archive file.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/diagnostics/get-project-diagnostic-archive/
 func (s *DiagnosticsServiceOp) Get(ctx context.Context, groupID string, opts *DiagnosticsListOpts, out io.Writer) (*atlas.Response, error) {
 	if groupID == "" {

@@ -53,9 +53,9 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 		}`)
 	})
 
-	orgs, _, err := client.Organizations.GetAllOrganizations(ctx)
+	orgs, _, err := client.Organizations.List(ctx, nil)
 	if err != nil {
-		t.Fatalf("Organizations.GetAllOrganizations returned error: %v", err)
+		t.Fatalf("Organizations.List returned error: %v", err)
 	}
 
 	expected := &Organizations{
@@ -114,9 +114,9 @@ func TestOrganizations_GetOneOrganization(t *testing.T) {
 	  }`)
 	})
 
-	response, _, err := client.Organizations.GetOneOrganization(ctx, ID)
+	response, _, err := client.Organizations.Get(ctx, ID)
 	if err != nil {
-		t.Fatalf("Organizations.GetOneOrganization returned error: %v", err)
+		t.Fatalf("Organizations.Get returned error: %v", err)
 	}
 
 	expected := &Organization{

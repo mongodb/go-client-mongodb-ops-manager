@@ -51,6 +51,7 @@ type GlobalAlerts struct {
 }
 
 // Get gets a global alert.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*GlobalAlert, *atlas.Response, error) {
 	if alertID == "" {
@@ -70,6 +71,7 @@ func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*Globa
 }
 
 // List gets all global alerts.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsListOptions) (*GlobalAlerts, *atlas.Response, error) {
 	path, err := setQueryParams(globalAlertsBasePath, opts)

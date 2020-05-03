@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-func TestAgentAPIKeys_List(t *testing.T) {
+func TestAgents_ListAgentAPIKeys(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -55,9 +55,9 @@ func TestAgentAPIKeys_List(t *testing.T) {
 		`)
 	})
 
-	agentAPIKeys, _, err := client.AgentAPIKeys.List(ctx, projectID)
+	agentAPIKeys, _, err := client.Agents.ListAgentAPIKeys(ctx, projectID)
 	if err != nil {
-		t.Fatalf("client.AgentAPIKeys.List returned error: %v", err)
+		t.Fatalf("Agents.ListAgentAPIKeys returned error: %v", err)
 	}
 
 	CreatedUserID := "21"
@@ -96,7 +96,7 @@ func TestAgentAPIKeys_List(t *testing.T) {
 	}
 }
 
-func TestAgentAPIKeys_Create(t *testing.T) {
+func TestAgents_CreateAgentAPIKey(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 	projectID := "5e66185d917b220fbd8bb4d1"
@@ -112,11 +112,11 @@ func TestAgentAPIKeys_Create(t *testing.T) {
 						}`)
 	})
 
-	agentRequest := AgentAPIKeysRequest{Desc: "TEST"}
-	agentAPIKey, _, err := client.AgentAPIKeys.Create(ctx, projectID, &agentRequest)
+	agentRequest := &AgentAPIKeysRequest{Desc: "TEST"}
+	agentAPIKey, _, err := client.Agents.CreateAgentAPIKey(ctx, projectID, agentRequest)
 
 	if err != nil {
-		t.Fatalf("client.AgentAPIKeys.Create returned error: %v", err)
+		t.Fatalf("Agents.CreateAgentAPIKey returned error: %v", err)
 	}
 
 	CreatedUserID := "21"
@@ -136,7 +136,7 @@ func TestAgentAPIKeys_Create(t *testing.T) {
 		t.Error(diff)
 	}
 }
-func TestAgentAPIKeys_Delete(t *testing.T) {
+func TestAgents_DeleteAgentAPIKey(t *testing.T) {
 	client, mux, _, teardown := setup()
 
 	defer teardown()
@@ -146,8 +146,8 @@ func TestAgentAPIKeys_Delete(t *testing.T) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.AgentAPIKeys.Delete(ctx, projectID, agentAPIKey)
+	_, err := client.Agents.DeleteAgentAPIKey(ctx, projectID, agentAPIKey)
 	if err != nil {
-		t.Fatalf("client.AgentAPIKeys.Delete returned error: %v", err)
+		t.Fatalf("Agents.DeleteAgentAPIKey returned error: %v", err)
 	}
 }

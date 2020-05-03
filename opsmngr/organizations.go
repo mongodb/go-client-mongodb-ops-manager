@@ -26,19 +26,18 @@ const (
 	orgsBasePath = "orgs"
 )
 
-// OrganizationsService is an interface for interfacing with the Organizations
-// endpoints of the MongoDB Atlas API.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/organizations/
+// OrganizationsService provides access to the organization related functions in the Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/
 type OrganizationsService interface {
-	GetAllOrganizations(context.Context) (*Organizations, *atlas.Response, error)
-	GetOneOrganization(context.Context, string) (*Organization, *atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*Organizations, *atlas.Response, error)
+	Get(context.Context, string) (*Organization, *atlas.Response, error)
 	GetProjects(context.Context, string) (*Projects, *atlas.Response, error)
 	Create(context.Context, *Organization) (*Organization, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// OrganizationsServiceOp handles communication with the Projects related methods of the
-// MongoDB Atlas API
+// OrganizationsServiceOp provides an implementation of the OrganizationsService interface
 type OrganizationsServiceOp service
 
 var _ OrganizationsService = &OrganizationsServiceOp{}
@@ -50,18 +49,22 @@ type Organization struct {
 	Name  string        `json:"name,omitempty"`
 }
 
-// Organizations represents a array of organization
+// Organizations represents an array of organization
 type Organizations struct {
 	Links      []*atlas.Link   `json:"links"`
 	Results    []*Organization `json:"results"`
 	TotalCount int             `json:"totalCount"`
 }
 
-// GetAllOrganizations gets all organizations.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/organizations/organization-get-all/
-func (s *OrganizationsServiceOp) GetAllOrganizations(ctx context.Context) (*Organizations, *atlas.Response, error) {
-
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, orgsBasePath, nil)
+// List gets all organizations.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all/
+func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*Organizations, *atlas.Response, error) {
+	path, err := setQueryParams(orgsBasePath, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -79,9 +82,10 @@ func (s *OrganizationsServiceOp) GetAllOrganizations(ctx context.Context) (*Orga
 	return root, resp, nil
 }
 
-// GetOneOrganization gets a single organization.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/organizations/organization-get-one/
-func (s *OrganizationsServiceOp) GetOneOrganization(ctx context.Context, orgID string) (*Organization, *atlas.Response, error) {
+// Get gets a single organization.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-one/
+func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*Organization, *atlas.Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -102,8 +106,9 @@ func (s *OrganizationsServiceOp) GetOneOrganization(ctx context.Context, orgID s
 	return root, resp, err
 }
 
-// GetProjects gets all projects for the given organization ID
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/organizations/organization-get-all-projects/
+// GetProjects gets all projects for the given organization ID.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-projects/
 func (s *OrganizationsServiceOp) GetProjects(ctx context.Context, orgID string) (*Projects, *atlas.Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -126,7 +131,8 @@ func (s *OrganizationsServiceOp) GetProjects(ctx context.Context, orgID string) 
 }
 
 // Create creates an organization.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/organizations/organization-create-one/
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-create-one/
 func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *Organization) (*Organization, *atlas.Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
@@ -147,7 +153,8 @@ func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *Orga
 }
 
 // Delete deletes an organization.
-// See more: https://docs.cloudmanager.mongodb.com/reference/api/organizations/organization-delete-one/
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-delete-one/
 func (s *OrganizationsServiceOp) Delete(ctx context.Context, orgID string) (*atlas.Response, error) {
 	if orgID == "" {
 		return nil, atlas.NewArgError("orgID", "must be set")

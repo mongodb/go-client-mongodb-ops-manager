@@ -26,21 +26,21 @@ const (
 	checkpoints = "groups/%s/clusters/%s/checkpoints"
 )
 
-// CheckpointsService is an interface for interfacing with the Checkpoint
-// endpoints of the MongoDB Ops Manager API.
-// https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/
+// CheckpointsService provides access to the backup related functions in the Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/
 type CheckpointsService interface {
 	List(context.Context, string, string, *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error)
 	Get(context.Context, string, string, string) (*atlas.Checkpoint, *atlas.Response, error)
 }
 
-// CheckpointsServiceOp handles communication with the checkpoint related methods of the
-// MongoDB Atlas API
+// CheckpointsServiceOp provides an implementation of the CheckpointsService interface
 type CheckpointsServiceOp service
 
 var _ CheckpointsService = &CheckpointsServiceOp{}
 
-// List lists checkpoints
+// List lists checkpoints.
+//
 // See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-all-checkpoints
 func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *atlas.ListOptions) (*atlas.Checkpoints, *atlas.Response, error) {
 	if groupID == "" {
@@ -67,7 +67,8 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 	return root, resp, err
 }
 
-// Get gets a checkpoint
+// Get gets a checkpoint.
+//
 // See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-one-checkpoint
 func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterID, checkpointID string) (*atlas.Checkpoint, *atlas.Response, error) {
 	if groupID == "" {

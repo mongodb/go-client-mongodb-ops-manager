@@ -34,13 +34,14 @@ import (
 )
 
 const (
-	Version          = "0.1" // Version for client
-	CloudURL         = "https://cloud.mongodb.com/"
-	DefaultBaseURL   = CloudURL + APIPublicV1Path                                                             // DefaultBaseURL API default base URL for cloud manager
-	APIPublicV1Path  = "api/public/v1.0/"                                                                     // DefaultAPIPath default root path for all API endpoints
-	DefaultUserAgent = "go-client-ops-manager/" + Version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")" // DefaultUserAgent To be submitted by the client
-	jsonMediaType    = "application/json"
-	gzipMediaType    = "application/gzip"
+	version        = "0.3"
+	cloudURL       = "https://cloud.mongodb.com/"
+	defaultBaseURL = cloudURL + APIPublicV1Path
+	userAgent      = "go-ops-manager/" + version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")"
+	jsonMediaType  = "application/json"
+	gzipMediaType  = "application/gzip"
+	// APIPublicV1Path specifies the v1 api path
+	APIPublicV1Path = "api/public/v1.0/"
 )
 
 // Client manages communication with Ops Manager API
@@ -49,31 +50,24 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations            OrganizationsService
-	Projects                 ProjectsService
-	AutomationConfig         AutomationConfigService
-	AutomationStatus         AutomationStatusService
-	UnauthUsers              UnauthUsersService
-	AlertConfigurations      atlas.AlertConfigurationsService
-	Alerts                   atlas.AlertsService
-	ContinuousSnapshots      atlas.ContinuousSnapshotsService
-	ContinuousRestoreJobs    atlas.ContinuousRestoreJobsService
-	Events                   atlas.EventsService
-	AllClusters              AllClustersService
-	Agents                   AgentsService
-	AgentAPIKeys             AgentAPIKeysService
-	Checkpoints              CheckpointsService
-	GlobalAlerts             GlobalAlertsService
-	Hosts                    HostsService
-	HostDisks                HostDisksService
-	HostDatabases            HostDatabasesService
-	HostDatabaseMeasurements HostDatabaseMeasurementsService
-	HostMeasurements         HostMeasurementsService
-	HostDiskMeasurements     HostDiskMeasurementsService
-	Clusters                 ClustersService
-	Logs                     LogsService
-	LogCollections           LogCollectionService
-	Diagnostics              DiagnosticsService
+	Organizations         OrganizationsService
+	Projects              ProjectsService
+	Automation            AutomationService
+	UnauthUsers           UnauthUsersService
+	AlertConfigurations   atlas.AlertConfigurationsService
+	Alerts                atlas.AlertsService
+	ContinuousSnapshots   atlas.ContinuousSnapshotsService
+	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
+	Events                atlas.EventsService
+	Agents                AgentsService
+	Checkpoints           CheckpointsService
+	GlobalAlerts          GlobalAlertsService
+	Deployments           DeploymentsService
+	Measurements          MeasurementsService
+	Clusters              ClustersService
+	Logs                  LogsService
+	LogCollections        LogCollectionService
+	Diagnostics           DiagnosticsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -91,35 +85,28 @@ func NewClient(httpClient *http.Client) *Client {
 		httpClient = http.DefaultClient
 	}
 
-	baseURL, _ := url.Parse(DefaultBaseURL)
+	baseURL, _ := url.Parse(defaultBaseURL)
 
 	c := &Client{
 		client:    httpClient,
 		BaseURL:   baseURL,
-		UserAgent: DefaultUserAgent,
+		UserAgent: userAgent,
 	}
 
 	c.Organizations = &OrganizationsServiceOp{Client: c}
 	c.Projects = &ProjectsServiceOp{Client: c}
-	c.AutomationConfig = &AutomationConfigServiceOp{Client: c}
-	c.AutomationStatus = &AutomationStatusServiceOp{Client: c}
+	c.Automation = &AutomationServiceOp{Client: c}
 	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}
-	c.AllClusters = &AllClustersServiceOp{Client: c}
 	c.ContinuousSnapshots = &atlas.ContinuousSnapshotsServiceOp{Client: c}
 	c.ContinuousRestoreJobs = &atlas.ContinuousRestoreJobsServiceOp{Client: c}
 	c.Agents = &AgentsServiceOp{Client: c}
-	c.AgentAPIKeys = &AgentAPIKeysServiceOp{Client: c}
 	c.Checkpoints = &CheckpointsServiceOp{Client: c}
 	c.Alerts = &atlas.AlertsServiceOp{Client: c}
 	c.GlobalAlerts = &GlobalAlertsServiceOp{Client: c}
 	c.Events = &atlas.EventsServiceOp{Client: c}
-	c.Hosts = &HostsServiceOp{Client: c}
-	c.HostDisks = &HostDisksServiceOp{Client: c}
-	c.HostDatabases = &HostDatabasesServiceOp{Client: c}
-	c.HostDatabaseMeasurements = &HostDatabaseMeasurementsServiceOp{Client: c}
-	c.HostMeasurements = &HostMeasurementsServiceOp{Client: c}
-	c.HostDiskMeasurements = &HostDiskMeasurementsServiceOp{Client: c}
+	c.Deployments = &DeploymentsServiceOp{Client: c}
+	c.Measurements = &MeasurementsServiceOp{Client: c}
 	c.Clusters = &ClustersServiceOp{Client: c}
 	c.Logs = &LogsServiceOp{Client: c}
 	c.LogCollections = &LogCollectionServiceOp{Client: c}

@@ -39,6 +39,12 @@ type LogCollectionService interface {
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
+// LogCollectionServiceOp handles communication with the Log Collection Jobs related methods of the
+// MongoDB Ops Manager API
+type LogCollectionServiceOp service
+
+var _ LogCollectionService = &LogCollectionServiceOp{}
+
 // LogsService is an interface for interfacing with the Log Collection Jobs
 // endpoints of the MongoDB Ops Manager API.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
@@ -46,17 +52,12 @@ type LogsService interface {
 	Download(context.Context, string, string, io.Writer) (*atlas.Response, error)
 }
 
-// LogCollectionServiceOp handles communication with the Log Collection Jobs related methods of the
-// MongoDB Ops Manager API
-type LogCollectionServiceOp service
-
 // LogCollectionServiceOp handles communication with the Log Collection Jobs download method of the
 // MongoDB Ops Manager API
 type LogsServiceOp struct {
 	Client atlas.GZipRequestDoer
 }
 
-var _ LogCollectionService = &LogCollectionServiceOp{}
 var _ LogsService = &LogsServiceOp{}
 
 // LogCollectionJob represents a Log Collection Job in the MongoDB Ops Manager API.
@@ -107,6 +108,7 @@ type LogListOptions struct {
 }
 
 // List gets all collection log jobs.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-all/
 func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts *LogListOptions) (*LogCollectionJobs, *atlas.Response, error) {
 	if groupID == "" {
@@ -131,6 +133,7 @@ func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts 
 }
 
 // Get gets a log collection job.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-one/
 func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string, opts *LogListOptions) (*LogCollectionJob, *atlas.Response, error) {
 	if groupID == "" {
@@ -161,6 +164,7 @@ func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string,
 }
 
 // Create creates a log collection job.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-submit/
 func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log *LogCollectionJob) (*LogCollectionJob, *atlas.Response, error) {
 	if groupID == "" {
@@ -184,6 +188,7 @@ func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log
 }
 
 // Extend extends the expiration data of a log collection job.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-update-one/
 func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID string, log *LogCollectionJob) (*atlas.Response, error) {
 	if groupID == "" {
@@ -211,6 +216,7 @@ func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID stri
 }
 
 // Retry retries a single failed log collection job.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-retry/
 func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
 	if groupID == "" {
@@ -235,6 +241,7 @@ func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID strin
 }
 
 // Delete removes a log collection job.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
 func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
 	if groupID == "" {
@@ -259,6 +266,7 @@ func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID stri
 }
 
 // Download allows to download a log from a collection job.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-download-job/
 func (s *LogsServiceOp) Download(ctx context.Context, groupID, jobID string, out io.Writer) (*atlas.Response, error) {
 	if groupID == "" {

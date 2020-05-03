@@ -26,35 +26,21 @@ const (
 	clustersBasePath = "groups/%s/clusters"
 )
 
-// ClustersService is an interface for interfacing with Clusters in MongoDB Ops Manager APIs
-// https://docs.opsmanager.mongodb.com/current/reference/api/clusters/
+// ClustersService provides access to the cluster related functions in the Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/
 type ClustersService interface {
-	Get(context.Context, string, string) (*Cluster, *atlas.Response, error)
 	List(context.Context, string, *atlas.ListOptions) (*Clusters, *atlas.Response, error)
+	Get(context.Context, string, string) (*Cluster, *atlas.Response, error)
+	ListAll(ctx context.Context) (*AllClustersProjects, *atlas.Response, error)
 }
 
+// ClustersServiceOp provides an implementation of the ClustersService interface
 type ClustersServiceOp service
 
-// Cluster a cluster details
-type Cluster struct {
-	ClusterName    string        `json:"clusterName,omitempty"`
-	GroupID        string        `json:"groupId,omitempty"`
-	ID             string        `json:"id,omitempty"`
-	LastHeartbeat  string        `json:"lastHeartbeat,omitempty"`
-	Links          []*atlas.Link `json:"links,omitempty"`
-	ReplicaSetName string        `json:"replicaSetName,omitempty"`
-	ShardName      string        `json:"shardName,omitempty"`
-	TypeName       string        `json:"typeName,omitempty"`
-}
-
-// Clusters is a list of clusters
-type Clusters struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*Cluster    `json:"results"`
-	TotalCount int           `json:"totalCount"`
-}
-
 // List all clusters for a project
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/#get-all-clusters
 func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) (*Clusters, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
@@ -75,6 +61,9 @@ func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOption
 	return root, resp, err
 }
 
+// Get get a single cluster by ID.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/#get-a-cluster
 func (s *ClustersServiceOp) Get(ctx context.Context, groupID, clusterID string) (*Cluster, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
@@ -94,4 +83,67 @@ func (s *ClustersServiceOp) Get(ctx context.Context, groupID, clusterID string) 
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
+}
+
+// Cluster represents a cluster in Ops Manager.
+type Cluster struct {
+	ClusterName    string        `json:"clusterName,omitempty"`
+	GroupID        string        `json:"groupId,omitempty"`
+	ID             string        `json:"id,omitempty"`
+	LastHeartbeat  string        `json:"lastHeartbeat,omitempty"`
+	Links          []*atlas.Link `json:"links,omitempty"`
+	ReplicaSetName string        `json:"replicaSetName,omitempty"`
+	ShardName      string        `json:"shardName,omitempty"`
+	TypeName       string        `json:"typeName,omitempty"`
+}
+
+// Clusters is a list of clusters.
+type Clusters struct {
+	Links      []*atlas.Link `json:"links"`
+	Results    []*Cluster    `json:"results"`
+	TotalCount int           `json:"totalCount"`
+}
+
+// ListAll list all clusters available to the user.
+func (s *ClustersServiceOp) ListAll(ctx context.Context) (*AllClustersProjects, *atlas.Response, error) {
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, "clusters", nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(AllClustersProjects)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+type AllClustersProject struct {
+	GroupName string               `json:"groupName"`
+	OrgName   string               `json:"orgName"`
+	PlanType  string               `json:"planType,omitempty"`
+	GroupID   string               `json:"groupId"`
+	OrgID     string               `json:"orgId"`
+	Tags      []string             `json:"tags"`
+	Clusters  []AllClustersCluster `json:"clusters"`
+}
+
+// AllClustersCluster represents MongoDB cluster.
+type AllClustersCluster struct {
+	ClusterID     string   `json:"clusterId"`
+	Name          string   `json:"name"`
+	Type          string   `json:"type"`
+	Availability  string   `json:"availability"`
+	Versions      []string `json:"versions"`
+	BackupEnabled bool     `json:"backupEnabled"`
+	AuthEnabled   bool     `json:"authEnabled"`
+	SSLEnabled    bool     `json:"sslEnabled"`
+	AlertCount    int64    `json:"alertCount"`
+	DataSizeBytes int64    `json:"dataSizeBytes"`
+	NodeCount     int64    `json:"nodeCount"`
+}
+
+type AllClustersProjects struct {
+	Links      []*atlas.Link         `json:"links"`
+	Results    []*AllClustersProject `json:"results"`
+	TotalCount int                   `json:"totalCount"`
 }

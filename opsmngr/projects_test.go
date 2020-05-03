@@ -85,9 +85,9 @@ func TestProject_GetAllProjects(t *testing.T) {
 		}`)
 	})
 
-	projects, _, err := client.Projects.GetAllProjects(ctx)
+	projects, _, err := client.Projects.List(ctx, nil)
 	if err != nil {
-		t.Fatalf("Projects.GetAllProjects returned error: %v", err)
+		t.Fatalf("Projects.List returned error: %v", err)
 	}
 
 	expected := &Projects{
@@ -193,9 +193,9 @@ func TestProject_GetOneProject(t *testing.T) {
 	  }`)
 	})
 
-	projectResponse, _, err := client.Projects.GetOneProject(ctx, projectID)
+	projectResponse, _, err := client.Projects.Get(ctx, projectID)
 	if err != nil {
-		t.Fatalf("Projects.GetOneProject returned error: %v", err)
+		t.Fatalf("Projects.Get returned error: %v", err)
 	}
 
 	expected := &Project{
@@ -264,9 +264,9 @@ func TestProject_GetOneProjectByName(t *testing.T) {
 		}`)
 	})
 
-	projectResponse, _, err := client.Projects.GetOneProjectByName(ctx, projectName)
+	projectResponse, _, err := client.Projects.GetByName(ctx, projectName)
 	if err != nil {
-		t.Fatalf("Projects.GetOneProject returned error: %v", err)
+		t.Fatalf("Projects.Get returned error: %v", err)
 	}
 
 	expected := &Project{

@@ -26,41 +26,10 @@ const (
 	hostsDatabasesBasePath = "groups/%s/hosts/%s/databases"
 )
 
-// HostDatabasesService is an interface for interfacing with databases in MongoDB Ops Manager APIs
-// https://docs.opsmanager.mongodb.com/current/reference/api/databases/
-type HostDatabasesService interface {
-	Get(context.Context, string, string, string) (*atlas.ProcessDatabase, *atlas.Response, error)
-	List(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error)
-}
-
-type HostDatabasesServiceOp service
-
-// Get gets the MongoDB databases with the specified host ID and database name.
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
-func (s *HostDatabasesServiceOp) Get(ctx context.Context, groupID, hostID, partitionName string) (*atlas.ProcessDatabase, *atlas.Response, error) {
-	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
-	}
-	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
-	}
-	basePath := fmt.Sprintf(hostsDatabasesBasePath, groupID, hostID)
-	path := fmt.Sprintf("%s/%s", basePath, partitionName)
-
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	root := new(atlas.ProcessDatabase)
-	resp, err := s.Client.Do(ctx, req, root)
-
-	return root, resp, err
-}
-
-// List lists all MongoDB databases in a host.
+// ListDatabases retrieve all databases running on the specified host.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/databases-get-all-on-host/
-func (s *HostDatabasesServiceOp) List(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error) {
+func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -79,6 +48,33 @@ func (s *HostDatabasesServiceOp) List(ctx context.Context, groupID, hostID strin
 	}
 
 	root := new(atlas.ProcessDatabasesResponse)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// GetDatabase retrieve a single database by name.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
+func (s *DeploymentsServiceOp) GetDatabase(ctx context.Context, groupID, hostID, name string) (*atlas.ProcessDatabase, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	if hostID == "" {
+		return nil, nil, atlas.NewArgError("hostID", "must be set")
+	}
+	if name == "" {
+		return nil, nil, atlas.NewArgError("name", "must be set")
+	}
+	basePath := fmt.Sprintf(hostsDatabasesBasePath, groupID, hostID)
+	path := fmt.Sprintf("%s/%s", basePath, name)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(atlas.ProcessDatabase)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err

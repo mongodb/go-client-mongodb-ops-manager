@@ -90,14 +90,14 @@ func testURLParseError(t *testing.T, err error) {
 }
 
 func testClientDefaultBaseURL(t *testing.T, c *Client) {
-	if c.BaseURL == nil || c.BaseURL.String() != DefaultBaseURL {
-		t.Errorf("NewClient BaseURL = %v, expected %v", c.BaseURL, DefaultBaseURL)
+	if c.BaseURL == nil || c.BaseURL.String() != defaultBaseURL {
+		t.Errorf("NewClient BaseURL = %v, expected %v", c.BaseURL, defaultBaseURL)
 	}
 }
 
 func testClientDefaultUserAgent(t *testing.T, c *Client) {
-	if c.UserAgent != DefaultUserAgent {
-		t.Errorf("NewClient UserAgent = %v, expected %v", c.UserAgent, DefaultUserAgent)
+	if c.UserAgent != userAgent {
+		t.Errorf("NewClient UserAgent = %v, expected %v", c.UserAgent, userAgent)
 	}
 }
 
@@ -131,7 +131,7 @@ func TestNewRequest_withUserData(t *testing.T) {
 
 	requestPath := "foo"
 
-	inURL, outURL := requestPath, DefaultBaseURL+requestPath
+	inURL, outURL := requestPath, defaultBaseURL+requestPath
 	inBody, outBody := &testRequestBody{TestName: "l", TestData: "u"},
 		`{"testName":"l","testCounter":0,`+
 			`"testUserData":"u"}`+"\n"
@@ -171,7 +171,7 @@ func TestNewRequest_withCustomUserAgent(t *testing.T) {
 
 	req, _ := c.NewRequest(ctx, http.MethodGet, "/foo", nil)
 
-	expected := fmt.Sprintf("%s %s", ua, DefaultUserAgent)
+	expected := fmt.Sprintf("%s %s", ua, userAgent)
 	if got := req.Header.Get("User-Agent"); got != expected {
 		t.Errorf("New() UserAgent = %s; expected %s", got, expected)
 	}
@@ -347,7 +347,7 @@ func TestSetUserAgent(t *testing.T) {
 		t.Fatalf("New() unexpected error: %v", err)
 	}
 
-	expected := fmt.Sprintf("%s %s", ua, DefaultUserAgent)
+	expected := fmt.Sprintf("%s %s", ua, userAgent)
 	if got := c.UserAgent; got != expected {
 		t.Errorf("New() UserAgent = %s; expected %s", got, expected)
 	}

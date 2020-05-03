@@ -172,7 +172,7 @@ const jsonBlob = `{
   "version" : 1
 }`
 
-func TestAutomationConfig_Get(t *testing.T) {
+func TestAAutomation_GetConfig(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -183,9 +183,9 @@ func TestAutomationConfig_Get(t *testing.T) {
 		_, _ = fmt.Fprint(w, jsonBlob)
 	})
 
-	config, _, err := client.AutomationConfig.Get(ctx, projectID)
+	config, _, err := client.Automation.GetConfig(ctx, projectID)
 	if err != nil {
-		t.Fatalf("AutomationConfig.Get returned error: %v", err)
+		t.Fatalf("Automation.GetConfig returned error: %v", err)
 	}
 
 	expected := &AutomationConfig{
@@ -334,7 +334,7 @@ func TestAutomationConfig_Get(t *testing.T) {
 	}
 }
 
-func TestAutomationConfig_Update(t *testing.T) {
+func TestAutomation_UpdateConfig(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -491,13 +491,13 @@ func TestAutomationConfig_Update(t *testing.T) {
 		_, _ = fmt.Fprint(w, `{}`)
 	})
 
-	_, err := client.AutomationConfig.Update(ctx, projectID, updateRequest)
+	_, err := client.Automation.UpdateConfig(ctx, projectID, updateRequest)
 	if err != nil {
-		t.Fatalf("AutomationConfig.Update returned error: %v", err)
+		t.Fatalf("Automation.UpdateConfig returned error: %v", err)
 	}
 }
 
-func TestAutomationConfig_UpdateAgent(t *testing.T) {
+func TestAutomation_UpdateAgentVersion(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
 
@@ -513,9 +513,9 @@ func TestAutomationConfig_UpdateAgent(t *testing.T) {
 		)
 	})
 
-	agent, _, err := client.AutomationConfig.UpdateAgent(ctx, projectID)
+	agent, _, err := client.Automation.UpdateAgentVersion(ctx, projectID)
 	if err != nil {
-		t.Fatalf("AutomationConfig.UpdateAgent returned error: %v", err)
+		t.Fatalf("Automation.UpdateAgentVersion returned error: %v", err)
 	}
 
 	expected := &AutomationConfigAgent{
