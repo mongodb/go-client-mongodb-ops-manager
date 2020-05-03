@@ -43,7 +43,7 @@ const (
 	gzipMediaType    = "application/gzip"
 )
 
-// Client manages communication with v1.0 API
+// Client manages communication with Ops Manager API
 type Client struct {
 	client    *http.Client
 	BaseURL   *url.URL
@@ -82,7 +82,10 @@ type service struct {
 	Client atlas.RequestDoer
 }
 
-// NewClient returns a new Ops Manager API Client
+// NewClient returns a new Ops Manager API client. If a nil httpClient is
+// provided, a http.DefaultClient will be used. To use API methods which require
+// authentication, provide an http.Client that will perform the authentication
+// for you (such as that provided by the github.com/Sectorbob/mlab-ns2/gae/ns/digest).
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
@@ -202,9 +205,11 @@ func OptionCAValidate(ca string) ClientOpt {
 	}
 }
 
-// NewRequest creates an API request. A relative URL can be provided in urlStr, which will be resolved to the
-// BaseURL of the Client. Relative URLS should always be specified without a preceding slash. If specified, the
-// value pointed to by body is JSON encoded and included in as the request body.
+// NewRequest creates an API request. A relative URL can be provided in urlStr,
+// in which case it is resolved relative to the BaseURL of the Client.
+// Relative URLs should always be specified without a preceding slash. If
+// specified, the value pointed to by body is JSON encoded and included as the
+// request body.
 func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body interface{}) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
@@ -240,8 +245,11 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 	return req, nil
 }
 
-// NewGZipRequest creates an API request that accepts gzip. A relative URL can be provided in urlStr, which will be resolved to the
-// BaseURL of the Client. Relative URLS should always be specified without a preceding slash.
+// NewRequest creates an API gzip request. A relative URL can be provided in urlStr,
+// in which case it is resolved relative to the BaseURL of the Client.
+// Relative URLs should always be specified without a preceding slash. If
+// specified, the value pointed to by body is JSON encoded and included as the
+// request body.
 func (c *Client) NewGZipRequest(ctx context.Context, method, urlStr string) (*http.Request, error) {
 	rel, err := url.Parse(urlStr)
 	if err != nil {
@@ -270,6 +278,8 @@ func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
 // Do sends an API request and returns the API response. The API response is JSON decoded and stored in the value
 // pointed to by v, or returned as an error if an API error has occurred. If v implements the io.Writer interface,
 // the raw response will be written to v, without attempting to decode it.
+// The provided ctx must be non-nil, if it is nil an error is returned. If it is canceled or times out,
+// ctx.Err() will be returned.
 func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atlas.Response, error) {
 	if ctx == nil {
 		return nil, errors.New("context must be non-nil")

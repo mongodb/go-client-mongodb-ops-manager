@@ -1,21 +1,12 @@
 # MongoDB Ops Manager Go Client
+
 [![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/go.mongodb.org/ops-manager/opsmngr)
 [![Build Status](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager.svg?branch=master)](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager)
 
-An HTTP client for [Ops Manager](https://docs.opsmanager.mongodb.com/master/reference/api/) 
-and [Cloud Manager](https://docs.cloudmanager.mongodb.com/reference/api/) Public API endpoints.
+A go client for [Ops Manager](https://docs.opsmanager.mongodb.com/master/reference/api/) 
+and [Cloud Manager](https://docs.cloudmanager.mongodb.com/reference/api/) API.
 
-You can view the Official API docs at: 
-- https://docs.opsmanager.mongodb.com/master/reference/api/
-- https://docs.cloudmanager.mongodb.com/master/reference/api/
-
-## Installation
-
-To get the latest version run this command:
-
-```bash
-go get go.mongodb.org/ops-manager
-```
+Currently, **ops-manager requires Go version 1.12 or greater**.
 
 ## Usage
 
@@ -23,70 +14,54 @@ go get go.mongodb.org/ops-manager
 import "go.mongodb.org/ops-manager/opsmngr"
 ```
 
-## Authentication 
+Construct a new Ops Manager client, then use the various services on the client to
+access different parts of the Ops Manager API. For example:
 
-The Ops Manager API uses [HTTP Digest Authentication](https://docs.opsmanager.mongodb.com/master/core/api/#authentication). 
-Provide your PUBLIC_KEY as the username and PRIVATE_KEY as the password as part of the HTTP request. 
-See [how to set up public API access](https://docs.opsmanager.mongodb.com/master/tutorial/configure-public-api-access/) for more information.
+```go
+client := opsmngr.NewClient(nil)
+```
 
-We use the following library to get HTTP Digest Auth:
+The services of a client divide the API into logical chunks and correspond to
+the structure of the Ops Manager API documentation at
+https://docs.opsmanager.mongodb.com/v4.2/reference/api/.
 
-- https://github.com/Sectorbob/mlab-ns2/gae/ns/digest
+**NOTE:** Using the [context](https://godoc.org/context) package, one can easily
+pass cancellation signals and deadlines to various services of the client for
+handling a request. In case there is no context available, then `context.Background()`
+can be used as a starting point.
 
-## Example Usage
+### Authentication
 
-```go 
-package main
-
+The ops-manager library does not directly handle authentication. Instead, when
+creating a new client, pass an http.Client that can handle authentication for
+you. The easiest and recommended way to do this is using the [digest](https://github.com/Sectorbob/mlab-ns2/gae/ns/digest)
+library, but you can always use any other library that provides an `http.Client`.
+If you have a private and public API token pair, you can
+use it with the digest library using:
+```go
 import (
-	"context"
-	"fmt"
-	"log"
-	"os"
+    "context"
+    "log"
 
-	"github.com/Sectorbob/mlab-ns2/gae/ns/digest"
-	"go.mongodb.org/ops-manager/opsmngr"
+    "github.com/Sectorbob/mlab-ns2/gae/ns/digest"
+    "go.mongodb.org/ops-manager/opsmngr"
 )
 
-func newClient(publicKey, privateKey string) (*mongodbatlas.Client, error) {
-
-	// Setup a transport to handle digest
-	transport := digest.NewTransport(publicKey, privateKey)
-
-	// Initialize the client
-	client, err := transport.Client()
-	if err != nil {
-		return nil, err
-	}
-
-	//Initialize the MongoDB API Client.
-	return opsmngr.NewClient(client), nil
-}
-
 func main() {
-	publicKey := os.Getenv("MONGODB_PUBLIC_KEY")
-	privateKey := os.Getenv("MONGODB_PRIVATE_KEY")
-	projectID := os.Getenv("MONGODB_PROJECT_ID")
+    t := digest.NewTransport("your public key", "your private key")
+    tc, err := t.Client()
+    if err != nil {
+        log.Fatalf(err.Error())
+    }
 
-	if publicKey == "" || privateKey == "" || projectID == "" {
-		log.Fatalln("MONGODB_PUBLIC_KEY, MONGODB_PRIVATE_KEY and MONGODB_PROJECT_ID must be set to run this example")
-	}
-
-	client, err := newClient(publicKey, privateKey)
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-
-	atmStatus, _, err := client.AutomationStatus.Get(context.Background(), projectID)
-
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-
-	fmt.Printf("%+v \n", atmStatus)
-
+    client := opsmngr.NewClient(tc)
+    orgs, _, err := client.Organizations.List(context.Background(), nil)
 }
 ```
+
+Note that when using an authenticated Client, all calls made by the client will
+include the specified tokens. Therefore, authenticated clients should
+almost never be shared between different users.
 
 ## Roadmap
 
