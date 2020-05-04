@@ -13,7 +13,7 @@
 // limitations under the License.
 
 // Package search provides primitives for searching Ops Manager related collections.
-package search
+package search // import "go.mongodb.org/ops-manager/search"
 
 import (
 	"go.mongodb.org/ops-manager/opsmngr"
