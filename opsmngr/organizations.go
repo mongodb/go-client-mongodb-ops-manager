@@ -32,7 +32,7 @@ const (
 type OrganizationsService interface {
 	List(context.Context, *atlas.ListOptions) (*Organizations, *atlas.Response, error)
 	Get(context.Context, string) (*Organization, *atlas.Response, error)
-	GetProjects(context.Context, string) (*Projects, *atlas.Response, error)
+	GetProjects(context.Context, string, *atlas.ListOptions) (*Projects, *atlas.Response, error)
 	Create(context.Context, *Organization) (*Organization, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
 }
@@ -109,12 +109,16 @@ func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*Organi
 // GetProjects gets all projects for the given organization ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-projects/
-func (s *OrganizationsServiceOp) GetProjects(ctx context.Context, orgID string) (*Projects, *atlas.Response, error) {
+func (s *OrganizationsServiceOp) GetProjects(ctx context.Context, orgID string, opts *atlas.ListOptions) (*Projects, *atlas.Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
+	basePath := fmt.Sprintf("%s/%s/groups", orgsBasePath, orgID)
 
-	path := fmt.Sprintf("%s/%s/groups", orgsBasePath, orgID)
+	path, err := setQueryParams(basePath, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {

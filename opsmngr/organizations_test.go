@@ -176,7 +176,7 @@ func TestOrganizations_GetProjects(t *testing.T) {
 		}`)
 	})
 
-	projects, _, err := client.Organizations.GetProjects(ctx, ID)
+	projects, _, err := client.Organizations.GetProjects(ctx, ID, nil)
 	if err != nil {
 		t.Fatalf("Organizations.GetProjects returned error: %v", err)
 	}
