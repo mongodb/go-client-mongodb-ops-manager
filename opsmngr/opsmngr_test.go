@@ -44,7 +44,7 @@ const (
 // setup sets up a test HTTP server along with a opsmngr.Client that is
 // configured to talk to that test server. Tests should register handlers on
 // mux which provide mock responses for the API method being tested.
-func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown func()) {
+func setup() (client *Client, mux *http.ServeMux, teardown func()) {
 	// mux is the HTTP request multiplexer used with the test server.
 	mux = http.NewServeMux()
 
@@ -68,10 +68,10 @@ func setup() (client *Client, mux *http.ServeMux, serverURL string, teardown fun
 	// client is the GitHub client being tested and is
 	// configured to use test server.
 	client = NewClient(nil)
-	url, _ := url.Parse(server.URL + baseURLPath + "/")
-	client.BaseURL = url
+	u, _ := url.Parse(server.URL + baseURLPath + "/")
+	client.BaseURL = u
 
-	return client, mux, server.URL, server.Close
+	return client, mux, server.Close
 }
 
 func testMethod(t *testing.T, r *http.Request, expected string) {
@@ -149,9 +149,9 @@ func TestNewRequest_withUserData(t *testing.T) {
 	}
 
 	// test default user-agent is attached to the request
-	userAgent := req.Header.Get("User-Agent")
-	if c.UserAgent != userAgent {
-		t.Errorf("NewRequest() User-Agent = %v, expected %v", userAgent, c.UserAgent)
+	agent := req.Header.Get("User-Agent")
+	if c.UserAgent != agent {
+		t.Errorf("NewRequest() User-Agent = %v, expected %v", agent, c.UserAgent)
 	}
 }
 
@@ -218,7 +218,7 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 }
 
 func TestClient_Do(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	type foo struct {
@@ -246,7 +246,7 @@ func TestClient_Do(t *testing.T) {
 }
 
 func TestDo_noContent(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -263,7 +263,7 @@ func TestDo_noContent(t *testing.T) {
 }
 
 func TestClient_Do_httpError(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -281,7 +281,7 @@ func TestClient_Do_httpError(t *testing.T) {
 // Test handling of an error caused by the internal http client's Do()
 // function.
 func TestClient_Do_redirectLoop(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -300,7 +300,7 @@ func TestClient_Do_redirectLoop(t *testing.T) {
 }
 
 func TestClient_OnRequestCompleted(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	type foo struct {

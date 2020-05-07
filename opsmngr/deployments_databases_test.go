@@ -24,7 +24,7 @@ import (
 )
 
 func TestDeployments_GetDatabase(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/groups/12345678/hosts/1/databases/xvdb", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -60,7 +60,7 @@ func TestDeployments_GetDatabase(t *testing.T) {
 }
 
 func TestDeployments_ListDatabases(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 	mux.HandleFunc("/groups/12345678/hosts/1/databases", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)

@@ -24,7 +24,7 @@ import (
 )
 
 func TestMeasurements_Disk(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groups := "12345678"

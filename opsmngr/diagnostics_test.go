@@ -8,7 +8,7 @@ import (
 )
 
 func TestDiagnostics_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "5c8100bcf2a30b12ff88258f"
@@ -29,5 +29,4 @@ func TestDiagnostics_Get(t *testing.T) {
 	if buf.String() != "test" {
 		t.Fatalf("Diagnostics.Get returned error: %v", err)
 	}
-
 }

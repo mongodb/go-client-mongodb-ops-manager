@@ -24,7 +24,7 @@ import (
 )
 
 func TestUnauth_CreateFirstUser(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	createRequest := &User{

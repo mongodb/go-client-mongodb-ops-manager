@@ -24,7 +24,7 @@ import (
 )
 
 func TestProject_GetAllProjects(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/groups", func(w http.ResponseWriter, r *http.Request) {
@@ -160,7 +160,7 @@ func TestProject_GetAllProjects(t *testing.T) {
 }
 
 func TestProject_GetOneProject(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"
@@ -231,7 +231,7 @@ func TestProject_GetOneProject(t *testing.T) {
 }
 
 func TestProject_GetOneProjectByName(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	projectName := "012i3091203jioawjioej"
@@ -302,7 +302,7 @@ func TestProject_GetOneProjectByName(t *testing.T) {
 }
 
 func TestProject_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	createRequest := &Project{
@@ -375,7 +375,7 @@ func TestProject_Create(t *testing.T) {
 }
 
 func TestProject_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"

@@ -77,7 +77,7 @@ type LogCollectionJob struct {
 	LogTypes                   []string    `json:"logTypes,omitempty"`
 	SizeRequestedPerFileBytes  int64       `json:"sizeRequestedPerFileBytes,omitempty"`
 	UncompressedDiskSpaceBytes int64       `json:"uncompressedSizeTotalBytes,omitempty"`
-	ChildJobs                  []*ChildJob `json:"childJobs,omitempty"` //included if verbose is true
+	ChildJobs                  []*ChildJob `json:"childJobs,omitempty"` // ChildJobs included if verbose is true
 }
 
 // ChildJob represents a ChildJob in the MongoDB Ops Manager API.

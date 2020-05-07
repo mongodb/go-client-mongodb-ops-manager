@@ -173,7 +173,7 @@ const jsonBlob = `{
 }`
 
 func TestAAutomation_GetConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"
@@ -335,7 +335,7 @@ func TestAAutomation_GetConfig(t *testing.T) {
 }
 
 func TestAutomation_UpdateConfig(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"
@@ -498,7 +498,7 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 }
 
 func TestAutomation_UpdateAgentVersion(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	projectID := "5a0a1e7e0f2912c554080adc"
@@ -526,5 +526,4 @@ func TestAutomation_UpdateAgentVersion(t *testing.T) {
 	if diff := deep.Equal(agent, expected); diff != nil {
 		t.Error(diff)
 	}
-
 }

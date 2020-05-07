@@ -24,7 +24,7 @@ import (
 )
 
 func TestMeasurements_Host(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	projectID := "6b8cd3c380eef5349ef77gf7"

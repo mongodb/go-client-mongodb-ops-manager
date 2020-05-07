@@ -24,7 +24,7 @@ import (
 )
 
 func TestDeployments_ListHosts(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 
 	defer teardown()
 
@@ -131,7 +131,7 @@ func TestDeployments_ListHosts(t *testing.T) {
 }
 
 func TestDeployments_GetHost(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 
 	defer teardown()
 
@@ -227,7 +227,7 @@ func TestDeployments_GetHost(t *testing.T) {
 }
 
 func TestDeployments_GetHostByHostname(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 
 	defer teardown()
 
@@ -324,7 +324,7 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 }
 
 func TestDeployments_StartMonitoring(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 
 	defer teardown()
 
@@ -398,7 +398,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 }
 
 func TestDeployments_UpdateMonitoring(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 
 	defer teardown()
 
@@ -473,7 +473,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 }
 
 func TestDeployments_StopMonitoring(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 
 	defer teardown()
 

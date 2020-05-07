@@ -29,7 +29,6 @@ const hostDatabaseMeasurementsPath = "groups/%s/hosts/%s/databases/%s/measuremen
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-database-measurements/
 func (s *MeasurementsServiceOp) Database(ctx context.Context, groupID, hostID, databaseName string, opts *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDatabaseMeasurements, *atlas.Response, error) {
-
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -44,7 +43,7 @@ func (s *MeasurementsServiceOp) Database(ctx context.Context, groupID, hostID, d
 
 	basePath := fmt.Sprintf(hostDatabaseMeasurementsPath, groupID, hostID, databaseName)
 
-	//Add query params from listOptions
+	// Add query params from listOptions
 	path, err := setQueryParams(basePath, opts)
 	if err != nil {
 		return nil, nil, err

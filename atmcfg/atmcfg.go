@@ -87,11 +87,10 @@ func compareIndexConfig(newIndex *opsmngr.IndexConfig) func(index *opsmngr.Index
 		}
 		return false
 	}
-
 }
 
 // RemoveUser removes a MongoDBUser from the authentication config
-func RemoveUser(out *opsmngr.AutomationConfig, username string, database string) error {
+func RemoveUser(out *opsmngr.AutomationConfig, username, database string) error {
 	pos, found := search.MongoDBUsers(out.Auth.Users, func(p *opsmngr.MongoDBUser) bool {
 		return p.Username == username && p.Database == database
 	})

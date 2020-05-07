@@ -243,7 +243,6 @@ func TestAddIndexConfig(t *testing.T) {
 			t.Fatalf("AddIndexConfig should return an error")
 		}
 	})
-
 }
 
 func TestRemoveUser(t *testing.T) {

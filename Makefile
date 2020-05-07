@@ -31,7 +31,7 @@ test: ## Run tests
 .PHONY: lint
 lint: ## Run linter
 	@echo "==> Linting all packages..."
-	golangci-lint run $(SOURCE_FILES) -E goimports -E golint -E misspell -E unconvert -E maligned -E bodyclose -E gosec
+	golangci-lint run $(SOURCE_FILES)
 
 .PHONY: check
 check: test lint ## Run tests and linters

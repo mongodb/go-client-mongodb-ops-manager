@@ -24,7 +24,7 @@ import (
 )
 
 func TestOrganizations_GetAllOrganizations(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	mux.HandleFunc("/orgs", func(w http.ResponseWriter, r *http.Request) {
@@ -96,7 +96,7 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 }
 
 func TestOrganizations_GetOneOrganization(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	ID := "5a0a1e7e0f2912c554080adc"
@@ -136,7 +136,7 @@ func TestOrganizations_GetOneOrganization(t *testing.T) {
 }
 
 func TestOrganizations_GetProjects(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	ID := "5980cfdf0b6d97029d82f86e"
@@ -225,7 +225,7 @@ func TestOrganizations_GetProjects(t *testing.T) {
 }
 
 func TestOrganizations_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	createRequest := &Organization{
@@ -265,7 +265,7 @@ func TestOrganizations_Create(t *testing.T) {
 }
 
 func TestOrganizations_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	orgID := "5a0a1e7e0f2912c554080adc"

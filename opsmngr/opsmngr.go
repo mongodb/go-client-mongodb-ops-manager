@@ -161,7 +161,7 @@ func OptionSkipVerify(c *Client) error {
 	if !ok {
 		return errors.New("client.Transport not an *http.Transport")
 	}
-	transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} //nolint:gosec
+	transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} //nolint:gosec // this is optional for some users
 	c.client.Transport = transport
 
 	return nil
@@ -199,7 +199,7 @@ func OptionCAValidate(ca string) ClientOpt {
 // request body.
 func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body interface{}) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
-		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
+		return nil, fmt.Errorf("base URL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 	u, err := c.BaseURL.Parse(urlStr)
 	if err != nil {
@@ -211,7 +211,7 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 		buf = &bytes.Buffer{}
 		enc := json.NewEncoder(buf)
 		enc.SetEscapeHTML(false)
-		err := enc.Encode(body)
+		err = enc.Encode(body)
 		if err != nil {
 			return nil, err
 		}

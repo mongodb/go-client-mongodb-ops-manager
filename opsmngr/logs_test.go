@@ -24,7 +24,7 @@ import (
 )
 
 func TestLogs_List(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "6b8cd3c380eef5349ef77gf7"
@@ -193,7 +193,7 @@ func TestLogs_List(t *testing.T) {
 }
 
 func TestLogs_Get(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "5c8100bcf2a30b12ff88258f"
@@ -290,7 +290,7 @@ func TestLogs_Get(t *testing.T) {
 }
 
 func TestLogs_Create(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "5c8100bcf2a30b12ff88258f"
@@ -332,7 +332,7 @@ func TestLogs_Create(t *testing.T) {
 }
 
 func TestLogs_Extend(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "5c8100bcf2a30b12ff88258f"
@@ -352,11 +352,10 @@ func TestLogs_Extend(t *testing.T) {
 	if err != nil {
 		t.Fatalf("LogCollectionJobs.Extend returned error: %v", err)
 	}
-
 }
 
 func TestLogs_Retry(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "5c8100bcf2a30b12ff88258f"
@@ -372,11 +371,10 @@ func TestLogs_Retry(t *testing.T) {
 	if err != nil {
 		t.Fatalf("LogCollectionJobs.Retry returned error: %v", err)
 	}
-
 }
 
 func TestLogs_Delete(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "5c8100bcf2a30b12ff88258f"
@@ -392,11 +390,10 @@ func TestLogs_Delete(t *testing.T) {
 	if err != nil {
 		t.Fatalf("LogCollectionJobs.Delete returned error: %v", err)
 	}
-
 }
 
 func TestLogs_Download(t *testing.T) {
-	client, mux, _, teardown := setup()
+	client, mux, teardown := setup()
 	defer teardown()
 
 	groupID := "5c8100bcf2a30b12ff88258f"
@@ -418,5 +415,4 @@ func TestLogs_Download(t *testing.T) {
 	if buf.String() != "test" {
 		t.Fatalf("Logs.Download returned error: %v", err)
 	}
-
 }
