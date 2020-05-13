@@ -113,7 +113,7 @@ type AutomationConfig struct {
 	MongoSQLDs         []*map[string]interface{} `json:"mongosqlds,omitempty"`
 	MonitoringVersions []*map[string]interface{} `json:"monitoringVersions,omitempty"`
 	MongoTs            []*map[string]interface{} `json:"mongots,omitempty"`
-	Options            *Options                  `json:"options"`
+	Options            *map[string]interface{}   `json:"options"`
 	Processes          []*Process                `json:"processes,omitempty"`
 	ReplicaSets        []*ReplicaSet             `json:"replicaSets,omitempty"`
 	Roles              []*map[string]interface{} `json:"roles,omitempty"`
@@ -195,11 +195,6 @@ type ReplicaSet struct {
 	ID              string   `json:"_id"`
 	ProtocolVersion string   `json:"protocolVersion,omitempty"`
 	Members         []Member `json:"members"`
-}
-
-// Options configs
-type Options struct {
-	DownloadBase string `json:"downloadBase"`
 }
 
 // NetSSL defines SSL parameters for Net
