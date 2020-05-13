@@ -172,7 +172,7 @@ const jsonBlob = `{
   "version" : 1
 }`
 
-func TestAAutomation_GetConfig(t *testing.T) {
+func TestAutomation_GetConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
