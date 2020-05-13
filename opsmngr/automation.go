@@ -27,6 +27,8 @@ type AutomationService interface {
 	GetConfig(context.Context, string) (*AutomationConfig, *atlas.Response, error)
 	UpdateConfig(context.Context, string, *AutomationConfig) (*atlas.Response, error)
 	UpdateAgentVersion(context.Context, string) (*AutomationConfigAgent, *atlas.Response, error)
+	GetBackupAgentConfig(context.Context, string) (*AgentConfig, *atlas.Response, error)
+	GetMonitoringAgentConfig(context.Context, string) (*AgentConfig, *atlas.Response, error)
 	GetStatus(context.Context, string) (*AutomationStatus, *atlas.Response, error)
 }
 
