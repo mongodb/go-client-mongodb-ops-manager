@@ -26,7 +26,7 @@ const (
 	monitoringAgentConfigBasePath = "groups/%s/automationConfig/monitoringAgentConfig"
 )
 
-// GetMonitoringAgentConfig retrieve the current monitoring agent configuration for a project.
+// GetMonitoringAgentConfig retrieves the current monitoring agent configuration for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-monitoring-attributes
 func (s *AutomationServiceOp) GetMonitoringAgentConfig(ctx context.Context, groupID string) (*AgentConfig, *atlas.Response, error) {
