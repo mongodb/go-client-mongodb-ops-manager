@@ -26,7 +26,7 @@ const (
 	backupAgentConfigBasePath = "groups/%s/automationConfig/backupAgentConfig"
 )
 
-// GetBackupAgentConfig retrieve the current backup agent configuration for a project.
+// GetBackupAgentConfig retrieves the current backup agent configuration for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-backup-attributes
 func (s *AutomationServiceOp) GetBackupAgentConfig(ctx context.Context, groupID string) (*AgentConfig, *atlas.Response, error) {
