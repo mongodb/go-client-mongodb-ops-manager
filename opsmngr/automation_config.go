@@ -112,7 +112,7 @@ type AutomationConfig struct {
 	MongoDBVersions    []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
 	MongoSQLDs         []*map[string]interface{} `json:"mongosqlds,omitempty"`
 	MonitoringVersions []*map[string]interface{} `json:"monitoringVersions,omitempty"`
-	MongoTs            []*map[string]interface{} `json:"mongots,omitempty"`
+	MongoTS            []*map[string]interface{} `json:"mongots,omitempty"`
 	Options            *map[string]interface{}   `json:"options"`
 	Processes          []*Process                `json:"processes,omitempty"`
 	ReplicaSets        []*ReplicaSet             `json:"replicaSets,omitempty"`

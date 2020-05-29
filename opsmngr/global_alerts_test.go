@@ -188,8 +188,9 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 		}`)
 	})
 
+	until := "2016-11-01T00:00:00-0400"
 	body := &atlas.AcknowledgeRequest{
-		AcknowledgedUntil: "2016-11-01T00:00:00-0400",
+		AcknowledgedUntil: &until,
 	}
 
 	alerts, _, err := client.GlobalAlerts.Acknowledge(ctx, alertID, body)
