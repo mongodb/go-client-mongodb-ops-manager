@@ -52,12 +52,12 @@ func Startup(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, false)
 }
 
-// AddUser adds a MongoDBUser to the authentication config
+// AddUser adds a opsmngr.MongoDBUser to the opsmngr.AutomationConfi
 func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 	out.Auth.Users = append(out.Auth.Users, u)
 }
 
-// AddIndexConfig adds an IndexConfig to the authentication config
+// AddIndexConfig adds an opsmngr.IndexConfig to the opsmngr.AutomationConfig
 func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig) error {
 	if out == nil {
 		return errors.New("the Automation Config has not been initialized")
@@ -82,7 +82,6 @@ func compareIndexConfig(newIndex *opsmngr.IndexConfig) func(index *opsmngr.Index
 					return false
 				}
 			}
-
 			return true
 		}
 		return false
@@ -99,4 +98,73 @@ func RemoveUser(out *opsmngr.AutomationConfig, username, database string) error 
 	}
 	out.Auth.Users = append(out.Auth.Users[:pos], out.Auth.Users[pos+1:]...)
 	return nil
+}
+
+const (
+	automationAgentName            = "mms-automation"
+	keyLength                      = 500
+	cr                             = "MONGODB-CR"
+	sha256                         = "SCRAM-SHA-256"
+	atmAgentWindowsKeyFilePath     = "%SystemDrive%\\MMSAutomation\\versions\\keyfile"
+	atmAgentKeyFilePathInContainer = "/var/lib/mongodb-mms-automation/keyfile"
+)
+
+// EnableMechanism allows you to enable a given set of authentication mechanisms to an opsmngr.AutomationConfig.
+// This method currently only supports MONGODB-CR, and SCRAM-SHA-256
+func EnableMechanism(out *opsmngr.AutomationConfig, m []string) error {
+	out.Auth.Disabled = false
+	for _, v := range m {
+		if v != cr && v != sha256 {
+			return fmt.Errorf("unsupported mechanism %s", v)
+		}
+		if v == sha256 {
+			out.Auth.AutoAuthMechanism = v
+		}
+		if !stringInSlice(out.Auth.DeploymentAuthMechanisms, v) {
+			out.Auth.DeploymentAuthMechanisms = append(out.Auth.DeploymentAuthMechanisms, v)
+		}
+		if !stringInSlice(out.Auth.AutoAuthMechanisms, v) {
+			out.Auth.AutoAuthMechanisms = append(out.Auth.AutoAuthMechanisms, v)
+		}
+	}
+
+	if out.Auth.AutoUser == "" {
+		if err := setAutoUser(out); err != nil {
+			return err
+		}
+	}
+
+	var err error
+	if out.Auth.Key == "" {
+		if out.Auth.Key, err = generateRandomBase64String(keyLength); err != nil {
+			return err
+		}
+	}
+	if out.Auth.KeyFile == "" {
+		out.Auth.KeyFile = atmAgentKeyFilePathInContainer
+	}
+	if out.Auth.KeyFileWindows == "" {
+		out.Auth.KeyFileWindows = atmAgentWindowsKeyFilePath
+	}
+
+	return nil
+}
+
+func setAutoUser(out *opsmngr.AutomationConfig) error {
+	var err error
+	out.Auth.AutoUser = automationAgentName
+	if out.Auth.AutoPwd, err = generateRandomASCIIString(500); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func stringInSlice(a []string, x string) bool {
+	for _, b := range a {
+		if b == x {
+			return true
+		}
+	}
+	return false
 }

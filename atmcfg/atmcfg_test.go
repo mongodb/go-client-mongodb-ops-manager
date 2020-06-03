@@ -264,3 +264,33 @@ func TestRemoveUser(t *testing.T) {
 		}
 	})
 }
+
+func TestEnableMechanism(t *testing.T) {
+	config := automationConfigWithoutMongoDBUsers()
+
+	e := EnableMechanism(config, []string{"SCRAM-SHA-256"})
+
+	if e != nil {
+		t.Fatalf("EnableMechanism() unexpected error: %v\n", e)
+	}
+
+	if config.Auth.Disabled {
+		t.Error("config.Auth.Disabled is true\n")
+	}
+
+	if config.Auth.AutoAuthMechanisms[0] != "SCRAM-SHA-256" {
+		t.Error("AutoAuthMechanisms not set\n")
+	}
+
+	if config.Auth.AutoUser == "" || config.Auth.AutoPwd == "" {
+		t.Error("config.Auth.Auto* not set\n")
+	}
+
+	if config.Auth.Key == "" || config.Auth.KeyFileWindows == "" || config.Auth.KeyFile == "" {
+		t.Error("config.Auth.Key* not set\n")
+	}
+
+	if len(config.Auth.Users) != 0 {
+		t.Errorf("expected 0 user got: %d\n", len(config.Auth.Users))
+	}
+}
