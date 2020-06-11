@@ -153,18 +153,20 @@ func SetUserAgent(ua string) ClientOpt {
 
 // OptionSkipVerify will set the Insecure Skip which means that TLS certs will not be
 // verified for validity.
-func OptionSkipVerify(c *Client) error {
-	if c.client.Transport == nil {
-		c.client.Transport = http.DefaultTransport
-	}
-	transport, ok := c.client.Transport.(*http.Transport)
-	if !ok {
-		return errors.New("client.Transport not an *http.Transport")
-	}
-	transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} //nolint:gosec // this is optional for some users
-	c.client.Transport = transport
+func OptionSkipVerify() ClientOpt {
+	return func(c *Client) error {
+		if c.client.Transport == nil {
+			c.client.Transport = http.DefaultTransport
+		}
+		transport, ok := c.client.Transport.(*http.Transport)
+		if !ok {
+			return errors.New("client.Transport not an *http.Transport")
+		}
+		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} //nolint:gosec // this is optional for some users
+		c.client.Transport = transport
 
-	return nil
+		return nil
+	}
 }
 
 // OptionCAValidate will use the CA certificate, passed as a string, to validate the
