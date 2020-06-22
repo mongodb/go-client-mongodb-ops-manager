@@ -84,6 +84,27 @@ func TestReplicaSets(t *testing.T) {
 	})
 }
 
+func TestShardingConfig(t *testing.T) {
+	rs := []*opsmngr.ShardingConfig{{Name: "myCluster"}}
+	t.Run("value exists", func(t *testing.T) {
+		_, e := search.ShardingConfig(rs, func(p *opsmngr.ShardingConfig) bool {
+			return p.Name == "myCluster"
+		})
+		if !e {
+			t.Error("ShardingConfig() should find the value")
+		}
+	})
+
+	t.Run("value does not exists", func(t *testing.T) {
+		i, e := search.ShardingConfig(rs, func(p *opsmngr.ShardingConfig) bool {
+			return p.Name == "other"
+		})
+		if e {
+			t.Errorf("ShardingConfig() found at: %d", i)
+		}
+	})
+}
+
 func TestMongoDBUsers(t *testing.T) {
 	users := fixture.Auth.Users
 	t.Run("value exists", func(t *testing.T) {

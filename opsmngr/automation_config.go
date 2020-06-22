@@ -117,10 +117,26 @@ type AutomationConfig struct {
 	Processes          []*Process                `json:"processes,omitempty"`
 	ReplicaSets        []*ReplicaSet             `json:"replicaSets,omitempty"`
 	Roles              []*map[string]interface{} `json:"roles,omitempty"`
-	Sharding           []*map[string]interface{} `json:"sharding,omitempty"`
+	Sharding           []*ShardingConfig         `json:"sharding,omitempty"`
 	SSL                *SSL                      `json:"ssl,omitempty"`
 	UIBaseURL          string                    `json:"uiBaseUrl,omitempty"`
 	Version            int                       `json:"version,omitempty"`
+}
+
+type ShardingConfig struct {
+	Collections         []*map[string]interface{} `json:"collections"`
+	ConfigServerReplica string                    `json:"configServerReplica"`
+	Draining            []string                  `json:"draining"`
+	ManagedSharding     bool                      `json:"managedSharding"`
+	Name                string                    `json:"name"`
+	Shards              []*Shard                  `json:"shards"`
+	Tags                []string                  `json:"tags"`
+}
+
+type Shard struct {
+	ID   string   `json:"_id"`
+	RS   string   `json:"rs"`
+	Tags []string `json:"tags"`
 }
 
 // IndexConfig represents a new index requests for a given database and collection.
