@@ -375,7 +375,7 @@ func TestSetBaseURL_badURL(t *testing.T) {
 }
 
 func TestOptionSkipVerify(t *testing.T) {
-	_, err := New(nil, OptionSkipVerify)
+	_, err := New(nil, OptionSkipVerify())
 
 	if err != nil {
 		t.Fatalf("New() unexpected error: %v", err)
