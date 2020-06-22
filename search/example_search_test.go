@@ -217,6 +217,20 @@ func ExampleReplicaSets() {
 	// found myReplicaSet at index 0
 }
 
+// This example demonstrates searching a list of replica sets by ID.
+func ExampleShardingConfig() {
+	a := []*opsmngr.ShardingConfig{{Name: "myCluster"}}
+	x := "myCluster"
+	i, found := search.ShardingConfig(a, func(r *opsmngr.ShardingConfig) bool { return r.Name == x })
+	if i < len(a) && found {
+		fmt.Printf("found %v at index %d\n", x, i)
+	} else {
+		fmt.Printf("%s not found\n", x)
+	}
+	// Output:
+	// found myCluster at index 0
+}
+
 // This example demonstrates searching a list of members by host.
 func ExampleMembers() {
 	a := fixture.ReplicaSets[0].Members
