@@ -217,6 +217,8 @@ type ReplicaSet struct {
 type TLS struct {
 	Mode       string `json:"mode,omitempty"`
 	PEMKeyFile string `json:"PEMKeyFile,omitempty"`
+	CAFile string `json:"CAFile,omitempty"`
+	CertificateKeyFile string `json:"certificateKeyFile,omitempty"`
 }
 
 // Net part of the internal Process struct
