@@ -213,21 +213,27 @@ type ReplicaSet struct {
 	Members         []Member `json:"members"`
 }
 
-// NetSSL defines SSL parameters for Net
-type NetSSL struct {
-	Mode       string `json:"mode"`
-	PEMKeyFile string `json:"PEMKeyFile"`
+// TLS defines TLS parameters for Net
+type TLS struct {
+	Mode       string `json:"mode,omitempty"`
+	PEMKeyFile string `json:"PEMKeyFile,omitempty"`
 }
 
 // Net part of the internal Process struct
 type Net struct {
-	Port int     `json:"port,omitempty"`
-	SSL  *NetSSL `json:"ssl,omitempty"`
+	Port                   int    `json:"port,omitempty"`
+	BindIP                 string `json:"bindIp,omitempty"`
+	BindIPAll              bool   `json:"bindIpAll"`
+	IPV6                   bool   `json:"ipv6"`
+	MaxIncomingConnections int    `json:"maxIncomingConnections,omitempty"`
+	SSL                    *TLS   `json:"ssl,omitempty"`
+	TLS                    *TLS   `json:"tls,omitempty"`
 }
 
 // Storage part of the internal Process struct
 type Storage struct {
 	DBPath string `json:"dbPath,omitempty"`
+	Engine string `json:"engine,omitempty"`
 }
 
 // Replication is part of the internal Process struct
@@ -246,6 +252,13 @@ type SystemLog struct {
 	Path        string `json:"path,omitempty"`
 }
 
+// AuditLog part of the internal Process struct
+type AuditLog struct {
+	Destination string `json:"destination,omitempty"`
+	Path        string `json:"path,omitempty"`
+	Format      string `json:"format,omitempty"`
+}
+
 // Args26 part of the internal Process struct
 type Args26 struct {
 	NET         Net          `json:"net"`                   // NET configuration for db connection (ports)
@@ -253,6 +266,7 @@ type Args26 struct {
 	Sharding    *Sharding    `json:"sharding,omitempty"`    // Replication configuration for sharded clusters, omit this field if setting Replication
 	Storage     *Storage     `json:"storage,omitempty"`     // Storage configuration for dbpath, config servers don't define this
 	SystemLog   SystemLog    `json:"systemLog"`             // SystemLog configuration for the dblog
+	AuditLog    *AuditLog    `json:"auditLog,omitempty"`    // AuditLog configuration for audit logs
 }
 
 // LogRotate part of the internal Process struct
@@ -263,17 +277,18 @@ type LogRotate struct {
 
 // Process represents a single process in a deployment
 type Process struct {
-	Args26                      Args26     `json:"args2_6"`
-	AuthSchemaVersion           int        `json:"authSchemaVersion,omitempty"`
-	LastGoalVersionAchieved     int        `json:"lastGoalVersionAchieved,omitempty"`
-	Name                        string     `json:"name,omitempty"`
-	Cluster                     string     `json:"cluster,omitempty"`
-	FeatureCompatibilityVersion string     `json:"featureCompatibilityVersion,omitempty"`
-	Hostname                    string     `json:"hostname,omitempty"`
-	LogRotate                   *LogRotate `json:"logRotate,omitempty"`
-	Plan                        []string   `json:"plan,omitempty"`
-	ProcessType                 string     `json:"processType,omitempty"`
-	Version                     string     `json:"version,omitempty"`
-	Disabled                    bool       `json:"disabled,omitempty"`
-	ManualMode                  bool       `json:"manualMode,omitempty"`
+	Args26                      Args26             `json:"args2_6"`
+	AuthSchemaVersion           int                `json:"authSchemaVersion,omitempty"`
+	LastGoalVersionAchieved     int                `json:"lastGoalVersionAchieved,omitempty"`
+	Name                        string             `json:"name,omitempty"`
+	Cluster                     string             `json:"cluster,omitempty"`
+	FeatureCompatibilityVersion string             `json:"featureCompatibilityVersion,omitempty"`
+	Hostname                    string             `json:"hostname,omitempty"`
+	LogRotate                   *LogRotate         `json:"logRotate,omitempty"`
+	Plan                        []string           `json:"plan,omitempty"`
+	ProcessType                 string             `json:"processType,omitempty"`
+	Version                     string             `json:"version,omitempty"`
+	Disabled                    bool               `json:"disabled,omitempty"`
+	ManualMode                  bool               `json:"manualMode,omitempty"`
+	Horizons                    *map[string]string `json:"horizons,omitempty"`
 }
