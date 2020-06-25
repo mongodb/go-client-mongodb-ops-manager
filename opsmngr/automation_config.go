@@ -215,9 +215,9 @@ type ReplicaSet struct {
 
 // TLS defines TLS parameters for Net
 type TLS struct {
-	Mode       string `json:"mode,omitempty"`
-	PEMKeyFile string `json:"PEMKeyFile,omitempty"`
-	CAFile string `json:"CAFile,omitempty"`
+	Mode               string `json:"mode,omitempty"`
+	PEMKeyFile         string `json:"PEMKeyFile,omitempty"`
+	CAFile             string `json:"CAFile,omitempty"`
 	CertificateKeyFile string `json:"certificateKeyFile,omitempty"`
 }
 
