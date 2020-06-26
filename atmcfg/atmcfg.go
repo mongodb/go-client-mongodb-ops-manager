@@ -28,16 +28,34 @@ func setDisabledByClusterName(out *opsmngr.AutomationConfig, name string, disabl
 	if out.Auth.DeploymentAuthMechanisms == nil {
 		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
 	}
-	for _, rs := range out.ReplicaSets {
-		if rs.ID == name {
-			for _, m := range rs.Members {
-				for k, p := range out.Processes {
-					if p.Name == m.Host {
-						out.Processes[k].Disabled = disabled
-					}
+	setDisabledByReplicaSetName(out, name, disabled)
+	setDisabledByShardName(out, name, disabled)
+}
+
+func setDisabledByReplicaSetName(out *opsmngr.AutomationConfig, name string, disabled bool) {
+	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
+		return rs.ID == name
+	})
+	if found {
+		rs := out.ReplicaSets[i]
+		for _, m := range rs.Members {
+			for k, p := range out.Processes {
+				if p.Name == m.Host {
+					out.Processes[k].Disabled = disabled
 				}
 			}
-			break
+		}
+	}
+}
+
+func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled bool) {
+	i, found := search.ShardingConfig(out.Sharding, func(s *opsmngr.ShardingConfig) bool {
+		return s.Name == name
+	})
+	if found {
+		s := out.Sharding[i]
+		for _, rs := range s.Shards {
+			setDisabledByReplicaSetName(out, rs.ID, disabled)
 		}
 	}
 }

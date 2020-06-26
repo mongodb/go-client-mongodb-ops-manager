@@ -73,6 +73,70 @@ func automationConfigWithOneReplicaSet(name string, disabled bool) *opsmngr.Auto
 	}
 }
 
+func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.AutomationConfig {
+	return &opsmngr.AutomationConfig{
+		Processes: []*opsmngr.Process{
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: 27017,
+					},
+					Replication: &opsmngr.Replication{
+						ReplSetName: name,
+					},
+					Sharding: nil,
+					Storage: &opsmngr.Storage{
+						DBPath: "/data/db/",
+					},
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongodb.log",
+					},
+				},
+				AuthSchemaVersion:           5,
+				Name:                        name + "_shard_0_0",
+				Disabled:                    disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host0",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  1000,
+					TimeThresholdHrs: 24,
+				},
+				ProcessType: "mongod",
+				Version:     "4.2.2",
+			},
+		},
+		ReplicaSets: []*opsmngr.ReplicaSet{
+			{
+				ID:              name + "_shard_0",
+				ProtocolVersion: "1",
+				Members: []opsmngr.Member{
+					{
+						ArbiterOnly:  false,
+						BuildIndexes: true,
+						Hidden:       false,
+						Host:         name + "_shard_0_0",
+						Priority:     1,
+						SlaveDelay:   0,
+						Votes:        1,
+					},
+				},
+			},
+		},
+		Sharding: []*opsmngr.ShardingConfig{
+			{
+				Name: name,
+				Shards: []*opsmngr.Shard{
+					{
+						ID: name + "_shard_0",
+						RS: name + "_shard_0",
+					},
+				},
+			},
+		},
+	}
+}
+
 func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
 	return &opsmngr.AutomationConfig{
 		Auth: opsmngr.Auth{
@@ -130,23 +194,45 @@ func mongoDBUsers() *opsmngr.MongoDBUser {
 }
 
 func TestShutdown(t *testing.T) {
-	name := "cluster_1"
-	config := automationConfigWithOneReplicaSet(name, false)
+	t.Run("replica set", func(t *testing.T) {
+		name := "cluster_1"
+		config := automationConfigWithOneReplicaSet(name, false)
 
-	Shutdown(config, name)
-	if !config.Processes[0].Disabled {
-		t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
-	}
+		Shutdown(config, name)
+		if !config.Processes[0].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		name := "cluster_1"
+		config := automationConfigWithOneShardedCluster(name, false)
+
+		Shutdown(config, name)
+		if !config.Processes[0].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+		}
+	})
 }
 
 func TestStartup(t *testing.T) {
-	name := "cluster_1"
-	cloud := automationConfigWithOneReplicaSet(name, true)
+	t.Run("replica set", func(t *testing.T) {
+		name := "cluster_1"
+		cloud := automationConfigWithOneReplicaSet(name, true)
 
-	Startup(cloud, name)
-	if cloud.Processes[0].Disabled {
-		t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", cloud.Processes[0].Disabled, false)
-	}
+		Startup(cloud, name)
+		if cloud.Processes[0].Disabled {
+			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", cloud.Processes[0].Disabled, false)
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		name := "cluster_1"
+		config := automationConfigWithOneShardedCluster(name, true)
+
+		Startup(config, name)
+		if config.Processes[0].Disabled {
+			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+		}
+	})
 }
 
 func TestAddUser(t *testing.T) {
