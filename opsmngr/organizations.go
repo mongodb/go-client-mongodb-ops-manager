@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"net/http"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -30,10 +30,10 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/
 type OrganizationsService interface {
-	List(context.Context, *atlas.ListOptions) (*Organizations, *atlas.Response, error)
-	Get(context.Context, string) (*Organization, *atlas.Response, error)
-	GetProjects(context.Context, string, *atlas.ListOptions) (*Projects, *atlas.Response, error)
-	Create(context.Context, *Organization) (*Organization, *atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*atlas.Organizations, *atlas.Response, error)
+	Get(context.Context, string) (*atlas.Organization, *atlas.Response, error)
+	Projects(context.Context, string, *atlas.ListOptions) (*Projects, *atlas.Response, error)
+	Create(context.Context, *atlas.Organization) (*atlas.Organization, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
@@ -42,24 +42,10 @@ type OrganizationsServiceOp service
 
 var _ OrganizationsService = &OrganizationsServiceOp{}
 
-// Organization represents the structure of an organization.
-type Organization struct {
-	ID    string        `json:"id,omitempty"`
-	Links []*atlas.Link `json:"links,omitempty"`
-	Name  string        `json:"name,omitempty"`
-}
-
-// Organizations represents an array of organization
-type Organizations struct {
-	Links      []*atlas.Link   `json:"links"`
-	Results    []*Organization `json:"results"`
-	TotalCount int             `json:"totalCount"`
-}
-
 // List gets all organizations.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all/
-func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*Organizations, *atlas.Response, error) {
+func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*atlas.Organizations, *atlas.Response, error) {
 	path, err := setQueryParams(orgsBasePath, opts)
 	if err != nil {
 		return nil, nil, err
@@ -69,7 +55,7 @@ func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptio
 		return nil, nil, err
 	}
 
-	root := new(Organizations)
+	root := new(atlas.Organizations)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -85,7 +71,7 @@ func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptio
 // Get gets a single organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-one/
-func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*Organization, *atlas.Response, error) {
+func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*atlas.Organization, *atlas.Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -97,7 +83,7 @@ func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*Organi
 		return nil, nil, err
 	}
 
-	root := new(Organization)
+	root := new(atlas.Organization)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -109,7 +95,7 @@ func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*Organi
 // GetProjects gets all projects for the given organization ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-projects/
-func (s *OrganizationsServiceOp) GetProjects(ctx context.Context, orgID string, opts *atlas.ListOptions) (*Projects, *atlas.Response, error) {
+func (s *OrganizationsServiceOp) Projects(ctx context.Context, orgID string, opts *atlas.ListOptions) (*Projects, *atlas.Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -137,7 +123,7 @@ func (s *OrganizationsServiceOp) GetProjects(ctx context.Context, orgID string, 
 // Create creates an organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-create-one/
-func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *Organization) (*Organization, *atlas.Response, error) {
+func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *atlas.Organization) (*atlas.Organization, *atlas.Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -147,7 +133,7 @@ func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *Orga
 		return nil, nil, err
 	}
 
-	root := new(Organization)
+	root := new(atlas.Organization)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

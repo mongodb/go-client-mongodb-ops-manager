@@ -3,7 +3,7 @@ package opsmngr
 import (
 	"context"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 // DeploymentsService provides access to the deployment related functions in the Ops Manager API.

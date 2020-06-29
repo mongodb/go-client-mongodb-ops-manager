@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestUnauth_CreateFirstUser(t *testing.T) {

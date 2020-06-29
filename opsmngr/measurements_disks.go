@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"net/http"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const hostDiskMeasurementsPath = "groups/%s/hosts/%s/disks/%s/measurements"

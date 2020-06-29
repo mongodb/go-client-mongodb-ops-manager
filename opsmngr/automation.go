@@ -17,7 +17,7 @@ package opsmngr
 import (
 	"context"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 // AutomationService provides access to the automation related functions in the Ops Manager API.

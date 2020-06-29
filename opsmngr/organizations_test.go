@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestOrganizations_GetAllOrganizations(t *testing.T) {
@@ -58,14 +58,14 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 		t.Fatalf("Organizations.List returned error: %v", err)
 	}
 
-	expected := &Organizations{
+	expected := &mongodbatlas.Organizations{
 		Links: []*mongodbatlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/orgs",
 				Rel:  "self",
 			},
 		},
-		Results: []*Organization{
+		Results: []*mongodbatlas.Organization{
 			{
 				ID: "56a10a80e4b0fd3b9a9bb0c2",
 				Links: []*mongodbatlas.Link{
@@ -95,7 +95,7 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 	}
 }
 
-func TestOrganizations_GetOneOrganization(t *testing.T) {
+func TestOrganizations_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -119,7 +119,7 @@ func TestOrganizations_GetOneOrganization(t *testing.T) {
 		t.Fatalf("Organizations.Get returned error: %v", err)
 	}
 
-	expected := &Organization{
+	expected := &mongodbatlas.Organization{
 		ID: "56a10a80e4b0fd3b9a9bb0c2",
 		Links: []*mongodbatlas.Link{
 			{
@@ -135,7 +135,7 @@ func TestOrganizations_GetOneOrganization(t *testing.T) {
 	}
 }
 
-func TestOrganizations_GetProjects(t *testing.T) {
+func TestOrganizations_Projects(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -176,9 +176,9 @@ func TestOrganizations_GetProjects(t *testing.T) {
 		}`)
 	})
 
-	projects, _, err := client.Organizations.GetProjects(ctx, ID, nil)
+	projects, _, err := client.Organizations.Projects(ctx, ID, nil)
 	if err != nil {
-		t.Fatalf("Organizations.GetProjects returned error: %v", err)
+		t.Fatalf("Organizations.Projects returned error: %v", err)
 	}
 
 	expected := &Projects{
@@ -228,7 +228,7 @@ func TestOrganizations_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &Organization{
+	createRequest := &mongodbatlas.Organization{
 		Name: "OrgFoobar",
 	}
 
@@ -248,7 +248,7 @@ func TestOrganizations_Create(t *testing.T) {
 		t.Fatalf("Organizations.Create returned error: %v", err)
 	}
 
-	expected := &Organization{
+	expected := &mongodbatlas.Organization{
 		ID: "5a0a1e7e0f2912c554080adc",
 		Links: []*mongodbatlas.Link{
 			{

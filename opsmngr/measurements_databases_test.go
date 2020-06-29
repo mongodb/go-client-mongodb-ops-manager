@@ -20,7 +20,7 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestMeasurements_Database(t *testing.T) {

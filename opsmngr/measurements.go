@@ -17,7 +17,7 @@ package opsmngr
 import (
 	"context"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 // MeasurementsService provides access to the measurement related functions in the Ops Manager API.

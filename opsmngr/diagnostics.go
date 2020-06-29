@@ -20,7 +20,7 @@ import (
 	"io"
 	"net/http"
 
-	atlas "github.com/mongodb/go-client-mongodb-atlas/mongodbatlas"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
