@@ -22,10 +22,6 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const (
-	automationConfigBasePath = "groups/%s/automationConfig"
-)
-
 // GetConfig retrieves the current automation configuration for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-the-automation-configuration
@@ -70,33 +66,6 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 	return resp, err
 }
 
-// UpdateAgentVersion updates the MongoDB Agent and tools to the latest versions available at the time of the request.
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#update-agend-versions-example
-func (s *AutomationServiceOp) UpdateAgentVersion(ctx context.Context, groupID string) (*AutomationConfigAgent, *atlas.Response, error) {
-	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
-	}
-
-	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
-	path := fmt.Sprintf("%s/%s", basePath, "updateAgentVersions")
-
-	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	agent := new(AutomationConfigAgent)
-	resp, err := s.Client.Do(ctx, req, agent)
-
-	return agent, resp, err
-}
-
-type AutomationConfigAgent struct {
-	AutomationAgentVersion string `json:"automationAgentVersion"`
-	BiConnectorVersion     string `json:"biConnectorVersion"`
-}
-
 // AutomationConfig represents an Ops Manager project automation config.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/cluster-configuration/
@@ -119,7 +88,7 @@ type AutomationConfig struct {
 	Roles              []*map[string]interface{} `json:"roles,omitempty"`
 	Sharding           []*ShardingConfig         `json:"sharding,omitempty"`
 	SSL                *SSL                      `json:"ssl,omitempty"`
-	UIBaseURL          string                    `json:"uiBaseUrl,omitempty"`
+	UIBaseURL          *string                   `json:"uiBaseUrl"`
 	Version            int                       `json:"version,omitempty"`
 }
 
@@ -158,17 +127,32 @@ type SSL struct {
 
 // Auth authentication config
 type Auth struct {
-	Users                    []*MongoDBUser `json:"usersWanted,omitempty"` // Users is a list which contains the desired users at the project level.
+	AuthoritativeSet         bool           `json:"authoritativeSet"`             // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of Users
+	AutoAuthMechanism        string         `json:"autoAuthMechanism"`            // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
+	AutoAuthMechanisms       []string       `json:"autoAuthMechanisms,omitempty"` // AutoAuthMechanisms is a list of auth mechanisms the Automation Agent is able to use
+	AutoAuthRestrictions     []interface{}  `json:"autoAuthRestrictions,omitempty"`
+	AutoKerberosKeytabPath   string         `json:"autoKerberosKeytabPath,omitempty"`
+	AutoLdapGroupDN          string         `json:"autoLdapGroupDN,omitempty"`
+	AutoPwd                  string         `json:"autoPwd,omitempty"`  // AutoPwd is a required field when going from `Disabled=false` to `Disabled=true`
+	AutoUser                 string         `json:"autoUser,omitempty"` // AutoUser is the MongoDB Automation Agent user, when x509 is enabled, it should be set to the subject of the AA's certificate
 	Disabled                 bool           `json:"disabled"`
-	AuthoritativeSet         bool           `json:"authoritativeSet"`                   // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of Users
-	AutoAuthMechanisms       []string       `json:"autoAuthMechanisms,omitempty"`       // AutoAuthMechanisms is a list of auth mechanisms the Automation Agent is able to use
-	AutoAuthMechanism        string         `json:"autoAuthMechanism"`                  // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
 	DeploymentAuthMechanisms []string       `json:"deploymentAuthMechanisms,omitempty"` // DeploymentAuthMechanisms is a list of possible auth mechanisms that can be used within deployments
-	AutoUser                 string         `json:"autoUser,omitempty"`                 // AutoUser is the MongoDB Automation Agent user, when x509 is enabled, it should be set to the subject of the AA's certificate
 	Key                      string         `json:"key,omitempty"`                      // Key is the contents of the KeyFile, the automation agent will ensure this a KeyFile with these contents exists at the `KeyFile` path
 	KeyFile                  string         `json:"keyfile,omitempty"`                  // KeyFile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
 	KeyFileWindows           string         `json:"keyfileWindows,omitempty"`           // KeyFileWindows is required if `Disabled=false` even if the value is not used
-	AutoPwd                  string         `json:"autoPwd,omitempty"`                  // AutoPwd is a required field when going from `Disabled=false` to `Disabled=true`
+	Users                    []*MongoDBUser `json:"usersWanted,omitempty"`              // Users is a list which contains the desired users at the project level.
+	UsersDelete              []*MongoDBUser `json:"usersDeleted,omitempty"`
+}
+
+// Args26 part of the internal Process struct
+type Args26 struct {
+	AuditLog          *AuditLog               `json:"auditLog,omitempty"` // AuditLog configuration for audit logs
+	NET               Net                     `json:"net"`                // NET configuration for db connection (ports)
+	ProcessManagement *map[string]interface{} `json:"processManagement,omitempty"`
+	Replication       *Replication            `json:"replication,omitempty"` // Replication configuration for ReplicaSets, omit this field if setting Sharding
+	Sharding          *Sharding               `json:"sharding,omitempty"`    // Replication configuration for sharded clusters, omit this field if setting Replication
+	Storage           *Storage                `json:"storage,omitempty"`     // Storage configuration for dbpath, config servers don't define this
+	SystemLog         SystemLog               `json:"systemLog"`             // SystemLog configuration for the dblog
 }
 
 type MongoDBUser struct {
@@ -196,21 +180,24 @@ type ScramShaCreds struct {
 
 // Member configs
 type Member struct {
-	ID           int     `json:"_id"`
-	ArbiterOnly  bool    `json:"arbiterOnly"`
-	BuildIndexes bool    `json:"buildIndexes"`
-	Hidden       bool    `json:"hidden"`
-	Host         string  `json:"host"`
-	Priority     float64 `json:"priority"`
-	SlaveDelay   float64 `json:"slaveDelay"`
-	Votes        float64 `json:"votes"`
+	ID           int                     `json:"_id"`
+	ArbiterOnly  bool                    `json:"arbiterOnly"`
+	BuildIndexes bool                    `json:"buildIndexes"`
+	Hidden       bool                    `json:"hidden"`
+	Host         string                  `json:"host"`
+	Priority     float64                 `json:"priority"`
+	SlaveDelay   float64                 `json:"slaveDelay"`
+	Tags         *map[string]interface{} `json:"tags"`
+	Votes        float64                 `json:"votes"`
 }
 
 // ReplicaSet configs
 type ReplicaSet struct {
-	ID              string   `json:"_id"`
-	ProtocolVersion string   `json:"protocolVersion,omitempty"`
-	Members         []Member `json:"members"`
+	ID                                 string                  `json:"_id"`
+	ProtocolVersion                    string                  `json:"protocolVersion,omitempty"`
+	Members                            []Member                `json:"members"`
+	Settings                           *map[string]interface{} `json:"settings,omitempty"`
+	WriteConcernMajorityJournalDefault string                  `json:"writeConcernMajorityJournalDefault,omitempty"`
 }
 
 // TLS defines TLS parameters for Net
@@ -234,8 +221,9 @@ type Net struct {
 
 // Storage part of the internal Process struct
 type Storage struct {
-	DBPath string `json:"dbPath,omitempty"`
-	Engine string `json:"engine,omitempty"`
+	DBPath  string                  `json:"dbPath,omitempty"`
+	Engine  string                  `json:"engine,omitempty"`
+	Journal *map[string]interface{} `json:"journal,omitempty"`
 }
 
 // Replication is part of the internal Process struct
@@ -245,13 +233,14 @@ type Replication struct {
 
 // Sharding is part of the internal Process struct
 type Sharding struct {
-	ClusterRole string `json:"clusterRole"`
+	ClusterRole string `json:"clusterRole,omitempty"`
 }
 
 // SystemLog part of the internal Process struct
 type SystemLog struct {
 	Destination string `json:"destination,omitempty"`
 	Path        string `json:"path,omitempty"`
+	LogAppend   bool   `json:"logAppend,omitempty"`
 }
 
 // AuditLog part of the internal Process struct
@@ -259,16 +248,6 @@ type AuditLog struct {
 	Destination string `json:"destination,omitempty"`
 	Path        string `json:"path,omitempty"`
 	Format      string `json:"format,omitempty"`
-}
-
-// Args26 part of the internal Process struct
-type Args26 struct {
-	NET         Net          `json:"net"`                   // NET configuration for db connection (ports)
-	Replication *Replication `json:"replication,omitempty"` // Replication configuration for ReplicaSets, omit this field if setting Sharding
-	Sharding    *Sharding    `json:"sharding,omitempty"`    // Replication configuration for sharded clusters, omit this field if setting Replication
-	Storage     *Storage     `json:"storage,omitempty"`     // Storage configuration for dbpath, config servers don't define this
-	SystemLog   SystemLog    `json:"systemLog"`             // SystemLog configuration for the dblog
-	AuditLog    *AuditLog    `json:"auditLog,omitempty"`    // AuditLog configuration for audit logs
 }
 
 // LogRotate part of the internal Process struct
@@ -290,7 +269,8 @@ type Process struct {
 	Plan                        []string           `json:"plan,omitempty"`
 	ProcessType                 string             `json:"processType,omitempty"`
 	Version                     string             `json:"version,omitempty"`
-	Disabled                    bool               `json:"disabled,omitempty"`
-	ManualMode                  bool               `json:"manualMode,omitempty"`
+	Disabled                    bool               `json:"disabled"`
+	ManualMode                  bool               `json:"manualMode"`
+	NumCores                    int                `json:"numCores"`
 	Horizons                    *map[string]string `json:"horizons,omitempty"`
 }

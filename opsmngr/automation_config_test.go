@@ -325,6 +325,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 						Votes:        1,
 					},
 				},
+				Settings: &map[string]interface{}{},
 			},
 		},
 		Version: 1,
@@ -494,36 +495,5 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 	_, err := client.Automation.UpdateConfig(ctx, projectID, updateRequest)
 	if err != nil {
 		t.Fatalf("Automation.UpdateConfig returned error: %v", err)
-	}
-}
-
-func TestAutomation_UpdateAgentVersion(t *testing.T) {
-	client, mux, teardown := setup()
-	defer teardown()
-
-	projectID := "5a0a1e7e0f2912c554080adc"
-
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig/updateAgentVersions", projectID), func(w http.ResponseWriter, r *http.Request) {
-		testMethod(t, r, http.MethodPost)
-		_, _ = fmt.Fprint(w,
-			`{
-				  "automationAgentVersion": "10.2.7.5898",
-                  "biConnectorVersion": "2.6.1"
-				}`,
-		)
-	})
-
-	agent, _, err := client.Automation.UpdateAgentVersion(ctx, projectID)
-	if err != nil {
-		t.Fatalf("Automation.UpdateAgentVersion returned error: %v", err)
-	}
-
-	expected := &AutomationConfigAgent{
-		AutomationAgentVersion: "10.2.7.5898",
-		BiConnectorVersion:     "2.6.1",
-	}
-
-	if diff := deep.Equal(agent, expected); diff != nil {
-		t.Error(diff)
 	}
 }

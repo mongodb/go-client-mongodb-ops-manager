@@ -185,8 +185,7 @@ var fixture = &opsmngr.AutomationConfig{
 			Collation: nil,
 		},
 	},
-	Version:   1,
-	UIBaseURL: "",
+	Version: 1,
 }
 
 // This example demonstrates searching a list of processes by name.

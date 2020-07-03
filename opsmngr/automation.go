@@ -20,6 +20,10 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
+const (
+	automationConfigBasePath = "groups/%s/automationConfig"
+)
+
 // AutomationService provides access to the automation related functions in the Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/nav/automation/
