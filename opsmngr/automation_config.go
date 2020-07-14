@@ -210,13 +210,13 @@ type TLS struct {
 
 // Net part of the internal Process struct
 type Net struct {
-	Port                   int    `json:"port,omitempty"`
-	BindIP                 string `json:"bindIp,omitempty"`
-	BindIPAll              bool   `json:"bindIpAll"`
-	IPV6                   bool   `json:"ipv6"`
-	MaxIncomingConnections int    `json:"maxIncomingConnections,omitempty"`
-	SSL                    *TLS   `json:"ssl,omitempty"`
-	TLS                    *TLS   `json:"tls,omitempty"`
+	Port                   int     `json:"port,omitempty"`
+	BindIP                 *string `json:"bindIp,omitempty"`
+	BindIPAll              *bool   `json:"bindIpAll"`
+	IPV6                   *bool   `json:"ipv6"`
+	MaxIncomingConnections *int    `json:"maxIncomingConnections,omitempty"`
+	SSL                    *TLS    `json:"ssl,omitempty"`
+	TLS                    *TLS    `json:"tls,omitempty"`
 }
 
 // Storage part of the internal Process struct
