@@ -212,8 +212,8 @@ type TLS struct {
 type Net struct {
 	Port                   int     `json:"port,omitempty"`
 	BindIP                 *string `json:"bindIp,omitempty"`
-	BindIPAll              *bool   `json:"bindIpAll"`
-	IPV6                   *bool   `json:"ipv6"`
+	BindIPAll              *bool   `json:"bindIpAll,omitempty"`
+	IPV6                   *bool   `json:"ipv6,omitempty"`
 	MaxIncomingConnections *int    `json:"maxIncomingConnections,omitempty"`
 	SSL                    *TLS    `json:"ssl,omitempty"`
 	TLS                    *TLS    `json:"tls,omitempty"`
