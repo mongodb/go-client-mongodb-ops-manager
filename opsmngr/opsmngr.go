@@ -26,7 +26,6 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
-	"runtime"
 	"strings"
 
 	"github.com/google/go-querystring/query"
@@ -34,10 +33,9 @@ import (
 )
 
 const (
-	version        = "0.3"
 	cloudURL       = "https://cloud.mongodb.com/"
 	defaultBaseURL = cloudURL + APIPublicV1Path
-	userAgent      = "go-ops-manager/" + version + " (" + runtime.GOOS + "; " + runtime.GOARCH + ")"
+	userAgent      = "go-ops-manager"
 	jsonMediaType  = "application/json"
 	gzipMediaType  = "application/gzip"
 	// APIPublicV1Path specifies the v1 api path
