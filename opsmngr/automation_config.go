@@ -70,26 +70,28 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/cluster-configuration/
 type AutomationConfig struct {
-	AgentVersion       *map[string]interface{}   `json:"agentVersion,omitempty"`
-	Auth               Auth                      `json:"auth"`
-	BackupVersions     []*map[string]interface{} `json:"backupVersions,omitempty"`
-	Balancer           *map[string]interface{}   `json:"balancer,omitempty"`
-	CPSModules         []*map[string]interface{} `json:"cpsModules,omitempty"`
-	IndexConfigs       []*IndexConfig            `json:"indexConfigs,omitempty"`
-	Kerberos           *map[string]interface{}   `json:"kerberos,omitempty"`
-	LDAP               *map[string]interface{}   `json:"ldap,omitempty"`
-	MongoDBVersions    []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
-	MongoSQLDs         []*map[string]interface{} `json:"mongosqlds,omitempty"`
-	MonitoringVersions []*map[string]interface{} `json:"monitoringVersions,omitempty"`
-	MongoTS            []*map[string]interface{} `json:"mongots,omitempty"`
-	Options            *map[string]interface{}   `json:"options"`
-	Processes          []*Process                `json:"processes,omitempty"`
-	ReplicaSets        []*ReplicaSet             `json:"replicaSets,omitempty"`
-	Roles              []*map[string]interface{} `json:"roles,omitempty"`
-	Sharding           []*ShardingConfig         `json:"sharding,omitempty"`
-	SSL                *SSL                      `json:"ssl,omitempty"`
-	UIBaseURL          *string                   `json:"uiBaseUrl"`
-	Version            int                       `json:"version,omitempty"`
+	AgentVersion         *map[string]interface{}   `json:"agentVersion,omitempty"`
+	Auth                 Auth                      `json:"auth"`
+	BackupVersions       []*map[string]interface{} `json:"backupVersions"`
+	Balancer             *map[string]interface{}   `json:"balancer"`
+	CPSModules           []*map[string]interface{} `json:"cpsModules"`
+	IndexConfigs         []*IndexConfig            `json:"indexConfigs"`
+	Kerberos             *map[string]interface{}   `json:"kerberos,omitempty"`
+	LDAP                 *map[string]interface{}   `json:"ldap,omitempty"`
+	MongoDBVersions      []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
+	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds"`
+	MonitoringVersions   []*map[string]interface{} `json:"monitoringVersions"`
+	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules"`
+	MongoTS              []*map[string]interface{} `json:"mongots"`
+	Options              *map[string]interface{}   `json:"options"`
+	Processes            []*Process                `json:"processes"`
+	ReplicaSets          []*ReplicaSet             `json:"replicaSets"`
+	Roles                []*map[string]interface{} `json:"roles"`
+	Sharding             []*ShardingConfig         `json:"sharding"`
+	SSL                  *SSL                      `json:"ssl,omitempty"`
+	TLS                  *SSL                      `json:"tls,omitempty"`
+	UIBaseURL            *string                   `json:"uiBaseUrl"`
+	Version              int                       `json:"version,omitempty"`
 }
 
 type ShardingConfig struct {
@@ -130,17 +132,17 @@ type Auth struct {
 	AuthoritativeSet         bool           `json:"authoritativeSet"`             // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of Users
 	AutoAuthMechanism        string         `json:"autoAuthMechanism"`            // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
 	AutoAuthMechanisms       []string       `json:"autoAuthMechanisms,omitempty"` // AutoAuthMechanisms is a list of auth mechanisms the Automation Agent is able to use
-	AutoAuthRestrictions     []interface{}  `json:"autoAuthRestrictions,omitempty"`
+	AutoAuthRestrictions     []interface{}  `json:"autoAuthRestrictions"`
 	AutoKerberosKeytabPath   string         `json:"autoKerberosKeytabPath,omitempty"`
 	AutoLdapGroupDN          string         `json:"autoLdapGroupDN,omitempty"`
-	AutoPwd                  string         `json:"autoPwd,omitempty"`  // AutoPwd is a required field when going from `Disabled=false` to `Disabled=true`
-	AutoUser                 string         `json:"autoUser,omitempty"` // AutoUser is the MongoDB Automation Agent user, when x509 is enabled, it should be set to the subject of the AA's certificate
-	Disabled                 bool           `json:"disabled"`
+	AutoPwd                  string         `json:"autoPwd,omitempty"`                  // AutoPwd is a required field when going from `Disabled=false` to `Disabled=true`
+	AutoUser                 string         `json:"autoUser,omitempty"`                 // AutoUser is the MongoDB Automation Agent user, when x509 is enabled, it should be set to the subject of the AA's certificate
 	DeploymentAuthMechanisms []string       `json:"deploymentAuthMechanisms,omitempty"` // DeploymentAuthMechanisms is a list of possible auth mechanisms that can be used within deployments
-	Key                      string         `json:"key,omitempty"`                      // Key is the contents of the KeyFile, the automation agent will ensure this a KeyFile with these contents exists at the `KeyFile` path
-	KeyFile                  string         `json:"keyfile,omitempty"`                  // KeyFile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
-	KeyFileWindows           string         `json:"keyfileWindows,omitempty"`           // KeyFileWindows is required if `Disabled=false` even if the value is not used
-	Users                    []*MongoDBUser `json:"usersWanted,omitempty"`              // Users is a list which contains the desired users at the project level.
+	Disabled                 bool           `json:"disabled"`
+	Key                      string         `json:"key,omitempty"`            // Key is the contents of the KeyFile, the automation agent will ensure this a KeyFile with these contents exists at the `KeyFile` path
+	KeyFile                  string         `json:"keyfile,omitempty"`        // KeyFile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
+	KeyFileWindows           string         `json:"keyfileWindows,omitempty"` // KeyFileWindows is required if `Disabled=false` even if the value is not used
+	Users                    []*MongoDBUser `json:"usersWanted,omitempty"`    // Users is a list which contains the desired users at the project level.
 	UsersDelete              []*MongoDBUser `json:"usersDeleted,omitempty"`
 }
 
@@ -156,12 +158,13 @@ type Args26 struct {
 }
 
 type MongoDBUser struct {
+	AuthenticationRestrictions []string       `json:"authenticationRestrictions"`
+	Database                   string         `json:"db"`
+	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
 	Mechanisms                 []string       `json:"mechanisms"`
+	Password                   string         `json:"pwd,omitempty"`
 	Roles                      []*Role        `json:"roles"`
 	Username                   string         `json:"user"`
-	Database                   string         `json:"db"`
-	AuthenticationRestrictions []string       `json:"authenticationRestrictions,omitempty"`
-	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
 	ScramSha256Creds           *ScramShaCreds `json:"scramSha256Creds,omitempty"`
 	ScramSha1Creds             *ScramShaCreds `json:"scramSha1Creds,omitempty"`
 }
