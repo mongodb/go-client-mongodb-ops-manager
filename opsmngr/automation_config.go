@@ -142,8 +142,8 @@ type Auth struct {
 	Key                      string         `json:"key,omitempty"`            // Key is the contents of the KeyFile, the automation agent will ensure this a KeyFile with these contents exists at the `KeyFile` path
 	KeyFile                  string         `json:"keyfile,omitempty"`        // KeyFile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
 	KeyFileWindows           string         `json:"keyfileWindows,omitempty"` // KeyFileWindows is required if `Disabled=false` even if the value is not used
-	Users                    []*MongoDBUser `json:"usersWanted,omitempty"`    // Users is a list which contains the desired users at the project level.
-	UsersDelete              []*MongoDBUser `json:"usersDeleted,omitempty"`
+	UsersDelete              []*MongoDBUser `json:"usersDeleted"`
+	Users                    []*MongoDBUser `json:"usersWanted"`    // Users is a list which contains the desired users at the project level.
 }
 
 // Args26 part of the internal Process struct
