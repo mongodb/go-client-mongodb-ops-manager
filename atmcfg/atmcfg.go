@@ -70,6 +70,47 @@ func Startup(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, false)
 }
 
+// RemoveByClusterName removes a cluster and its associated processes from the config.
+// This won't shutdown any running process.
+func RemoveByClusterName(out *opsmngr.AutomationConfig, name string) {
+	// This value may not be present and is mandatory
+	if out.Auth.DeploymentAuthMechanisms == nil {
+		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
+	}
+	removeByReplicaSetName(out, name)
+	removeByShardName(out, name)
+}
+
+func removeByReplicaSetName(out *opsmngr.AutomationConfig, name string) {
+	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
+		return rs.ID == name
+	})
+	if found {
+		rs := out.ReplicaSets[i]
+		out.ReplicaSets = append(out.ReplicaSets[:i], out.ReplicaSets[i+1:]...)
+		for _, m := range rs.Members {
+			for k, p := range out.Processes {
+				if p.Name == m.Host {
+					out.Processes = append(out.Processes[:k], out.Processes[k+1:]...)
+				}
+			}
+		}
+	}
+}
+
+func removeByShardName(out *opsmngr.AutomationConfig, name string) {
+	i, found := search.ShardingConfig(out.Sharding, func(rs *opsmngr.ShardingConfig) bool {
+		return rs.Name == name
+	})
+	if found {
+		s := out.Sharding[i]
+		out.Sharding = append(out.Sharding[:i], out.Sharding[i+1:]...)
+		for _, rs := range s.Shards {
+			removeByReplicaSetName(out, rs.ID)
+		}
+	}
+}
+
 // AddUser adds a opsmngr.MongoDBUser to the opsmngr.AutomationConfi
 func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 	out.Auth.Users = append(out.Auth.Users, u)
@@ -135,7 +176,7 @@ func EnableMechanism(out *opsmngr.AutomationConfig, m []string) error {
 		if v != cr && v != sha256 {
 			return fmt.Errorf("unsupported mechanism %s", v)
 		}
-		if v == sha256 {
+		if v == sha256 && out.Auth.AutoAuthMechanism == "" {
 			out.Auth.AutoAuthMechanism = v
 		}
 		if !stringInSlice(out.Auth.DeploymentAuthMechanisms, v) {
@@ -146,14 +187,14 @@ func EnableMechanism(out *opsmngr.AutomationConfig, m []string) error {
 		}
 	}
 
-	if out.Auth.AutoUser == "" {
+	if out.Auth.AutoUser == "" && out.Auth.AutoPwd == "" {
 		if err := setAutoUser(out); err != nil {
 			return err
 		}
 	}
 
-	var err error
 	if out.Auth.Key == "" {
+		var err error
 		if out.Auth.Key, err = generateRandomBase64String(keyLength); err != nil {
 			return err
 		}
