@@ -143,7 +143,7 @@ type Auth struct {
 	KeyFile                  string         `json:"keyfile,omitempty"`        // KeyFile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
 	KeyFileWindows           string         `json:"keyfileWindows,omitempty"` // KeyFileWindows is required if `Disabled=false` even if the value is not used
 	UsersDelete              []*MongoDBUser `json:"usersDeleted"`
-	Users                    []*MongoDBUser `json:"usersWanted"`    // Users is a list which contains the desired users at the project level.
+	Users                    []*MongoDBUser `json:"usersWanted"` // Users is a list which contains the desired users at the project level.
 }
 
 // Args26 part of the internal Process struct
@@ -164,9 +164,9 @@ type MongoDBUser struct {
 	Mechanisms                 []string       `json:"mechanisms"`
 	Password                   string         `json:"pwd,omitempty"`
 	Roles                      []*Role        `json:"roles"`
-	Username                   string         `json:"user"`
 	ScramSha256Creds           *ScramShaCreds `json:"scramSha256Creds,omitempty"`
 	ScramSha1Creds             *ScramShaCreds `json:"scramSha1Creds,omitempty"`
+	Username                   string         `json:"user"`
 }
 
 type Role struct {
