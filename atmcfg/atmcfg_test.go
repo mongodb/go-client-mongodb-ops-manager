@@ -235,6 +235,27 @@ func TestStartup(t *testing.T) {
 	})
 }
 
+func TestRemoveByClusterName(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		name := "cluster_1"
+		config := automationConfigWithOneReplicaSet(name, false)
+
+		RemoveByClusterName(config, name)
+		if len(config.Processes) != 0 {
+			t.Errorf("RemoveByClusterName\n got=%#v\nwant=0\n", len(config.Processes))
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		name := "cluster_1"
+		config := automationConfigWithOneShardedCluster(name, false)
+
+		RemoveByClusterName(config, name)
+		if len(config.Processes) != 0 {
+			t.Errorf("RemoveByClusterName\n got=%#v\nwant=0\n", len(config.Processes))
+		}
+	})
+}
+
 func TestAddUser(t *testing.T) {
 	config := automationConfigWithoutMongoDBUsers()
 	u := mongoDBUsers()
@@ -353,30 +374,34 @@ func TestRemoveUser(t *testing.T) {
 
 func TestEnableMechanism(t *testing.T) {
 	config := automationConfigWithoutMongoDBUsers()
+	t.Run("enable invalid", func(t *testing.T) {
+		if e := EnableMechanism(config, []string{"invalid"}); e == nil {
+			t.Fatalf("EnableMechanism() expected an error but got none\n")
+		}
+	})
+	t.Run("enable SCRAM-SHA-256", func(t *testing.T) {
+		if e := EnableMechanism(config, []string{"SCRAM-SHA-256"}); e != nil {
+			t.Fatalf("EnableMechanism() unexpected error: %v\n", e)
+		}
 
-	e := EnableMechanism(config, []string{"SCRAM-SHA-256"})
+		if config.Auth.Disabled {
+			t.Error("config.Auth.Disabled is true\n")
+		}
 
-	if e != nil {
-		t.Fatalf("EnableMechanism() unexpected error: %v\n", e)
-	}
+		if config.Auth.AutoAuthMechanisms[0] != "SCRAM-SHA-256" {
+			t.Error("AutoAuthMechanisms not set\n")
+		}
 
-	if config.Auth.Disabled {
-		t.Error("config.Auth.Disabled is true\n")
-	}
+		if config.Auth.AutoUser == "" || config.Auth.AutoPwd == "" {
+			t.Error("config.Auth.Auto* not set\n")
+		}
 
-	if config.Auth.AutoAuthMechanisms[0] != "SCRAM-SHA-256" {
-		t.Error("AutoAuthMechanisms not set\n")
-	}
+		if config.Auth.Key == "" || config.Auth.KeyFileWindows == "" || config.Auth.KeyFile == "" {
+			t.Error("config.Auth.Key* not set\n")
+		}
 
-	if config.Auth.AutoUser == "" || config.Auth.AutoPwd == "" {
-		t.Error("config.Auth.Auto* not set\n")
-	}
-
-	if config.Auth.Key == "" || config.Auth.KeyFileWindows == "" || config.Auth.KeyFile == "" {
-		t.Error("config.Auth.Key* not set\n")
-	}
-
-	if len(config.Auth.Users) != 0 {
-		t.Errorf("expected 0 user got: %d\n", len(config.Auth.Users))
-	}
+		if len(config.Auth.Users) != 0 {
+			t.Errorf("expected 0 user got: %d\n", len(config.Auth.Users))
+		}
+	})
 }
