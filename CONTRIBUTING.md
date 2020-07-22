@@ -1,7 +1,25 @@
 # Contributing to MongoDB Ops Manager Go Client
 
 Thanks for your interest in contributing to this project, 
-this document describe the necessary steps to get a development environment going and the best way to contribute back to the project.
+this document describes some guidelines necessary to participate in the community.
+
+## Feature Requests
+
+We welcome any feedback or feature request, to submit yours
+please head over to our [feedback page](https://feedback.mongodb.com/).
+
+## Reporting Issues
+
+Please create a [GitHub issue](https://github.com/mongodb/go-client-mongodb-ops-manager/issues) describing the kind of problem you're facing
+with as much detail as possible, including things like operating system or anything else may be relevant to the issue.
+
+## Submitting a Patch
+
+Before submitting a patch to the repo please consider opening an [issue first](#reporting-issues)
+
+### Contributor License Agreement
+
+For patches to be accepted, contributors must sign our [CLA](https://www.mongodb.com/legal/contributor-agreement).
 
 ## Development setup
 
