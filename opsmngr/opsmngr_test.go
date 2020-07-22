@@ -373,19 +373,3 @@ func TestSetBaseURL_badURL(t *testing.T) {
 
 	testURLParseError(t, err)
 }
-
-func TestOptionSkipVerify(t *testing.T) {
-	_, err := New(nil, OptionSkipVerify())
-
-	if err != nil {
-		t.Fatalf("New() unexpected error: %v", err)
-	}
-}
-
-func TestOptionCAValidate(t *testing.T) {
-	_, err := New(nil, OptionCAValidate(""))
-
-	if err != nil {
-		t.Fatalf("New() unexpected error: %v", err)
-	}
-}

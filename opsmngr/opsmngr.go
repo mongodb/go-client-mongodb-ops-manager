@@ -17,8 +17,6 @@ package opsmngr // import "go.mongodb.org/ops-manager/opsmngr"
 import (
 	"bytes"
 	"context"
-	"crypto/tls"
-	"crypto/x509"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -145,49 +143,6 @@ func SetBaseURL(bu string) ClientOpt {
 func SetUserAgent(ua string) ClientOpt {
 	return func(c *Client) error {
 		c.UserAgent = fmt.Sprintf("%s %s", ua, c.UserAgent)
-		return nil
-	}
-}
-
-// OptionSkipVerify will set the Insecure Skip which means that TLS certs will not be
-// verified for validity.
-func OptionSkipVerify() ClientOpt {
-	return func(c *Client) error {
-		if c.client.Transport == nil {
-			c.client.Transport = http.DefaultTransport
-		}
-		transport, ok := c.client.Transport.(*http.Transport)
-		if !ok {
-			return errors.New("client.Transport not an *http.Transport")
-		}
-		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} //nolint:gosec // this is optional for some users
-		c.client.Transport = transport
-
-		return nil
-	}
-}
-
-// OptionCAValidate will use the CA certificate, passed as a string, to validate the
-// certificates presented by Ops Manager.
-func OptionCAValidate(ca string) ClientOpt {
-	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM([]byte(ca))
-	TLSClientConfig := &tls.Config{
-		InsecureSkipVerify: false,
-		RootCAs:            caCertPool,
-	}
-
-	return func(c *Client) error {
-		if c.client.Transport == nil {
-			c.client.Transport = http.DefaultTransport
-		}
-		transport, ok := c.client.Transport.(*http.Transport)
-		if !ok {
-			return errors.New("client.Transport not an *http.Transport")
-		}
-		transport.TLSClientConfig = TLSClientConfig
-		c.client.Transport = transport
-
 		return nil
 	}
 }
