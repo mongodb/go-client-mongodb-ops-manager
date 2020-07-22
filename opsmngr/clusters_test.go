@@ -27,8 +27,6 @@ func TestClusters_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "6b8cd3c380eef5349ef77gf7"
-
 	path := fmt.Sprintf("/groups/%s/clusters", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -39,7 +37,7 @@ func TestClusters_List(t *testing.T) {
 			"id" : "533d7d4730040be257defe88",
 			"typeName": "SHARDED_REPLICA_SET",
 			"clusterName": "Animals",
-			"groupId": "6b8cd3c380eef5349ef77gf7",
+			"groupId": "5c8100bcf2a30b12ff88258f",
 			"lastHeartbeat": "2014-04-03T15:26:58Z",
 			"links": []
 		  } ],
@@ -56,7 +54,7 @@ func TestClusters_List(t *testing.T) {
 		Results: []*Cluster{
 			{
 				ID:            "533d7d4730040be257defe88",
-				GroupID:       "6b8cd3c380eef5349ef77gf7",
+				GroupID:       groupID,
 				TypeName:      "SHARDED_REPLICA_SET",
 				ClusterName:   "Animals",
 				LastHeartbeat: "2014-04-03T15:26:58Z",
@@ -76,7 +74,6 @@ func TestClusters_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "6b8cd3c380eef5349ef77gf7"
 	clusterID := "533d7d4730040be257defe88"
 	path := fmt.Sprintf("/groups/%s/clusters/%s", groupID, clusterID)
 
@@ -86,7 +83,7 @@ func TestClusters_Get(t *testing.T) {
 			"id": "533d7d4730040be257defe88",
 			"typeName": "SHARDED_REPLICA_SET",
 			"clusterName": "Animals",
-			"groupId": "6b8cd3c380eef5349ef77gf7",
+			"groupId": "5c8100bcf2a30b12ff88258f",
 			"lastHeartbeat": "2014-04-03T15:26:58Z",
 			"links" : []
 		  }`)
@@ -99,7 +96,7 @@ func TestClusters_Get(t *testing.T) {
 
 	expected := &Cluster{
 		ID:            "533d7d4730040be257defe88",
-		GroupID:       "6b8cd3c380eef5349ef77gf7",
+		GroupID:       groupID,
 		TypeName:      "SHARDED_REPLICA_SET",
 		ClusterName:   "Animals",
 		LastHeartbeat: "2014-04-03T15:26:58Z",

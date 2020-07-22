@@ -50,8 +50,6 @@ func TestAutomation_GetStatus(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	projectID := "5a0a1e7e0f2912c554080adc"
-
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationStatus", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, statusBlob)

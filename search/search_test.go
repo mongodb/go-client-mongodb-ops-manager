@@ -24,8 +24,9 @@ import (
 func TestProcesses(t *testing.T) {
 	processes := fixture.Processes
 	t.Run("value exists", func(t *testing.T) {
+		want := rsName
 		_, e := search.Processes(processes, func(p *opsmngr.Process) bool {
-			return p.Name == "myReplicaSet_1"
+			return p.Name == want
 		})
 		if !e {
 			t.Error("Processes() should find the value")
@@ -33,8 +34,9 @@ func TestProcesses(t *testing.T) {
 	})
 
 	t.Run("value does not exists", func(t *testing.T) {
+		want := "other_rs"
 		i, e := search.Processes(processes, func(p *opsmngr.Process) bool {
-			return p.Name == "myReplicaSet_4"
+			return p.Name == want
 		})
 		if e {
 			t.Errorf("Processes() found at: %d", i)
@@ -45,8 +47,9 @@ func TestProcesses(t *testing.T) {
 func TestMembers(t *testing.T) {
 	members := fixture.ReplicaSets[0].Members
 	t.Run("value exists", func(t *testing.T) {
+		want := rsName
 		_, e := search.Members(members, func(p opsmngr.Member) bool {
-			return p.Host == "myReplicaSet_1"
+			return p.Host == want
 		})
 		if !e {
 			t.Error("Members() should find the value")
@@ -54,8 +57,9 @@ func TestMembers(t *testing.T) {
 	})
 
 	t.Run("value does not exists", func(t *testing.T) {
+		want := "other_rs_!"
 		i, e := search.Members(members, func(p opsmngr.Member) bool {
-			return p.Host == "myReplicaSet_4"
+			return p.Host == want
 		})
 		if e {
 			t.Errorf("Members() found at: %d", i)
@@ -75,8 +79,9 @@ func TestReplicaSets(t *testing.T) {
 	})
 
 	t.Run("value does not exists", func(t *testing.T) {
+		want := "other_rs"
 		i, e := search.ReplicaSets(rs, func(p *opsmngr.ReplicaSet) bool {
-			return p.ID == "other"
+			return p.ID == want
 		})
 		if e {
 			t.Errorf("ReplicaSets() found at: %d", i)
@@ -97,7 +102,7 @@ func TestShardingConfig(t *testing.T) {
 
 	t.Run("value does not exists", func(t *testing.T) {
 		i, e := search.ShardingConfig(rs, func(p *opsmngr.ShardingConfig) bool {
-			return p.Name == "other"
+			return p.Name == "other_shard"
 		})
 		if e {
 			t.Errorf("ShardingConfig() found at: %d", i)
@@ -118,7 +123,7 @@ func TestMongoDBUsers(t *testing.T) {
 
 	t.Run("value does not exists", func(t *testing.T) {
 		i, e := search.MongoDBUsers(users, func(p *opsmngr.MongoDBUser) bool {
-			return p.Username == "other"
+			return p.Username == "other_user"
 		})
 		if e {
 			t.Errorf("MongoDBUsers() found at: %d", i)

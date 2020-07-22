@@ -163,9 +163,7 @@ func TestProject_GetOneProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	projectID := "5a0a1e7e0f2912c554080adc"
-
-	mux.HandleFunc(fmt.Sprintf("/%s/%s", projectBasePath, projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/%s/%s", projectBasePath, groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 		"activeAgentCount": 0,
@@ -178,7 +176,7 @@ func TestProject_GetOneProject(t *testing.T) {
 			"secondary": 0,
 			"slave": 0
 		},
-		"id": "56a10a80e4b0fd3b9a9bb0c2",
+		"id": "5c8100bcf2a30b12ff88258f",
 		"lastActiveAgent": "2016-03-09T18:19:37Z",
 		"links": [{
 			"href": "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
@@ -193,7 +191,7 @@ func TestProject_GetOneProject(t *testing.T) {
 	  }`)
 	})
 
-	projectResponse, _, err := client.Projects.Get(ctx, projectID)
+	projectResponse, _, err := client.Projects.Get(ctx, groupID)
 	if err != nil {
 		t.Fatalf("Projects.Get returned error: %v", err)
 	}
@@ -209,7 +207,7 @@ func TestProject_GetOneProject(t *testing.T) {
 			Secondary: 0,
 			Slave:     0,
 		},
-		ID:              "56a10a80e4b0fd3b9a9bb0c2",
+		ID:              "5c8100bcf2a30b12ff88258f",
 		LastActiveAgent: "2016-03-09T18:19:37Z",
 		Links: []*mongodbatlas.Link{
 			{
@@ -306,7 +304,7 @@ func TestProject_Create(t *testing.T) {
 	defer teardown()
 
 	createRequest := &Project{
-		OrgID: "5a0a1e7e0f2912c554080adc",
+		OrgID: orgID,
 		Name:  "ProjectFoobar",
 	}
 
@@ -329,7 +327,7 @@ func TestProject_Create(t *testing.T) {
 				"rel": "self"
 			}],
 			"name": "ProjectFoobar",
-			"orgId": "5a0a1e7e0f2912c554080adc",
+			"orgId": "5a0a1e7e0f2912c554081adc",
 			"publicApiEnabled": true,
 			"replicaSetCount": 0,
 			"shardCount": 0,
@@ -362,7 +360,7 @@ func TestProject_Create(t *testing.T) {
 			},
 		},
 		Name:             "ProjectFoobar",
-		OrgID:            "5a0a1e7e0f2912c554080adc",
+		OrgID:            orgID,
 		PublicAPIEnabled: true,
 		ReplicaSetCount:  0,
 		ShardCount:       0,
@@ -378,13 +376,11 @@ func TestProject_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	projectID := "5a0a1e7e0f2912c554080adc"
-
-	mux.HandleFunc(fmt.Sprintf("/groups/%s", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/groups/%s", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Projects.Delete(ctx, projectID)
+	_, err := client.Projects.Delete(ctx, groupID)
 	if err != nil {
 		t.Fatalf("Projects.Delete returned error: %v", err)
 	}

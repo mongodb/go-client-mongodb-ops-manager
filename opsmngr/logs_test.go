@@ -27,8 +27,6 @@ func TestLogs_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "6b8cd3c380eef5349ef77gf7"
-
 	path := fmt.Sprintf("/groups/%s/logCollectionJobs", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -50,9 +48,9 @@ func TestLogs_List(t *testing.T) {
 					}
 				  ],
 				  "creationDate": "2019-03-07T12:21:24Z",
-				  "downloadUrl": "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+				  "downloadUrl": "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 				  "expirationDate": "2019-04-06T12:21:24Z",
-				  "groupId": "6b8cd3c380eef5349ef77gf7",
+				  "groupId": "5c8100bcf2a30b12ff88258f",
 				  "id": "5c810cc4ff7a256345ff97b7",
 				  "logTypes": [
 					"AUTOMATION_AGENT",
@@ -83,7 +81,7 @@ func TestLogs_List(t *testing.T) {
 					}
 				  ],
 				  "creationDate": "2019-03-07T12:02:54Z",
-				  "downloadUrl": "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+				  "downloadUrl": "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 				  "expirationDate": "2019-05-06T12:02:54Z",
 				  "groupId": "5c8100bcf2a30b12ff88258f",
 				  "id": "5c81086e014b76a3d85e1113",
@@ -127,7 +125,7 @@ func TestLogs_List(t *testing.T) {
 				ResourceName:     "myReplicaSet",
 				RootResourceName: "myReplicaSet",
 				RootResourceType: "replicaset",
-				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 				Redacted:         &redacted,
 				LogTypes: []string{
 					"AUTOMATION_AGENT",
@@ -151,7 +149,7 @@ func TestLogs_List(t *testing.T) {
 			},
 			{
 				ID:               "5c81086e014b76a3d85e1113",
-				GroupID:          "5c8100bcf2a30b12ff88258f",
+				GroupID:          groupID,
 				UserID:           "5c80f75fcf09a246878f67a4",
 				CreationDate:     "2019-03-07T12:02:54Z",
 				ExpirationDate:   "2019-05-06T12:02:54Z",
@@ -160,7 +158,7 @@ func TestLogs_List(t *testing.T) {
 				ResourceName:     "myReplicaSet",
 				RootResourceName: "myReplicaSet",
 				RootResourceType: "replicaset",
-				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 				Redacted:         &redacted,
 				LogTypes: []string{
 					"MONGODB",
@@ -196,7 +194,6 @@ func TestLogs_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "5c8100bcf2a30b12ff88258f"
 	ID := "1"
 
 	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s", groupID, ID)
@@ -218,7 +215,7 @@ func TestLogs_Get(t *testing.T) {
 					}
 				  ],
 				  "creationDate": "2019-03-07T12:21:24Z",
-				  "downloadUrl": "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+				  "downloadUrl": "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 				  "expirationDate": "2019-04-06T12:21:24Z",
 				  "groupId": "5c8100bcf2a30b12ff88258f",
 				  "id": "5c810cc4ff7a256345ff97b7",
@@ -261,7 +258,7 @@ func TestLogs_Get(t *testing.T) {
 		ResourceName:     "myReplicaSet",
 		RootResourceName: "myReplicaSet",
 		RootResourceType: "replicaset",
-		URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+		URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 		Redacted:         &redacted,
 		LogTypes: []string{
 			"AUTOMATION_AGENT",
@@ -292,8 +289,6 @@ func TestLogs_Get(t *testing.T) {
 func TestLogs_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "5c8100bcf2a30b12ff88258f"
 
 	path := fmt.Sprintf("/groups/%s/logCollectionJobs", groupID)
 
@@ -335,7 +330,6 @@ func TestLogs_Extend(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "5c8100bcf2a30b12ff88258f"
 	ID := "1"
 
 	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s", groupID, ID)
@@ -358,7 +352,6 @@ func TestLogs_Retry(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "5c8100bcf2a30b12ff88258f"
 	ID := "1"
 
 	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s/retry", groupID, ID)
@@ -377,7 +370,6 @@ func TestLogs_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "5c8100bcf2a30b12ff88258f"
 	ID := "1"
 
 	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s", groupID, ID)
@@ -396,7 +388,6 @@ func TestLogs_Download(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "5c8100bcf2a30b12ff88258f"
 	ID := "1"
 
 	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s/download", groupID, ID)

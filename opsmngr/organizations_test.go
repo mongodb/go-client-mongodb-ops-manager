@@ -95,16 +95,16 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 	}
 }
 
+const orgID = "5a0a1e7e0f2912c554081adc"
+
 func TestOrganizations_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	ID := "5a0a1e7e0f2912c554080adc"
-
-	mux.HandleFunc(fmt.Sprintf("/%s/%s", orgsBasePath, ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/%s/%s", orgsBasePath, orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
-		"id": "56a10a80e4b0fd3b9a9bb0c2",
+		"id": "5a0a1e7e0f2912c554081adc",
 		"lastActiveAgent": "2016-03-09T18:19:37Z",
 		"links": [{
 			"href": "https://cloud.mongodb.com/api/public/v1.0/orgs/56a10a80e4b0fd3b9a9bb0c2",
@@ -114,13 +114,13 @@ func TestOrganizations_Get(t *testing.T) {
 	  }`)
 	})
 
-	response, _, err := client.Organizations.Get(ctx, ID)
+	response, _, err := client.Organizations.Get(ctx, orgID)
 	if err != nil {
 		t.Fatalf("Organizations.Get returned error: %v", err)
 	}
 
 	expected := &mongodbatlas.Organization{
-		ID: "56a10a80e4b0fd3b9a9bb0c2",
+		ID: orgID,
 		Links: []*mongodbatlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/orgs/56a10a80e4b0fd3b9a9bb0c2",
@@ -139,9 +139,7 @@ func TestOrganizations_Projects(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	ID := "5980cfdf0b6d97029d82f86e"
-
-	mux.HandleFunc(fmt.Sprintf("/%s/%s/groups", orgsBasePath, ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/%s/%s/groups", orgsBasePath, orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			"links": [{
@@ -166,7 +164,7 @@ func TestOrganizations_Projects(t *testing.T) {
 					"rel": "self"
 				}],
 				"name": "012i3091203jioawjioej",
-				"orgId": "5980cfdf0b6d97029d82f86e",
+				"orgId": "5a0a1e7e0f2912c554081adc",
 				"publicApiEnabled": true,
 				"replicaSetCount": 0,
 				"shardCount": 0,
@@ -176,7 +174,7 @@ func TestOrganizations_Projects(t *testing.T) {
 		}`)
 	})
 
-	projects, _, err := client.Organizations.Projects(ctx, ID, nil)
+	projects, _, err := client.Organizations.Projects(ctx, orgID, nil)
 	if err != nil {
 		t.Fatalf("Organizations.Projects returned error: %v", err)
 	}
@@ -209,7 +207,7 @@ func TestOrganizations_Projects(t *testing.T) {
 					},
 				},
 				Name:             "012i3091203jioawjioej",
-				OrgID:            "5980cfdf0b6d97029d82f86e",
+				OrgID:            "5a0a1e7e0f2912c554081adc",
 				PublicAPIEnabled: true,
 				ReplicaSetCount:  0,
 				ShardCount:       0,
@@ -234,7 +232,7 @@ func TestOrganizations_Create(t *testing.T) {
 
 	mux.HandleFunc("/orgs", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
-			"id": "5a0a1e7e0f2912c554080adc",
+			"id": "5a0a1e7e0f2912c554081adc",
 			"links": [{
 				"href": "https://cloud.mongodb.com/api/public/v1.0/orgs/5a0a1e7e0f2912c554080adc",
 				"rel": "self"
@@ -249,7 +247,7 @@ func TestOrganizations_Create(t *testing.T) {
 	}
 
 	expected := &mongodbatlas.Organization{
-		ID: "5a0a1e7e0f2912c554080adc",
+		ID: orgID,
 		Links: []*mongodbatlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/orgs/5a0a1e7e0f2912c554080adc",
@@ -267,8 +265,6 @@ func TestOrganizations_Create(t *testing.T) {
 func TestOrganizations_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	orgID := "5a0a1e7e0f2912c554080adc"
 
 	mux.HandleFunc(fmt.Sprintf("/orgs/%s", orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

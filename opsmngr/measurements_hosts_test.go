@@ -27,17 +27,16 @@ func TestMeasurements_Host(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	projectID := "6b8cd3c380eef5349ef77gf7"
 	hostID := "hostID"
 
-	path := fmt.Sprintf("/groups/%s/hosts/%s/measurements", projectID, hostID)
+	path := fmt.Sprintf("/groups/%s/hosts/%s/measurements", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 					  "end": "2018-07-31T16:29:24Z",
 					  "granularity": "P1T12H",
-					  "groupId": "6b8cd3c380eef5349ef77gf7",
+					  "groupId": "5c8100bcf2a30b12ff88258f",
 					  "hostId": "hostID",
 					  "links": [],
 					  "measurements": [{
@@ -68,7 +67,7 @@ func TestMeasurements_Host(t *testing.T) {
 		)
 	})
 
-	snapshots, _, err := client.Measurements.Host(ctx, projectID, hostID, nil)
+	snapshots, _, err := client.Measurements.Host(ctx, groupID, hostID, nil)
 	if err != nil {
 		t.Fatalf("Measurements.Host returned error: %v", err)
 	}
@@ -78,7 +77,7 @@ func TestMeasurements_Host(t *testing.T) {
 	expected := &atlas.ProcessMeasurements{
 		End:         "2018-07-31T16:29:24Z",
 		Granularity: "P1T12H",
-		GroupID:     "6b8cd3c380eef5349ef77gf7",
+		GroupID:     groupID,
 		HostID:      "hostID",
 		Links:       []*atlas.Link{},
 		Measurements: []*atlas.Measurements{

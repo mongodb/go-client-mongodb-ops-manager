@@ -176,8 +176,6 @@ func TestAutomation_GetConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	projectID := "5a0a1e7e0f2912c554080adc"
-
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, jsonBlob)
@@ -339,7 +337,6 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	projectID := "5a0a1e7e0f2912c554080adc"
 	clusterName := "myReplicaSet"
 	updateRequest := &AutomationConfig{
 		Auth: Auth{

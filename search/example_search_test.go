@@ -21,6 +21,8 @@ import (
 	"go.mongodb.org/ops-manager/search"
 )
 
+const rsName = "myReplicaSet_1"
+
 var fixture = &opsmngr.AutomationConfig{
 	Auth: opsmngr.Auth{
 		AutoAuthMechanism: "MONGODB-CR",
@@ -42,7 +44,7 @@ var fixture = &opsmngr.AutomationConfig{
 	},
 	Processes: []*opsmngr.Process{
 		{
-			Name:                        "myReplicaSet_1",
+			Name:                        rsName,
 			ProcessType:                 "mongod",
 			Version:                     "4.2.2",
 			AuthSchemaVersion:           5,
@@ -145,7 +147,7 @@ var fixture = &opsmngr.AutomationConfig{
 					ArbiterOnly:  false,
 					BuildIndexes: true,
 					Hidden:       false,
-					Host:         "myReplicaSet_1",
+					Host:         rsName,
 					Priority:     1,
 					SlaveDelay:   0,
 					Votes:        1,
@@ -177,7 +179,7 @@ var fixture = &opsmngr.AutomationConfig{
 		{
 			DBName:         "test",
 			CollectionName: "test",
-			RSName:         "myReplicaSet_1",
+			RSName:         rsName,
 			Key: [][]string{
 				{"test", "1"},
 			},

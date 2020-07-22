@@ -22,11 +22,13 @@ import (
 	"github.com/go-test/deep"
 )
 
+const projectID = "5e66185d917b220fbd8bb4d1"
+
 func TestAgents_ListAgentAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
-	projectID := "5e66185d917b220fbd8bb4d1"
+
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `
 						[{
@@ -99,7 +101,6 @@ func TestAgents_ListAgentAPIKeys(t *testing.T) {
 func TestAgents_CreateAgentAPIKey(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	projectID := "5e66185d917b220fbd8bb4d1"
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 						  "_id" : "1",
@@ -140,7 +141,6 @@ func TestAgents_DeleteAgentAPIKey(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
-	projectID := "5e66185d917b220fbd8bb4d1"
 	agentAPIKey := "1"
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agentapikeys/%s", projectID, agentAPIKey), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

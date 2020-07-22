@@ -23,12 +23,11 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
+const clusterID = "6b8cd61180eef547110159d9"
+
 func TestCheckpoints_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "6b8cd3c380eef5349ef77gf7"
-	clusterID := "6b8cd61180eef547110159d9"
 
 	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints", groupID, clusterID)
 
@@ -37,7 +36,7 @@ func TestCheckpoints_List(t *testing.T) {
 		fmt.Fprint(w, `{
 		  "links":[
 			{
-			  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
+			  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
 			  "rel":"self"
 			}
 		  ],
@@ -45,11 +44,11 @@ func TestCheckpoints_List(t *testing.T) {
 			{
 			  "clusterId":"6b8cd61180eef547110159d9",
 			  "completed":"2018-02-08T23:20:25Z",
-			  "groupId":"6b8cd3c380eef5349ef77gf7",
+			  "groupId":"5c8100bcf2a30b12ff88258f",
 			  "id":"5a7cdb3980eef53de5bffdcf",
 			  "links":[
 				{
-				  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
+				  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints",
 				  "rel":"self"
 				}
 			  ],
@@ -91,11 +90,11 @@ func TestCheckpoints_List(t *testing.T) {
 			{
 			  "clusterId":"6b8cd61180eef547110159d9",
 			  "completed":"2018-02-09T14:50:33Z",
-			  "groupId":"6b8cd3c380eef5349ef77gf7",
+			  "groupId":"5c8100bcf2a30b12ff88258f",
 			  "id":"5a7db53987d9d64fe298ff46",
 			  "links":[
 				{
-				  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pretty=true",
+				  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints?pretty=true",
 				  "rel":"self"
 				}
 			  ],
@@ -148,14 +147,14 @@ func TestCheckpoints_List(t *testing.T) {
 	expected := &atlas.Checkpoints{
 		Results: []*atlas.Checkpoint{
 			{
-				ClusterID: "6b8cd61180eef547110159d9",
+				ClusterID: clusterID,
 				Completed: "2018-02-08T23:20:25Z",
-				GroupID:   "6b8cd3c380eef5349ef77gf7",
+				GroupID:   groupID,
 				ID:        "5a7cdb3980eef53de5bffdcf",
 				Links: []*atlas.Link{
 					{
 						Rel:  "self",
-						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
+						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints",
 					},
 				},
 				Parts: []*atlas.Part{
@@ -197,14 +196,14 @@ func TestCheckpoints_List(t *testing.T) {
 				Timestamp:  "2018-02-08T23:19:37Z",
 			},
 			{
-				ClusterID: "6b8cd61180eef547110159d9",
+				ClusterID: clusterID,
 				Completed: "2018-02-09T14:50:33Z",
-				GroupID:   "6b8cd3c380eef5349ef77gf7",
+				GroupID:   groupID,
 				ID:        "5a7db53987d9d64fe298ff46",
 				Links: []*atlas.Link{
 					{
 						Rel:  "self",
-						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pretty=true",
+						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints?pretty=true",
 					},
 				},
 				Parts: []*atlas.Part{
@@ -248,7 +247,7 @@ func TestCheckpoints_List(t *testing.T) {
 		},
 		Links: []*atlas.Link{
 			{
-				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
+				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
@@ -264,8 +263,6 @@ func TestCheckpoints_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "6b8cd3c380eef5349ef77gf7"
-	clusterID := "6b8cd61180eef547110159d9"
 	checkpointID := "6b8cd61180eef547110159d9"
 	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints/%s", groupID, clusterID, checkpointID)
 
@@ -274,11 +271,11 @@ func TestCheckpoints_Get(t *testing.T) {
 		fmt.Fprint(w, `{
 		  "clusterId":"6b8cd61180eef547110159d9",
 		  "completed":"2018-02-08T23:20:25Z",
-		  "groupId":"6b8cd3c380eef5349ef77gf7",
+		  "groupId":"5c8100bcf2a30b12ff88258f",
 		  "id":"5a7cdb3980eef53de5bffdcf",
 		  "links":[
 			{
-			  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
+			  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints",
 			  "rel":"self"
 			}
 		  ],
@@ -325,14 +322,14 @@ func TestCheckpoints_Get(t *testing.T) {
 	}
 
 	expected := &atlas.Checkpoint{
-		ClusterID: "6b8cd61180eef547110159d9",
+		ClusterID: clusterID,
 		Completed: "2018-02-08T23:20:25Z",
-		GroupID:   "6b8cd3c380eef5349ef77gf7",
+		GroupID:   groupID,
 		ID:        "5a7cdb3980eef53de5bffdcf",
 		Links: []*atlas.Link{
 			{
 				Rel:  "self",
-				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/6b8cd3c380eef5349ef77gf7/clusters/Cluster0/checkpoints",
+				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints",
 			},
 		},
 		Parts: []*atlas.Part{

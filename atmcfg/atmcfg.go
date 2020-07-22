@@ -212,7 +212,7 @@ func EnableMechanism(out *opsmngr.AutomationConfig, m []string) error {
 func setAutoUser(out *opsmngr.AutomationConfig) error {
 	var err error
 	out.Auth.AutoUser = automationAgentName
-	if out.Auth.AutoPwd, err = generateRandomASCIIString(500); err != nil {
+	if out.Auth.AutoPwd, err = generateRandomASCIIString(keyLength); err != nil {
 		return err
 	}
 

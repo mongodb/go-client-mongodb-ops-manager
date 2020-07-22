@@ -193,21 +193,19 @@ func mongoDBUsers() *opsmngr.MongoDBUser {
 	}
 }
 
+const clusterName = "cluster_1"
+
 func TestShutdown(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
-		name := "cluster_1"
-		config := automationConfigWithOneReplicaSet(name, false)
-
-		Shutdown(config, name)
+		config := automationConfigWithOneReplicaSet(clusterName, false)
+		Shutdown(config, clusterName)
 		if !config.Processes[0].Disabled {
 			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
-		name := "cluster_1"
-		config := automationConfigWithOneShardedCluster(name, false)
-
-		Shutdown(config, name)
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		Shutdown(config, clusterName)
 		if !config.Processes[0].Disabled {
 			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
 		}
@@ -216,19 +214,17 @@ func TestShutdown(t *testing.T) {
 
 func TestStartup(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
-		name := "cluster_1"
-		cloud := automationConfigWithOneReplicaSet(name, true)
+		cloud := automationConfigWithOneReplicaSet(clusterName, true)
 
-		Startup(cloud, name)
+		Startup(cloud, clusterName)
 		if cloud.Processes[0].Disabled {
 			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", cloud.Processes[0].Disabled, false)
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
-		name := "cluster_1"
-		config := automationConfigWithOneShardedCluster(name, true)
+		config := automationConfigWithOneShardedCluster(clusterName, true)
 
-		Startup(config, name)
+		Startup(config, clusterName)
 		if config.Processes[0].Disabled {
 			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
 		}
@@ -237,19 +233,17 @@ func TestStartup(t *testing.T) {
 
 func TestRemoveByClusterName(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
-		name := "cluster_1"
-		config := automationConfigWithOneReplicaSet(name, false)
+		config := automationConfigWithOneReplicaSet(clusterName, false)
 
-		RemoveByClusterName(config, name)
+		RemoveByClusterName(config, clusterName)
 		if len(config.Processes) != 0 {
 			t.Errorf("RemoveByClusterName\n got=%#v\nwant=0\n", len(config.Processes))
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
-		name := "cluster_1"
-		config := automationConfigWithOneShardedCluster(name, false)
+		config := automationConfigWithOneShardedCluster(clusterName, false)
 
-		RemoveByClusterName(config, name)
+		RemoveByClusterName(config, clusterName)
 		if len(config.Processes) != 0 {
 			t.Errorf("RemoveByClusterName\n got=%#v\nwant=0\n", len(config.Processes))
 		}

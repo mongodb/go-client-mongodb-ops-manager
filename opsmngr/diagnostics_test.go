@@ -7,11 +7,11 @@ import (
 	"testing"
 )
 
+const groupID = "5c8100bcf2a30b12ff88258f"
+
 func TestDiagnostics_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "5c8100bcf2a30b12ff88258f"
 
 	path := fmt.Sprintf("/groups/%s/diagnostics", groupID)
 

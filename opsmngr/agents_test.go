@@ -27,7 +27,7 @@ func TestAgents_ListAgentLinks(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
-	projectID := "5e66185d917b220fbd8bb4d1"
+
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
   			  "results" :[],
@@ -98,7 +98,6 @@ func TestAgents_ListAgentsByType(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
-	projectID := "5e66185d917b220fbd8bb4d1"
 	agentType := "MONITORING"
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents/%s", projectID, agentType), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{

@@ -28,8 +28,7 @@ func TestDeployments_ListHosts(t *testing.T) {
 
 	defer teardown()
 
-	projectID := "6b8cd3c380eef5349ef77gf7"
-	path := fmt.Sprintf("/groups/%s/hosts", projectID)
+	path := fmt.Sprintf("/groups/%s/hosts", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -43,7 +42,7 @@ func TestDeployments_ListHosts(t *testing.T) {
 					  "clusterId" : "1",
 					  "created" : "2014-04-22T19:56:50Z",
 					  "deactivated" : false,
-					  "groupId" : "6b8cd3c380eef5349ef77gf7",
+					  "groupId" : "5c8100bcf2a30b12ff88258f",
 					  "hasStartupWarnings" : false,
 					  "hidden" : false,
 					  "hostEnabled" : true,
@@ -74,7 +73,7 @@ func TestDeployments_ListHosts(t *testing.T) {
 
 	opts := HostListOptions{}
 
-	alerts, _, err := client.Deployments.ListHosts(ctx, projectID, &opts)
+	alerts, _, err := client.Deployments.ListHosts(ctx, groupID, &opts)
 	if err != nil {
 		t.Fatalf("Deployments.ListHosts returned error: %v", err)
 	}
@@ -96,7 +95,7 @@ func TestDeployments_ListHosts(t *testing.T) {
 				ClusterID:          "1",
 				Created:            "2014-04-22T19:56:50Z",
 				Deactivated:        false,
-				GroupID:            projectID,
+				GroupID:            groupID,
 				HasStartupWarnings: false,
 				Hidden:             false,
 				HostEnabled:        true,
@@ -135,9 +134,8 @@ func TestDeployments_GetHost(t *testing.T) {
 
 	defer teardown()
 
-	projectID := "6b8cd3c380eef5349ef77gf7"
 	hostID := "22"
-	path := fmt.Sprintf("/groups/%s/hosts/%s", projectID, hostID)
+	path := fmt.Sprintf("/groups/%s/hosts/%s", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -149,7 +147,7 @@ func TestDeployments_GetHost(t *testing.T) {
 					  "clusterId" : "1",
 					  "created" : "2014-04-22T19:56:50Z",
 					  "deactivated" : false,
-					  "groupId" : "6b8cd3c380eef5349ef77gf7",
+					  "groupId" : "5c8100bcf2a30b12ff88258f",
 					  "hasStartupWarnings" : false,
 					  "hidden" : false,
 					  "hostEnabled" : true,
@@ -176,7 +174,7 @@ func TestDeployments_GetHost(t *testing.T) {
 					}`)
 	})
 
-	alerts, _, err := client.Deployments.GetHost(ctx, projectID, hostID)
+	alerts, _, err := client.Deployments.GetHost(ctx, groupID, hostID)
 	if err != nil {
 		t.Fatalf("Deployments.GetHost returned error: %v", err)
 	}
@@ -195,7 +193,7 @@ func TestDeployments_GetHost(t *testing.T) {
 		ClusterID:          "1",
 		Created:            "2014-04-22T19:56:50Z",
 		Deactivated:        false,
-		GroupID:            projectID,
+		GroupID:            groupID,
 		HasStartupWarnings: false,
 		Hidden:             false,
 		HostEnabled:        true,
@@ -231,10 +229,9 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 
 	defer teardown()
 
-	projectID := "6b8cd3c380eef5349ef77gf7"
 	hostName := "22"
 	port := 26000
-	path := fmt.Sprintf("/groups/%s/hosts/byName/%s:%d", projectID, hostName, port)
+	path := fmt.Sprintf("/groups/%s/hosts/byName/%s:%d", groupID, hostName, port)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -246,7 +243,7 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 					  "clusterId" : "1",
 					  "created" : "2014-04-22T19:56:50Z",
 					  "deactivated" : false,
-					  "groupId" : "6b8cd3c380eef5349ef77gf7",
+					  "groupId" : "5c8100bcf2a30b12ff88258f",
 					  "hasStartupWarnings" : false,
 					  "hidden" : false,
 					  "hostEnabled" : true,
@@ -273,7 +270,7 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 					}`)
 	})
 
-	alerts, _, err := client.Deployments.GetHostByHostname(ctx, projectID, hostName, port)
+	alerts, _, err := client.Deployments.GetHostByHostname(ctx, groupID, hostName, port)
 	if err != nil {
 		t.Fatalf("Deployments.GetHostByHostname returned error: %v", err)
 	}
@@ -292,7 +289,7 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 		ClusterID:          "1",
 		Created:            "2014-04-22T19:56:50Z",
 		Deactivated:        false,
-		GroupID:            projectID,
+		GroupID:            groupID,
 		HasStartupWarnings: false,
 		Hidden:             false,
 		HostEnabled:        true,
@@ -328,10 +325,9 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 
 	defer teardown()
 
-	projectID := "6b8cd3c380eef5349ef77gf7"
 	hostName := "server1.example.com"
 	var port int32 = 27017
-	path := fmt.Sprintf("/groups/%s/hosts", projectID)
+	path := fmt.Sprintf("/groups/%s/hosts", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
@@ -340,7 +336,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 					  "alertsEnabled" : true,
 					  "authMechanismName" : "SCRAM-SHA-1",
 					  "created" : "2014-04-22T19:56:50Z",
-					  "groupId" : "6b8cd3c380eef5349ef77gf7",
+					  "groupId" : "5c8100bcf2a30b12ff88258f",
 					  "hasStartupWarnings" : false,
 					  "hidden" : false,
 					  "hostEnabled" : true,
@@ -362,7 +358,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 		Port:     port,
 	}
 
-	alerts, _, err := client.Deployments.StartMonitoring(ctx, projectID, host)
+	alerts, _, err := client.Deployments.StartMonitoring(ctx, groupID, host)
 	if err != nil {
 		t.Fatalf("Deployments.StartMonitoring returned error: %v", err)
 	}
@@ -376,7 +372,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 		AlertsEnabled:      &alertsEnabled,
 		AuthMechanismName:  "SCRAM-SHA-1",
 		Created:            "2014-04-22T19:56:50Z",
-		GroupID:            projectID,
+		GroupID:            groupID,
 		HasStartupWarnings: false,
 		Hidden:             false,
 		HostEnabled:        true,
@@ -403,10 +399,9 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 	defer teardown()
 
 	hostID := "22"
-	projectID := "6b8cd3c380eef5349ef77gf7"
 	hostName := "server1.example.com"
 	var port int32 = 27017
-	path := fmt.Sprintf("/groups/%s/hosts/%s", projectID, hostID)
+	path := fmt.Sprintf("/groups/%s/hosts/%s", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
@@ -415,7 +410,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 					  "alertsEnabled" : true,
 					  "authMechanismName" : "SCRAM-SHA-1",
 					  "created" : "2014-04-22T19:56:50Z",
-					  "groupId" : "6b8cd3c380eef5349ef77gf7",
+					  "groupId" : "5c8100bcf2a30b12ff88258f",
 					  "hasStartupWarnings" : false,
 					  "hidden" : false,
 					  "hostEnabled" : true,
@@ -437,7 +432,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 		Port:     port,
 	}
 
-	alerts, _, err := client.Deployments.UpdateMonitoring(ctx, projectID, hostID, host)
+	alerts, _, err := client.Deployments.UpdateMonitoring(ctx, groupID, hostID, host)
 	if err != nil {
 		t.Fatalf("Deployments.UpdateMonitoring returned error: %v", err)
 	}
@@ -451,7 +446,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 		AlertsEnabled:      &alertsEnabled,
 		AuthMechanismName:  "SCRAM-SHA-1",
 		Created:            "2014-04-22T19:56:50Z",
-		GroupID:            projectID,
+		GroupID:            groupID,
 		HasStartupWarnings: false,
 		Hidden:             false,
 		HostEnabled:        true,
@@ -478,14 +473,13 @@ func TestDeployments_StopMonitoring(t *testing.T) {
 	defer teardown()
 
 	hostID := "22"
-	projectID := "6b8cd3c380eef5349ef77gf7"
-	path := fmt.Sprintf("/groups/%s/hosts/%s", projectID, hostID)
+	path := fmt.Sprintf("/groups/%s/hosts/%s", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Deployments.StopMonitoring(ctx, projectID, hostID)
+	_, err := client.Deployments.StopMonitoring(ctx, groupID, hostID)
 	if err != nil {
 		t.Fatalf("Deployments.StopMonitoring returned error: %v", err)
 	}
