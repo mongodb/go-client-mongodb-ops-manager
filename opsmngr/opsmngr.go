@@ -75,7 +75,7 @@ type service struct {
 // NewClient returns a new Ops Manager API client. If a nil httpClient is
 // provided, a http.DefaultClient will be used. To use API methods which require
 // authentication, provide an http.Client that will perform the authentication
-// for you (such as that provided by the github.com/Sectorbob/mlab-ns2/gae/ns/digest).
+// for you (such as that provided by the https://github.com/mongodb-forks/digest).
 func NewClient(httpClient *http.Client) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
