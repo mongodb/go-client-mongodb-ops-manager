@@ -79,10 +79,10 @@ type AutomationConfig struct {
 	Kerberos             *map[string]interface{}   `json:"kerberos,omitempty"`
 	LDAP                 *map[string]interface{}   `json:"ldap,omitempty"`
 	MongoDBVersions      []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
-	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds"`
-	MonitoringVersions   []*map[string]interface{} `json:"monitoringVersions"`
-	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules"`
-	MongoTS              []*map[string]interface{} `json:"mongots"`
+	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds,omitempty"`
+	MonitoringVersions   []*map[string]interface{} `json:"monitoringVersions,omitempty"`
+	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules,omitempty"`
+	MongoTS              []*map[string]interface{} `json:"mongots,omitempty"`
 	Options              *map[string]interface{}   `json:"options"`
 	Processes            []*Process                `json:"processes"`
 	ReplicaSets          []*ReplicaSet             `json:"replicaSets"`
