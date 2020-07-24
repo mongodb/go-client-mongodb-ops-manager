@@ -37,7 +37,7 @@ func generateRandomASCIIString(length int) (string, error) {
 		// Make sure that the number/byte/letter is inside
 		// the range of printable ASCII characters (excluding space and DEL)
 		if n > 64 && n < asciiMax {
-			result += string(n)
+			result += string(rune(n))
 		}
 	}
 }
