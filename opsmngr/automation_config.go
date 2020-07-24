@@ -151,6 +151,7 @@ type Args26 struct {
 	AuditLog           *AuditLog               `json:"auditLog,omitempty"` // AuditLog configuration for audit logs
 	BasisTech          *map[string]interface{} `json:"basisTech,omitempty"`
 	NET                Net                     `json:"net"` // NET configuration for db connection (ports)
+	OperationProfiling *map[string]string      `json:"operationProfiling,omitempty"`
 	ProcessManagement  *map[string]interface{} `json:"processManagement,omitempty"`
 	Replication        *Replication            `json:"replication,omitempty"` // Replication configuration for ReplicaSets, omit this field if setting Sharding
 	Security           *map[string]string      `json:"security,omitempty"`
@@ -158,7 +159,6 @@ type Args26 struct {
 	Storage            *Storage                `json:"storage,omitempty"`  // Storage configuration for dbpath, config servers don't define this
 	SNMP               *map[string]interface{} `json:"snmp,omitempty"`
 	SystemLog          SystemLog               `json:"systemLog"` // SystemLog configuration for the dblog
-	OperationProfiling *map[string]string      `json:"operationProfiling,omitempty"`
 }
 
 type MongoDBUser struct {
@@ -210,18 +210,17 @@ type ReplicaSet struct {
 // TLS defines TLS parameters for Net
 type TLS struct {
 	CAFile                     string `json:"CAFile,omitempty"`
-	Mode                       string `json:"mode,omitempty"`
-	PEMKeyFile                 string `json:"PEMKeyFile,omitempty"`
-
 	CertificateKeyFile         string `json:"certificateKeyFile,omitempty"`
 	CertificateKeyFilePassword string `json:"certificateKeyFilePassword,omitempty"`
-	ClusterFile                string `json:"clusterFile,omitempty"`
-	ClusterPassword            string `json:"clusterPassword,omitempty"`
-	DisabledProtocols          string `json:"disabledProtocols,omitempty"`
-	CRLFile                    string `json:"CRLFile,omitempty"`
-	FIPSMode                   string `json:"FIPSMode,omitempty"`
 	CertificateSelector        string `json:"certificateSelector,omitempty"`
 	ClusterCertificateSelector string `json:"clusterCertificateSelector,omitempty"`
+	ClusterFile                string `json:"clusterFile,omitempty"`
+	ClusterPassword            string `json:"clusterPassword,omitempty"`
+	CRLFile                    string `json:"CRLFile,omitempty"`
+	DisabledProtocols          string `json:"disabledProtocols,omitempty"`
+	FIPSMode                   string `json:"FIPSMode,omitempty"`
+	Mode                       string `json:"mode,omitempty"`
+	PEMKeyFile                 string `json:"PEMKeyFile,omitempty"`
 }
 
 // Net part of the internal Process struct
