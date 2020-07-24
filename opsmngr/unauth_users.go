@@ -89,6 +89,7 @@ type UserRole struct {
 
 // CreateUserResponse API response for the CreateFirstUser() call
 type CreateUserResponse struct {
-	APIKey string `json:"apiKey"`
-	User   *User  `json:"user"`
+	APIKey             string       `json:"apiKey,omitempty"`
+	ProgrammaticAPIKey atlas.APIKey `json:"programmaticApiKey,omitempty"`
+	User               *User        `json:"user"`
 }
