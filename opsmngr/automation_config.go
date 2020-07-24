@@ -151,10 +151,10 @@ type Args26 struct {
 	AuditLog           *AuditLog               `json:"auditLog,omitempty"` // AuditLog configuration for audit logs
 	BasisTech          *map[string]interface{} `json:"basisTech,omitempty"`
 	NET                Net                     `json:"net"` // NET configuration for db connection (ports)
-	OperationProfiling *map[string]string      `json:"operationProfiling,omitempty"`
+	OperationProfiling *map[string]interface{} `json:"operationProfiling,omitempty"`
 	ProcessManagement  *map[string]interface{} `json:"processManagement,omitempty"`
 	Replication        *Replication            `json:"replication,omitempty"` // Replication configuration for ReplicaSets, omit this field if setting Sharding
-	Security           *map[string]string      `json:"security,omitempty"`
+	Security           *map[string]interface{} `json:"security,omitempty"`
 	Sharding           *Sharding               `json:"sharding,omitempty"` // Replication configuration for sharded clusters, omit this field if setting Replication
 	Storage            *Storage                `json:"storage,omitempty"`  // Storage configuration for dbpath, config servers don't define this
 	SNMP               *map[string]interface{} `json:"snmp,omitempty"`
