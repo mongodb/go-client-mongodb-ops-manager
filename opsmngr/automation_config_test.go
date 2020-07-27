@@ -208,6 +208,13 @@ func TestAutomation_GetConfig(t *testing.T) {
 					},
 					Storage: &Storage{
 						DBPath: "/data/rs1",
+						WiredTiger: &map[string]interface{}{
+							"collectionConfig": map[string]interface{}{},
+							"engineConfig": map[string]interface{}{
+								"cacheSizeGB": 0.5,
+							},
+							"indexConfig": map[string]interface{}{},
+						},
 					},
 					SystemLog: SystemLog{
 						Destination: "file",
@@ -239,6 +246,13 @@ func TestAutomation_GetConfig(t *testing.T) {
 					},
 					Storage: &Storage{
 						DBPath: "/data/rs2",
+						WiredTiger: &map[string]interface{}{
+							"collectionConfig": map[string]interface{}{},
+							"engineConfig": map[string]interface{}{
+								"cacheSizeGB": 0.5,
+							},
+							"indexConfig": map[string]interface{}{},
+						},
 					},
 					SystemLog: SystemLog{
 						Destination: "file",
@@ -270,6 +284,13 @@ func TestAutomation_GetConfig(t *testing.T) {
 					},
 					Storage: &Storage{
 						DBPath: "/data/rs3",
+						WiredTiger: &map[string]interface{}{
+							"collectionConfig": map[string]interface{}{},
+							"engineConfig": map[string]interface{}{
+								"cacheSizeGB": 0.5,
+							},
+							"indexConfig": map[string]interface{}{},
+						},
 					},
 					SystemLog: SystemLog{
 						Destination: "file",

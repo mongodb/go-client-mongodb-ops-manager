@@ -148,13 +148,17 @@ type Auth struct {
 
 // Args26 part of the internal Process struct
 type Args26 struct {
-	AuditLog          *AuditLog               `json:"auditLog,omitempty"` // AuditLog configuration for audit logs
-	NET               Net                     `json:"net"`                // NET configuration for db connection (ports)
-	ProcessManagement *map[string]interface{} `json:"processManagement,omitempty"`
-	Replication       *Replication            `json:"replication,omitempty"` // Replication configuration for ReplicaSets, omit this field if setting Sharding
-	Sharding          *Sharding               `json:"sharding,omitempty"`    // Replication configuration for sharded clusters, omit this field if setting Replication
-	Storage           *Storage                `json:"storage,omitempty"`     // Storage configuration for dbpath, config servers don't define this
-	SystemLog         SystemLog               `json:"systemLog"`             // SystemLog configuration for the dblog
+	AuditLog           *AuditLog               `json:"auditLog,omitempty"` // AuditLog configuration for audit logs
+	BasisTech          *map[string]interface{} `json:"basisTech,omitempty"`
+	NET                Net                     `json:"net"` // NET configuration for db connection (ports)
+	OperationProfiling *map[string]interface{} `json:"operationProfiling,omitempty"`
+	ProcessManagement  *map[string]interface{} `json:"processManagement,omitempty"`
+	Replication        *Replication            `json:"replication,omitempty"` // Replication configuration for ReplicaSets, omit this field if setting Sharding
+	Security           *map[string]interface{} `json:"security,omitempty"`
+	Sharding           *Sharding               `json:"sharding,omitempty"` // Replication configuration for sharded clusters, omit this field if setting Replication
+	Storage            *Storage                `json:"storage,omitempty"`  // Storage configuration for dbpath, config servers don't define this
+	SNMP               *map[string]interface{} `json:"snmp,omitempty"`
+	SystemLog          SystemLog               `json:"systemLog"` // SystemLog configuration for the dblog
 }
 
 type MongoDBUser struct {
@@ -205,45 +209,78 @@ type ReplicaSet struct {
 
 // TLS defines TLS parameters for Net
 type TLS struct {
-	Mode               string `json:"mode,omitempty"`
-	PEMKeyFile         string `json:"PEMKeyFile,omitempty"`
-	CAFile             string `json:"CAFile,omitempty"`
-	CertificateKeyFile string `json:"certificateKeyFile,omitempty"`
+	CAFile                     string `json:"CAFile,omitempty"`
+	CertificateKeyFile         string `json:"certificateKeyFile,omitempty"`
+	CertificateKeyFilePassword string `json:"certificateKeyFilePassword,omitempty"`
+	CertificateSelector        string `json:"certificateSelector,omitempty"`
+	ClusterCertificateSelector string `json:"clusterCertificateSelector,omitempty"`
+	ClusterFile                string `json:"clusterFile,omitempty"`
+	ClusterPassword            string `json:"clusterPassword,omitempty"`
+	CRLFile                    string `json:"CRLFile,omitempty"`
+	DisabledProtocols          string `json:"disabledProtocols,omitempty"`
+	FIPSMode                   string `json:"FIPSMode,omitempty"`
+	Mode                       string `json:"mode,omitempty"`
+	PEMKeyFile                 string `json:"PEMKeyFile,omitempty"`
 }
 
 // Net part of the internal Process struct
 type Net struct {
-	Port                   int     `json:"port,omitempty"`
-	BindIP                 *string `json:"bindIp,omitempty"`
-	BindIPAll              *bool   `json:"bindIpAll,omitempty"`
-	IPV6                   *bool   `json:"ipv6,omitempty"`
-	MaxIncomingConnections *int    `json:"maxIncomingConnections,omitempty"`
-	SSL                    *TLS    `json:"ssl,omitempty"`
-	TLS                    *TLS    `json:"tls,omitempty"`
+	BindIP                 *string                 `json:"bindIp,omitempty"`
+	BindIPAll              *bool                   `json:"bindIpAll,omitempty"`
+	Compression            *map[string]interface{} `json:"compression,omitempty"`
+	HTTP                   *map[string]interface{} `json:"journal,omitempty"`
+	IPV6                   *bool                   `json:"ipv6,omitempty"`
+	ListenBacklog          string                  `json:"listenBacklog,omitempty"`
+	MaxIncomingConnections *int                    `json:"maxIncomingConnections,omitempty"`
+	Port                   int                     `json:"port,omitempty"`
+	ServiceExecutor        string                  `json:"serviceExecutor,omitempty"`
+	SSL                    *TLS                    `json:"ssl,omitempty"`
+	TLS                    *TLS                    `json:"tls,omitempty"`
+	TransportLayer         string                  `json:"transportLayer,omitempty"`
 }
 
 // Storage part of the internal Process struct
 type Storage struct {
-	DBPath  string                  `json:"dbPath,omitempty"`
-	Engine  string                  `json:"engine,omitempty"`
-	Journal *map[string]interface{} `json:"journal,omitempty"`
+	DBPath            string                  `json:"dbPath,omitempty"`
+	DirectoryPerDB    *bool                   `json:"directoryPerDB,omitempty"`
+	Engine            string                  `json:"engine,omitempty"`
+	IndexBuildRetry   *bool                   `json:"indexBuildRetry,omitempty"`
+	InMemory          *map[string]interface{} `json:"inMemory,omitempty"`
+	Journal           *map[string]interface{} `json:"journal,omitempty"`
+	NSSize            *int                    `json:"nsSize,omitempty"`
+	PreAllocDataFiles *bool                   `json:"preallocDataFiles,omitempty"`
+	Quota             *map[string]interface{} `json:"quota,omitempty"`
+	RepairPath        string                  `json:"repairPath,omitempty"`
+	SmallFiles        *bool                   `json:"smallFiles,omitempty"`
+	SyncPeriodSecs    *float64                `json:"syncPeriodSecs,omitempty"`
+	WiredTiger        *map[string]interface{} `json:"wiredTiger,omitempty"`
 }
 
 // Replication is part of the internal Process struct
 type Replication struct {
-	ReplSetName string `json:"replSetName,omitempty"`
+	EnableMajorityReadConcern *bool  `json:"enableMajorityReadConcern,omitempty"`
+	OplogSizeMB               *int   `json:"oplogSizeMB,omitempty"`
+	ReplSetName               string `json:"replSetName,omitempty"`
 }
 
 // Sharding is part of the internal Process struct
 type Sharding struct {
-	ClusterRole string `json:"clusterRole,omitempty"`
+	ArchiveMovedChunks *bool  `json:"archiveMovedChunks,omitempty"`
+	AutoSplit          *bool  `json:"autoSplit,omitempty"`
+	ChunkSize          *int   `json:"chunkSize,omitempty"`
+	ClusterRole        string `json:"clusterRole,omitempty"`
 }
 
 // SystemLog part of the internal Process struct
 type SystemLog struct {
-	Destination string `json:"destination,omitempty"`
-	Path        string `json:"path,omitempty"`
-	LogAppend   bool   `json:"logAppend,omitempty"`
+	Destination     string `json:"destination,omitempty"`
+	Path            string `json:"path,omitempty"`
+	LogAppend       bool   `json:"logAppend,omitempty"`
+	Verbosity       int    `json:"verbosity,omitempty"`
+	Quiet           bool   `json:"quiet,omitempty"`
+	SyslogFacility  string `json:"syslogFacility,omitempty"`
+	LogRotate       string `json:"logRotate,omitempty"`
+	TimeStampFormat string `json:"timeStampFormat,omitempty"`
 }
 
 // AuditLog part of the internal Process struct
@@ -251,6 +288,7 @@ type AuditLog struct {
 	Destination string `json:"destination,omitempty"`
 	Path        string `json:"path,omitempty"`
 	Format      string `json:"format,omitempty"`
+	Filter      string `json:"filter,omitempty"`
 }
 
 // LogRotate part of the internal Process struct
@@ -263,17 +301,17 @@ type LogRotate struct {
 type Process struct {
 	Args26                      Args26             `json:"args2_6"`
 	AuthSchemaVersion           int                `json:"authSchemaVersion,omitempty"`
-	LastGoalVersionAchieved     int                `json:"lastGoalVersionAchieved,omitempty"`
-	Name                        string             `json:"name,omitempty"`
 	Cluster                     string             `json:"cluster,omitempty"`
+	Disabled                    bool               `json:"disabled"`
 	FeatureCompatibilityVersion string             `json:"featureCompatibilityVersion,omitempty"`
+	Horizons                    *map[string]string `json:"horizons,omitempty"`
 	Hostname                    string             `json:"hostname,omitempty"`
+	LastGoalVersionAchieved     int                `json:"lastGoalVersionAchieved,omitempty"`
 	LogRotate                   *LogRotate         `json:"logRotate,omitempty"`
+	ManualMode                  bool               `json:"manualMode"`
+	Name                        string             `json:"name,omitempty"`
+	NumCores                    int                `json:"numCores"`
 	Plan                        []string           `json:"plan,omitempty"`
 	ProcessType                 string             `json:"processType,omitempty"`
 	Version                     string             `json:"version,omitempty"`
-	Disabled                    bool               `json:"disabled"`
-	ManualMode                  bool               `json:"manualMode"`
-	NumCores                    int                `json:"numCores"`
-	Horizons                    *map[string]string `json:"horizons,omitempty"`
 }
