@@ -62,6 +62,10 @@ Note that when using an authenticated Client, all calls made by the client will
 include the specified tokens. Therefore, authenticated clients should
 almost never be shared between different users.
 
+To get your API Keys please refer to our docs for,
+[Ops Manager](https://docs.opsmanager.mongodb.com/current/tutorial/configure-public-api-access/),
+or [Cloud Manager](https://docs.cloudmanager.mongodb.com/tutorial/manage-programmatic-api-keys/).
+
 ## Roadmap
 
 This library is being initially developed for [mongocli](https://github.com/mongodb/mongocli),
