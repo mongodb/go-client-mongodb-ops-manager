@@ -16,9 +16,6 @@
 package atmcfg // import "go.mongodb.org/ops-manager/atmcfg"
 
 import (
-	"crypto/sha1" //nolint:gosec // mongodb scram-sha-1 supports this tho is not recommended
-	"crypto/sha256"
-	"encoding/base64"
 	"errors"
 	"fmt"
 
@@ -119,60 +116,6 @@ func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 	out.Auth.Users = append(out.Auth.Users, u)
 }
 
-// ConfigureScramCredentials creates both SCRAM-SHA-1 and SCRAM-SHA-256 credentials. This ensures
-// that changes to the authentication settings on the MongoDB resources won't leave MongoDBUsers without
-// the correct credentials.
-func ConfigureScramCredentials(user *opsmngr.MongoDBUser, password string) error {
-	scram256Salt, err := generateSalt(sha256.New)
-	if err != nil {
-		return fmt.Errorf("error generating scramSha256 salt: %s", err)
-	}
-
-	scram1Salt, err := generateSalt(sha1.New)
-	if err != nil {
-		return fmt.Errorf("error generating scramSha1 salt: %s", err)
-	}
-
-	scram256Creds, err := newScramShaCreds(scram256Salt, user.Username, password, scramSha256)
-	if err != nil {
-		return fmt.Errorf("error generating scramSha256 creds: %s", err)
-	}
-	scram1Creds, err := newScramShaCreds(scram1Salt, user.Username, password, cr)
-	if err != nil {
-		return fmt.Errorf("error generating scramSha1Creds: %s", err)
-	}
-	user.ScramSha256Creds = scram256Creds
-	user.ScramSha1Creds = scram1Creds
-	return nil
-}
-
-// newScramShaCreds takes a plain text password and a specified mechanism name and generates
-// the ScramShaCreds which will be embedded into a MongoDBUser.
-func newScramShaCreds(salt []byte, username, password, mechanism string) (*opsmngr.ScramShaCreds, error) {
-	if mechanism != scramSha256 && mechanism != cr {
-		return nil, fmt.Errorf("unrecognized SCRAM-SHA format %s", mechanism)
-	}
-	var hashConstructor hashingFunc
-	iterations := 0
-	if mechanism == scramSha256 {
-		hashConstructor = sha256.New
-		iterations = scramSha256Iterations
-	} else if mechanism == cr {
-		hashConstructor = sha1.New
-		iterations = scramSha1Iterations
-
-		// MONGODB-CR/SCRAM-SHA-1 requires the hash of the password being passed computeScramCredentials
-		// instead of the plain text password.
-		var err error
-		password, err = md5Hex(username + ":mongo:" + password)
-		if err != nil {
-			return nil, err
-		}
-	}
-	base64EncodedSalt := base64.StdEncoding.EncodeToString(salt)
-	return computeScramCredentials(hashConstructor, iterations, base64EncodedSalt, password)
-}
-
 // AddIndexConfig adds an opsmngr.IndexConfig to the opsmngr.AutomationConfig
 func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig) error {
 	if out == nil {
@@ -220,7 +163,7 @@ const (
 	automationAgentName            = "mms-automation"
 	keyLength                      = 500
 	cr                             = "MONGODB-CR"
-	scramSha256                    = "SCRAM-SHA-256"
+	sha256                         = "SCRAM-SHA-256"
 	atmAgentWindowsKeyFilePath     = "%SystemDrive%\\MMSAutomation\\versions\\keyfile"
 	atmAgentKeyFilePathInContainer = "/var/lib/mongodb-mms-automation/keyfile"
 )
@@ -230,10 +173,10 @@ const (
 func EnableMechanism(out *opsmngr.AutomationConfig, m []string) error {
 	out.Auth.Disabled = false
 	for _, v := range m {
-		if v != cr && v != scramSha256 {
+		if v != cr && v != sha256 {
 			return fmt.Errorf("unsupported mechanism %s", v)
 		}
-		if v == scramSha256 && out.Auth.AutoAuthMechanism == "" {
+		if v == sha256 && out.Auth.AutoAuthMechanism == "" {
 			out.Auth.AutoAuthMechanism = v
 		}
 		if !stringInSlice(out.Auth.DeploymentAuthMechanisms, v) {
