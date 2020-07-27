@@ -109,8 +109,8 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Logs = &LogsServiceOp{Client: c}
 	c.LogCollections = &LogCollectionServiceOp{Client: c}
 	c.Diagnostics = &DiagnosticsServiceOp{Client: c}
-	c.OrganizationAPIKeys=&atlas.APIKeysServiceOp{Client: c}
-	c.ProjectAPIKeys=&atlas.ProjectAPIKeysOp{Client: c}
+	c.OrganizationAPIKeys = &atlas.APIKeysServiceOp{Client: c}
+	c.ProjectAPIKeys = &atlas.ProjectAPIKeysOp{Client: c}
 
 	return c
 }
