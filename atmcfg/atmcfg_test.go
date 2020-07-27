@@ -250,15 +250,6 @@ func TestRemoveByClusterName(t *testing.T) {
 	})
 }
 
-func TestAddUser(t *testing.T) {
-	config := automationConfigWithoutMongoDBUsers()
-	u := mongoDBUsers()
-	AddUser(config, u)
-	if len(config.Auth.Users) != 1 {
-		t.Error("User not added\n")
-	}
-}
-
 func TestAddIndexConfig(t *testing.T) {
 	newIndex := &opsmngr.IndexConfig{
 		DBName:         "test",
@@ -346,6 +337,15 @@ func TestAddIndexConfig(t *testing.T) {
 	})
 }
 
+func TestAddUser(t *testing.T) {
+	config := automationConfigWithoutMongoDBUsers()
+	u := mongoDBUsers()
+	AddUser(config, u)
+	if len(config.Auth.Users) != 1 {
+		t.Error("User not added\n")
+	}
+}
+
 func TestRemoveUser(t *testing.T) {
 	config := automationConfigWithMongoDBUsers()
 	t.Run("user exists", func(t *testing.T) {
@@ -398,4 +398,19 @@ func TestEnableMechanism(t *testing.T) {
 			t.Errorf("expected 0 user got: %d\n", len(config.Auth.Users))
 		}
 	})
+}
+
+func TestConfigureScramCredentials(t *testing.T) {
+	u := &opsmngr.MongoDBUser{
+		Username: "test",
+	}
+	if err := ConfigureScramCredentials(u, "password"); err != nil {
+		t.Fatalf("ConfigureScramCredentials() unexpected error: %v\n", err)
+	}
+	if u.ScramSha1Creds == nil {
+		t.Fatalf("ConfigureScramCredentials() unexpected error: %v\n", u.ScramSha1Creds)
+	}
+	if u.ScramSha256Creds == nil {
+		t.Fatalf("ConfigureScramCredentials() unexpected error: %v\n", u.ScramSha256Creds)
+	}
 }
