@@ -53,19 +53,29 @@ type HostCount struct {
 	Slave     int `json:"slave"`
 }
 
+// LDAPGroupMapping for LDAP-backed Ops Manager,
+// the mappings of LDAP groups to Ops Manager project roles.
+// Only present for LDAP-backed Ops Manager.
+type LDAPGroupMapping struct {
+	RoleName   string   `json:"roleName"`
+	LDAPGroups []string `json:"ldapGroups"`
+}
+
 // Project represents the structure of a project.
 type Project struct {
-	ActiveAgentCount int           `json:"activeAgentCount,omitempty"`
-	HostCounts       *HostCount    `json:"hostCounts,omitempty"`
-	ID               string        `json:"id,omitempty"`
-	LastActiveAgent  string        `json:"lastActiveAgent,omitempty"`
-	Links            []*atlas.Link `json:"links,omitempty"`
-	Name             string        `json:"name,omitempty"`
-	OrgID            string        `json:"orgId,omitempty"`
-	PublicAPIEnabled bool          `json:"publicApiEnabled,omitempty"`
-	ReplicaSetCount  int           `json:"replicaSetCount,omitempty"`
-	ShardCount       int           `json:"shardCount,omitempty"`
-	Tags             []*string     `json:"tags,omitempty"`
+	ActiveAgentCount  int                 `json:"activeAgentCount,omitempty"`
+	AgentAPIKey       string              `json:"agentApiKey,omitempty"`
+	HostCounts        *HostCount          `json:"hostCounts,omitempty"`
+	ID                string              `json:"id,omitempty"`
+	LastActiveAgent   string              `json:"lastActiveAgent,omitempty"`
+	LDAPGroupMappings []*LDAPGroupMapping `json:"ldapGroupMappings,omitempty"`
+	Links             []*atlas.Link       `json:"links,omitempty"`
+	Name              string              `json:"name,omitempty"`
+	OrgID             string              `json:"orgId,omitempty"`
+	PublicAPIEnabled  bool                `json:"publicApiEnabled,omitempty"`
+	ReplicaSetCount   int                 `json:"replicaSetCount,omitempty"`
+	ShardCount        int                 `json:"shardCount,omitempty"`
+	Tags              []*string           `json:"tags,omitempty"`
 }
 
 // Projects represents a array of project
