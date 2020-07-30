@@ -18,13 +18,13 @@ const (
 	scramSha256Iterations   = 15000
 	clientKeyInput          = "Client Key" // specified in RFC 5802
 	serverKeyInput          = "Server Key" // specified in RFC 5802
-	RFC5802MandatedSaltSize = 4
+	rfc5802MandatedSaltSize = 4
 )
 
 type hashingFunc func() hash.Hash
 
-// password should be encrypted in the case of SCRAM-SHA-1 and unencrypted in the case of SCRAM-SHA-256
 func computeScramCredentials(f hashingFunc, iterationCount int, base64EncodedSalt, password string) (*opsmngr.ScramShaCreds, error) {
+	// password should be encrypted in the case of SCRAM-SHA-1 and unencrypted in the case of SCRAM-SHA-256
 	storedKey, serverKey, err := generateB64EncodedSecrets(f, password, base64EncodedSalt, iterationCount)
 	if err != nil {
 		return nil, fmt.Errorf("error generating SCRAM-SHA keys: %s", err)
@@ -108,8 +108,8 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 
 	// incorrect salt size will pass validation, but the credentials will be invalid. i.e. it will not
 	// be possible to auth with the password provided to create the credentials.
-	if len(salt) != hashSize-RFC5802MandatedSaltSize {
-		return nil, fmt.Errorf("salt should have a size of %v bytes, but instead has a size of %v bytes", hashSize-RFC5802MandatedSaltSize, len(salt))
+	if len(salt) != hashSize-rfc5802MandatedSaltSize {
+		return nil, fmt.Errorf("salt should have a size of %v bytes, but instead has a size of %v bytes", hashSize-rfc5802MandatedSaltSize, len(salt))
 	}
 
 	startKey := append(salt, 0, 0, 0, 1)
@@ -145,7 +145,7 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 // generateSalt will create a salt for use with newScramShaCreds based on the given hashConstructor.
 // sha1.New should be used for MONGODB-CR/SCRAM-SHA-1 and sha256.New should be used for SCRAM-SHA-256
 func generateSalt(hashConstructor func() hash.Hash) ([]byte, error) {
-	saltSize := hashConstructor().Size() - RFC5802MandatedSaltSize
+	saltSize := hashConstructor().Size() - rfc5802MandatedSaltSize
 	salt, err := generateRandomBase64String(saltSize)
 	if err != nil {
 		return nil, err
