@@ -57,6 +57,7 @@ type Client struct {
 	Events                atlas.EventsService
 	OrganizationAPIKeys   atlas.APIKeysService
 	ProjectAPIKeys        atlas.ProjectAPIKeysService
+	WhitelistAPIKeys      atlas.WhitelistAPIKeysService
 	Agents                AgentsService
 	Checkpoints           CheckpointsService
 	GlobalAlerts          GlobalAlertsService
@@ -111,6 +112,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Diagnostics = &DiagnosticsServiceOp{Client: c}
 	c.OrganizationAPIKeys = &atlas.APIKeysServiceOp{Client: c}
 	c.ProjectAPIKeys = &atlas.ProjectAPIKeysOp{Client: c}
+	c.WhitelistAPIKeys = &atlas.WhitelistAPIKeysServiceOp{Client: c}
 
 	return c
 }
