@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: MongoDB Support
+    url: https://support.mongodb.com/
+    about: Support is provided under MongoDB Enterprise Advance support plans.
+  - name: MongoDB Ops Manager
+    url: https://www.mongodb.com/products/ops-manager
+    about: Learn more about MongoDB Ops Manager
