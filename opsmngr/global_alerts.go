@@ -26,7 +26,9 @@ const (
 	globalAlertsBasePath = "globalAlerts"
 )
 
-// GlobalAlertsService is an interface for interfacing with Clusters in MongoDB Ops Manager APIs
+// GlobalAlertsService provides access to the global alerts related functions in the Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 type GlobalAlertsService interface {
 	Get(context.Context, string) (*GlobalAlert, *atlas.Response, error)
 	List(context.Context, *atlas.AlertsListOptions) (*GlobalAlerts, *atlas.Response, error)
