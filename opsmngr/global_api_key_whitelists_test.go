@@ -130,23 +130,12 @@ func TestWhitelistAPIKeys_Create(t *testing.T) {
 		}
 
 		fmt.Fprint(w, `{
-		  "results": [
-			{
-			  "id": "5f3cf81b89034c6b3c0a528e",
-			  "cidrBlock": "172.20.0.1",
-			  "created": "2020-08-19T13:17:01Z",
-			  "description": "test",
-			  "type": "GLOBAL_ROLE",
-			  "updated": "2020-08-19T13:17:01Z"
-			}
-		  ],
-		  "links": [
-			{
-			  "rel": "self",
-			  "href": "http://mms:8080/api/public/v1.0/admin/whitelist?pageNum=1&itemsPerPage=100"
-			}
-		  ],
-		  "totalCount": 1
+		  "id": "5f3cf81b89034c6b3c0a528e",
+		  "cidrBlock": "172.20.0.1",
+		  "created": "2020-08-19T13:17:01Z",
+		  "description": "test",
+		  "type": "GLOBAL_ROLE",
+		  "updated": "2020-08-19T13:17:01Z"			
 		}`)
 	})
 
@@ -155,24 +144,13 @@ func TestWhitelistAPIKeys_Create(t *testing.T) {
 		t.Fatalf("GlobalWhitelistAPIKeys.Create returned error: %v", err)
 	}
 
-	expected := &GlobalWhitelistAPIKeys{
-		Links: []*atlas.Link{
-			{
-				Href: "http://mms:8080/api/public/v1.0/admin/whitelist?pageNum=1&itemsPerPage=100",
-				Rel:  "self",
-			},
-		},
-		Results: []*GlobalWhitelistAPIKey{
-			{
-				ID:          "5f3cf81b89034c6b3c0a528e",
-				CidrBlock:   "172.20.0.1",
-				Created:     "2020-08-19T13:17:01Z",
-				Description: "test",
-				Type:        "GLOBAL_ROLE",
-				Updated:     "2020-08-19T13:17:01Z",
-			},
-		},
-		TotalCount: 1,
+	expected := &GlobalWhitelistAPIKey{
+		ID:          "5f3cf81b89034c6b3c0a528e",
+		CidrBlock:   "172.20.0.1",
+		Created:     "2020-08-19T13:17:01Z",
+		Description: "test",
+		Type:        "GLOBAL_ROLE",
+		Updated:     "2020-08-19T13:17:01Z",
 	}
 
 	if diff := deep.Equal(whitelistAPIKey, expected); diff != nil {
