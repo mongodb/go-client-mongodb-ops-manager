@@ -46,28 +46,29 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	Organizations         OrganizationsService
-	Projects              ProjectsService
-	Automation            AutomationService
-	UnauthUsers           UnauthUsersService
-	AlertConfigurations   atlas.AlertConfigurationsService
-	Alerts                atlas.AlertsService
-	ContinuousSnapshots   atlas.ContinuousSnapshotsService
-	ContinuousRestoreJobs atlas.ContinuousRestoreJobsService
-	Events                atlas.EventsService
-	OrganizationAPIKeys   atlas.APIKeysService
-	ProjectAPIKeys        atlas.ProjectAPIKeysService
-	WhitelistAPIKeys      atlas.WhitelistAPIKeysService
-	Agents                AgentsService
-	Checkpoints           CheckpointsService
-	GlobalAlerts          GlobalAlertsService
-	Deployments           DeploymentsService
-	Measurements          MeasurementsService
-	Clusters              ClustersService
-	Logs                  LogsService
-	LogCollections        LogCollectionService
-	Diagnostics           DiagnosticsService
-	GlobalAPIKeys         GlobalAPIKeysService
+	Organizations          OrganizationsService
+	Projects               ProjectsService
+	Automation             AutomationService
+	UnauthUsers            UnauthUsersService
+	AlertConfigurations    atlas.AlertConfigurationsService
+	Alerts                 atlas.AlertsService
+	ContinuousSnapshots    atlas.ContinuousSnapshotsService
+	ContinuousRestoreJobs  atlas.ContinuousRestoreJobsService
+	Events                 atlas.EventsService
+	OrganizationAPIKeys    atlas.APIKeysService
+	ProjectAPIKeys         atlas.ProjectAPIKeysService
+	WhitelistAPIKeys       atlas.WhitelistAPIKeysService
+	Agents                 AgentsService
+	Checkpoints            CheckpointsService
+	GlobalAlerts           GlobalAlertsService
+	Deployments            DeploymentsService
+	Measurements           MeasurementsService
+	Clusters               ClustersService
+	Logs                   LogsService
+	LogCollections         LogCollectionService
+	Diagnostics            DiagnosticsService
+	GlobalAPIKeys          GlobalAPIKeysService
+	GlobalAPIKeysWhitelist GlobalAPIKeyWhitelistsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -115,6 +116,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.ProjectAPIKeys = &atlas.ProjectAPIKeysOp{Client: c}
 	c.WhitelistAPIKeys = &atlas.WhitelistAPIKeysServiceOp{Client: c}
 	c.GlobalAPIKeys = &GlobalAPIKeysServiceOp{Client: c}
+	c.GlobalAPIKeysWhitelist = &GlobalAPIKeyWhitelistsServiceOp{Client: c}
 
 	return c
 }
