@@ -108,22 +108,18 @@ func TestWhitelistAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := []*WhitelistAPIKeysReq{
-		{
-			CidrBlock:   "77.54.32.11/32",
-			Description: "test",
-		},
+	createRequest := &WhitelistAPIKeysReq{
+		CidrBlock:   "77.54.32.11/32",
+		Description: "test",
 	}
 
 	mux.HandleFunc("/admin/whitelist", func(w http.ResponseWriter, r *http.Request) {
-		expected := []map[string]interface{}{
-			{
-				"description": "test",
-				"cidrBlock":   "77.54.32.11/32",
-			},
+		expected := map[string]interface{}{
+			"description": "test",
+			"cidrBlock":   "77.54.32.11/32",
 		}
 
-		var v []map[string]interface{}
+		var v map[string]interface{}
 		err := json.NewDecoder(r.Body).Decode(&v)
 		if err != nil {
 			t.Fatalf("Decode json: %v", err)
