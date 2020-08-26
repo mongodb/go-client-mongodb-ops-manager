@@ -36,9 +36,9 @@ type UsersService interface {
 	ListOrgUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
 	Get(context.Context, string) (*User, *atlas.Response, error)
 	GetByName(context.Context, string) (*User, *atlas.Response, error)
-	Invite(context.Context, *User) (*User, *atlas.Response, error)
+	Create(context.Context, *User) (*User, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
-	DeleteFromProject(context.Context, string, string) (*atlas.Response, error)
+	RemoveFromProject(context.Context, string, string) (*atlas.Response, error)
 }
 
 // UsersServiceOp provides an implementation of the UsersService interface
@@ -101,7 +101,7 @@ func (s *UsersServiceOp) ListProjectUsers(ctx context.Context, projectID string,
 	return root.Results, resp, nil
 }
 
-// ListOrgUsers gets all users in an organisation.
+// ListOrgUsers gets all users in an organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
 func (s *UsersServiceOp) ListOrgUsers(ctx context.Context, orgID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
@@ -130,7 +130,7 @@ func (s *UsersServiceOp) ListOrgUsers(ctx context.Context, orgID string, opts *a
 	return root.Results, resp, nil
 }
 
-// Get gets a single user.
+// Get gets a single user by ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-id/
 func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *atlas.Response, error) {
@@ -154,7 +154,7 @@ func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *atlas.
 	return root, resp, err
 }
 
-// GetByName gets a single user.
+// GetByName gets a single user by name.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-name/
 func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User, *atlas.Response, error) {
@@ -178,10 +178,10 @@ func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User,
 	return root, resp, err
 }
 
-// Invite creates an IAM user.
+// Create creates a new IAM user.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-create/
-func (s *UsersServiceOp) Invite(ctx context.Context, createRequest *User) (*User, *atlas.Response, error) {
+func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User, *atlas.Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -220,10 +220,10 @@ func (s *UsersServiceOp) Delete(ctx context.Context, userID string) (*atlas.Resp
 	return resp, err
 }
 
-// DeleteFromProject removes a user from a project.
+// RemoveFromProject removes a user from a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/remove-one-user-from-one-group/
-func (s *UsersServiceOp) DeleteFromProject(ctx context.Context, projectID, userID string) (*atlas.Response, error) {
+func (s *UsersServiceOp) RemoveFromProject(ctx context.Context, projectID, userID string) (*atlas.Response, error) {
 	if projectID == "" {
 		return nil, atlas.NewArgError("projectID", "must be set")
 	}
