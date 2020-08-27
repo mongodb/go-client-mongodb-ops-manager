@@ -30,15 +30,12 @@ const (
 
 // UsersService provides access to the user related functions in the Ops Manager API.
 //
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/users/
 type UsersService interface {
-	ListProjectUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
-	ListOrgUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
 	Get(context.Context, string) (*User, *atlas.Response, error)
 	GetByName(context.Context, string) (*User, *atlas.Response, error)
 	Create(context.Context, *User) (*User, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
-	RemoveFromProject(context.Context, string, string) (*atlas.Response, error)
 }
 
 // UsersServiceOp provides an implementation of the UsersService interface
@@ -70,64 +67,6 @@ type UsersResponse struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*User    `json:"results"`
 	TotalCount int           `json:"totalCount"`
-}
-
-// ListProjectUsers gets all users in a project.
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
-func (s *UsersServiceOp) ListProjectUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
-	path := fmt.Sprintf(projectUsersBasePath, projectID)
-
-	path, err := setQueryParams(path, opts)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	root := new(UsersResponse)
-	resp, err := s.Client.Do(ctx, req, root)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	if l := root.Links; l != nil {
-		resp.Links = l
-	}
-
-	return root.Results, resp, nil
-}
-
-// ListOrgUsers gets all users in an organization.
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
-func (s *UsersServiceOp) ListOrgUsers(ctx context.Context, orgID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
-	path := fmt.Sprintf(orgUsersBasePath, orgID)
-
-	path, err := setQueryParams(path, opts)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	root := new(UsersResponse)
-	resp, err := s.Client.Do(ctx, req, root)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	if l := root.Links; l != nil {
-		resp.Links = l
-	}
-
-	return root.Results, resp, nil
 }
 
 // Get gets a single user by ID.
@@ -186,7 +125,7 @@ func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
 
-	req, err := s.Client.NewRequest(ctx, http.MethodPost, projectBasePath, createRequest)
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, usersBasePath, createRequest)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -209,30 +148,6 @@ func (s *UsersServiceOp) Delete(ctx context.Context, userID string) (*atlas.Resp
 	}
 
 	basePath := fmt.Sprintf("%s/%s", usersBasePath, userID)
-
-	req, err := s.Client.NewRequest(ctx, http.MethodDelete, basePath, nil)
-	if err != nil {
-		return nil, err
-	}
-
-	resp, err := s.Client.Do(ctx, req, nil)
-
-	return resp, err
-}
-
-// RemoveFromProject removes a user from a project.
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/remove-one-user-from-one-group/
-func (s *UsersServiceOp) RemoveFromProject(ctx context.Context, projectID, userID string) (*atlas.Response, error) {
-	if projectID == "" {
-		return nil, atlas.NewArgError("projectID", "must be set")
-	}
-
-	if userID == "" {
-		return nil, atlas.NewArgError("userID", "must be set")
-	}
-
-	basePath := fmt.Sprintf("%s/%s", projectUsersBasePath, userID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, basePath, nil)
 	if err != nil {

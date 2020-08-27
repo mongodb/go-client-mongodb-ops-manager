@@ -159,6 +159,95 @@ func TestProject_GetAllProjects(t *testing.T) {
 	}
 }
 
+func TestProjects_ListUsers(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/%s/%s/users", projectBasePath, groupID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+			"links": [{
+				"href": "https://cloud.mongodb.com/api/public/v1.0/groups/users",
+				"rel": "self"
+			}],
+			"results": [{
+			   "emailAddress": "someone@example.com",
+			   "firstName": "John",
+			   "id": "59db8d1d87d9d6420df0613a",
+			   "lastName": "Smith",
+			   "links": [],
+			   "roles": [{
+				 "groupId": "59ea02e087d9d636b587a967",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "groupId": "59db8d1d87d9d6420df70902",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "orgId": "59db8d1d87d9d6420df0613f",
+				 "roleName": "ORG_OWNER"
+			   }],
+			   "username": "someone@example.com"
+			}, {
+			   "emailAddress": "someone_else@example.com",
+			   "firstName": "Jill",
+			   "id": "59db8d1d87d9d6420df0613a",
+			   "lastName": "Smith",
+			   "links": [],
+			   "roles": [{
+				 "groupId": "59ea02e087d9d636b587a967",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "groupId": "59db8d1d87d9d6420df70902",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "orgId": "59db8d1d87d9d6420df0613f",
+				 "roleName": "ORG_OWNER"
+			   }],
+			   "username": "someone@example.com"
+			}]
+		},`)
+	})
+
+	orgs, _, err := client.Projects.ListUsers(ctx, groupID, nil)
+	if err != nil {
+		t.Fatalf("Projects.ListUsers returned error: %v", err)
+	}
+
+	expected := []*User{
+		{
+			EmailAddress: "someone@example.com",
+			FirstName:    "John",
+			ID:           "59db8d1d87d9d6420df0613a",
+			LastName:     "Smith",
+			Links: []*mongodbatlas.Link{},
+			Roles:        []*UserRole{
+				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+			},
+			Username:     "someone@example.com",
+		},
+		{
+			EmailAddress: "someone_else@example.com",
+			FirstName:    "Jill",
+			ID:           "59db8d1d87d9d6420df0613a",
+			LastName:     "Smith",
+			Links: []*mongodbatlas.Link{},
+			Roles:        []*UserRole{
+				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+			},
+			Username:     "someone@example.com",
+		},
+	}
+
+	if diff := deep.Equal(orgs, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+
 func TestProject_GetOneProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -383,5 +472,19 @@ func TestProject_Delete(t *testing.T) {
 	_, err := client.Projects.Delete(ctx, groupID)
 	if err != nil {
 		t.Fatalf("Projects.Delete returned error: %v", err)
+	}
+}
+
+func TestProject_RemoveUser(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/groups/%s/users/%s", groupID, userID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodDelete)
+	})
+
+	_, err := client.Projects.RemoveUser(ctx, groupID, userID)
+	if err != nil {
+		t.Fatalf("Projects.RemoveUser returned error: %v", err)
 	}
 }
