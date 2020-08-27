@@ -117,7 +117,7 @@ func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
 func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
-	path := fmt.Sprintf(projectUsersBasePath, projectID)
+	path := fmt.Sprintf("%s/%s/users", projectBasePath, projectID)
 
 	path, err := setQueryParams(path, opts)
 	if err != nil {
@@ -244,7 +244,7 @@ func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID st
 		return nil, atlas.NewArgError("userID", "must be set")
 	}
 
-	basePath := fmt.Sprintf("%s/%s", projectUsersBasePath, userID)
+	basePath := fmt.Sprintf("%s/%s/users/%s", projectBasePath, projectID, userID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, basePath, nil)
 	if err != nil {

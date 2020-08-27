@@ -23,8 +23,7 @@ import (
 )
 
 const (
-	usersBasePath = "users"
-	projectUsersBasePath = "groups/%s/users"
+	usersBasePath    = "users"
 	orgUsersBasePath = "orgs/%s/users"
 )
 
@@ -65,7 +64,7 @@ type UserRole struct {
 // UsersResponse represents a array of users
 type UsersResponse struct {
 	Links      []*atlas.Link `json:"links"`
-	Results    []*User    `json:"results"`
+	Results    []*User       `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
 

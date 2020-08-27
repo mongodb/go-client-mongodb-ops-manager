@@ -58,17 +58,17 @@ func TestUsers_Get(t *testing.T) {
 	}
 
 	expected := &User{
-			EmailAddress: "someone@example.com",
-			FirstName:    "John",
-			ID:           "59db8d1d87d9d6420df0613a",
-			LastName:     "Smith",
-			Links: []*mongodbatlas.Link{},
-			Roles:        []*UserRole{
-				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
-				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
-				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
-			},
-			Username:     "someone@example.com",
+		EmailAddress: "someone@example.com",
+		FirstName:    "John",
+		ID:           "59db8d1d87d9d6420df0613a",
+		LastName:     "Smith",
+		Links:        []*mongodbatlas.Link{},
+		Roles: []*UserRole{
+			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+			{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+		},
+		Username: "someone@example.com",
 	}
 
 	if diff := deep.Equal(projects, expected); diff != nil {
@@ -112,13 +112,13 @@ func TestUsers_GetByName(t *testing.T) {
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links: []*mongodbatlas.Link{},
-		Roles:        []*UserRole{
+		Links:        []*mongodbatlas.Link{},
+		Roles: []*UserRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 			{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
 		},
-		Username:     "someone@example.com",
+		Username: "someone@example.com",
 	}
 
 	if diff := deep.Equal(projects, expected); diff != nil {
@@ -159,7 +159,7 @@ func TestUsers_Create(t *testing.T) {
 		LastName:     "Smith",
 		EmailAddress: "john.smith@mongodb.com",
 		Links:        nil,
-		Roles:        []*UserRole{
+		Roles: []*UserRole{
 			{RoleName: "ORG_OWNER", OrgID: "59db8d1d87d9d6420df0613f"},
 		},
 	}
@@ -174,13 +174,13 @@ func TestUsers_Create(t *testing.T) {
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links: []*mongodbatlas.Link{},
-		Roles:        []*UserRole{
+		Links:        []*mongodbatlas.Link{},
+		Roles: []*UserRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 			{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
 		},
-		Username:     "someone@example.com",
+		Username: "someone@example.com",
 	}
 
 	if diff := deep.Equal(userResponse, expected); diff != nil {

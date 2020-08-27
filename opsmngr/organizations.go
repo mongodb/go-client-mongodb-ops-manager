@@ -69,7 +69,6 @@ func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptio
 	return root, resp, nil
 }
 
-
 // ListUsers gets all users in an organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-users/

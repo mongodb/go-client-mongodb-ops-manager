@@ -97,7 +97,6 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 	}
 }
 
-
 func TestOrganizations_ListUsers(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -158,26 +157,26 @@ func TestOrganizations_ListUsers(t *testing.T) {
 			FirstName:    "John",
 			ID:           "59db8d1d87d9d6420df0613a",
 			LastName:     "Smith",
-			Links: []*mongodbatlas.Link{},
-			Roles:        []*UserRole{
+			Links:        []*mongodbatlas.Link{},
+			Roles: []*UserRole{
 				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
 			},
-			Username:     "someone@example.com",
+			Username: "someone@example.com",
 		},
 		{
 			EmailAddress: "someone_else@example.com",
 			FirstName:    "Jill",
 			ID:           "59db8d1d87d9d6420df0613a",
 			LastName:     "Smith",
-			Links: []*mongodbatlas.Link{},
-			Roles:        []*UserRole{
+			Links:        []*mongodbatlas.Link{},
+			Roles: []*UserRole{
 				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
 			},
-			Username:     "someone@example.com",
+			Username: "someone@example.com",
 		},
 	}
 

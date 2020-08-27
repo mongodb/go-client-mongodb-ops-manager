@@ -219,26 +219,26 @@ func TestProjects_ListUsers(t *testing.T) {
 			FirstName:    "John",
 			ID:           "59db8d1d87d9d6420df0613a",
 			LastName:     "Smith",
-			Links: []*mongodbatlas.Link{},
-			Roles:        []*UserRole{
+			Links:        []*mongodbatlas.Link{},
+			Roles: []*UserRole{
 				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
 			},
-			Username:     "someone@example.com",
+			Username: "someone@example.com",
 		},
 		{
 			EmailAddress: "someone_else@example.com",
 			FirstName:    "Jill",
 			ID:           "59db8d1d87d9d6420df0613a",
 			LastName:     "Smith",
-			Links: []*mongodbatlas.Link{},
-			Roles:        []*UserRole{
+			Links:        []*mongodbatlas.Link{},
+			Roles: []*UserRole{
 				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
 			},
-			Username:     "someone@example.com",
+			Username: "someone@example.com",
 		},
 	}
 
@@ -246,7 +246,6 @@ func TestProjects_ListUsers(t *testing.T) {
 		t.Error(diff)
 	}
 }
-
 
 func TestProject_GetOneProject(t *testing.T) {
 	client, mux, teardown := setup()
@@ -478,6 +477,9 @@ func TestProject_Delete(t *testing.T) {
 func TestProject_RemoveUser(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
+
+	var str = fmt.Sprintf("/groups/%s/users/%s", groupID, userID)
+	fmt.Println(str)
 
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/users/%s", groupID, userID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
