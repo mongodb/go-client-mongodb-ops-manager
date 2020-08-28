@@ -31,6 +31,7 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/
 type OrganizationsService interface {
 	List(context.Context, *atlas.ListOptions) (*atlas.Organizations, *atlas.Response, error)
+	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
 	Get(context.Context, string) (*atlas.Organization, *atlas.Response, error)
 	Projects(context.Context, string, *atlas.ListOptions) (*Projects, *atlas.Response, error)
 	Create(context.Context, *atlas.Organization) (*atlas.Organization, *atlas.Response, error)
@@ -66,6 +67,35 @@ func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptio
 	}
 
 	return root, resp, nil
+}
+
+// ListUsers gets all users in an organization.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-users/
+func (s *OrganizationsServiceOp) ListUsers(ctx context.Context, orgID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
+	path := fmt.Sprintf(orgUsersBasePath, orgID)
+
+	path, err := setQueryParams(path, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(UsersResponse)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	if l := root.Links; l != nil {
+		resp.Links = l
+	}
+
+	return root.Results, resp, nil
 }
 
 // Get gets a single organization.

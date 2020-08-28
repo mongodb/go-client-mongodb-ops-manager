@@ -23,6 +23,8 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
+const orgID = "5a0a1e7e0f2912c554081adc"
+
 func TestOrganizations_GetAllOrganizations(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -95,7 +97,93 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 	}
 }
 
-const orgID = "5a0a1e7e0f2912c554081adc"
+func TestOrganizations_ListUsers(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/%s/%s/users", orgsBasePath, orgID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+			"links": [{
+				"href": "https://cloud.mongodb.com/api/public/v1.0/orgs/users",
+				"rel": "self"
+			}],
+			"results": [{
+			   "emailAddress": "someone@example.com",
+			   "firstName": "John",
+			   "id": "59db8d1d87d9d6420df0613a",
+			   "lastName": "Smith",
+			   "links": [],
+			   "roles": [{
+				 "groupId": "59ea02e087d9d636b587a967",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "groupId": "59db8d1d87d9d6420df70902",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "orgId": "59db8d1d87d9d6420df0613f",
+				 "roleName": "ORG_OWNER"
+			   }],
+			   "username": "someone@example.com"
+			}, {
+			   "emailAddress": "someone_else@example.com",
+			   "firstName": "Jill",
+			   "id": "59db8d1d87d9d6420df0613a",
+			   "lastName": "Smith",
+			   "links": [],
+			   "roles": [{
+				 "groupId": "59ea02e087d9d636b587a967",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "groupId": "59db8d1d87d9d6420df70902",
+				 "roleName": "GROUP_OWNER"
+			   }, {
+				 "orgId": "59db8d1d87d9d6420df0613f",
+				 "roleName": "ORG_OWNER"
+			   }],
+			   "username": "someone@example.com"
+			}]
+		},`)
+	})
+
+	orgs, _, err := client.Organizations.ListUsers(ctx, orgID, nil)
+	if err != nil {
+		t.Fatalf("Organizations.ListUsers returned error: %v", err)
+	}
+
+	expected := []*User{
+		{
+			EmailAddress: "someone@example.com",
+			FirstName:    "John",
+			ID:           "59db8d1d87d9d6420df0613a",
+			LastName:     "Smith",
+			Links:        []*mongodbatlas.Link{},
+			Roles: []*UserRole{
+				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+			},
+			Username: "someone@example.com",
+		},
+		{
+			EmailAddress: "someone_else@example.com",
+			FirstName:    "Jill",
+			ID:           "59db8d1d87d9d6420df0613a",
+			LastName:     "Smith",
+			Links:        []*mongodbatlas.Link{},
+			Roles: []*UserRole{
+				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+			},
+			Username: "someone@example.com",
+		},
+	}
+
+	if diff := deep.Equal(orgs, expected); diff != nil {
+		t.Error(diff)
+	}
+}
 
 func TestOrganizations_Get(t *testing.T) {
 	client, mux, teardown := setup()

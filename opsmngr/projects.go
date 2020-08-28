@@ -31,10 +31,12 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/
 type ProjectsService interface {
 	List(context.Context, *atlas.ListOptions) (*Projects, *atlas.Response, error)
+	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
 	Get(context.Context, string) (*Project, *atlas.Response, error)
 	GetByName(context.Context, string) (*Project, *atlas.Response, error)
 	Create(context.Context, *Project) (*Project, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
+	RemoveUser(context.Context, string, string) (*atlas.Response, error)
 }
 
 // ProjectsServiceOp provides an implementation of the ProjectsService interface
@@ -109,6 +111,35 @@ func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (
 	}
 
 	return root, resp, nil
+}
+
+// ListUsers gets all users in a project.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
+func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
+	path := fmt.Sprintf("%s/%s/users", projectBasePath, projectID)
+
+	path, err := setQueryParams(path, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(UsersResponse)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	if l := root.Links; l != nil {
+		resp.Links = l
+	}
+
+	return root.Results, resp, nil
 }
 
 // Get gets a single project.
@@ -190,6 +221,30 @@ func (s *ProjectsServiceOp) Delete(ctx context.Context, projectID string) (*atla
 	}
 
 	basePath := fmt.Sprintf("%s/%s", projectBasePath, projectID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodDelete, basePath, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.Client.Do(ctx, req, nil)
+
+	return resp, err
+}
+
+// RemoveUser removes a user from a project.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/remove-one-user-from-one-group/
+func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID string) (*atlas.Response, error) {
+	if projectID == "" {
+		return nil, atlas.NewArgError("projectID", "must be set")
+	}
+
+	if userID == "" {
+		return nil, atlas.NewArgError("userID", "must be set")
+	}
+
+	basePath := fmt.Sprintf("%s/%s/users/%s", projectBasePath, projectID, userID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, basePath, nil)
 	if err != nil {

@@ -68,25 +68,6 @@ type WhitelistOpts struct {
 	Whitelist []string `url:"whitelist"`
 }
 
-// User wrapper for a user response, augmented with a few extra fields
-type User struct {
-	Username     string        `json:"username"`
-	Password     string        `json:"password,omitempty"`
-	FirstName    string        `json:"firstName,omitempty"`
-	LastName     string        `json:"lastName,omitempty"`
-	EmailAddress string        `json:"emailAddress,omitempty"`
-	ID           string        `json:"id,omitempty"`
-	Links        []*atlas.Link `json:"links,omitempty"`
-	Roles        []*UserRole   `json:"roles,omitempty"`
-}
-
-// UserRole denotes a single user role
-type UserRole struct {
-	RoleName string `json:"roleName"`
-	GroupID  string `json:"groupId,omitempty"`
-	OrgID    string `json:"orgId,omitempty"`
-}
-
 // CreateUserResponse API response for the CreateFirstUser() call
 type CreateUserResponse struct {
 	APIKey             string       `json:"apiKey,omitempty"`
