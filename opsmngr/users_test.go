@@ -57,13 +57,12 @@ func TestUsers_Get(t *testing.T) {
 		t.Fatalf("Users.Get returned error: %v", err)
 	}
 
-	expected := &User{
+	expected := &mongodbatlas.AtlasUser{
 		EmailAddress: "someone@example.com",
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links:        []*mongodbatlas.Link{},
-		Roles: []*UserRole{
+		Roles: []mongodbatlas.AtlasRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 			{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
@@ -107,13 +106,12 @@ func TestUsers_GetByName(t *testing.T) {
 		t.Fatalf("Users.GetByName returned error: %v", err)
 	}
 
-	expected := &User{
+	expected := &mongodbatlas.AtlasUser{
 		EmailAddress: "someone@example.com",
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links:        []*mongodbatlas.Link{},
-		Roles: []*UserRole{
+		Roles: []mongodbatlas.AtlasRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 			{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
@@ -152,14 +150,13 @@ func TestUsers_Create(t *testing.T) {
 		}`)
 	})
 
-	createRequest := &User{
+	createRequest := &mongodbatlas.AtlasUser{
 		Username:     "someone@example.com",
 		Password:     "some_pass",
 		FirstName:    "John",
 		LastName:     "Smith",
 		EmailAddress: "john.smith@mongodb.com",
-		Links:        nil,
-		Roles: []*UserRole{
+		Roles: []mongodbatlas.AtlasRole{
 			{RoleName: "ORG_OWNER", OrgID: "59db8d1d87d9d6420df0613f"},
 		},
 	}
@@ -169,13 +166,12 @@ func TestUsers_Create(t *testing.T) {
 		t.Fatalf("Users.Create returned error: %v", err)
 	}
 
-	expected := &User{
+	expected := &mongodbatlas.AtlasUser{
 		EmailAddress: "someone@example.com",
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links:        []*mongodbatlas.Link{},
-		Roles: []*UserRole{
+		Roles: []mongodbatlas.AtlasRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
 			{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},

@@ -31,7 +31,7 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/
 type ProjectsService interface {
 	List(context.Context, *atlas.ListOptions) (*Projects, *atlas.Response, error)
-	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
+	ListUsers(context.Context, string, *atlas.ListOptions) (*atlas.AtlasUsersResponse, *atlas.Response, error)
 	Get(context.Context, string) (*Project, *atlas.Response, error)
 	GetByName(context.Context, string) (*Project, *atlas.Response, error)
 	Create(context.Context, *Project) (*Project, *atlas.Response, error)
@@ -116,7 +116,7 @@ func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (
 // ListUsers gets all users in a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
-func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
+func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) (*atlas.AtlasUsersResponse, *atlas.Response, error) {
 	path := fmt.Sprintf("%s/%s/users", projectBasePath, projectID)
 
 	path, err := setQueryParams(path, opts)
@@ -129,7 +129,7 @@ func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opt
 		return nil, nil, err
 	}
 
-	root := new(UsersResponse)
+	root := new(atlas.AtlasUsersResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -139,7 +139,7 @@ func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opt
 		resp.Links = l
 	}
 
-	return root.Results, resp, nil
+	return root, resp, nil
 }
 
 // Get gets a single project.

@@ -204,7 +204,8 @@ func TestProjects_ListUsers(t *testing.T) {
 				 "roleName": "ORG_OWNER"
 			   }],
 			   "username": "someone@example.com"
-			}]
+			}],
+			"totalCount": 2
 		},`)
 	})
 
@@ -213,33 +214,40 @@ func TestProjects_ListUsers(t *testing.T) {
 		t.Fatalf("Projects.ListUsers returned error: %v", err)
 	}
 
-	expected := []*User{
-		{
-			EmailAddress: "someone@example.com",
-			FirstName:    "John",
-			ID:           "59db8d1d87d9d6420df0613a",
-			LastName:     "Smith",
-			Links:        []*mongodbatlas.Link{},
-			Roles: []*UserRole{
-				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
-				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
-				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+	expected := &mongodbatlas.AtlasUsersResponse{
+		Links:      []*mongodbatlas.Link{
+			{
+				Rel:  "self",
+				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/users",
 			},
-			Username: "someone@example.com",
 		},
-		{
-			EmailAddress: "someone_else@example.com",
-			FirstName:    "Jill",
-			ID:           "59db8d1d87d9d6420df0613a",
-			LastName:     "Smith",
-			Links:        []*mongodbatlas.Link{},
-			Roles: []*UserRole{
-				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
-				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
-				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+		Results: []mongodbatlas.AtlasUser{
+			{
+				EmailAddress: "someone@example.com",
+				FirstName:    "John",
+				ID:           "59db8d1d87d9d6420df0613a",
+				LastName:     "Smith",
+				Roles: []mongodbatlas.AtlasRole{
+					{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+					{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+					{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+				},
+				Username: "someone@example.com",
 			},
-			Username: "someone@example.com",
+			{
+				EmailAddress: "someone_else@example.com",
+				FirstName:    "Jill",
+				ID:           "59db8d1d87d9d6420df0613a",
+				LastName:     "Smith",
+				Roles: []mongodbatlas.AtlasRole{
+					{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+					{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+					{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+				},
+				Username: "someone@example.com",
+			},
 		},
+		TotalCount: 2,
 	}
 
 	if diff := deep.Equal(orgs, expected); diff != nil {

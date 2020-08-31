@@ -27,7 +27,7 @@ func TestUnauth_CreateFirstUser(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &User{
+	createRequest := &mongodbatlas.AtlasUser{
 		EmailAddress: "jane.doe@example.com",
 		Password:     "password",
 		FirstName:    "Jane",
@@ -39,13 +39,7 @@ func TestUnauth_CreateFirstUser(t *testing.T) {
 			"apiKey": "1234abcd-ab12-cd34-ef56-1234abcd1234",
 			"user": {
 				"emailAddress": "jane.doe@example.com",			
-				"id": "1234abcd-ab12-cd34-ef56-1234abcd1235",			
-				"links": [
-				  {
-				   "href" : "https://cloud.mongodb.com/api/public/v1.0/users/1234abcd-ab12-cd34-ef56-1234abcd1235",
-				   "rel" : "self"
-				  }
-				],
+				"id": "1234abcd-ab12-cd34-ef56-1234abcd1235",
 				"roles": [
 				  {
 					"roleName": "GLOBAL_OWNER"
@@ -63,16 +57,10 @@ func TestUnauth_CreateFirstUser(t *testing.T) {
 
 	expected := &CreateUserResponse{
 		APIKey: "1234abcd-ab12-cd34-ef56-1234abcd1234",
-		User: &User{
+		User: &mongodbatlas.AtlasUser{
 			EmailAddress: "jane.doe@example.com",
 			ID:           "1234abcd-ab12-cd34-ef56-1234abcd1235",
-			Links: []*mongodbatlas.Link{
-				{
-					Href: "https://cloud.mongodb.com/api/public/v1.0/users/1234abcd-ab12-cd34-ef56-1234abcd1235",
-					Rel:  "self",
-				},
-			},
-			Roles: []*UserRole{
+			Roles: []mongodbatlas.AtlasRole{
 				{
 					RoleName: "GLOBAL_OWNER",
 				},

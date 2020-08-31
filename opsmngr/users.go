@@ -31,9 +31,9 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/users/
 type UsersService interface {
-	Get(context.Context, string) (*User, *atlas.Response, error)
-	GetByName(context.Context, string) (*User, *atlas.Response, error)
-	Create(context.Context, *User) (*User, *atlas.Response, error)
+	Get(context.Context, string) (*atlas.AtlasUser, *atlas.Response, error)
+	GetByName(context.Context, string) (*atlas.AtlasUser, *atlas.Response, error)
+	Create(context.Context, *atlas.AtlasUser) (*atlas.AtlasUser, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
@@ -42,36 +42,10 @@ type UsersServiceOp service
 
 var _ UsersService = &UsersServiceOp{}
 
-// User wrapper for a user response, augmented with a few extra fields
-type User struct {
-	Username     string        `json:"username"`
-	Password     string        `json:"password,omitempty"`
-	FirstName    string        `json:"firstName,omitempty"`
-	LastName     string        `json:"lastName,omitempty"`
-	EmailAddress string        `json:"emailAddress,omitempty"`
-	ID           string        `json:"id,omitempty"`
-	Links        []*atlas.Link `json:"links,omitempty"`
-	Roles        []*UserRole   `json:"roles,omitempty"`
-}
-
-// UserRole denotes a single user role
-type UserRole struct {
-	RoleName string `json:"roleName"`
-	GroupID  string `json:"groupId,omitempty"`
-	OrgID    string `json:"orgId,omitempty"`
-}
-
-// UsersResponse represents a array of users
-type UsersResponse struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*User       `json:"results"`
-	TotalCount int           `json:"totalCount"`
-}
-
 // Get gets a single user by ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-id/
-func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *atlas.Response, error) {
+func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*atlas.AtlasUser, *atlas.Response, error) {
 	if userID == "" {
 		return nil, nil, atlas.NewArgError("userID", "must be set")
 	}
@@ -83,7 +57,7 @@ func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *atlas.
 		return nil, nil, err
 	}
 
-	root := new(User)
+	root := new(atlas.AtlasUser)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -95,7 +69,7 @@ func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *atlas.
 // GetByName gets a single user by name.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-name/
-func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User, *atlas.Response, error) {
+func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*atlas.AtlasUser, *atlas.Response, error) {
 	if username == "" {
 		return nil, nil, atlas.NewArgError("username", "must be set")
 	}
@@ -107,7 +81,7 @@ func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User,
 		return nil, nil, err
 	}
 
-	root := new(User)
+	root := new(atlas.AtlasUser)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -119,7 +93,7 @@ func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User,
 // Create creates a new IAM user.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-create/
-func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User, *atlas.Response, error) {
+func (s *UsersServiceOp) Create(ctx context.Context, createRequest *atlas.AtlasUser) (*atlas.AtlasUser, *atlas.Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -129,7 +103,7 @@ func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User
 		return nil, nil, err
 	}
 
-	root := new(User)
+	root := new(atlas.AtlasUser)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
