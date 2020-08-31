@@ -215,7 +215,7 @@ func TestProjects_ListUsers(t *testing.T) {
 	}
 
 	expected := &mongodbatlas.AtlasUsersResponse{
-		Links:      []*mongodbatlas.Link{
+		Links: []*mongodbatlas.Link{
 			{
 				Rel:  "self",
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/users",
