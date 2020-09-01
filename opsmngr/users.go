@@ -49,6 +49,7 @@ type User struct {
 	FirstName    string        `json:"firstName,omitempty"`
 	LastName     string        `json:"lastName,omitempty"`
 	EmailAddress string        `json:"emailAddress,omitempty"`
+	MobileNumber string        `json:"mobileNumber,omitempty"`
 	ID           string        `json:"id,omitempty"`
 	Links        []*atlas.Link `json:"links,omitempty"`
 	Roles        []*UserRole   `json:"roles,omitempty"`
