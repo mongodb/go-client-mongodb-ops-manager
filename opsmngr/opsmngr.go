@@ -49,6 +49,7 @@ type Client struct {
 	Organizations          OrganizationsService
 	Projects               ProjectsService
 	Users                  UsersService
+	Teams                  TeamsService
 	Automation             AutomationService
 	UnauthUsers            UnauthUsersService
 	AlertConfigurations    atlas.AlertConfigurationsService
@@ -98,6 +99,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Organizations = &OrganizationsServiceOp{Client: c}
 	c.Projects = &ProjectsServiceOp{Client: c}
 	c.Users = &UsersServiceOp{Client: c}
+	c.Teams = &TeamsServiceOp{Client: c}
 	c.Automation = &AutomationServiceOp{Client: c}
 	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}

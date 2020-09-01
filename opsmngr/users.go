@@ -44,15 +44,16 @@ var _ UsersService = &UsersServiceOp{}
 
 // User wrapper for a user response, augmented with a few extra fields
 type User struct {
-	Username     string        `json:"username"`
-	Password     string        `json:"password,omitempty"`
+	ID           string        `json:"id,omitempty"`
+	EmailAddress string        `json:"emailAddress,omitempty"`
 	FirstName    string        `json:"firstName,omitempty"`
 	LastName     string        `json:"lastName,omitempty"`
-	EmailAddress string        `json:"emailAddress,omitempty"`
-	MobileNumber string        `json:"mobileNumber,omitempty"`
-	ID           string        `json:"id,omitempty"`
 	Links        []*atlas.Link `json:"links,omitempty"`
+	MobileNumber string        `json:"mobileNumber,omitempty"`
+	Password     string        `json:"password,omitempty"`
+	TeamIds      []string      `json:"teamIds,omitempty"`
 	Roles        []*UserRole   `json:"roles,omitempty"`
+	Username     string        `json:"username"`
 }
 
 // UserRole denotes a single user role

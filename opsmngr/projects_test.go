@@ -490,3 +490,64 @@ func TestProject_RemoveUser(t *testing.T) {
 		t.Fatalf("Projects.RemoveUser returned error: %v", err)
 	}
 }
+
+func TestProject_AddTeamsToProject(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	projectID := "5a0a1e7e0f2912c554080adc"
+
+	createRequest := []*mongodbatlas.ProjectTeam{{
+		TeamID:    "{TEAM-ID}",
+		RoleNames: []string{"GROUP_OWNER", "GROUP_READ_ONLY"},
+	}}
+
+	mux.HandleFunc(fmt.Sprintf("/groups/%s/teams", projectID), func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, `{
+			"links": [{
+				"href": "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",
+				"rel": "self"
+			}],
+			"results": [{
+				"links": [{
+					"href": "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams/{TEAM-ID}",
+					"rel": "self"
+				}],
+				"roleNames": ["GROUP_OWNER"],
+				"teamId": "{TEAM-ID}"
+			}],
+			"totalCount": 1
+		}`)
+	})
+
+	team, _, err := client.Projects.AddTeamsToProject(ctx, projectID, createRequest)
+	if err != nil {
+		t.Errorf("Projects.AddTeamsToProject returned error: %v", err)
+	}
+
+	expected := &mongodbatlas.TeamsAssigned{
+		Links: []*mongodbatlas.Link{
+			{
+				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",
+				Rel:  "self",
+			},
+		},
+		Results: []*mongodbatlas.Result{
+			{
+				Links: []*mongodbatlas.Link{
+					{
+						Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams/{TEAM-ID}",
+						Rel:  "self",
+					},
+				},
+				RoleNames: []string{"GROUP_OWNER"},
+				TeamID:    "{TEAM-ID}",
+			},
+		},
+		TotalCount: 1,
+	}
+
+	if diff := deep.Equal(team, expected); diff != nil {
+		t.Error(diff)
+	}
+}

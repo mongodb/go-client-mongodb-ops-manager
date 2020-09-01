@@ -37,6 +37,7 @@ type ProjectsService interface {
 	Create(context.Context, *Project) (*Project, *atlas.Response, error)
 	Delete(context.Context, string) (*atlas.Response, error)
 	RemoveUser(context.Context, string, string) (*atlas.Response, error)
+	AddTeamsToProject(context.Context, string, []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *atlas.Response, error)
 }
 
 // ProjectsServiceOp provides an implementation of the ProjectsService interface
@@ -254,4 +255,28 @@ func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID st
 	resp, err := s.Client.Do(ctx, req, nil)
 
 	return resp, err
+}
+
+// AddTeamsToProject adds teams to a project
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-add-team/
+func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID string, createRequest []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *atlas.Response, error) {
+	if createRequest == nil {
+		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+	}
+
+	path := fmt.Sprintf("%s/%s/teams", projectBasePath, projectID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, createRequest)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(atlas.TeamsAssigned)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return root, resp, err
 }
