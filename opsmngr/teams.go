@@ -38,6 +38,9 @@ var _ TeamsService = &TeamsServiceOp{}
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-get-all/
 func (s *TeamsServiceOp) List(ctx context.Context, orgID string, listOptions *atlas.ListOptions) ([]atlas.Team, *atlas.Response, error) {
+	if orgID == "" {
+		return nil, nil, atlas.NewArgError("orgID", "must be set")
+	}
 	path := fmt.Sprintf(teamsBasePath, orgID)
 
 	// Add query params from listOptions
@@ -68,6 +71,9 @@ func (s *TeamsServiceOp) List(ctx context.Context, orgID string, listOptions *at
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-get-one-by-id/
 func (s *TeamsServiceOp) Get(ctx context.Context, orgID, teamID string) (*atlas.Team, *atlas.Response, error) {
+	if orgID == "" {
+		return nil, nil, atlas.NewArgError("orgID", "must be set")
+	}
 	if teamID == "" {
 		return nil, nil, atlas.NewArgError("teamID", "must be set")
 	}
@@ -93,6 +99,9 @@ func (s *TeamsServiceOp) Get(ctx context.Context, orgID, teamID string) (*atlas.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-get-one-by-name/
 func (s *TeamsServiceOp) GetOneTeamByName(ctx context.Context, orgID, teamName string) (*atlas.Team, *atlas.Response, error) {
+	if orgID == "" {
+		return nil, nil, atlas.NewArgError("orgID", "must be set")
+	}
 	if teamName == "" {
 		return nil, nil, atlas.NewArgError("teamName", "must be set")
 	}
@@ -121,6 +130,9 @@ func (s *TeamsServiceOp) GetTeamUsersAssigned(ctx context.Context, orgID, teamID
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
+	if teamID == "" {
+		return nil, nil, atlas.NewArgError("teamID", "must be set")
+	}
 
 	basePath := fmt.Sprintf(teamsBasePath, orgID)
 	path := fmt.Sprintf("%s/%s/users", basePath, teamID)
@@ -147,6 +159,9 @@ func (s *TeamsServiceOp) GetTeamUsersAssigned(ctx context.Context, orgID, teamID
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-create-one/
 func (s *TeamsServiceOp) Create(ctx context.Context, orgID string, createRequest *atlas.Team) (*atlas.Team, *atlas.Response, error) {
+	if orgID == "" {
+		return nil, nil, atlas.NewArgError("orgID", "must be set")
+	}
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -169,6 +184,12 @@ func (s *TeamsServiceOp) Create(ctx context.Context, orgID string, createRequest
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-rename-one/
 func (s *TeamsServiceOp) Rename(ctx context.Context, orgID, teamID, teamName string) (*atlas.Team, *atlas.Response, error) {
+	if orgID == "" {
+		return nil, nil, atlas.NewArgError("orgID", "must be set")
+	}
+	if teamID == "" {
+		return nil, nil, atlas.NewArgError("teamID", "must be set")
+	}
 	if teamName == "" {
 		return nil, nil, atlas.NewArgError("teamName", "cannot be nil")
 	}
@@ -196,6 +217,12 @@ func (s *TeamsServiceOp) Rename(ctx context.Context, orgID, teamID, teamName str
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-update-roles/
 func (s *TeamsServiceOp) UpdateTeamRoles(ctx context.Context, orgID, teamID string, updateTeamRolesRequest *atlas.TeamUpdateRoles) ([]atlas.TeamRoles, *atlas.Response, error) {
+	if orgID == "" {
+		return nil, nil, atlas.NewArgError("orgID", "must be set")
+	}
+	if teamID == "" {
+		return nil, nil, atlas.NewArgError("teamID", "must be set")
+	}
 	if updateTeamRolesRequest == nil {
 		return nil, nil, atlas.NewArgError("updateTeamRolesRequest", "cannot be nil")
 	}
@@ -224,6 +251,12 @@ func (s *TeamsServiceOp) UpdateTeamRoles(ctx context.Context, orgID, teamID stri
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-add-user/
 func (s *TeamsServiceOp) AddUsersToTeam(ctx context.Context, orgID, teamID string, usersID []string) ([]*User, *atlas.Response, error) {
+	if orgID == "" {
+		return nil, nil, atlas.NewArgError("orgID", "must be set")
+	}
+	if teamID == "" {
+		return nil, nil, atlas.NewArgError("teamID", "must be set")
+	}
 	if len(usersID) < 1 {
 		return nil, nil, atlas.NewArgError("usersID", "cannot empty at leas one userID must be set")
 	}
@@ -259,6 +292,12 @@ func (s *TeamsServiceOp) AddUsersToTeam(ctx context.Context, orgID, teamID strin
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-remove-user/
 func (s *TeamsServiceOp) RemoveUserToTeam(ctx context.Context, orgID, teamID, userID string) (*atlas.Response, error) {
+	if orgID == "" {
+		return nil, atlas.NewArgError("orgID", "must be set")
+	}
+	if teamID == "" {
+		return nil, atlas.NewArgError("teamID", "must be set")
+	}
 	if userID == "" {
 		return nil, atlas.NewArgError("userID", "cannot be nil")
 	}
@@ -283,6 +322,9 @@ func (s *TeamsServiceOp) RemoveUserToTeam(ctx context.Context, orgID, teamID, us
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-delete-one/
 func (s *TeamsServiceOp) RemoveTeamFromOrganization(ctx context.Context, orgID, teamID string) (*atlas.Response, error) {
+	if orgID == "" {
+		return nil, atlas.NewArgError("orgID", "must be set")
+	}
 	if teamID == "" {
 		return nil, atlas.NewArgError("teamID", "cannot be nil")
 	}
@@ -307,6 +349,9 @@ func (s *TeamsServiceOp) RemoveTeamFromOrganization(ctx context.Context, orgID, 
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-remove-from-project/
 func (s *TeamsServiceOp) RemoveTeamFromProject(ctx context.Context, groupID, teamID string) (*atlas.Response, error) {
+	if groupID == "" {
+		return nil, atlas.NewArgError("groupID", "must be set")
+	}
 	if teamID == "" {
 		return nil, atlas.NewArgError("teamID", "cannot be nil")
 	}
