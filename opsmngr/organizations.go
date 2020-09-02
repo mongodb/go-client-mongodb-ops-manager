@@ -31,7 +31,7 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/
 type OrganizationsService interface {
 	List(context.Context, *atlas.ListOptions) (*atlas.Organizations, *atlas.Response, error)
-	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
+	ListUsers(context.Context, string, *atlas.ListOptions) (*UsersResponse, *atlas.Response, error)
 	Get(context.Context, string) (*atlas.Organization, *atlas.Response, error)
 	Projects(context.Context, string, *atlas.ListOptions) (*Projects, *atlas.Response, error)
 	Create(context.Context, *atlas.Organization) (*atlas.Organization, *atlas.Response, error)
@@ -72,7 +72,7 @@ func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptio
 // ListUsers gets all users in an organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-users/
-func (s *OrganizationsServiceOp) ListUsers(ctx context.Context, orgID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
+func (s *OrganizationsServiceOp) ListUsers(ctx context.Context, orgID string, opts *atlas.ListOptions) (*UsersResponse, *atlas.Response, error) {
 	path := fmt.Sprintf(orgUsersBasePath, orgID)
 
 	path, err := setQueryParams(path, opts)
@@ -95,7 +95,7 @@ func (s *OrganizationsServiceOp) ListUsers(ctx context.Context, orgID string, op
 		resp.Links = l
 	}
 
-	return root.Results, resp, nil
+	return root, resp, nil
 }
 
 // Get gets a single organization.
