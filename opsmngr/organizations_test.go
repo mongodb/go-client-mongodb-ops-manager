@@ -104,10 +104,6 @@ func TestOrganizations_ListUsers(t *testing.T) {
 	mux.HandleFunc(fmt.Sprintf("/%s/%s/users", orgsBasePath, orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
-			"links": [{
-				"href": "https://cloud.mongodb.com/api/public/v1.0/orgs/users",
-				"rel": "self"
-			}],
 			"results": [{
 			   "emailAddress": "someone@example.com",
 			   "firstName": "John",
@@ -142,7 +138,8 @@ func TestOrganizations_ListUsers(t *testing.T) {
 				 "roleName": "ORG_OWNER"
 			   }],
 			   "username": "someone@example.com"
-			}]
+			}],
+			"totalCount" : 2
 		},`)
 	})
 
@@ -151,33 +148,37 @@ func TestOrganizations_ListUsers(t *testing.T) {
 		t.Fatalf("Organizations.ListUsers returned error: %v", err)
 	}
 
-	expected := []*User{
-		{
-			EmailAddress: "someone@example.com",
-			FirstName:    "John",
-			ID:           "59db8d1d87d9d6420df0613a",
-			LastName:     "Smith",
-			Links:        []*mongodbatlas.Link{},
-			Roles: []*UserRole{
-				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
-				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
-				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+	expected := &UsersResponse{
+		Links: nil,
+		Results: []*User{
+			{
+				EmailAddress: "someone@example.com",
+				FirstName:    "John",
+				ID:           "59db8d1d87d9d6420df0613a",
+				LastName:     "Smith",
+				Links:        []*mongodbatlas.Link{},
+				Roles: []*UserRole{
+					{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+					{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+					{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+				},
+				Username: "someone@example.com",
 			},
-			Username: "someone@example.com",
-		},
-		{
-			EmailAddress: "someone_else@example.com",
-			FirstName:    "Jill",
-			ID:           "59db8d1d87d9d6420df0613a",
-			LastName:     "Smith",
-			Links:        []*mongodbatlas.Link{},
-			Roles: []*UserRole{
-				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
-				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
-				{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+			{
+				EmailAddress: "someone_else@example.com",
+				FirstName:    "Jill",
+				ID:           "59db8d1d87d9d6420df0613a",
+				LastName:     "Smith",
+				Links:        []*mongodbatlas.Link{},
+				Roles: []*UserRole{
+					{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
+					{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
+					{OrgID: "59db8d1d87d9d6420df0613f", RoleName: "ORG_OWNER"},
+				},
+				Username: "someone@example.com",
 			},
-			Username: "someone@example.com",
 		},
+		TotalCount: 2,
 	}
 
 	if diff := deep.Equal(orgs, expected); diff != nil {
