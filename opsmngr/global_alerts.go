@@ -35,8 +35,10 @@ type GlobalAlertsService interface {
 	Acknowledge(context.Context, string, *atlas.AcknowledgeRequest) (*GlobalAlert, *atlas.Response, error)
 }
 
+// GlobalAlertsServiceOp provides an implementation of the GlobalAlertsService interface
 type GlobalAlertsServiceOp service
 
+// GlobalAlert configuration struct
 type GlobalAlert struct {
 	atlas.Alert
 	SourceTypeName string        `json:"sourceTypeName,omitempty"`
@@ -46,6 +48,7 @@ type GlobalAlert struct {
 	ClusterID      string        `json:"clusterId,omitempty"`
 }
 
+// GlobalAlerts collection of configurations
 type GlobalAlerts struct {
 	Links      []*atlas.Link  `json:"links"`
 	Results    []*GlobalAlert `json:"results"`
@@ -93,6 +96,7 @@ func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsList
 }
 
 // Acknowledge acknowledges a global alert.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 func (s *GlobalAlertsServiceOp) Acknowledge(ctx context.Context, alertID string, body *atlas.AcknowledgeRequest) (*GlobalAlert, *atlas.Response, error) {
 	if alertID == "" {

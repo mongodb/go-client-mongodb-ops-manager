@@ -1,3 +1,17 @@
+// Copyright 2020 MongoDB Inc
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package opsmngr
 
 import (
@@ -42,6 +56,7 @@ type GlobalWhitelistAPIKeys struct {
 	TotalCount int                      `json:"totalCount,omitempty"` // Count of the total number of items in the result set. It may be greater than the number of objects in the results array if the entire result set is paginated.
 }
 
+// WhitelistAPIKeysReq represents a source allowed to use global API keys
 type WhitelistAPIKeysReq struct {
 	CidrBlock   string `json:"cidrBlock"`
 	Description string `json:"description"`

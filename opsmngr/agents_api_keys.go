@@ -26,6 +26,7 @@ const (
 	agentAPIKeysBasePath = "groups/%s/agentapikeys"
 )
 
+// AgentAPIKey defines the structure for an Agent API key
 type AgentAPIKey struct {
 	ID            string  `json:"_id"`
 	Key           string  `json:"key"`
@@ -36,11 +37,12 @@ type AgentAPIKey struct {
 	CreatedBy     string  `json:"createdBy"`
 }
 
+// AgentAPIKeysRequest a creation request for Agent API keys
 type AgentAPIKeysRequest struct {
 	Desc string `json:"desc"`
 }
 
-// Create creates a new agent API key.
+// CreateAgentAPIKey creates a new agent API key.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/create-one-agent-api-key/
 func (s *AgentsServiceOp) CreateAgentAPIKey(ctx context.Context, projectID string, agent *AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error) {

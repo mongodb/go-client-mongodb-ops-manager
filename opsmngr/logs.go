@@ -29,6 +29,7 @@ const (
 
 // LogCollectionService is an interface for interfacing with the Log Collection Jobs
 // endpoints of the MongoDB Ops Manager API.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
 type LogCollectionService interface {
 	List(context.Context, string, *LogListOptions) (*LogCollectionJobs, *atlas.Response, error)
@@ -39,20 +40,20 @@ type LogCollectionService interface {
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
-// LogCollectionServiceOp handles communication with the Log Collection Jobs related methods of the
-// MongoDB Ops Manager API
+// LogCollectionServiceOp provides an implementation of the DiagnosticsService interface
 type LogCollectionServiceOp service
 
 var _ LogCollectionService = &LogCollectionServiceOp{}
 
 // LogsService is an interface for interfacing with the Log Collection Jobs
 // endpoints of the MongoDB Ops Manager API.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
 type LogsService interface {
 	Download(context.Context, string, string, io.Writer) (*atlas.Response, error)
 }
 
-// LogCollectionServiceOp handles communication with the Log Collection Jobs download method of the
+// LogsServiceOp handles communication with the Log Collection Jobs download method of the
 // MongoDB Ops Manager API
 type LogsServiceOp struct {
 	Client atlas.GZipRequestDoer

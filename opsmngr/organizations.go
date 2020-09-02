@@ -122,7 +122,7 @@ func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*atlas.
 	return root, resp, err
 }
 
-// GetProjects gets all projects for the given organization ID.
+// Projects gets all projects for the given organization ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-projects/
 func (s *OrganizationsServiceOp) Projects(ctx context.Context, orgID string, opts *atlas.ListOptions) (*Projects, *atlas.Response, error) {

@@ -64,6 +64,7 @@ func (s *UnauthUsersServiceOp) CreateFirstUser(ctx context.Context, user *User, 
 	return root, resp, err
 }
 
+// WhitelistOpts allows access from given IPs
 type WhitelistOpts struct {
 	Whitelist []string `url:"whitelist"`
 }

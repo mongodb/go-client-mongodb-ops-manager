@@ -77,7 +77,7 @@ type HostListOptions struct {
 	ClusterID string `url:"clusterId,omitempty"`
 }
 
-// List lists all MongoDB hosts in a project.
+// ListHosts lists all MongoDB hosts in a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-all-hosts-in-group/
 func (s *DeploymentsServiceOp) ListHosts(ctx context.Context, groupID string, opts *HostListOptions) (*Hosts, *atlas.Response, error) {
@@ -101,7 +101,7 @@ func (s *DeploymentsServiceOp) ListHosts(ctx context.Context, groupID string, op
 	return root, resp, err
 }
 
-// Get gets the MongoDB process with the specified host ID.
+// GetHost gets the MongoDB process with the specified host ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-one-host-by-id/
 func (s *DeploymentsServiceOp) GetHost(ctx context.Context, groupID, hostID string) (*Host, *atlas.Response, error) {
@@ -125,7 +125,7 @@ func (s *DeploymentsServiceOp) GetHost(ctx context.Context, groupID, hostID stri
 	return root, resp, err
 }
 
-// GetByHostname gets a single MongoDB process by its hostname and port combination.
+// GetHostByHostname gets a single MongoDB process by its hostname and port combination.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-one-host-by-hostname-port/
 func (s *DeploymentsServiceOp) GetHostByHostname(ctx context.Context, groupID, hostname string, port int) (*Host, *atlas.Response, error) {

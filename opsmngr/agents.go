@@ -85,7 +85,7 @@ func (s *AgentsServiceOp) ListAgentLinks(ctx context.Context, groupID string) (*
 	return root, resp, err
 }
 
-// List gets agents of a specified type (i.e. Monitoring, Backup, or Automation) for a project.
+// ListAgentsByType gets agents of a specified type (i.e. Monitoring, Backup, or Automation) for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-by-type/
 func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentType string) (*Agents, *atlas.Response, error) {

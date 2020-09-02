@@ -94,6 +94,7 @@ type AutomationConfig struct {
 	Version              int                       `json:"version,omitempty"`
 }
 
+// ShardingConfig sharded clusters configuration
 type ShardingConfig struct {
 	Collections         []*map[string]interface{} `json:"collections"`
 	ConfigServerReplica string                    `json:"configServerReplica"`
@@ -104,6 +105,7 @@ type ShardingConfig struct {
 	Tags                []string                  `json:"tags"`
 }
 
+// Shard details
 type Shard struct {
 	ID   string   `json:"_id"`
 	RS   string   `json:"rs"`
@@ -161,6 +163,7 @@ type Args26 struct {
 	SystemLog          SystemLog               `json:"systemLog"` // SystemLog configuration for the dblog
 }
 
+// MongoDBUser database user
 type MongoDBUser struct {
 	AuthenticationRestrictions []string       `json:"authenticationRestrictions"`
 	Database                   string         `json:"db"`
@@ -173,11 +176,13 @@ type MongoDBUser struct {
 	Username                   string         `json:"user"`
 }
 
+// Role of a database user
 type Role struct {
 	Role     string `json:"role"`
 	Database string `json:"db"`
 }
 
+// ScramShaCreds configuration
 type ScramShaCreds struct {
 	IterationCount int    `json:"iterationCount"`
 	Salt           string `json:"salt"`

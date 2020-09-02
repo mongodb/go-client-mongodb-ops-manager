@@ -44,6 +44,7 @@ func (s *AutomationServiceOp) UpdateAgentVersion(ctx context.Context, groupID st
 	return agent, resp, err
 }
 
+// AutomationConfigAgent components versions
 type AutomationConfigAgent struct {
 	AutomationAgentVersion string `json:"automationAgentVersion"`
 	BiConnectorVersion     string `json:"biConnectorVersion"`
