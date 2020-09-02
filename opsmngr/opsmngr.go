@@ -207,6 +207,9 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
 func (c *Client) NewGZipRequest(ctx context.Context, method, urlStr string) (*http.Request, error) {
+	if !strings.HasSuffix(c.BaseURL.Path, "/") {
+		return nil, fmt.Errorf("base URL must have a trailing slash, but %q does not", c.BaseURL)
+	}
 	rel, err := url.Parse(urlStr)
 	if err != nil {
 		return nil, err

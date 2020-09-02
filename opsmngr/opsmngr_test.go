@@ -161,6 +161,12 @@ func TestNewRequest_badURL(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+func TestNewGZipRequest_badURL(t *testing.T) {
+	c := NewClient(nil)
+	_, err := c.NewGZipRequest(ctx, http.MethodGet, ":")
+	testURLParseError(t, err)
+}
+
 func TestNewRequest_withCustomUserAgent(t *testing.T) {
 	ua := "testing/0.0.1"
 	c, err := New(nil, SetUserAgent(ua))
