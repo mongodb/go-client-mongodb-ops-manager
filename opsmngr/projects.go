@@ -282,7 +282,7 @@ func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID str
 	return root, resp, err
 }
 
-// GetTeams adds teams to a project
+// GetTeams gets all teams in a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-get-teams/
 func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *atlas.ListOptions) (*atlas.TeamsAssigned, *atlas.Response, error) {
