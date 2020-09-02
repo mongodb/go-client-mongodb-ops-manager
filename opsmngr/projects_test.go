@@ -551,3 +551,51 @@ func TestProject_AddTeamsToProject(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestProject_GetTeams(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	projectID := "5a0a1e7e0f2912c554080adc"
+
+	mux.HandleFunc(fmt.Sprintf("/groups/%s/teams", projectID), func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, `{
+			"links": [{
+				"href": "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",
+				"rel": "self"
+			}],
+			"results": [{
+					 "roleNames": [
+					   "GROUP_READ_ONLY"
+					 ],
+					 "teamId": "{TEAM-ID}"
+						 }],
+			"totalCount": 1
+		}`)
+	})
+
+	team, _, err := client.Projects.GetTeams(ctx, projectID, nil)
+	if err != nil {
+		t.Errorf("Projects.GetTeams returned error: %v", err)
+	}
+
+	expected := &mongodbatlas.TeamsAssigned{
+		Links: []*mongodbatlas.Link{
+			{
+				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",
+				Rel:  "self",
+			},
+		},
+		Results: []*mongodbatlas.Result{
+			{
+				RoleNames: []string{"GROUP_READ_ONLY"},
+				TeamID:    "{TEAM-ID}",
+			},
+		},
+		TotalCount: 1,
+	}
+
+	if diff := deep.Equal(team, expected); diff != nil {
+		t.Error(diff)
+	}
+}

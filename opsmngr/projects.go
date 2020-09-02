@@ -38,6 +38,7 @@ type ProjectsService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 	RemoveUser(context.Context, string, string) (*atlas.Response, error)
 	AddTeamsToProject(context.Context, string, []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *atlas.Response, error)
+	GetTeams(context.Context, string, *atlas.ListOptions) (*atlas.TeamsAssigned, *atlas.Response, error)
 }
 
 // ProjectsServiceOp provides an implementation of the ProjectsService interface
@@ -268,6 +269,30 @@ func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID str
 	path := fmt.Sprintf("%s/%s/teams", projectBasePath, projectID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, createRequest)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(atlas.TeamsAssigned)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return root, resp, err
+}
+
+// GetTeams gets all teams in a project
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-get-teams/
+func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *atlas.ListOptions) (*atlas.TeamsAssigned, *atlas.Response, error) {
+	if projectID == "" {
+		return nil, nil, atlas.NewArgError("projectID", "cannot be empty")
+	}
+
+	path := fmt.Sprintf("%s/%s/teams", projectBasePath, projectID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, opts)
 	if err != nil {
 		return nil, nil, err
 	}
