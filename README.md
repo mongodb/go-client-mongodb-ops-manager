@@ -6,7 +6,7 @@
 A go client for [Ops Manager](https://docs.opsmanager.mongodb.com/master/reference/api/) 
 and [Cloud Manager](https://docs.cloudmanager.mongodb.com/reference/api/) API.
 
-Currently, **ops-manager requires Go version 1.12 or greater**.
+Note that ops-manager only supports the two most recent major versions of Go.
 
 ## Usage
 
