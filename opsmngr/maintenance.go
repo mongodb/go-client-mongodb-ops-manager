@@ -49,7 +49,7 @@ type MaintenanceWindow struct {
 	Description    string   `json:"description,omitempty"`
 }
 
-// MaintenanceWindows is the response from the EventsService.List.
+// MaintenanceWindows is the response from the MaintenanceWindowsService.List.
 type MaintenanceWindows struct {
 	Links      []*atlas.Link        `json:"links,omitempty"`
 	Results    []*MaintenanceWindow `json:"results,omitempty"`
