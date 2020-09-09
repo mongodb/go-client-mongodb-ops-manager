@@ -28,6 +28,7 @@ const (
 
 // MaintenanceWindowsService is an interface for interfacing with the Maintenance Windows
 // endpoints of the MongoDB Ops Manager API.
+//
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows/
 type MaintenanceWindowsService interface {
 	Get(context.Context, string, string) (*MaintenanceWindow, *atlas.Response, error)
