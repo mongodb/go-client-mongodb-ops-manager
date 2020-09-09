@@ -40,9 +40,9 @@ type MaintenanceWindowsService interface {
 
 // MaintenanceWindow represents MongoDB Maintenance Windows
 type MaintenanceWindow struct {
-	ID             string   `json:"id"`
-	GroupID        string   `json:"groupId"`
-	Created        string   `json:"created"`
+	ID             string   `json:"id,omitempty"`
+	GroupID        string   `json:"groupId,omitempty"`
+	Created        string   `json:"created,omitempty"`
 	StartDate      string   `json:"startDate,omitempty"`
 	EndDate        string   `json:"endDate,omitempty"`
 	Updated        string   `json:"updated,omitempty"`
