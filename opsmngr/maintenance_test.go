@@ -22,6 +22,8 @@ import (
 	"github.com/go-test/deep"
 )
 
+const ID = "5628faffd4c606594adaa3b2"
+
 func TestMaintenanceWindows_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -64,7 +66,7 @@ func TestMaintenanceWindows_List(t *testing.T) {
 		Results: []*MaintenanceWindow{
 			{
 				ID:             "5628faffd4c606594adaa3b2",
-				GroupId:        "{PROJECT-ID}",
+				GroupID:        "{PROJECT-ID}",
 				Created:        "2015-10-22T15:04:31Z",
 				StartDate:      "2015-10-23T22:00:00Z",
 				EndDate:        "2015-10-23T23:30:00Z",
@@ -74,7 +76,7 @@ func TestMaintenanceWindows_List(t *testing.T) {
 			},
 			{
 				ID:             "56290359d4c606594adaafe8",
-				GroupId:        "{PROJECT-ID}",
+				GroupID:        "{PROJECT-ID}",
 				Created:        "2015-10-22T15:40:09Z",
 				StartDate:      "2015-10-23T22:00:00Z",
 				EndDate:        "2015-10-23T23:30:00Z",
@@ -93,7 +95,6 @@ func TestMaintenanceWindows_List(t *testing.T) {
 func TestMaintenanceWindows_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	ID := "5628faffd4c606594adaa3b2"
 	path := fmt.Sprintf("/groups/%s/maintenanceWindows/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +118,7 @@ func TestMaintenanceWindows_Get(t *testing.T) {
 
 	expected := &MaintenanceWindow{
 		ID:             "5628faffd4c606594adaa3b2",
-		GroupId:        "{PROJECT-ID}",
+		GroupID:        "{PROJECT-ID}",
 		Created:        "2015-10-22T15:04:31Z",
 		StartDate:      "2015-10-23T22:00:00Z",
 		EndDate:        "2015-10-23T23:30:00Z",
@@ -163,7 +164,7 @@ func TestMaintenanceWindows_Create(t *testing.T) {
 
 	expected := &MaintenanceWindow{
 		ID:             "5628faffd4c606594adaa3b2",
-		GroupId:        "{PROJECT-ID}",
+		GroupID:        "{PROJECT-ID}",
 		Created:        "2015-10-22T15:04:31Z",
 		StartDate:      "2015-10-23T22:00:00Z",
 		EndDate:        "2015-10-23T23:30:00Z",
@@ -180,8 +181,6 @@ func TestMaintenanceWindows_Create(t *testing.T) {
 func TestMaintenanceWindows_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	ID := "5628faffd4c606594adaa3b2"
 	path := fmt.Sprintf("/groups/%s/maintenanceWindows/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -211,7 +210,7 @@ func TestMaintenanceWindows_Update(t *testing.T) {
 
 	expected := &MaintenanceWindow{
 		ID:             "5628faffd4c606594adaa3b2",
-		GroupId:        "{PROJECT-ID}",
+		GroupID:        "{PROJECT-ID}",
 		Created:        "2015-10-22T15:04:31Z",
 		StartDate:      "2015-10-23T22:00:00Z",
 		EndDate:        "2015-10-23T23:30:00Z",
@@ -228,8 +227,6 @@ func TestMaintenanceWindows_Update(t *testing.T) {
 func TestMaintenanceWindows_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	ID := "5628faffd4c606594adaa3b2"
 
 	path := fmt.Sprintf("/groups/%s/maintenanceWindows/%s", groupID, ID)
 
