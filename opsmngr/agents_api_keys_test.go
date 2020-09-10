@@ -24,10 +24,14 @@ import (
 
 const projectID = "5e66185d917b220fbd8bb4d1"
 
-func TestAgents_ListAgentAPIKeys(t *testing.T) {
+func TestAgentsServiceOp_ListAgentAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
+
+	if _, _, err := client.Agents.ListAgentAPIKeys(ctx, ""); err == nil {
+		t.Error("expected an error but got nil")
+	}
 
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `
@@ -98,9 +102,18 @@ func TestAgents_ListAgentAPIKeys(t *testing.T) {
 	}
 }
 
-func TestAgents_CreateAgentAPIKey(t *testing.T) {
+func TestAgentsServiceOp_CreateAgentAPIKey(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
+
+	if _, _, err := client.Agents.CreateAgentAPIKey(ctx, "", &AgentAPIKeysRequest{}); err == nil {
+		t.Error("expected an error but got nil")
+	}
+
+	if _, _, err := client.Agents.CreateAgentAPIKey(ctx, projectID, nil); err == nil {
+		t.Error("expected an error but got nil")
+	}
+
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 						  "_id" : "1",
@@ -137,17 +150,69 @@ func TestAgents_CreateAgentAPIKey(t *testing.T) {
 		t.Error(diff)
 	}
 }
-func TestAgents_DeleteAgentAPIKey(t *testing.T) {
+
+func TestAgentsServiceOp_DeleteAgentAPIKey(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
+
 	agentAPIKey := "1"
+
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agentapikeys/%s", projectID, agentAPIKey), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Agents.DeleteAgentAPIKey(ctx, projectID, agentAPIKey)
-	if err != nil {
-		t.Fatalf("Agents.DeleteAgentAPIKey returned error: %v", err)
+	type args struct {
+		projectID   string
+		agentAPIKey string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "successful",
+			args: args{
+				projectID:   projectID,
+				agentAPIKey: agentAPIKey,
+			},
+			wantErr: false,
+		},
+		{
+			name: "missing projectID",
+			args: args{
+				projectID:   "",
+				agentAPIKey: agentAPIKey,
+			},
+			wantErr: true,
+		},
+		{
+			name: "missing agentAPIKey",
+			args: args{
+				projectID:   projectID,
+				agentAPIKey: "",
+			},
+			wantErr: true,
+		},
+		{
+			name: "missing projectID and agentAPIKey",
+			args: args{
+				projectID:   "",
+				agentAPIKey: "",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		wantErr := tt.wantErr
+		args := tt.args
+		t.Run(tt.name, func(t *testing.T) {
+			_, err := client.Agents.DeleteAgentAPIKey(ctx, args.projectID, args.agentAPIKey)
+			if (err != nil) != wantErr {
+				t.Errorf("DeleteAgentAPIKey() error = %v, wantErr %v", err, wantErr)
+				return
+			}
+		})
 	}
 }

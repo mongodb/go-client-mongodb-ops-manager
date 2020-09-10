@@ -23,10 +23,14 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-func TestAgents_ListAgentLinks(t *testing.T) {
+func TestAgentsServiceOp_ListAgentLinks(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
+
+	if _, _, err := client.Agents.ListAgentLinks(ctx, ""); err == nil {
+		t.Error("expected an error but got nil")
+	}
 
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
@@ -94,11 +98,21 @@ func TestAgents_ListAgentLinks(t *testing.T) {
 	}
 }
 
-func TestAgents_ListAgentsByType(t *testing.T) {
+func TestAgentsServiceOp_ListAgentsByType(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
-	agentType := "MONITORING"
+
+	const agentType = "MONITORING"
+
+	if _, _, err := client.Agents.ListAgentsByType(ctx, "", agentType); err == nil {
+		t.Error("expected an error but got nil")
+	}
+
+	if _, _, err := client.Agents.ListAgentsByType(ctx, projectID, ""); err == nil {
+		t.Error("expected an error but got nil")
+	}
+
 	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents/%s", projectID, agentType), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 						  "links" : [],
