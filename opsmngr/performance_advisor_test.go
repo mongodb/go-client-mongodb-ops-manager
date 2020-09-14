@@ -22,9 +22,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-const (
-	processName = "test:27017"
-)
+const processName = "test:27017"
 
 func TestPerformanceAdvisor_GetNamespaces(t *testing.T) {
 	client, mux, teardown := setup()
