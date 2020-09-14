@@ -72,6 +72,7 @@ type Client struct {
 	GlobalAPIKeys          GlobalAPIKeysService
 	GlobalAPIKeysWhitelist GlobalAPIKeyWhitelistsService
 	MaintenanceWindows     MaintenanceWindowsService
+	PerformanceAdvisor     PerformanceAdvisorService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -123,6 +124,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.GlobalAPIKeys = &GlobalAPIKeysServiceOp{Client: c}
 	c.GlobalAPIKeysWhitelist = &GlobalAPIKeyWhitelistsServiceOp{Client: c}
 	c.MaintenanceWindows = &MaintenanceWindowsServiceOp{Client: c}
+	c.PerformanceAdvisor = &PerformanceAdvisorServiceOp{Client: c}
 
 	return c
 }
