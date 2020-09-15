@@ -52,14 +52,12 @@ type Host struct {
 	HostEnabled        bool          `json:"hostEnabled,omitempty"`
 	JournalingEnabled  bool          `json:"journalingEnabled,omitempty"`
 	LowUlimit          bool          `json:"lowUlimit,omitempty"`
-	MuninEnabled       bool          `json:"muninEnabled,omitempty"`
 	LogsEnabled        *bool         `json:"logsEnabled,omitempty"`
 	AlertsEnabled      *bool         `json:"alertsEnabled,omitempty"`
 	ProfilerEnabled    *bool         `json:"profilerEnabled,omitempty"`
 	SSLEnabled         *bool         `json:"sslEnabled,omitempty"`
 	LastDataSizeBytes  float64       `json:"lastDataSizeBytes,omitempty"`
 	LastIndexSizeBytes float64       `json:"lastIndexSizeBytes,omitempty"`
-	MuninPort          *int32        `json:"muninPort,omitempty"`
 	Port               int32         `json:"port"`
 	SlaveDelaySec      int64         `json:"slaveDelaySec,omitempty"`
 	UptimeMsec         int64         `json:"uptimeMsec,omitempty"`
