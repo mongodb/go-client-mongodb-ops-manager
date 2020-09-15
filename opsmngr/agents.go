@@ -24,6 +24,7 @@ import (
 
 const (
 	agentsBasePath = "groups/%s/agents"
+	componentsPath = "softwareComponents/versions"
 )
 
 // AgentsService provides access to the agent related functions in the Ops Manager API.
@@ -35,6 +36,7 @@ type AgentsService interface {
 	CreateAgentAPIKey(context.Context, string, *AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error)
 	ListAgentAPIKeys(context.Context, string) ([]*AgentAPIKey, *atlas.Response, error)
 	DeleteAgentAPIKey(context.Context, string, string) (*atlas.Response, error)
+	GlobalVersions(context.Context) (*SoftwareVersions, *atlas.Response, error)
 }
 
 // AgentsServiceOp provides an implementation of the AgentsService interface
@@ -60,6 +62,16 @@ type Agents struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Agent      `json:"results"`
 	TotalCount int           `json:"totalCount"`
+}
+
+// SoftwareVersions is a set of software components and their expected current and minimum versions
+type SoftwareVersions struct {
+	AutomationVersion         string        `json:"automationVersion"`
+	AutomationMinimumVersion  string        `json:"automationMinimumVersion"`
+	BiConnectorVersion        string        `json:"biConnectorVersion"`
+	BiConnectorMinimumVersion string        `json:"biConnectorMinimumVersion"`
+	MongoDBToolsVersion       string        `json:"mongoDbToolsVersion"`
+	Links                     []*atlas.Link `json:"links"`
 }
 
 // ListAgentLinks gets links to monitoring, backup, and automation agent resources for a project.
@@ -104,6 +116,24 @@ func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentTy
 	}
 
 	root := new(Agents)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return root, resp, err
+}
+
+// GlobalVersions returns a list of versions of all MongoDB Agents, in the provided project.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents/get-agent-versions-global/
+func (s *AgentsServiceOp) GlobalVersions(ctx context.Context) (*SoftwareVersions, *atlas.Response, error) {
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, componentsPath, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(SoftwareVersions)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
