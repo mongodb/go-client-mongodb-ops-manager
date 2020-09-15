@@ -158,3 +158,48 @@ func TestAgentsServiceOp_ListAgentsByType(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestAgentsServiceOp_GlobalVersions(t *testing.T) {
+	client, mux, teardown := setup()
+
+	defer teardown()
+
+	mux.HandleFunc("/softwareComponents/versions", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = fmt.Fprint(w, `{
+          "automationVersion": "10.14.0.6304",
+		  "automationMinimumVersion": "10.2.17.5964",
+		  "biConnectorVersion": "2.3.4",
+		  "biConnectorMinimumVersion": "2.3.1",
+		  "mongoDbToolsVersion": "100.0.1",
+		  "links": [
+			{
+			  "href": "http://mms:9080/api/public/v1.0/softwareComponents/versions",
+			  "rel": "self"
+			}
+		  ]
+		}`)
+	})
+
+	agent, _, err := client.Agents.GlobalVersions(ctx)
+	if err != nil {
+		t.Fatalf("Agents.ListAgentsByType returned error: %v", err)
+	}
+
+	expected := &SoftwareVersions{
+		AutomationVersion:         "10.14.0.6304",
+		AutomationMinimumVersion:  "10.2.17.5964",
+		BiConnectorVersion:        "2.3.4",
+		BiConnectorMinimumVersion: "2.3.1",
+		MongoDBToolsVersion:       "100.0.1",
+		Links: []*atlas.Link{
+			{
+				Rel:  "self",
+				Href: "http://mms:9080/api/public/v1.0/softwareComponents/versions",
+			},
+		},
+	}
+
+	if diff := deep.Equal(agent, expected); diff != nil {
+		t.Error(diff)
+	}
+}
