@@ -9,7 +9,7 @@ require (
 	github.com/stretchr/testify v1.6.1
 	github.com/xdg-go/stringprep v1.0.0
 	github.com/xdg/stringprep v1.0.0 // indirect
-	go.mongodb.org/atlas v0.4.1-0.20200914101919-fd65bf19ca83
+	go.mongodb.org/atlas v0.4.1-0.20200916093941-a86355b45816
 	golang.org/x/text v0.3.3 // indirect
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect

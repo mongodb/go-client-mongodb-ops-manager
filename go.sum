@@ -23,8 +23,8 @@ github.com/xdg-go/stringprep v1.0.0 h1:W/PJi55zhi8ClBDgGZK2sdhe6QxuHS6YiVwrGEOYj
 github.com/xdg-go/stringprep v1.0.0/go.mod h1:1lAKNhwXFE4//YT4gqVxkhclqvPTWe2Kyd6L59AbR8w=
 github.com/xdg/stringprep v1.0.0 h1:d9X0esnoa3dFsV0FG35rAT0RIhYFlPq7MiP+DW89La0=
 github.com/xdg/stringprep v1.0.0/go.mod h1:Jhud4/sHMO4oL310DaZAKk9ZaJ08SJfe+sJh0HrGL1Y=
-go.mongodb.org/atlas v0.4.1-0.20200914101919-fd65bf19ca83 h1:9WG3WPuwPlto0z/vfxSQXeFXtRSxswdD7qu80oDABJw=
-go.mongodb.org/atlas v0.4.1-0.20200914101919-fd65bf19ca83/go.mod h1:CIaBeO8GLHhtYLw7xSSXsw7N90Z4MFY87Oy9qcPyuEs=
+go.mongodb.org/atlas v0.4.1-0.20200916093941-a86355b45816 h1:wnYPHWDNpG0XaMebz6LBe7RRb6c+2bzmZ7bcDJDbWcg=
+go.mongodb.org/atlas v0.4.1-0.20200916093941-a86355b45816/go.mod h1:CIaBeO8GLHhtYLw7xSSXsw7N90Z4MFY87Oy9qcPyuEs=
 golang.org/x/text v0.3.3 h1:cokOdA+Jmi5PJGXLlLllQSgYigAEfHXJAERHVMaCc2k=
 golang.org/x/text v0.3.3/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
 golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=
