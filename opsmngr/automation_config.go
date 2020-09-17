@@ -78,6 +78,7 @@ type AutomationConfig struct {
 	IndexConfigs         []*IndexConfig            `json:"indexConfigs"`
 	Kerberos             *map[string]interface{}   `json:"kerberos,omitempty"`
 	LDAP                 *map[string]interface{}   `json:"ldap,omitempty"`
+	MongoDBToolsVersion  *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
 	MongoDBVersions      []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
 	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds,omitempty"`
 	MonitoringVersions   []*map[string]interface{} `json:"monitoringVersions,omitempty"`
