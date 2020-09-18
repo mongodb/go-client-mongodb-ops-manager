@@ -414,3 +414,95 @@ func TestConfigureScramCredentials(t *testing.T) {
 		t.Fatalf("ConfigureScramCredentials() unexpected error: %v\n", u.ScramSha256Creds)
 	}
 }
+
+func TestEnableMonitoring(t *testing.T) {
+	type args struct {
+		out      *opsmngr.AutomationConfig
+		hostname string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "empty config",
+			args: args{
+				out:      &opsmngr.AutomationConfig{},
+				hostname: "test",
+			},
+			wantErr: false,
+		},
+		{
+			name: "empty config",
+			args: args{
+				out: &opsmngr.AutomationConfig{
+					MonitoringVersions: []*opsmngr.ConfigVersion{
+						{
+							Name:     "1",
+							Hostname: "test",
+						},
+					},
+				},
+				hostname: "test",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		out := tt.args.out
+		hostname := tt.args.hostname
+		wantErr := tt.wantErr
+		t.Run(tt.name, func(t *testing.T) {
+			if err := EnableMonitoring(out, hostname); (err != nil) != wantErr {
+				t.Errorf("EnableMonitoring() error = %v, wantErr %v", err, wantErr)
+			}
+		})
+	}
+}
+
+func TestEnableBackup(t *testing.T) {
+	type args struct {
+		out      *opsmngr.AutomationConfig
+		hostname string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "empty config",
+			args: args{
+				out:      &opsmngr.AutomationConfig{},
+				hostname: "test",
+			},
+			wantErr: false,
+		},
+		{
+			name: "empty config",
+			args: args{
+				out: &opsmngr.AutomationConfig{
+					BackupVersions: []*opsmngr.ConfigVersion{
+						{
+							Name:     "1",
+							Hostname: "test",
+						},
+					},
+				},
+				hostname: "test",
+			},
+			wantErr: true,
+		},
+	}
+	for _, tt := range tests {
+		out := tt.args.out
+		hostname := tt.args.hostname
+		wantErr := tt.wantErr
+		t.Run(tt.name, func(t *testing.T) {
+			if err := EnableBackup(out, hostname); (err != nil) != wantErr {
+				t.Errorf("EnableBackup() error = %v, wantErr %v", err, wantErr)
+			}
+		})
+	}
+}

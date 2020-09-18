@@ -73,6 +73,38 @@ func Startup(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, false)
 }
 
+const monitoringVersion = "7.2.0.488-1" // Last monitoring version released
+
+// EnableMonitoring enables all processes of the given cluster name
+func EnableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
+	for _, v := range out.MonitoringVersions {
+		if v.Hostname == hostname {
+			return fmt.Errorf("monitoring already enabled for '%s'", hostname)
+		}
+	}
+	out.MonitoringVersions = append(out.MonitoringVersions, &opsmngr.ConfigVersion{
+		Name:     monitoringVersion,
+		Hostname: hostname,
+	})
+	return nil
+}
+
+const backupVersion = "7.8.1.1109-1" // Last backup version released
+
+// EnableMonitoring enables all processes of the given cluster name
+func EnableBackup(out *opsmngr.AutomationConfig, hostname string) error {
+	for _, v := range out.BackupVersions {
+		if v.Hostname == hostname {
+			return fmt.Errorf("backup already enabled for '%s'", hostname)
+		}
+	}
+	out.BackupVersions = append(out.BackupVersions, &opsmngr.ConfigVersion{
+		Name:     backupVersion,
+		Hostname: hostname,
+	})
+	return nil
+}
+
 // RemoveByClusterName removes a cluster and its associated processes from the config.
 // This won't shutdown any running process.
 func RemoveByClusterName(out *opsmngr.AutomationConfig, name string) {
