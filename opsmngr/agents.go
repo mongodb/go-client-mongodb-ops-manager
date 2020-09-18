@@ -37,6 +37,7 @@ type AgentsService interface {
 	ListAgentAPIKeys(context.Context, string) ([]*AgentAPIKey, *atlas.Response, error)
 	DeleteAgentAPIKey(context.Context, string, string) (*atlas.Response, error)
 	GlobalVersions(context.Context) (*SoftwareVersions, *atlas.Response, error)
+	ProjectVersions(context.Context, string) (*AgentVersions, *atlas.Response, error)
 }
 
 // AgentsServiceOp provides an implementation of the AgentsService interface
@@ -70,8 +71,40 @@ type SoftwareVersions struct {
 	AutomationMinimumVersion  string        `json:"automationMinimumVersion"`
 	BiConnectorVersion        string        `json:"biConnectorVersion"`
 	BiConnectorMinimumVersion string        `json:"biConnectorMinimumVersion"`
-	MongoDBToolsVersion       string        `json:"mongoDbToolsVersion"`
 	Links                     []*atlas.Link `json:"links"`
+	MongoDBToolsVersion       string        `json:"mongoDbToolsVersion"`
+}
+
+// AgentVersions is a set of available agents and agent versions for a project
+type AgentVersions struct {
+	Count                       int             `json:"count"`
+	Entries                     []*AgentVersion `json:"entries"`
+	IsAnyAgentNotManaged        bool            `json:"isAnyAgentNotManaged"`
+	IsAnyAgentVersionDeprecated bool            `json:"isAnyAgentVersionDeprecated"`
+	IsAnyAgentVersionOld        bool            `json:"isAnyAgentVersionOld"`
+	Links                       []*atlas.Link   `json:"links"`
+	MinimumAgentVersionDetected string          `json:"minimumAgentVersionDetected"`
+	MinimumVersion              string          `json:"minimumVersion"`
+}
+
+type AgentVersion struct {
+	Address             string `json:"address"`
+	ConfCount           int    `json:"confCount"`
+	Hostname            string `json:"hostname"`
+	HostnameShort       string `json:"hostnameShort"`
+	IsManaged           bool   `json:"isManaged"`
+	IsModule            bool   `json:"isModule"`
+	IsPrimary           bool   `json:"isPrimary"`
+	IsVersionOld        bool   `json:"isVersionOld"`
+	IsVersionDeprecated bool   `json:"isVersionDeprecated"`
+	LastConf            int64  `json:"lastConf"`
+	LastPing            int64  `json:"lastPing"`
+	MsSinceLastConf     int64  `json:"msSinceLastConf"`
+	NumProcess          int    `json:"numProcess"`
+	PingCount           int    `json:"pingCount"`
+	PingState           string `json:"pingState"`
+	TagName             string `json:"tagName"`
+	Version             string `json:"version"`
 }
 
 // ListAgentLinks gets links to monitoring, backup, and automation agent resources for a project.
@@ -124,7 +157,8 @@ func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentTy
 	return root, resp, err
 }
 
-// GlobalVersions returns a list of versions of all MongoDB Agents, in the provided project.
+// GlobalVersions returns the supported versions of different software components
+// supported by the Ops Manager installation.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents/get-agent-versions-global/
 func (s *AgentsServiceOp) GlobalVersions(ctx context.Context) (*SoftwareVersions, *atlas.Response, error) {
@@ -134,6 +168,30 @@ func (s *AgentsServiceOp) GlobalVersions(ctx context.Context) (*SoftwareVersions
 	}
 
 	root := new(SoftwareVersions)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return root, resp, err
+}
+
+// ProjectVersions returns a list of versions of all MongoDB Agents, in the provided project.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents/get-agent-versions-per-project/
+func (s *AgentsServiceOp) ProjectVersions(ctx context.Context, groupID string) (*AgentVersions, *atlas.Response, error) {
+	if groupID == "" {
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
+	}
+	basePath := fmt.Sprintf(agentsBasePath, groupID)
+	path := fmt.Sprintf("%s/versions", basePath)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(AgentVersions)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

@@ -203,3 +203,64 @@ func TestAgentsServiceOp_GlobalVersions(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestAgentsServiceOp_ProjectVersions(t *testing.T) {
+	client, mux, teardown := setup()
+
+	defer teardown()
+
+	if _, _, err := client.Agents.ProjectVersions(ctx, ""); err == nil {
+		t.Error("expected an error but got nil")
+	}
+
+	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents/versions", projectID), func(w http.ResponseWriter, r *http.Request) {
+		_, _ = fmt.Fprint(w, `{
+		  "count": 0,
+		  "entries": [],
+		  "isAnyAgentNotManaged": false,
+		  "isAnyAgentVersionDeprecated": false,
+		  "isAnyAgentVersionOld": false,
+		  "latestVersion": "10.14.0.6304",
+		  "links": [{
+			  "href": "http://mms:9080/api/public/v1.0/groups/5e66185d917b220fbd8bb4d1/agents/current",
+			  "rel": "self"
+			},
+			{
+			  "href": "http://mms:9080/api/public/v1.0/groups/5e66185d917b220fbd8bb4d1",
+			  "rel": "http://mms.mongodb.com/group"
+			}
+		  ],
+		  "minimumAgentVersionDetected": "10.14.0.6304",
+		  "minimumVersion": "5.0.0.309"
+		}`)
+	})
+
+	agent, _, err := client.Agents.ProjectVersions(ctx, projectID)
+	if err != nil {
+		t.Fatalf("Agents.ListAgentsByType returned error: %v", err)
+	}
+
+	expected := &AgentVersions{
+		Count:                       0,
+		Entries:                     []*AgentVersion{},
+		IsAnyAgentNotManaged:        false,
+		IsAnyAgentVersionDeprecated: false,
+		IsAnyAgentVersionOld:        false,
+		Links: []*atlas.Link{
+			{
+				Href: "http://mms:9080/api/public/v1.0/groups/5e66185d917b220fbd8bb4d1/agents/current",
+				Rel:  "self",
+			},
+			{
+				Href: "http://mms:9080/api/public/v1.0/groups/5e66185d917b220fbd8bb4d1",
+				Rel:  "http://mms.mongodb.com/group",
+			},
+		},
+		MinimumAgentVersionDetected: "10.14.0.6304",
+		MinimumVersion:              "5.0.0.309",
+	}
+
+	if diff := deep.Equal(agent, expected); diff != nil {
+		t.Error(diff)
+	}
+}
