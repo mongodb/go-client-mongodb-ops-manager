@@ -72,7 +72,7 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 type AutomationConfig struct {
 	AgentVersion         *map[string]interface{}   `json:"agentVersion,omitempty"`
 	Auth                 Auth                      `json:"auth"`
-	BackupVersions       []*map[string]interface{} `json:"backupVersions"`
+	BackupVersions       []*ConfigVersion          `json:"backupVersions"`
 	Balancer             *map[string]interface{}   `json:"balancer"`
 	CPSModules           []*map[string]interface{} `json:"cpsModules"`
 	IndexConfigs         []*IndexConfig            `json:"indexConfigs"`
@@ -81,7 +81,7 @@ type AutomationConfig struct {
 	MongoDBToolsVersion  *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
 	MongoDBVersions      []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
 	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds,omitempty"`
-	MonitoringVersions   []*map[string]interface{} `json:"monitoringVersions,omitempty"`
+	MonitoringVersions   []*ConfigVersion          `json:"monitoringVersions,omitempty"`
 	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules,omitempty"`
 	MongoTS              []*map[string]interface{} `json:"mongots,omitempty"`
 	Options              *map[string]interface{}   `json:"options"`
@@ -93,6 +93,11 @@ type AutomationConfig struct {
 	TLS                  *SSL                      `json:"tls,omitempty"`
 	UIBaseURL            *string                   `json:"uiBaseUrl"`
 	Version              int                       `json:"version,omitempty"`
+}
+
+type ConfigVersion struct {
+	Name     string `json:"name"`
+	Hostname string `json:"hostname"`
 }
 
 // ShardingConfig sharded clusters configuration
