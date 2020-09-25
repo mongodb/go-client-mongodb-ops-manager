@@ -1,4 +1,4 @@
-// Copyright 2019 MongoDB Inc
+// Copyright 2020 MongoDB Inc
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ const (
 	versionManifestStaticPath = "https://opsmanager.mongodb.com/static/version_manifest/%s"
 )
 
-// VersionManifestService is an interface for interfacing with the Version Manifest
+// VersionManifestService is an interface for using the Version Manifest
 // endpoints of the MongoDB Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/version-manifest/
@@ -66,7 +66,7 @@ type Build struct {
 	Flavor             string    `json:"flavor,omitempty"`
 }
 
-// Get gets the version manifest
+// Get retrieves the version manifest
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/version-manifest/view-version-manifest/
 func (s *VersionManifestServiceOp) Get(ctx context.Context, version string) (*VersionManifest, *atlas.Response, error) {
