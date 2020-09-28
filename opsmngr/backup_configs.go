@@ -36,7 +36,7 @@ type BackupConfigsService interface {
 	Update(context.Context, string, string, *BackupConfig) (*BackupConfig, *atlas.Response, error)
 }
 
-// LogCollectionServiceOp provides an implementation of the DiagnosticsService interface
+// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
 type BackupConfigsServiceOp service
 
 var _ BackupConfigsService = &BackupConfigsServiceOp{}
@@ -53,7 +53,7 @@ type BackupConfig struct {
 	IncludedNamespaces []*string `json:"includedNamespaces,omitempty"`
 }
 
-// BackupConfigs represents an array of BackupConfig.
+// BackupConfigs represents an array of BackupConfig
 type BackupConfigs struct {
 	Links      []*atlas.Link   `json:"links"`
 	Results    []*BackupConfig `json:"results"`
