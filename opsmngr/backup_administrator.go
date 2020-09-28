@@ -26,6 +26,7 @@ const (
 	backupAdministratorBlockstoreBasePath                    = "admin/backup/snapshot/mongoConfigs"
 	backupAdministratorFileSystemStoreConfigurationsBasePath = "admin/backup/snapshot/fileSystemConfigs"
 	backupAdministratorS3BlockstoreBasePath                  = "admin/backup/snapshot/s3Configs"
+	backupAdministratorOplogBasePath                         = "admin/backup/oplog/mongoConfigs"
 )
 
 // BackupAdministratorService is an interface for using the Backup Administrator
@@ -34,8 +35,9 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/nav/administration-backup/
 type BackupAdministratorService interface {
 	BlockstoreService
-	FileSystemStoreConfigurationsService
+	FileSystemStoreService
 	S3BlockstoreService
+	OplogService
 }
 
 // BlockstoreService is an interface for using the Blockstore
@@ -50,16 +52,16 @@ type BlockstoreService interface {
 	DeleteBlockstore(context.Context, string) (*atlas.Response, error)
 }
 
-// FileSystemStoreConfigurationsService is an interface for using the File System Store Configuration
+// FileSystemStoreService is an interface for using the File System Store Configuration
 // endpoints of the MongoDB Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/file-system-store-config/
-type FileSystemStoreConfigurationsService interface {
-	ListFileSystemStoreConfigurations(context.Context, *atlas.ListOptions) (*FileSystemStoreConfigurations, *atlas.Response, error)
-	GetFileSystemStoreConfiguration(context.Context, string) (*FileSystemStoreConfiguration, *atlas.Response, error)
-	CreateFileSystemStoreConfiguration(context.Context, *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error)
-	UpdateFileSystemStoreConfiguration(context.Context, string, *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error)
-	DeleteFileSystemStoreConfiguration(context.Context, string) (*atlas.Response, error)
+type FileSystemStoreService interface {
+	ListFileSystemStores(context.Context, *atlas.ListOptions) (*FileSystemStoreConfigurations, *atlas.Response, error)
+	GetFileSystemStore(context.Context, string) (*FileSystemStoreConfiguration, *atlas.Response, error)
+	CreateFileSystemStore(context.Context, *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error)
+	UpdateFileSystemStore(context.Context, string, *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error)
+	DeleteFileSystemStore(context.Context, string) (*atlas.Response, error)
 }
 
 // S3BlockstoreService is an interface for using the S3BlockstoreService
@@ -74,10 +76,34 @@ type S3BlockstoreService interface {
 	DeleteS3Blockstore(context.Context, string) (*atlas.Response, error)
 }
 
+// OplogService is an interface for using the Oplog
+// endpoints of the MongoDB Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog-store-config/
+type OplogService interface {
+	ListOplog(context.Context, *atlas.ListOptions) (*Oplogs, *atlas.Response, error)
+	GetOplog(context.Context, string) (*Oplog, *atlas.Response, error)
+	CreateOplog(context.Context, *Oplog) (*Oplog, *atlas.Response, error)
+	UpdateOplog(context.Context, string, *Oplog) (*Oplog, *atlas.Response, error)
+	DeleteOplog(context.Context, string) (*atlas.Response, error)
+}
+
 // BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
 type BackupAdministratorServiceOp service
 
 var _ BackupAdministratorService = &BackupAdministratorServiceOp{}
+
+// AdminConfig contains the common fields of backup administrator structs
+type AdminConfig struct {
+	ID                   string   `json:"id,omitempty"`
+	AssignmentEnabled    bool     `json:"assignmentEnabled,omitempty"`
+	EncryptedCredentials bool     `json:"encryptedCredentials,omitempty"`
+	URI                  string   `json:"uri,omitempty"`
+	Labels               []string `json:"labels,omitempty"`
+	SSL                  bool     `json:"ssl,omitempty"`
+	WriteConcern         string   `json:"writeConcern,omitempty"`
+	UsedSize             int64    `json:"usedSize,omitempty"`
+}
 
 // S3Blockstore represents a S3Blockstore in the MongoDB Ops Manager API
 type S3Blockstore struct {
@@ -103,20 +129,12 @@ type S3Blockstores struct {
 
 // Blockstore represents a Blockstore in the MongoDB Ops Manager API
 type Blockstore struct {
-	ID                   string        `json:"id,omitempty"`
-	AssignmentEnabled    bool          `json:"assignmentEnabled,omitempty"`
-	EncryptedCredentials bool          `json:"encryptedCredentials,omitempty"`
-	LoadFactor           int64         `json:"loadFactor,omitempty"`
-	MaxCapacityGB        int64         `json:"maxCapacityGB,omitempty"`
-	URI                  string        `json:"uri,omitempty"`
-	Labels               []string      `json:"labels,omitempty"`
-	SSL                  bool          `json:"ssl,omitempty"`
-	UsedSize             int64         `json:"usedSize,omitempty"`
-	WriteConcern         string        `json:"writeConcern,omitempty"`
-	Provisioned          bool          `json:"provisioned,omitempty"`
-	SyncSource           string        `json:"syncSource,omitempty"`
-	Username             string        `json:"username,omitempty"`
-	Links                []*atlas.Link `json:"links"`
+	AdminConfig
+	LoadFactor    int64  `json:"loadFactor,omitempty"`
+	MaxCapacityGB int64  `json:"maxCapacityGB,omitempty"`
+	Provisioned   bool   `json:"provisioned,omitempty"`
+	SyncSource    string `json:"syncSource,omitempty"`
+	Username      string `json:"username,omitempty"`
 }
 
 // Blockstores represents an array of Blockstore
@@ -128,14 +146,12 @@ type Blockstores struct {
 
 // FileSystemStoreConfiguration represents a File System Store Configuration in the MongoDB Ops Manager API
 type FileSystemStoreConfiguration struct {
-	ID                       string        `json:"id,omitempty"`
-	Labels                   []string      `json:"labels,omitempty"`
-	Links                    []*atlas.Link `json:"links"`
-	LoadFactor               int64         `json:"loadFactor,omitempty"`
-	MMAPV1CompressionSetting string        `json:"mmapv1CompressionSetting,omitempty"`
-	StorePath                string        `json:"storePath,omitempty"`
-	WTCompressionSetting     string        `json:"wtCompressionSetting,omitempty"`
-	AssignmentEnabled        bool          `json:"assignmentEnabled,omitempty"`
+	AdminConfig
+	LoadFactor               int64  `json:"loadFactor,omitempty"`
+	MMAPV1CompressionSetting string `json:"mmapv1CompressionSetting,omitempty"`
+	StorePath                string `json:"storePath,omitempty"`
+	WTCompressionSetting     string `json:"wtCompressionSetting,omitempty"`
+	AssignmentEnabled        bool   `json:"assignmentEnabled,omitempty"`
 }
 
 // FileSystemStoreConfigurations represents an array of FileSystemStoreConfiguration
@@ -145,10 +161,22 @@ type FileSystemStoreConfigurations struct {
 	TotalCount int                             `json:"totalCount"`
 }
 
-// GetFileSystemStoreConfiguration retrieves a File System Store Configuration.
+// Oplog represents a Oplog Configuration in the MongoDB Ops Manager API
+type Oplog struct {
+	Blockstore
+}
+
+// Oplogs represents an array of Oplog
+type Oplogs struct {
+	Links      []*atlas.Link `json:"links"`
+	Results    []*Oplog      `json:"results"`
+	TotalCount int           `json:"totalCount"`
+}
+
+// GetFileSystemStore retrieves a File System Store Configuration.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/get-one-file-system-store-configuration-by-id/
-func (s *BackupAdministratorServiceOp) GetFileSystemStoreConfiguration(ctx context.Context, fileSystemID string) (*FileSystemStoreConfiguration, *atlas.Response, error) {
+func (s *BackupAdministratorServiceOp) GetFileSystemStore(ctx context.Context, fileSystemID string) (*FileSystemStoreConfiguration, *atlas.Response, error) {
 	if fileSystemID == "" {
 		return nil, nil, atlas.NewArgError("fileSystemID", "must be set")
 	}
@@ -165,10 +193,10 @@ func (s *BackupAdministratorServiceOp) GetFileSystemStoreConfiguration(ctx conte
 	return root, resp, err
 }
 
-// ListFileSystemStoreConfigurations retrieves the configurations of all file system stores.
+// ListFileSystemStores retrieves the configurations of all file system stores.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/get-all-file-system-store-configurations/
-func (s *BackupAdministratorServiceOp) ListFileSystemStoreConfigurations(ctx context.Context, opts *atlas.ListOptions) (*FileSystemStoreConfigurations, *atlas.Response, error) {
+func (s *BackupAdministratorServiceOp) ListFileSystemStores(ctx context.Context, opts *atlas.ListOptions) (*FileSystemStoreConfigurations, *atlas.Response, error) {
 	path, err := setQueryParams(backupAdministratorFileSystemStoreConfigurationsBasePath, opts)
 	if err != nil {
 		return nil, nil, err
@@ -184,10 +212,10 @@ func (s *BackupAdministratorServiceOp) ListFileSystemStoreConfigurations(ctx con
 	return root, resp, err
 }
 
-// CreateFileSystemStoreConfiguration configures one new file system store.
+// CreateFileSystemStore configures one new file system store.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/create-one-file-system-store-configuration/
-func (s *BackupAdministratorServiceOp) CreateFileSystemStoreConfiguration(ctx context.Context, fileSystem *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error) {
+func (s *BackupAdministratorServiceOp) CreateFileSystemStore(ctx context.Context, fileSystem *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error) {
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, backupAdministratorFileSystemStoreConfigurationsBasePath, fileSystem)
 	if err != nil {
 		return nil, nil, err
@@ -199,10 +227,10 @@ func (s *BackupAdministratorServiceOp) CreateFileSystemStoreConfiguration(ctx co
 	return root, resp, err
 }
 
-// UpdateFileSystemStoreConfiguration updates the configuration of one file system store.
+// UpdateFileSystemStore updates the configuration of one file system store.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/update-one-file-system-store-configuration/
-func (s *BackupAdministratorServiceOp) UpdateFileSystemStoreConfiguration(ctx context.Context, fileSystemID string, fileSystem *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error) {
+func (s *BackupAdministratorServiceOp) UpdateFileSystemStore(ctx context.Context, fileSystemID string, fileSystem *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *atlas.Response, error) {
 	if fileSystemID == "" {
 		return nil, nil, atlas.NewArgError("fileSystemID", "must be set")
 	}
@@ -218,10 +246,10 @@ func (s *BackupAdministratorServiceOp) UpdateFileSystemStoreConfiguration(ctx co
 	return root, resp, err
 }
 
-// DeleteFileSystemStoreConfiguration deletes the configuration of one file system store.
+// DeleteFileSystemStore deletes the configuration of one file system store.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/delete-one-file-system-store-configuration/
-func (s *BackupAdministratorServiceOp) DeleteFileSystemStoreConfiguration(ctx context.Context, fileSystemID string) (*atlas.Response, error) {
+func (s *BackupAdministratorServiceOp) DeleteFileSystemStore(ctx context.Context, fileSystemID string) (*atlas.Response, error) {
 	if fileSystemID == "" {
 		return nil, atlas.NewArgError("fileSystemID", "must be set")
 	}
@@ -412,6 +440,99 @@ func (s *BackupAdministratorServiceOp) DeleteS3Blockstore(ctx context.Context, s
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorS3BlockstoreBasePath, s3BlockstoreID)
+	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.Client.Do(ctx, req, nil)
+
+	return resp, err
+}
+
+// GetOplog retrieves a Oplog.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-one-oplog-configuration-by-id/
+func (s *BackupAdministratorServiceOp) GetOplog(ctx context.Context, oplog string) (*Oplog, *atlas.Response, error) {
+	if oplog == "" {
+		return nil, nil, atlas.NewArgError("oplog", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplog)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Oplog)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// ListOplog retrieves all the Oplogs.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-all-oplog-configurations/
+func (s *BackupAdministratorServiceOp) ListOplog(ctx context.Context, options *atlas.ListOptions) (*Oplogs, *atlas.Response, error) {
+	path, err := setQueryParams(backupAdministratorOplogBasePath, options)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Oplogs)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// CreateOplog create a Oplog.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/create-one-oplog-configuration/
+func (s *BackupAdministratorServiceOp) CreateOplog(ctx context.Context, oplog *Oplog) (*Oplog, *atlas.Response, error) {
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, backupAdministratorOplogBasePath, oplog)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Oplog)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// UpdateOplog updates a Oplog.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/update-one-oplog-configuration/
+func (s *BackupAdministratorServiceOp) UpdateOplog(ctx context.Context, oplogID string, oplog *Oplog) (*Oplog, *atlas.Response, error) {
+	if oplogID == "" {
+		return nil, nil, atlas.NewArgError("oplogID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplogID)
+	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, oplog)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Oplog)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// DeleteOplog removes a Oplog.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/s3Configs/delete-one-s3-blockstore-configuration/
+func (s *BackupAdministratorServiceOp) DeleteOplog(ctx context.Context, oplogID string) (*atlas.Response, error) {
+	if oplogID == "" {
+		return nil, atlas.NewArgError("oplogID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplogID)
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err

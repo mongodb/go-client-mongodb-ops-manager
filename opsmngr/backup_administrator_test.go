@@ -22,11 +22,6 @@ import (
 	"github.com/go-test/deep"
 )
 
-const (
-	blockstoreID = "1"
-	fileSystemID = "1"
-)
-
 func TestBackupAdministrator_ListBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -37,7 +32,7 @@ func TestBackupAdministrator_ListBlockstore(t *testing.T) {
 		  "results" : [ {
 			"assignmentEnabled" : true,
 			"encryptedCredentials" : false,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 2,
 			"maxCapacityGB" : 8,
@@ -58,16 +53,18 @@ func TestBackupAdministrator_ListBlockstore(t *testing.T) {
 	expected := &Blockstores{
 		Results: []*Blockstore{
 			{
-				ID:                   "1",
-				AssignmentEnabled:    true,
-				EncryptedCredentials: false,
-				LoadFactor:           2,
-				MaxCapacityGB:        8,
-				URI:                  "mongodb://localhost:27017",
-				Labels:               []string{"l1", "l2"},
-				SSL:                  true,
-				UsedSize:             222,
-				WriteConcern:         "W2",
+				LoadFactor:    2,
+				MaxCapacityGB: 8,
+				AdminConfig: AdminConfig{
+					ID:                   ID,
+					AssignmentEnabled:    true,
+					EncryptedCredentials: false,
+					URI:                  "mongodb://localhost:27017",
+					Labels:               []string{"l1", "l2"},
+					SSL:                  true,
+					WriteConcern:         "W2",
+					UsedSize:             222,
+				},
 			},
 		},
 		TotalCount: 1,
@@ -81,12 +78,12 @@ func TestBackupAdministrator_GetBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/mongoConfigs/%s", blockstoreID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
 			"encryptedCredentials" : false,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 2,
 			"maxCapacityGB" : 8,
@@ -97,22 +94,24 @@ func TestBackupAdministrator_GetBlockstore(t *testing.T) {
 }`)
 	})
 
-	config, _, err := client.BackupAdministrator.GetBlockstore(ctx, blockstoreID)
+	config, _, err := client.BackupAdministrator.GetBlockstore(ctx, ID)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.GetBlockstore returned error: %v", err)
 	}
 
 	expected := &Blockstore{
-		ID:                   "1",
-		AssignmentEnabled:    true,
-		EncryptedCredentials: false,
-		LoadFactor:           2,
-		MaxCapacityGB:        8,
-		URI:                  "mongodb://localhost:27017",
-		Labels:               []string{"l1", "l2"},
-		SSL:                  true,
-		UsedSize:             222,
-		WriteConcern:         "W2",
+		LoadFactor:    2,
+		MaxCapacityGB: 8,
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			URI:                  "mongodb://localhost:27017",
+			Labels:               []string{"l1", "l2"},
+			SSL:                  true,
+			WriteConcern:         "W2",
+			UsedSize:             222,
+		},
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -129,7 +128,7 @@ func TestBackupAdministrator_CreateBlockstore(t *testing.T) {
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
 			"encryptedCredentials" : false,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 2,
 			"maxCapacityGB" : 8,
@@ -141,16 +140,18 @@ func TestBackupAdministrator_CreateBlockstore(t *testing.T) {
 	})
 
 	blockstore := &Blockstore{
-		ID:                   "1",
-		AssignmentEnabled:    true,
-		EncryptedCredentials: false,
-		LoadFactor:           2,
-		MaxCapacityGB:        8,
-		URI:                  "mongodb://localhost:27017",
-		Labels:               []string{"l1", "l2"},
-		SSL:                  true,
-		UsedSize:             222,
-		WriteConcern:         "W2",
+		LoadFactor:    2,
+		MaxCapacityGB: 8,
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			URI:                  "mongodb://localhost:27017",
+			Labels:               []string{"l1", "l2"},
+			SSL:                  true,
+			WriteConcern:         "W2",
+			UsedSize:             222,
+		},
 	}
 
 	config, _, err := client.BackupAdministrator.CreateBlockstore(ctx, blockstore)
@@ -159,16 +160,18 @@ func TestBackupAdministrator_CreateBlockstore(t *testing.T) {
 	}
 
 	expected := &Blockstore{
-		ID:                   "1",
-		AssignmentEnabled:    true,
-		EncryptedCredentials: false,
-		LoadFactor:           2,
-		MaxCapacityGB:        8,
-		URI:                  "mongodb://localhost:27017",
-		Labels:               []string{"l1", "l2"},
-		SSL:                  true,
-		UsedSize:             222,
-		WriteConcern:         "W2",
+		LoadFactor:    2,
+		MaxCapacityGB: 8,
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			URI:                  "mongodb://localhost:27017",
+			Labels:               []string{"l1", "l2"},
+			SSL:                  true,
+			WriteConcern:         "W2",
+			UsedSize:             222,
+		},
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -180,12 +183,12 @@ func TestBackupAdministrator_UpdateBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/mongoConfigs/%s", blockstoreID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
 			"encryptedCredentials" : false,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 2,
 			"maxCapacityGB" : 8,
@@ -197,34 +200,38 @@ func TestBackupAdministrator_UpdateBlockstore(t *testing.T) {
 	})
 
 	blockstore := &Blockstore{
-		ID:                   "1",
-		AssignmentEnabled:    true,
-		EncryptedCredentials: false,
-		LoadFactor:           2,
-		MaxCapacityGB:        8,
-		URI:                  "mongodb://localhost:27017",
-		Labels:               []string{"l1", "l2"},
-		SSL:                  true,
-		UsedSize:             222,
-		WriteConcern:         "W2",
+		LoadFactor:    2,
+		MaxCapacityGB: 8,
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			URI:                  "mongodb://localhost:27017",
+			Labels:               []string{"l1", "l2"},
+			SSL:                  true,
+			WriteConcern:         "W2",
+			UsedSize:             222,
+		},
 	}
 
-	config, _, err := client.BackupAdministrator.UpdateBlockstore(ctx, blockstoreID, blockstore)
+	config, _, err := client.BackupAdministrator.UpdateBlockstore(ctx, ID, blockstore)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.UpdateBlockstore returned error: %v", err)
 	}
 
 	expected := &Blockstore{
-		ID:                   "1",
-		AssignmentEnabled:    true,
-		EncryptedCredentials: false,
-		LoadFactor:           2,
-		MaxCapacityGB:        8,
-		URI:                  "mongodb://localhost:27017",
-		Labels:               []string{"l1", "l2"},
-		SSL:                  true,
-		UsedSize:             222,
-		WriteConcern:         "W2",
+		LoadFactor:    2,
+		MaxCapacityGB: 8,
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			URI:                  "mongodb://localhost:27017",
+			Labels:               []string{"l1", "l2"},
+			SSL:                  true,
+			WriteConcern:         "W2",
+			UsedSize:             222,
+		},
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -236,11 +243,11 @@ func TestBackupAdministrator_DeleteBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/mongoConfigs/%s", blockstoreID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.BackupAdministrator.DeleteBlockstore(ctx, blockstoreID)
+	_, err := client.BackupAdministrator.DeleteBlockstore(ctx, ID)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.DeleteBlockstore returned error: %v", err)
 	}
@@ -255,7 +262,7 @@ func TestBackupAdministrator_ListFileSystemStoreConfigurations(t *testing.T) {
 		_, _ = fmt.Fprint(w, `{
 		  "results" : [ {
 			"assignmentEnabled" : true,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 50,
 			"mmapv1CompressionSetting" : "NONE",
@@ -266,16 +273,18 @@ func TestBackupAdministrator_ListFileSystemStoreConfigurations(t *testing.T) {
 }`)
 	})
 
-	config, _, err := client.BackupAdministrator.ListFileSystemStoreConfigurations(ctx, nil)
+	config, _, err := client.BackupAdministrator.ListFileSystemStores(ctx, nil)
 	if err != nil {
-		t.Fatalf("BackupAdministrator.ListFileSystemStoreConfigurations returned error: %v", err)
+		t.Fatalf("BackupAdministrator.ListFileSystemStores returned error: %v", err)
 	}
 
 	expected := &FileSystemStoreConfigurations{
 		Results: []*FileSystemStoreConfiguration{
 			{
-				ID:                       "1",
-				Labels:                   []string{"l1", "l2"},
+				AdminConfig: AdminConfig{
+					ID:     ID,
+					Labels: []string{"l1", "l2"},
+				},
 				LoadFactor:               50,
 				MMAPV1CompressionSetting: "NONE",
 				StorePath:                "/data/backup",
@@ -294,11 +303,11 @@ func TestBackupAdministrator_GetFileSystemStoreConfiguration(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", fileSystemID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 50,
 			"mmapv1CompressionSetting" : "NONE",
@@ -307,14 +316,16 @@ func TestBackupAdministrator_GetFileSystemStoreConfiguration(t *testing.T) {
 }`)
 	})
 
-	config, _, err := client.BackupAdministrator.GetFileSystemStoreConfiguration(ctx, fileSystemID)
+	config, _, err := client.BackupAdministrator.GetFileSystemStore(ctx, ID)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.GetFileSystemStoreConfigurations returned error: %v", err)
 	}
 
 	expected := &FileSystemStoreConfiguration{
-		ID:                       fileSystemID,
-		Labels:                   []string{"l1", "l2"},
+		AdminConfig: AdminConfig{
+			ID:     ID,
+			Labels: []string{"l1", "l2"},
+		},
 		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
@@ -335,7 +346,7 @@ func TestBackupAdministrator_CreateFileSystemStoreConfiguration(t *testing.T) {
 		testMethod(t, r, http.MethodPost)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 50,
 			"mmapv1CompressionSetting" : "NONE",
@@ -345,8 +356,10 @@ func TestBackupAdministrator_CreateFileSystemStoreConfiguration(t *testing.T) {
 	})
 
 	fileSystem := &FileSystemStoreConfiguration{
-		ID:                       fileSystemID,
-		Labels:                   []string{"l1", "l2"},
+		AdminConfig: AdminConfig{
+			ID:     ID,
+			Labels: []string{"l1", "l2"},
+		},
 		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
@@ -354,14 +367,16 @@ func TestBackupAdministrator_CreateFileSystemStoreConfiguration(t *testing.T) {
 		AssignmentEnabled:        true,
 	}
 
-	config, _, err := client.BackupAdministrator.CreateFileSystemStoreConfiguration(ctx, fileSystem)
+	config, _, err := client.BackupAdministrator.CreateFileSystemStore(ctx, fileSystem)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.CreateFileSystemStoreConfigurations returned error: %v", err)
 	}
 
 	expected := &FileSystemStoreConfiguration{
-		ID:                       fileSystemID,
-		Labels:                   []string{"l1", "l2"},
+		AdminConfig: AdminConfig{
+			ID:     ID,
+			Labels: []string{"l1", "l2"},
+		},
 		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
@@ -378,11 +393,11 @@ func TestBackupAdministrator_UpdateFileSystemStoreConfiguration(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", fileSystemID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
-			"id" : "1",
+			"id" : "5628faffd4c606594adaa3b2",
 			"labels" : [ "l1", "l2" ],
 			"loadFactor" : 50,
 			"mmapv1CompressionSetting" : "NONE",
@@ -392,8 +407,10 @@ func TestBackupAdministrator_UpdateFileSystemStoreConfiguration(t *testing.T) {
 	})
 
 	fileSystem := &FileSystemStoreConfiguration{
-		ID:                       fileSystemID,
-		Labels:                   []string{"l1", "l2"},
+		AdminConfig: AdminConfig{
+			ID:     ID,
+			Labels: []string{"l1", "l2"},
+		},
 		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
@@ -401,14 +418,16 @@ func TestBackupAdministrator_UpdateFileSystemStoreConfiguration(t *testing.T) {
 		AssignmentEnabled:        true,
 	}
 
-	config, _, err := client.BackupAdministrator.UpdateFileSystemStoreConfiguration(ctx, fileSystemID, fileSystem)
+	config, _, err := client.BackupAdministrator.UpdateFileSystemStore(ctx, ID, fileSystem)
 	if err != nil {
-		t.Fatalf("BackupAdministrator.UpdateFileSystemStoreConfiguration returned error: %v", err)
+		t.Fatalf("BackupAdministrator.UpdateFileSystemStore returned error: %v", err)
 	}
 
 	expected := &FileSystemStoreConfiguration{
-		ID:                       fileSystemID,
-		Labels:                   []string{"l1", "l2"},
+		AdminConfig: AdminConfig{
+			ID:     ID,
+			Labels: []string{"l1", "l2"},
+		},
 		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
@@ -425,13 +444,13 @@ func TestBackupAdministrator_DeleteFileSystemStoreConfiguration(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", fileSystemID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.BackupAdministrator.DeleteFileSystemStoreConfiguration(ctx, blockstoreID)
+	_, err := client.BackupAdministrator.DeleteFileSystemStore(ctx, ID)
 	if err != nil {
-		t.Fatalf("BackupAdministrator.DeleteFileSystemStoreConfiguration returned error: %v", err)
+		t.Fatalf("BackupAdministrator.DeleteFileSystemStore returned error: %v", err)
 	}
 }
 
@@ -446,10 +465,10 @@ func TestBackupAdministrator_ListS3Blockstore(t *testing.T) {
 			 "assignmentEnabled" : true,
 			  "acceptedTos": true,
 			  "assignmentEnabled": true,
-			  "awsAccessKey": "1",
-			  "awsSecretKey": "1",
-			  "encryptedCredentials": false,
-			  "id": "1",
+			  "awsAccessKey": "5628faffd4c606594adaa3b2",
+			  "awsSecretKey": "5628faffd4c606594adaa3b2",
+			  "encryptedCredentials": true,
+			  "id": "5628faffd4c606594adaa3b2",
 			  "labels": [
 				"l1",
 				"l2"
@@ -478,17 +497,20 @@ func TestBackupAdministrator_ListS3Blockstore(t *testing.T) {
 		Results: []*S3Blockstore{
 			{
 				Blockstore: Blockstore{
-					ID:                   blockstoreID,
-					AssignmentEnabled:    true,
-					EncryptedCredentials: false,
-					LoadFactor:           50,
-					URI:                  "mongodb://127.0.0.1:27017",
-					Labels:               []string{"l1", "l2"},
-					SSL:                  false,
-					WriteConcern:         "W2",
+					LoadFactor: 50,
+					AdminConfig: AdminConfig{
+						ID:                   ID,
+						AssignmentEnabled:    true,
+						EncryptedCredentials: true,
+						URI:                  "mongodb://127.0.0.1:27017",
+						Labels:               []string{"l1", "l2"},
+						SSL:                  false,
+						WriteConcern:         "W2",
+						UsedSize:             0,
+					},
 				},
-				AWSAccessKey:           "1",
-				AWSSecretKey:           "1",
+				AWSAccessKey:           "5628faffd4c606594adaa3b2",
+				AWSSecretKey:           "5628faffd4c606594adaa3b2",
 				PathStyleAccessEnabled: false,
 				S3AuthMethod:           "KEYS",
 				S3BucketEndpoint:       "http://example.com/backupbucket",
@@ -509,16 +531,16 @@ func TestBackupAdministrator_GetS3Blockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/s3Configs/%s", blockstoreID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/s3Configs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			 "assignmentEnabled" : true,
 			  "acceptedTos": true,
 			  "assignmentEnabled": true,
-			  "awsAccessKey": "1",
-			  "awsSecretKey": "1",
+			  "awsAccessKey": "5628faffd4c606594adaa3b2",
+			  "awsSecretKey": "5628faffd4c606594adaa3b2",
 			  "encryptedCredentials": false,
-			  "id": "1",
+			  "id": "5628faffd4c606594adaa3b2",
 			  "labels": [
 				"l1",
 				"l2"
@@ -536,24 +558,27 @@ func TestBackupAdministrator_GetS3Blockstore(t *testing.T) {
 }`)
 	})
 
-	config, _, err := client.BackupAdministrator.GetS3Blockstore(ctx, blockstoreID)
+	config, _, err := client.BackupAdministrator.GetS3Blockstore(ctx, ID)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.GetS3Blockstore returned error: %v", err)
 	}
 
 	expected := &S3Blockstore{
 		Blockstore: Blockstore{
-			ID:                   blockstoreID,
-			AssignmentEnabled:    true,
-			EncryptedCredentials: false,
-			LoadFactor:           50,
-			URI:                  "mongodb://127.0.0.1:27017",
-			Labels:               []string{"l1", "l2"},
-			SSL:                  false,
-			WriteConcern:         "W2",
+			LoadFactor: 50,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://127.0.0.1:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  false,
+				WriteConcern:         "W2",
+				UsedSize:             0,
+			},
 		},
-		AWSAccessKey:           "1",
-		AWSSecretKey:           "1",
+		AWSAccessKey:           "5628faffd4c606594adaa3b2",
+		AWSSecretKey:           "5628faffd4c606594adaa3b2",
 		PathStyleAccessEnabled: false,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
@@ -578,10 +603,10 @@ func TestBackupAdministratorServiceOp_CreateS3BlockstoreBlockstore(t *testing.T)
 			 "assignmentEnabled" : true,
 			  "acceptedTos": true,
 			  "assignmentEnabled": true,
-			  "awsAccessKey": "1",
-			  "awsSecretKey": "1",
+			  "awsAccessKey": "5628faffd4c606594adaa3b2",
+			  "awsSecretKey": "5628faffd4c606594adaa3b2",
 			  "encryptedCredentials": false,
-			  "id": "1",
+			  "id": "5628faffd4c606594adaa3b2",
 			  "labels": [
 				"l1",
 				"l2"
@@ -601,17 +626,20 @@ func TestBackupAdministratorServiceOp_CreateS3BlockstoreBlockstore(t *testing.T)
 
 	blockstore := &S3Blockstore{
 		Blockstore: Blockstore{
-			ID:                   blockstoreID,
-			AssignmentEnabled:    true,
-			EncryptedCredentials: false,
-			LoadFactor:           50,
-			URI:                  "mongodb://127.0.0.1:27017",
-			Labels:               []string{"l1", "l2"},
-			SSL:                  false,
-			WriteConcern:         "W2",
+			LoadFactor: 50,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://127.0.0.1:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  false,
+				WriteConcern:         "W2",
+				UsedSize:             0,
+			},
 		},
-		AWSAccessKey:           "1",
-		AWSSecretKey:           "1",
+		AWSAccessKey:           "5628faffd4c606594adaa3b2",
+		AWSSecretKey:           "5628faffd4c606594adaa3b2",
 		PathStyleAccessEnabled: false,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
@@ -628,17 +656,20 @@ func TestBackupAdministratorServiceOp_CreateS3BlockstoreBlockstore(t *testing.T)
 
 	expected := &S3Blockstore{
 		Blockstore: Blockstore{
-			ID:                   blockstoreID,
-			AssignmentEnabled:    true,
-			EncryptedCredentials: false,
-			LoadFactor:           50,
-			URI:                  "mongodb://127.0.0.1:27017",
-			Labels:               []string{"l1", "l2"},
-			SSL:                  false,
-			WriteConcern:         "W2",
+			LoadFactor: 50,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://127.0.0.1:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  false,
+				WriteConcern:         "W2",
+				UsedSize:             0,
+			},
 		},
-		AWSAccessKey:           "1",
-		AWSSecretKey:           "1",
+		AWSAccessKey:           "5628faffd4c606594adaa3b2",
+		AWSSecretKey:           "5628faffd4c606594adaa3b2",
 		PathStyleAccessEnabled: false,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
@@ -657,16 +688,16 @@ func TestBackupAdministrator_UpdateS3Blockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/s3Configs/%s", blockstoreID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/s3Configs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			 "assignmentEnabled" : true,
 			  "acceptedTos": true,
 			  "assignmentEnabled": true,
-			  "awsAccessKey": "1",
-			  "awsSecretKey": "1",
+			  "awsAccessKey": "5628faffd4c606594adaa3b2",
+			  "awsSecretKey": "5628faffd4c606594adaa3b2",
 			  "encryptedCredentials": false,
-			  "id": "1",
+			  "id": "5628faffd4c606594adaa3b2",
 			  "labels": [
 				"l1",
 				"l2"
@@ -686,17 +717,20 @@ func TestBackupAdministrator_UpdateS3Blockstore(t *testing.T) {
 
 	blockstore := &S3Blockstore{
 		Blockstore: Blockstore{
-			ID:                   blockstoreID,
-			AssignmentEnabled:    true,
-			EncryptedCredentials: false,
-			LoadFactor:           50,
-			URI:                  "mongodb://127.0.0.1:27017",
-			Labels:               []string{"l1", "l2"},
-			SSL:                  false,
-			WriteConcern:         "W2",
+			LoadFactor: 50,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://127.0.0.1:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  false,
+				WriteConcern:         "W2",
+				UsedSize:             0,
+			},
 		},
-		AWSAccessKey:           "1",
-		AWSSecretKey:           "1",
+		AWSAccessKey:           "5628faffd4c606594adaa3b2",
+		AWSSecretKey:           "5628faffd4c606594adaa3b2",
 		PathStyleAccessEnabled: false,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
@@ -706,24 +740,27 @@ func TestBackupAdministrator_UpdateS3Blockstore(t *testing.T) {
 		SSEEnabled:             true,
 	}
 
-	config, _, err := client.BackupAdministrator.UpdateS3Blockstore(ctx, blockstoreID, blockstore)
+	config, _, err := client.BackupAdministrator.UpdateS3Blockstore(ctx, ID, blockstore)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.UpdateS3Blockstore returned error: %v", err)
 	}
 
 	expected := &S3Blockstore{
 		Blockstore: Blockstore{
-			ID:                   blockstoreID,
-			AssignmentEnabled:    true,
-			EncryptedCredentials: false,
-			LoadFactor:           50,
-			URI:                  "mongodb://127.0.0.1:27017",
-			Labels:               []string{"l1", "l2"},
-			SSL:                  false,
-			WriteConcern:         "W2",
+			LoadFactor: 50,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://127.0.0.1:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  false,
+				WriteConcern:         "W2",
+				UsedSize:             0,
+			},
 		},
-		AWSAccessKey:           "1",
-		AWSSecretKey:           "1",
+		AWSAccessKey:           "5628faffd4c606594adaa3b2",
+		AWSSecretKey:           "5628faffd4c606594adaa3b2",
 		PathStyleAccessEnabled: false,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
@@ -742,12 +779,251 @@ func TestBackupAdministrator_DeleteS3Blockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/s3Configs/%s", blockstoreID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/s3Configs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.BackupAdministrator.DeleteS3Blockstore(ctx, blockstoreID)
+	_, err := client.BackupAdministrator.DeleteS3Blockstore(ctx, ID)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.DeleteS3Blockstore returned error: %v", err)
+	}
+}
+
+func TestBackupAdministrator_ListOplog(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/backup/oplog/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+		  "results" : [ {
+			  "assignmentEnabled" : true,
+			  "encryptedCredentials" : false,
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "labels" : [ "l1", "l2" ],
+			  "maxCapacityGB" : 8,
+			  "uri" : "mongodb://localhost:27017",
+			  "ssl" : true,
+			  "usedSize" : 222,
+			  "writeConcern" : "W2"
+		  } ],
+		  "totalCount" : 1
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.ListOplog(ctx, nil)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.ListOplog returned error: %v", err)
+	}
+
+	expected := &Oplogs{
+		Results: []*Oplog{
+			{
+				Blockstore: Blockstore{
+					LoadFactor:    0,
+					MaxCapacityGB: 8,
+					AdminConfig: AdminConfig{
+						ID:                   ID,
+						AssignmentEnabled:    true,
+						EncryptedCredentials: false,
+						URI:                  "mongodb://localhost:27017",
+						Labels:               []string{"l1", "l2"},
+						SSL:                  true,
+						WriteConcern:         "W2",
+						UsedSize:             222,
+					},
+				},
+			},
+		},
+		TotalCount: 1,
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministrator_GetOplog(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+			  "assignmentEnabled" : true,
+			  "encryptedCredentials" : false,
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "labels" : [ "l1", "l2" ],
+			  "maxCapacityGB" : 8,
+			  "uri" : "mongodb://localhost:27017",
+			  "ssl" : true,
+			  "usedSize" : 222,
+			  "writeConcern" : "W2"
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.GetOplog(ctx, ID)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.GetOplog returned error: %v", err)
+	}
+
+	expected := &Oplog{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministrator_CreateOplog(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/backup/oplog/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPost)
+		_, _ = fmt.Fprint(w, `{
+			  "assignmentEnabled" : true,
+			  "encryptedCredentials" : false,
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "labels" : [ "l1", "l2" ],
+			  "maxCapacityGB" : 8,
+			  "uri" : "mongodb://localhost:27017",
+			  "ssl" : true,
+			  "usedSize" : 222,
+			  "writeConcern" : "W2"
+}`)
+	})
+
+	oplog := &Oplog{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+
+	config, _, err := client.BackupAdministrator.CreateOplog(ctx, oplog)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.CreateOplog returned error: %v", err)
+	}
+
+	expected := &Oplog{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministrator_UpdateOplog(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPut)
+		_, _ = fmt.Fprint(w, `{
+			  "assignmentEnabled" : true,
+			  "encryptedCredentials" : false,
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "labels" : [ "l1", "l2" ],
+			  "maxCapacityGB" : 8,
+			  "uri" : "mongodb://localhost:27017",
+			  "ssl" : true,
+			  "usedSize" : 222,
+			  "writeConcern" : "W2"
+}`)
+	})
+
+	oplog := &Oplog{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+
+	config, _, err := client.BackupAdministrator.UpdateOplog(ctx, ID, oplog)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.UpdateOplog returned error: %v", err)
+	}
+
+	expected := &Oplog{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministrator_DeleteOplog(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodDelete)
+	})
+
+	_, err := client.BackupAdministrator.DeleteOplog(ctx, ID)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.DeleteOplog returned error: %v", err)
 	}
 }
