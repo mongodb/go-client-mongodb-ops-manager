@@ -51,6 +51,11 @@ type BackupConfig struct {
 	SSLEnabled         bool      `json:"sslEnabled,omitempty"`
 	ExcludedNamespaces []*string `json:"excludedNamespaces,omitempty"`
 	IncludedNamespaces []*string `json:"includedNamespaces,omitempty"`
+	AuthMechanismName  string    `json:"authMechanismName,omitempty"`
+	Password           string    `json:"password,omitempty"`
+	Provisioned        bool      `json:"provisioned,omitempty"`
+	SyncSource         string    `json:"syncSource,omitempty"`
+	Username           string    `json:"username,omitempty"`
 }
 
 // BackupConfigs represents an array of BackupConfig
