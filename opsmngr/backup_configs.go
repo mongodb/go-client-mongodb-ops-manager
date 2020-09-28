@@ -43,19 +43,19 @@ var _ BackupConfigsService = &BackupConfigsServiceOp{}
 
 // BackupConfigs represents a Backup configuration in the MongoDB Ops Manager API
 type BackupConfig struct {
-	GroupID            string    `json:"groupId,omitempty"`
-	ClusterID          string    `json:"clusterId,omitempty"`
-	StatusName         string    `json:"statusName,omitempty"`
-	StorageEngineName  string    `json:"storageEngineName,omitempty"`
-	EncryptionEnabled  bool      `json:"encryptionEnabled,omitempty"`
-	SSLEnabled         bool      `json:"sslEnabled,omitempty"`
-	ExcludedNamespaces []*string `json:"excludedNamespaces,omitempty"`
-	IncludedNamespaces []*string `json:"includedNamespaces,omitempty"`
-	AuthMechanismName  string    `json:"authMechanismName,omitempty"`
-	Password           string    `json:"password,omitempty"`
-	Provisioned        bool      `json:"provisioned,omitempty"`
-	SyncSource         string    `json:"syncSource,omitempty"`
-	Username           string    `json:"username,omitempty"`
+	GroupID            string   `json:"groupId,omitempty"`
+	ClusterID          string   `json:"clusterId,omitempty"`
+	StatusName         string   `json:"statusName,omitempty"`
+	StorageEngineName  string   `json:"storageEngineName,omitempty"`
+	EncryptionEnabled  bool     `json:"encryptionEnabled,omitempty"`
+	SSLEnabled         bool     `json:"sslEnabled,omitempty"`
+	ExcludedNamespaces []string `json:"excludedNamespaces,omitempty"`
+	IncludedNamespaces []string `json:"includedNamespaces,omitempty"`
+	AuthMechanismName  string   `json:"authMechanismName,omitempty"`
+	Password           string   `json:"password,omitempty"`
+	Provisioned        bool     `json:"provisioned,omitempty"`
+	SyncSource         string   `json:"syncSource,omitempty"`
+	Username           string   `json:"username,omitempty"`
 }
 
 // BackupConfigs represents an array of BackupConfig
