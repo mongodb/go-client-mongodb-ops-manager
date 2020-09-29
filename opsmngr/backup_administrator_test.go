@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-func TestBackupAdministrator_ListBlockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_ListBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -74,7 +74,7 @@ func TestBackupAdministrator_ListBlockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_GetBlockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_GetBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -119,7 +119,7 @@ func TestBackupAdministrator_GetBlockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_CreateBlockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_CreateBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -179,7 +179,7 @@ func TestBackupAdministrator_CreateBlockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_UpdateBlockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_UpdateBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -239,7 +239,7 @@ func TestBackupAdministrator_UpdateBlockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_DeleteBlockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_DeleteBlockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -253,7 +253,7 @@ func TestBackupAdministrator_DeleteBlockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_ListFileSystemStoreConfigurations(t *testing.T) {
+func TestBackupAdministratorServiceOp_ListFileSystemStoreConfigurations(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -299,7 +299,7 @@ func TestBackupAdministrator_ListFileSystemStoreConfigurations(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_GetFileSystemStoreConfiguration(t *testing.T) {
+func TestBackupAdministratorServiceOp_GetFileSystemStoreConfiguration(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -338,7 +338,7 @@ func TestBackupAdministrator_GetFileSystemStoreConfiguration(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_CreateFileSystemStoreConfiguration(t *testing.T) {
+func TestBackupAdministratorServiceOp_CreateFileSystemStoreConfiguration(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -389,7 +389,7 @@ func TestBackupAdministrator_CreateFileSystemStoreConfiguration(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_UpdateFileSystemStoreConfiguration(t *testing.T) {
+func TestBackupAdministratorServiceOp_UpdateFileSystemStoreConfiguration(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -440,7 +440,7 @@ func TestBackupAdministrator_UpdateFileSystemStoreConfiguration(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_DeleteFileSystemStoreConfiguration(t *testing.T) {
+func TestBackupAdministratorServiceOp_DeleteFileSystemStoreConfiguration(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -454,7 +454,7 @@ func TestBackupAdministrator_DeleteFileSystemStoreConfiguration(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_ListS3Blockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_ListS3Blockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -527,7 +527,7 @@ func TestBackupAdministrator_ListS3Blockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_GetS3Blockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_GetS3Blockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -684,7 +684,7 @@ func TestBackupAdministratorServiceOp_CreateS3BlockstoreBlockstore(t *testing.T)
 	}
 }
 
-func TestBackupAdministrator_UpdateS3Blockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_UpdateS3Blockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -775,7 +775,7 @@ func TestBackupAdministrator_UpdateS3Blockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_DeleteS3Blockstore(t *testing.T) {
+func TestBackupAdministratorServiceOp_DeleteS3Blockstore(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -789,7 +789,7 @@ func TestBackupAdministrator_DeleteS3Blockstore(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_ListOplog(t *testing.T) {
+func TestBackupAdministratorServiceOp_ListOplogs(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -842,7 +842,7 @@ func TestBackupAdministrator_ListOplog(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_GetOplog(t *testing.T) {
+func TestBackupAdministratorServiceOp_GetOplog(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -888,7 +888,7 @@ func TestBackupAdministrator_GetOplog(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_CreateOplog(t *testing.T) {
+func TestBackupAdministratorServiceOp_CreateOplog(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -951,7 +951,7 @@ func TestBackupAdministrator_CreateOplog(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_UpdateOplog(t *testing.T) {
+func TestBackupAdministratorServiceOp_UpdateOplog(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -1014,7 +1014,7 @@ func TestBackupAdministrator_UpdateOplog(t *testing.T) {
 	}
 }
 
-func TestBackupAdministrator_DeleteOplog(t *testing.T) {
+func TestBackupAdministratorServiceOp_DeleteOplog(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -1025,5 +1025,244 @@ func TestBackupAdministrator_DeleteOplog(t *testing.T) {
 	_, err := client.BackupAdministrator.DeleteOplog(ctx, ID)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.DeleteOplog returned error: %v", err)
+	}
+}
+
+
+func TestBackupAdministratorServiceOp_ListSyncs(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/backup/sync/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+		  "results" : [ {
+					  "assignmentEnabled" : true,
+					  "encryptedCredentials" : false,
+					  "id" : "5628faffd4c606594adaa3b2",
+					  "labels" : [ "l1", "l2" ],
+					  "maxCapacityGB" : 8,
+					  "uri" : "mongodb://localhost:27017",
+					  "ssl" : true,
+					  "usedSize" : 222,
+					  "writeConcern" : "W2"
+		  } ],
+		  "totalCount" : 1
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.ListSyncs(ctx, nil)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.ListSyncs returned error: %v", err)
+	}
+
+	expected := &Syncs{
+		Results: []*Sync{
+			{
+				Blockstore: Blockstore{
+					LoadFactor:    0,
+					MaxCapacityGB: 8,
+					AdminConfig: AdminConfig{
+						ID:                   ID,
+						AssignmentEnabled:    true,
+						EncryptedCredentials: false,
+						URI:                  "mongodb://localhost:27017",
+						Labels:               []string{"l1", "l2"},
+						SSL:                  true,
+						WriteConcern:         "W2",
+						UsedSize:             222,
+					},
+				},
+			},
+		},
+		TotalCount: 1,
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+
+
+func TestBackupAdministratorServiceOp_GetSync(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/sync/mongoConfigs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+					  "assignmentEnabled" : true,
+					  "encryptedCredentials" : false,
+					  "id" : "5628faffd4c606594adaa3b2",
+					  "labels" : [ "l1", "l2" ],
+					  "maxCapacityGB" : 8,
+					  "uri" : "mongodb://localhost:27017",
+					  "ssl" : true,
+					  "usedSize" : 222,
+					  "writeConcern" : "W2"
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.GetSync(ctx, ID)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.GetSync returned error: %v", err)
+	}
+
+	expected :=  &Sync{
+				Blockstore: Blockstore{
+					LoadFactor:    0,
+					MaxCapacityGB: 8,
+					AdminConfig: AdminConfig{
+						ID:                   ID,
+						AssignmentEnabled:    true,
+						EncryptedCredentials: false,
+						URI:                  "mongodb://localhost:27017",
+						Labels:               []string{"l1", "l2"},
+						SSL:                  true,
+						WriteConcern:         "W2",
+						UsedSize:             222,
+				},
+			},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_CreateSync(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/backup/sync/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPost)
+		_, _ = fmt.Fprint(w, `{
+					  "assignmentEnabled" : true,
+					  "encryptedCredentials" : false,
+					  "id" : "5628faffd4c606594adaa3b2",
+					  "labels" : [ "l1", "l2" ],
+					  "maxCapacityGB" : 8,
+					  "uri" : "mongodb://localhost:27017",
+					  "ssl" : true,
+					  "usedSize" : 222,
+					  "writeConcern" : "W2"
+}`)
+	})
+
+	sync :=  &Sync{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+
+	config, _, err := client.BackupAdministrator.CreateSync(ctx,sync)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.CreateSync returned error: %v", err)
+	}
+
+	expected :=  &Sync{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_UpdateSync(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/sync/mongoConfigs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPut)
+		_, _ = fmt.Fprint(w, `{
+					  "assignmentEnabled" : true,
+					  "encryptedCredentials" : false,
+					  "id" : "5628faffd4c606594adaa3b2",
+					  "labels" : [ "l1", "l2" ],
+					  "maxCapacityGB" : 8,
+					  "uri" : "mongodb://localhost:27017",
+					  "ssl" : true,
+					  "usedSize" : 222,
+					  "writeConcern" : "W2"
+}`)
+	})
+
+	sync :=  &Sync{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+
+	config, _, err := client.BackupAdministrator.UpdateSync(ctx,ID, sync)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.UpdateSync returned error: %v", err)
+	}
+
+	expected :=  &Sync{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
+			},
+		},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_DeleteSync(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/sync/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodDelete)
+	})
+
+	_, err := client.BackupAdministrator.DeleteSync(ctx, ID)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.DeleteSync returned error: %v", err)
 	}
 }

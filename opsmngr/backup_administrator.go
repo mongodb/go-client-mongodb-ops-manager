@@ -27,6 +27,7 @@ const (
 	backupAdministratorFileSystemStoreConfigurationsBasePath = "admin/backup/snapshot/fileSystemConfigs"
 	backupAdministratorS3BlockstoreBasePath                  = "admin/backup/snapshot/s3Configs"
 	backupAdministratorOplogBasePath                         = "admin/backup/oplog/mongoConfigs"
+	backupAdministratorSyncBasePath                         = "admin/backup/sync/mongoConfigs"
 )
 
 // BackupAdministratorService is an interface for using the Backup Administrator
@@ -38,6 +39,7 @@ type BackupAdministratorService interface {
 	FileSystemStoreService
 	S3BlockstoreService
 	OplogService
+	SyncService
 }
 
 // BlockstoreService is an interface for using the Blockstore
@@ -88,6 +90,18 @@ type OplogService interface {
 	DeleteOplog(context.Context, string) (*atlas.Response, error)
 }
 
+// SyncService is an interface for using the Sync
+// endpoints of the MongoDB Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync-store-config/
+type SyncService interface {
+	ListSyncs(context.Context, *atlas.ListOptions) (*Syncs, *atlas.Response, error)
+	GetSync(context.Context, string) (*Sync, *atlas.Response, error)
+	CreateSync(context.Context, *Sync) (*Sync, *atlas.Response, error)
+	UpdateSync(context.Context, string, *Sync) (*Sync, *atlas.Response, error)
+	DeleteSync(context.Context, string) (*atlas.Response, error)
+}
+
 // BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
 type BackupAdministratorServiceOp service
 
@@ -120,7 +134,7 @@ type S3Blockstore struct {
 	SSEEnabled             bool   `json:"sseEnabled,omitempty"`
 }
 
-// S3Blockstores represents an array of S3Blockstore
+// S3Blockstores represents a paginated collection of S3Blockstore
 type S3Blockstores struct {
 	Links      []*atlas.Link   `json:"links"`
 	Results    []*S3Blockstore `json:"results"`
@@ -137,7 +151,7 @@ type Blockstore struct {
 	Username      string `json:"username,omitempty"`
 }
 
-// Blockstores represents an array of Blockstore
+// Blockstores represents a paginated collection of Blockstore
 type Blockstores struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Blockstore `json:"results"`
@@ -154,7 +168,7 @@ type FileSystemStoreConfiguration struct {
 	AssignmentEnabled        bool   `json:"assignmentEnabled,omitempty"`
 }
 
-// FileSystemStoreConfigurations represents an array of FileSystemStoreConfiguration
+// FileSystemStoreConfigurations represents a paginated collection of FileSystemStoreConfiguration
 type FileSystemStoreConfigurations struct {
 	Links      []*atlas.Link                   `json:"links"`
 	Results    []*FileSystemStoreConfiguration `json:"results"`
@@ -166,10 +180,22 @@ type Oplog struct {
 	Blockstore
 }
 
-// Oplogs represents an array of Oplog
+// Oplogs represents a paginated collection of Oplog
 type Oplogs struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Oplog      `json:"results"`
+	TotalCount int           `json:"totalCount"`
+}
+
+// Sync represents a Sync Configuration in the MongoDB Ops Manager API
+type Sync struct {
+	Blockstore
+}
+
+// Syncs represents a paginated collection of Oplog
+type Syncs struct {
+	Links      []*atlas.Link `json:"links"`
+	Results    []*Sync      `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
 
@@ -533,6 +559,99 @@ func (s *BackupAdministratorServiceOp) DeleteOplog(ctx context.Context, oplogID 
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplogID)
+	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.Client.Do(ctx, req, nil)
+
+	return resp, err
+}
+
+// GetSync retrieves a Sync.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-one-sync-store-configuration-by-id/
+func (s *BackupAdministratorServiceOp) GetSync(ctx context.Context, syncID string) (*Sync, *atlas.Response, error) {
+	if syncID == "" {
+		return nil, nil, atlas.NewArgError("syncID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorSyncBasePath, syncID)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Sync)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// ListSyncs retrieves all the Syncs.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-all-sync-store-configurations/
+func (s *BackupAdministratorServiceOp) ListSyncs(ctx context.Context, options *atlas.ListOptions) (*Syncs, *atlas.Response, error) {
+	path, err := setQueryParams(backupAdministratorSyncBasePath, options)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Syncs)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// CreateSync create a Sync.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/create-one-sync-store-configuration/
+func (s *BackupAdministratorServiceOp) CreateSync(ctx context.Context, sync *Sync) (*Sync, *atlas.Response, error) {
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, backupAdministratorSyncBasePath, sync)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Sync)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// UpdateSync updates a Sync.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/update-one-sync-store-configuration/
+func (s *BackupAdministratorServiceOp) UpdateSync(ctx context.Context, syncID string, sync *Sync) (*Sync, *atlas.Response, error) {
+	if syncID == "" {
+		return nil, nil, atlas.NewArgError("syncID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorSyncBasePath, syncID)
+	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, sync)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Sync)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// DeleteSync removes a Sync.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/delete-one-sync-store-configuration/
+func (s *BackupAdministratorServiceOp) DeleteSync(ctx context.Context, syncID string) (*atlas.Response, error) {
+	if syncID == "" {
+		return nil, atlas.NewArgError("syncID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorSyncBasePath, syncID)
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err
