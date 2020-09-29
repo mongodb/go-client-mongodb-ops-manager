@@ -1028,7 +1028,6 @@ func TestBackupAdministratorServiceOp_DeleteOplog(t *testing.T) {
 	}
 }
 
-
 func TestBackupAdministratorServiceOp_ListSyncs(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -1082,13 +1081,11 @@ func TestBackupAdministratorServiceOp_ListSyncs(t *testing.T) {
 	}
 }
 
-
-
 func TestBackupAdministratorServiceOp_GetSync(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/sync/mongoConfigs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/sync/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 					  "assignmentEnabled" : true,
@@ -1108,21 +1105,21 @@ func TestBackupAdministratorServiceOp_GetSync(t *testing.T) {
 		t.Fatalf("BackupAdministrator.GetSync returned error: %v", err)
 	}
 
-	expected :=  &Sync{
-				Blockstore: Blockstore{
-					LoadFactor:    0,
-					MaxCapacityGB: 8,
-					AdminConfig: AdminConfig{
-						ID:                   ID,
-						AssignmentEnabled:    true,
-						EncryptedCredentials: false,
-						URI:                  "mongodb://localhost:27017",
-						Labels:               []string{"l1", "l2"},
-						SSL:                  true,
-						WriteConcern:         "W2",
-						UsedSize:             222,
-				},
+	expected := &Sync{
+		Blockstore: Blockstore{
+			LoadFactor:    0,
+			MaxCapacityGB: 8,
+			AdminConfig: AdminConfig{
+				ID:                   ID,
+				AssignmentEnabled:    true,
+				EncryptedCredentials: false,
+				URI:                  "mongodb://localhost:27017",
+				Labels:               []string{"l1", "l2"},
+				SSL:                  true,
+				WriteConcern:         "W2",
+				UsedSize:             222,
 			},
+		},
 	}
 	if diff := deep.Equal(config, expected); diff != nil {
 		t.Error(diff)
@@ -1148,7 +1145,7 @@ func TestBackupAdministratorServiceOp_CreateSync(t *testing.T) {
 }`)
 	})
 
-	sync :=  &Sync{
+	sync := &Sync{
 		Blockstore: Blockstore{
 			LoadFactor:    0,
 			MaxCapacityGB: 8,
@@ -1165,12 +1162,12 @@ func TestBackupAdministratorServiceOp_CreateSync(t *testing.T) {
 		},
 	}
 
-	config, _, err := client.BackupAdministrator.CreateSync(ctx,sync)
+	config, _, err := client.BackupAdministrator.CreateSync(ctx, sync)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.CreateSync returned error: %v", err)
 	}
 
-	expected :=  &Sync{
+	expected := &Sync{
 		Blockstore: Blockstore{
 			LoadFactor:    0,
 			MaxCapacityGB: 8,
@@ -1195,7 +1192,7 @@ func TestBackupAdministratorServiceOp_UpdateSync(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/sync/mongoConfigs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/sync/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 					  "assignmentEnabled" : true,
@@ -1210,7 +1207,7 @@ func TestBackupAdministratorServiceOp_UpdateSync(t *testing.T) {
 }`)
 	})
 
-	sync :=  &Sync{
+	sync := &Sync{
 		Blockstore: Blockstore{
 			LoadFactor:    0,
 			MaxCapacityGB: 8,
@@ -1227,12 +1224,12 @@ func TestBackupAdministratorServiceOp_UpdateSync(t *testing.T) {
 		},
 	}
 
-	config, _, err := client.BackupAdministrator.UpdateSync(ctx,ID, sync)
+	config, _, err := client.BackupAdministrator.UpdateSync(ctx, ID, sync)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.UpdateSync returned error: %v", err)
 	}
 
-	expected :=  &Sync{
+	expected := &Sync{
 		Blockstore: Blockstore{
 			LoadFactor:    0,
 			MaxCapacityGB: 8,
@@ -1266,7 +1263,6 @@ func TestBackupAdministratorServiceOp_DeleteSync(t *testing.T) {
 		t.Fatalf("BackupAdministrator.DeleteSync returned error: %v", err)
 	}
 }
-
 
 func TestBackupAdministratorServiceOp_ListDaemons(t *testing.T) {
 	client, mux, teardown := setup()
@@ -1317,7 +1313,7 @@ func TestBackupAdministratorServiceOp_ListDaemons(t *testing.T) {
 				RestoreQueryableJobsEnabled: true,
 				HeadDiskType:                "SSD",
 				NumWorkers:                  50,
-				Machine:                     Machine{
+				Machine: &Machine{
 					Machine:           "localhost",
 					HeadRootDirectory: "/data/backup/",
 				},
@@ -1334,7 +1330,7 @@ func TestBackupAdministratorServiceOp_GetDaemon(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/daemon/configs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/daemon/configs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			 "assignmentEnabled" : true,
@@ -1361,24 +1357,24 @@ func TestBackupAdministratorServiceOp_GetDaemon(t *testing.T) {
 	}
 
 	expected := &Daemon{
-				AdminConfig: AdminConfig{
-					ID:                   ID,
-					AssignmentEnabled:    true,
-					EncryptedCredentials: false,
-					Labels:               []string{"l1", "l2"},
-				},
-				BackupJobsEnabled:           false,
-				Configured:                  true,
-				GarbageCollectionEnabled:    true,
-				ResourceUsageEnabled:        true,
-				RestoreQueryableJobsEnabled: true,
-				HeadDiskType:                "SSD",
-				NumWorkers:                  50,
-				Machine:                     Machine{
-					Machine:           "localhost",
-					HeadRootDirectory: "/data/backup/",
-				},
-		}
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			Labels:               []string{"l1", "l2"},
+		},
+		BackupJobsEnabled:           false,
+		Configured:                  true,
+		GarbageCollectionEnabled:    true,
+		ResourceUsageEnabled:        true,
+		RestoreQueryableJobsEnabled: true,
+		HeadDiskType:                "SSD",
+		NumWorkers:                  50,
+		Machine: &Machine{
+			Machine:           "localhost",
+			HeadRootDirectory: "/data/backup/",
+		},
+	}
 	if diff := deep.Equal(config, expected); diff != nil {
 		t.Error(diff)
 	}
@@ -1388,7 +1384,7 @@ func TestBackupAdministratorServiceOp_UpdateDaemon(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/daemon/configs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/daemon/configs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			 "assignmentEnabled" : true,
@@ -1423,7 +1419,7 @@ func TestBackupAdministratorServiceOp_UpdateDaemon(t *testing.T) {
 		RestoreQueryableJobsEnabled: true,
 		HeadDiskType:                "SSD",
 		NumWorkers:                  50,
-		Machine:                     Machine{
+		Machine: &Machine{
 			Machine:           "localhost",
 			HeadRootDirectory: "/data/backup/",
 		},
@@ -1448,7 +1444,7 @@ func TestBackupAdministratorServiceOp_UpdateDaemon(t *testing.T) {
 		RestoreQueryableJobsEnabled: true,
 		HeadDiskType:                "SSD",
 		NumWorkers:                  50,
-		Machine:                     Machine{
+		Machine: &Machine{
 			Machine:           "localhost",
 			HeadRootDirectory: "/data/backup/",
 		},
@@ -1469,5 +1465,233 @@ func TestBackupAdministratorServiceOp_DeleteDaemn(t *testing.T) {
 	_, err := client.BackupAdministrator.DeleteDaemon(ctx, ID)
 	if err != nil {
 		t.Fatalf("BackupAdministrator.DeleteDaemon returned error: %v", err)
+	}
+}
+
+func TestBackupAdministratorServiceOp_ListProjectJobs(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/backup/groups", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+		  "results" : [ {
+			"daemonFilter" : [ {
+			  "headRootDirectory" : "/data/backup",
+			  "machine" : "http://backup.example.com"
+			} ],
+			"id" : "5628faffd4c606594adaa3b2",
+			"kmipClientCertPassword" : "P4$$w0rD",
+			"kmipClientCertPath" : "/certs/kmip",
+			"labelFilter" : [ "l1", "l2" ],
+			"links" : [ {
+			  "href" : "https://{OPSMANAGER-HOST}:{PORT}/api/public/v1.0/admin/backup/groups/{PROJECT-ID}",
+			  "rel" : "self"
+			}, {
+			  "href" : "https://{OPSMANAGER-HOST}:{PORT}/api/public/groups/{PROJECT-ID}",
+			  "rel" : "http://mms.mongodb.com/group"
+			} ],
+			"oplogStoreFilter" : [ {
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "type" : "oplogStore"
+			} ],
+			"snapshotStoreFilter" : [ {
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "type" : "s3blockstore"
+			} ],
+			"syncStoreFilter" : [ "s1", "s2" ]
+		  } ],
+		  "totalCount" : 1
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.ListProjectJobs(ctx, nil)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.ListProjectJobs returned error: %v", err)
+	}
+
+	expected := &ProjectJobs{
+		Results: []*ProjectJob{
+			{
+				AdminConfig: AdminConfig{
+					ID: ID,
+				},
+				KMIPClientCertPassword: "P4$$w0rD",
+				KMIPClientCertPath:     "/certs/kmip",
+				LabelFilter:            []string{"l1", "l2"},
+				SyncStoreFilter:        []string{"s1", "s2"},
+				DaemonFilter: []*Machine{{
+					Machine:           "http://backup.example.com",
+					HeadRootDirectory: "/data/backup",
+				}},
+				OplogStoreFilter: []*StoreFilter{{
+					ID:   "5628faffd4c606594adaa3b2",
+					Type: "oplogStore",
+				}},
+				SnapshotStoreFilter: []*StoreFilter{{
+					ID:   "5628faffd4c606594adaa3b2",
+					Type: "s3blockstore",
+				}},
+			},
+		},
+		TotalCount: 1,
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_GetProjectJob(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/groups/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+			"daemonFilter" : [ {
+			  "headRootDirectory" : "/data/backup",
+			  "machine" : "http://backup.example.com"
+			} ],
+			"id" : "5628faffd4c606594adaa3b2",
+			"kmipClientCertPassword" : "P4$$w0rD",
+			"kmipClientCertPath" : "/certs/kmip",
+			"labelFilter" : [ "l1", "l2" ],
+			"links" : [ {
+			  "href" : "https://{OPSMANAGER-HOST}:{PORT}/api/public/v1.0/admin/backup/groups/{PROJECT-ID}",
+			  "rel" : "self"
+			}, {
+			  "href" : "https://{OPSMANAGER-HOST}:{PORT}/api/public/groups/{PROJECT-ID}",
+			  "rel" : "http://mms.mongodb.com/group"
+			} ],
+			"oplogStoreFilter" : [ {
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "type" : "oplogStore"
+			} ],
+			"snapshotStoreFilter" : [ {
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "type" : "s3blockstore"
+			} ],
+			"syncStoreFilter" : [ "s1", "s2" ]
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.GetProjectJob(ctx, ID)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.GetProjectJob returned error: %v", err)
+	}
+
+	expected := &ProjectJob{
+
+		AdminConfig: AdminConfig{
+			ID: ID,
+		},
+		KMIPClientCertPassword: "P4$$w0rD",
+		KMIPClientCertPath:     "/certs/kmip",
+		LabelFilter:            []string{"l1", "l2"},
+		SyncStoreFilter:        []string{"s1", "s2"},
+		DaemonFilter: []*Machine{{
+			Machine:           "http://backup.example.com",
+			HeadRootDirectory: "/data/backup",
+		}},
+		OplogStoreFilter: []*StoreFilter{{
+			ID:   "5628faffd4c606594adaa3b2",
+			Type: "oplogStore",
+		}},
+		SnapshotStoreFilter: []*StoreFilter{{
+			ID:   "5628faffd4c606594adaa3b2",
+			Type: "s3blockstore",
+		}},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_UpdateProjectJob(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/groups/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPut)
+		_, _ = fmt.Fprint(w, `{
+			"daemonFilter" : [ {
+			  "headRootDirectory" : "/data/backup",
+			  "machine" : "http://backup.example.com"
+			} ],
+			"id" : "5628faffd4c606594adaa3b2",
+			"kmipClientCertPassword" : "P4$$w0rD",
+			"kmipClientCertPath" : "/certs/kmip",
+			"labelFilter" : [ "l1", "l2" ],
+			"links" : [ {
+			  "href" : "https://{OPSMANAGER-HOST}:{PORT}/api/public/v1.0/admin/backup/groups/{PROJECT-ID}",
+			  "rel" : "self"
+			}, {
+			  "href" : "https://{OPSMANAGER-HOST}:{PORT}/api/public/groups/{PROJECT-ID}",
+			  "rel" : "http://mms.mongodb.com/group"
+			} ],
+			"oplogStoreFilter" : [ {
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "type" : "oplogStore"
+			} ],
+			"snapshotStoreFilter" : [ {
+			  "id" : "5628faffd4c606594adaa3b2",
+			  "type" : "s3blockstore"
+			} ],
+			"syncStoreFilter" : [ "s1", "s2" ]
+}`)
+	})
+
+	projectJob := &ProjectJob{
+
+		AdminConfig: AdminConfig{
+			ID: ID,
+		},
+		KMIPClientCertPassword: "P4$$w0rD",
+		KMIPClientCertPath:     "/certs/kmip",
+		LabelFilter:            []string{"l1", "l2"},
+		SyncStoreFilter:        []string{"s1", "s2"},
+		DaemonFilter: []*Machine{{
+			Machine:           "http://backup.example.com",
+			HeadRootDirectory: "/data/backup",
+		}},
+		OplogStoreFilter: []*StoreFilter{{
+			ID:   "5628faffd4c606594adaa3b2",
+			Type: "oplogStore",
+		}},
+		SnapshotStoreFilter: []*StoreFilter{{
+			ID:   "5628faffd4c606594adaa3b2",
+			Type: "s3blockstore",
+		}},
+	}
+
+	config, _, err := client.BackupAdministrator.UpdateProjectJob(ctx, ID, projectJob)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.UpdateProjectJob returned error: %v", err)
+	}
+
+	expected := &ProjectJob{
+
+		AdminConfig: AdminConfig{
+			ID: ID,
+		},
+		KMIPClientCertPassword: "P4$$w0rD",
+		KMIPClientCertPath:     "/certs/kmip",
+		LabelFilter:            []string{"l1", "l2"},
+		SyncStoreFilter:        []string{"s1", "s2"},
+		DaemonFilter: []*Machine{{
+			Machine:           "http://backup.example.com",
+			HeadRootDirectory: "/data/backup",
+		}},
+		OplogStoreFilter: []*StoreFilter{{
+			ID:   "5628faffd4c606594adaa3b2",
+			Type: "oplogStore",
+		}},
+		SnapshotStoreFilter: []*StoreFilter{{
+			ID:   "5628faffd4c606594adaa3b2",
+			Type: "s3blockstore",
+		}},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
 	}
 }

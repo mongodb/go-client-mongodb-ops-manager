@@ -27,8 +27,9 @@ const (
 	backupAdministratorFileSystemStoreConfigurationsBasePath = "admin/backup/snapshot/fileSystemConfigs"
 	backupAdministratorS3BlockstoreBasePath                  = "admin/backup/snapshot/s3Configs"
 	backupAdministratorOplogBasePath                         = "admin/backup/oplog/mongoConfigs"
-	backupAdministratorSyncBasePath                         = "admin/backup/sync/mongoConfigs"
-	backupAdministratorDaemonBasePath                         = "admin/backup/daemon/configs"
+	backupAdministratorSyncBasePath                          = "admin/backup/sync/mongoConfigs"
+	backupAdministratorDaemonBasePath                        = "admin/backup/daemon/configs"
+	backupAdministratorProjectJobBasePath                    = "admin/backup/groups"
 )
 
 // BackupAdministratorService is an interface for using the Backup Administrator
@@ -42,6 +43,7 @@ type BackupAdministratorService interface {
 	OplogService
 	SyncService
 	DaemonService
+	ProjectJobService
 }
 
 // BlockstoreService is an interface for using the Blockstore
@@ -113,6 +115,16 @@ type DaemonService interface {
 	GetDaemon(context.Context, string) (*Daemon, *atlas.Response, error)
 	UpdateDaemon(context.Context, string, *Daemon) (*Daemon, *atlas.Response, error)
 	DeleteDaemon(context.Context, string) (*atlas.Response, error)
+}
+
+// ProjectJobService is an interface for using the Project Job
+// endpoints of the MongoDB Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/backup-group-config/
+type ProjectJobService interface {
+	ListProjectJobs(context.Context, *atlas.ListOptions) (*ProjectJobs, *atlas.Response, error)
+	GetProjectJob(context.Context, string) (*ProjectJob, *atlas.Response, error)
+	UpdateProjectJob(context.Context, string, *ProjectJob) (*ProjectJob, *atlas.Response, error)
 }
 
 // BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
@@ -208,33 +220,57 @@ type Sync struct {
 // Syncs represents a paginated collection of Oplog
 type Syncs struct {
 	Links      []*atlas.Link `json:"links"`
-	Results    []*Sync      `json:"results"`
+	Results    []*Sync       `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
 
 // Daemon represents a Backup Daemon Configuration in the MongoDB Ops Manager API
 type Daemon struct {
 	AdminConfig
-	BackupJobsEnabled        bool   `json:"backupJobsEnabled"`
-	Configured               bool  `json:"configured"`
-	GarbageCollectionEnabled bool `json:"garbageCollectionEnabled"`
-	ResourceUsageEnabled     bool `json:"resourceUsageEnabled"`
-	RestoreQueryableJobsEnabled     bool `json:"restoreQueryableJobsEnabled"`
-	HeadDiskType string `json:"headDiskType,omitempty"`
-	NumWorkers                int64 `json:"numWorkers,omitempty"`
-	Machine Machine `json:"machine,omitempty"`
-
+	BackupJobsEnabled           bool     `json:"backupJobsEnabled"`
+	Configured                  bool     `json:"configured"`
+	GarbageCollectionEnabled    bool     `json:"garbageCollectionEnabled"`
+	ResourceUsageEnabled        bool     `json:"resourceUsageEnabled"`
+	RestoreQueryableJobsEnabled bool     `json:"restoreQueryableJobsEnabled"`
+	HeadDiskType                string   `json:"headDiskType,omitempty"`
+	NumWorkers                  int64    `json:"numWorkers,omitempty"`
+	Machine                     *Machine `json:"machine,omitempty"`
 }
 
-type Machine struct{
-	Machine        string   `json:"machine,omitempty"`
-	HeadRootDirectory               string  `json:"headRootDirectory,omitempty"`
+type Machine struct {
+	Machine           string `json:"machine,omitempty"`
+	HeadRootDirectory string `json:"headRootDirectory,omitempty"`
 }
 
 // Daemons represents a paginated collection of Daemon
 type Daemons struct {
 	Links      []*atlas.Link `json:"links"`
-	Results    []*Daemon      `json:"results"`
+	Results    []*Daemon     `json:"results"`
+	TotalCount int           `json:"totalCount"`
+}
+
+// ProjectJob represents a Backup Project Configuration Job in the MongoDB Ops Manager API
+type ProjectJob struct {
+	AdminConfig
+	KMIPClientCertPassword string         `json:"kmipClientCertPassword,omitempty"`
+	KMIPClientCertPath     string         `json:"kmipClientCertPath,omitempty"`
+	LabelFilter            []string       `json:"labelFilter,omitempty"`
+	SyncStoreFilter        []string       `json:"syncStoreFilter,omitempty"`
+	DaemonFilter           []*Machine     `json:"daemonFilter,omitempty"`
+	OplogStoreFilter       []*StoreFilter `json:"oplogStoreFilter,omitempty"`
+	SnapshotStoreFilter    []*StoreFilter `json:"snapshotStoreFilter,omitempty"`
+}
+
+// StoreFilter represents a StoreFilter in the MongoDB Ops Manager API
+type StoreFilter struct {
+	ID   string `json:"id,omitempty"`
+	Type string `json:"type,omitempty"`
+}
+
+// ProjectJobs represents a paginated collection of ProjectJob
+type ProjectJobs struct {
+	Links      []*atlas.Link `json:"links"`
+	Results    []*ProjectJob `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
 
@@ -701,7 +737,6 @@ func (s *BackupAdministratorServiceOp) DeleteSync(ctx context.Context, syncID st
 	return resp, err
 }
 
-
 // GetDaemon retrieves a Daemon.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/get-one-backup-daemon-configuration-by-host/
@@ -778,4 +813,62 @@ func (s *BackupAdministratorServiceOp) DeleteDaemon(ctx context.Context, daemonI
 	resp, err := s.Client.Do(ctx, req, nil)
 
 	return resp, err
+}
+
+// ListProjectJobs retrieves the configurations of all project’s backup jobs.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-all-sync-store-configurations/
+func (s *BackupAdministratorServiceOp) ListProjectJobs(ctx context.Context, options *atlas.ListOptions) (*ProjectJobs, *atlas.Response, error) {
+	path, err := setQueryParams(backupAdministratorProjectJobBasePath, options)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(ProjectJobs)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// GetProjectJob retrieves the configuration of one project’s backup jobs.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/groups/get-one-backup-group-configuration-by-id/
+func (s *BackupAdministratorServiceOp) GetProjectJob(ctx context.Context, projectJobID string) (*ProjectJob, *atlas.Response, error) {
+	if projectJobID == "" {
+		return nil, nil, atlas.NewArgError("projectJobID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorProjectJobBasePath, projectJobID)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(ProjectJob)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// UpdateProjectJob updates the configuration of one project’s backup jobs.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/groups/update-one-backup-group-configuration/
+func (s *BackupAdministratorServiceOp) UpdateProjectJob(ctx context.Context, projectJobID string, projectJob *ProjectJob) (*ProjectJob, *atlas.Response, error) {
+	if projectJobID == "" {
+		return nil, nil, atlas.NewArgError("projectJobID", "must be set")
+	}
+	path := fmt.Sprintf("%s/%s", backupAdministratorProjectJobBasePath, projectJobID)
+	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, projectJob)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(ProjectJob)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
 }
