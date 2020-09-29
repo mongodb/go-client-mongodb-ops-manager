@@ -74,6 +74,7 @@ type Client struct {
 	MaintenanceWindows     MaintenanceWindowsService
 	PerformanceAdvisor     PerformanceAdvisorService
 	VersionManifest        VersionManifestService
+	BackupConfigs          BackupConfigsService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -127,6 +128,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.MaintenanceWindows = &MaintenanceWindowsServiceOp{Client: c}
 	c.PerformanceAdvisor = &PerformanceAdvisorServiceOp{Client: c}
 	c.VersionManifest = &VersionManifestServiceOp{Client: c}
+	c.BackupConfigs = &BackupConfigsServiceOp{Client: c}
 
 	return c
 }
