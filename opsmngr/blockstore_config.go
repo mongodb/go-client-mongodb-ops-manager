@@ -41,7 +41,7 @@ type BlockstoreConfigServiceOp service
 
 var _ BlockstoreConfigService = &BlockstoreConfigServiceOp{}
 
-// BackupStore represents a Balockstore, Oplog and Sync in the MongoDB Ops Manager API
+// BackupStore represents a Blockstore, Oplog and Sync in the MongoDB Ops Manager API
 type BackupStore struct {
 	AdminBackupConfig
 	LoadFactor    int64  `json:"loadFactor,omitempty"`
