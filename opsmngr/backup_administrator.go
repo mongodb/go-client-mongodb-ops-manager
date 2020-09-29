@@ -28,6 +28,7 @@ const (
 	backupAdministratorS3BlockstoreBasePath                  = "admin/backup/snapshot/s3Configs"
 	backupAdministratorOplogBasePath                         = "admin/backup/oplog/mongoConfigs"
 	backupAdministratorSyncBasePath                         = "admin/backup/sync/mongoConfigs"
+	backupAdministratorDaemonBasePath                         = "admin/backup/daemon/configs"
 )
 
 // BackupAdministratorService is an interface for using the Backup Administrator
@@ -40,6 +41,7 @@ type BackupAdministratorService interface {
 	S3BlockstoreService
 	OplogService
 	SyncService
+	DaemonService
 }
 
 // BlockstoreService is an interface for using the Blockstore
@@ -102,6 +104,17 @@ type SyncService interface {
 	DeleteSync(context.Context, string) (*atlas.Response, error)
 }
 
+// DaemonService is an interface for using the Backup Daemon
+// endpoints of the MongoDB Ops Manager API.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/backup-daemon-config/
+type DaemonService interface {
+	ListDaemons(context.Context, *atlas.ListOptions) (*Daemons, *atlas.Response, error)
+	GetDaemon(context.Context, string) (*Daemon, *atlas.Response, error)
+	UpdateDaemon(context.Context, string, *Daemon) (*Daemon, *atlas.Response, error)
+	DeleteDaemon(context.Context, string) (*atlas.Response, error)
+}
+
 // BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
 type BackupAdministratorServiceOp service
 
@@ -110,12 +123,12 @@ var _ BackupAdministratorService = &BackupAdministratorServiceOp{}
 // AdminConfig contains the common fields of backup administrator structs
 type AdminConfig struct {
 	ID                   string   `json:"id,omitempty"`
-	AssignmentEnabled    bool     `json:"assignmentEnabled,omitempty"`
-	EncryptedCredentials bool     `json:"encryptedCredentials,omitempty"`
 	URI                  string   `json:"uri,omitempty"`
-	Labels               []string `json:"labels,omitempty"`
-	SSL                  bool     `json:"ssl,omitempty"`
 	WriteConcern         string   `json:"writeConcern,omitempty"`
+	Labels               []string `json:"labels,omitempty"`
+	SSL                  bool     `json:"ssl"`
+	AssignmentEnabled    bool     `json:"assignmentEnabled"`
+	EncryptedCredentials bool     `json:"encryptedCredentials"`
 	UsedSize             int64    `json:"usedSize,omitempty"`
 }
 
@@ -125,13 +138,13 @@ type S3Blockstore struct {
 	AWSAccessKey           string `json:"awsAccessKey,omitempty"`
 	AWSSecretKey           string `json:"awsSecretKey,omitempty"`
 	DisableProxyS3         string `json:"disableProxyS3,omitempty"`
-	PathStyleAccessEnabled bool   `json:"pathStyleAccessEnabled,omitempty"`
 	S3AuthMethod           string `json:"s3AuthMethod,omitempty"`
 	S3BucketEndpoint       string `json:"s3BucketEndpoint,omitempty"`
 	S3BucketName           string `json:"s3BucketName,omitempty"`
 	S3MaxConnections       int64  `json:"s3MaxConnections,omitempty"`
-	AcceptedTos            bool   `json:"acceptedTos,omitempty"`
-	SSEEnabled             bool   `json:"sseEnabled,omitempty"`
+	AcceptedTos            bool   `json:"acceptedTos"`
+	SSEEnabled             bool   `json:"sseEnabled"`
+	PathStyleAccessEnabled bool   `json:"pathStyleAccessEnabled"`
 }
 
 // S3Blockstores represents a paginated collection of S3Blockstore
@@ -146,7 +159,7 @@ type Blockstore struct {
 	AdminConfig
 	LoadFactor    int64  `json:"loadFactor,omitempty"`
 	MaxCapacityGB int64  `json:"maxCapacityGB,omitempty"`
-	Provisioned   bool   `json:"provisioned,omitempty"`
+	Provisioned   bool   `json:"provisioned"`
 	SyncSource    string `json:"syncSource,omitempty"`
 	Username      string `json:"username,omitempty"`
 }
@@ -165,7 +178,7 @@ type FileSystemStoreConfiguration struct {
 	MMAPV1CompressionSetting string `json:"mmapv1CompressionSetting,omitempty"`
 	StorePath                string `json:"storePath,omitempty"`
 	WTCompressionSetting     string `json:"wtCompressionSetting,omitempty"`
-	AssignmentEnabled        bool   `json:"assignmentEnabled,omitempty"`
+	AssignmentEnabled        bool   `json:"assignmentEnabled"`
 }
 
 // FileSystemStoreConfigurations represents a paginated collection of FileSystemStoreConfiguration
@@ -196,6 +209,32 @@ type Sync struct {
 type Syncs struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Sync      `json:"results"`
+	TotalCount int           `json:"totalCount"`
+}
+
+// Daemon represents a Backup Daemon Configuration in the MongoDB Ops Manager API
+type Daemon struct {
+	AdminConfig
+	BackupJobsEnabled        bool   `json:"backupJobsEnabled"`
+	Configured               bool  `json:"configured"`
+	GarbageCollectionEnabled bool `json:"garbageCollectionEnabled"`
+	ResourceUsageEnabled     bool `json:"resourceUsageEnabled"`
+	RestoreQueryableJobsEnabled     bool `json:"restoreQueryableJobsEnabled"`
+	HeadDiskType string `json:"headDiskType,omitempty"`
+	NumWorkers                int64 `json:"numWorkers,omitempty"`
+	Machine Machine `json:"machine,omitempty"`
+
+}
+
+type Machine struct{
+	Machine        string   `json:"machine,omitempty"`
+	HeadRootDirectory               string  `json:"headRootDirectory,omitempty"`
+}
+
+// Daemons represents a paginated collection of Daemon
+type Daemons struct {
+	Links      []*atlas.Link `json:"links"`
+	Results    []*Daemon      `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
 
@@ -652,6 +691,85 @@ func (s *BackupAdministratorServiceOp) DeleteSync(ctx context.Context, syncID st
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorSyncBasePath, syncID)
+	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.Client.Do(ctx, req, nil)
+
+	return resp, err
+}
+
+
+// GetDaemon retrieves a Daemon.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/get-one-backup-daemon-configuration-by-host/
+func (s *BackupAdministratorServiceOp) GetDaemon(ctx context.Context, daemonID string) (*Daemon, *atlas.Response, error) {
+	if daemonID == "" {
+		return nil, nil, atlas.NewArgError("daemonID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorDaemonBasePath, daemonID)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Daemon)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// ListDaemons retrieves all the Daemons.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/get-all-backup-daemon-configurations/
+func (s *BackupAdministratorServiceOp) ListDaemons(ctx context.Context, options *atlas.ListOptions) (*Daemons, *atlas.Response, error) {
+	path, err := setQueryParams(backupAdministratorDaemonBasePath, options)
+	if err != nil {
+		return nil, nil, err
+	}
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Daemons)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// UpdateDaemon updates a Daemon.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/update-one-backup-daemon-configuration/
+func (s *BackupAdministratorServiceOp) UpdateDaemon(ctx context.Context, daemonID string, daemon *Daemon) (*Daemon, *atlas.Response, error) {
+	if daemonID == "" {
+		return nil, nil, atlas.NewArgError("daemonID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorDaemonBasePath, daemonID)
+	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, daemon)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Daemon)
+	resp, err := s.Client.Do(ctx, req, root)
+
+	return root, resp, err
+}
+
+// DeleteDaemon removes a Daemon.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/delete-one-backup-daemon-configuration/
+func (s *BackupAdministratorServiceOp) DeleteDaemon(ctx context.Context, daemonID string) (*atlas.Response, error) {
+	if daemonID == "" {
+		return nil, atlas.NewArgError("daemonID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", backupAdministratorDaemonBasePath, daemonID)
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {
 		return nil, err

@@ -1266,3 +1266,208 @@ func TestBackupAdministratorServiceOp_DeleteSync(t *testing.T) {
 		t.Fatalf("BackupAdministrator.DeleteSync returned error: %v", err)
 	}
 }
+
+
+func TestBackupAdministratorServiceOp_ListDaemons(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/admin/backup/daemon/configs", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+		  "results" : [ {
+			 "assignmentEnabled" : true,
+			 "backupJobsEnabled" : false,
+			 "configured" : true,
+			 "garbageCollectionEnabled" : true,
+			 "headDiskType" : "SSD",
+			 "id" : "5628faffd4c606594adaa3b2",
+			 "labels" : [ "l1", "l2" ],
+			 "machine" : {
+			   "headRootDirectory" : "/data/backup/",
+			   "machine" : "localhost"
+			 },
+			 "numWorkers" : 50,
+			 "resourceUsageEnabled" : true,
+			 "restoreJobsEnabled" : false,
+			 "restoreQueryableJobsEnabled" : true
+		  } ],
+		  "totalCount" : 1
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.ListDaemons(ctx, nil)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.ListDaemons returned error: %v", err)
+	}
+
+	expected := &Daemons{
+		Results: []*Daemon{
+			{
+				AdminConfig: AdminConfig{
+					ID:                   ID,
+					AssignmentEnabled:    true,
+					EncryptedCredentials: false,
+					Labels:               []string{"l1", "l2"},
+				},
+				BackupJobsEnabled:           false,
+				Configured:                  true,
+				GarbageCollectionEnabled:    true,
+				ResourceUsageEnabled:        true,
+				RestoreQueryableJobsEnabled: true,
+				HeadDiskType:                "SSD",
+				NumWorkers:                  50,
+				Machine:                     Machine{
+					Machine:           "localhost",
+					HeadRootDirectory: "/data/backup/",
+				},
+			},
+		},
+		TotalCount: 1,
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_GetDaemon(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/daemon/configs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+			 "assignmentEnabled" : true,
+			 "backupJobsEnabled" : false,
+			 "configured" : true,
+			 "garbageCollectionEnabled" : true,
+			 "headDiskType" : "SSD",
+			 "id" : "5628faffd4c606594adaa3b2",
+			 "labels" : [ "l1", "l2" ],
+			 "machine" : {
+			   "headRootDirectory" : "/data/backup/",
+			   "machine" : "localhost"
+			 },
+			 "numWorkers" : 50,
+			 "resourceUsageEnabled" : true,
+			 "restoreJobsEnabled" : false,
+			 "restoreQueryableJobsEnabled" : true
+}`)
+	})
+
+	config, _, err := client.BackupAdministrator.GetDaemon(ctx, ID)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.GetDaemon returned error: %v", err)
+	}
+
+	expected := &Daemon{
+				AdminConfig: AdminConfig{
+					ID:                   ID,
+					AssignmentEnabled:    true,
+					EncryptedCredentials: false,
+					Labels:               []string{"l1", "l2"},
+				},
+				BackupJobsEnabled:           false,
+				Configured:                  true,
+				GarbageCollectionEnabled:    true,
+				ResourceUsageEnabled:        true,
+				RestoreQueryableJobsEnabled: true,
+				HeadDiskType:                "SSD",
+				NumWorkers:                  50,
+				Machine:                     Machine{
+					Machine:           "localhost",
+					HeadRootDirectory: "/data/backup/",
+				},
+		}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_UpdateDaemon(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/daemon/configs/%s",ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPut)
+		_, _ = fmt.Fprint(w, `{
+			 "assignmentEnabled" : true,
+			 "backupJobsEnabled" : false,
+			 "configured" : true,
+			 "garbageCollectionEnabled" : true,
+			 "headDiskType" : "SSD",
+			 "id" : "5628faffd4c606594adaa3b2",
+			 "labels" : [ "l1", "l2" ],
+			 "machine" : {
+			   "headRootDirectory" : "/data/backup/",
+			   "machine" : "localhost"
+			 },
+			 "numWorkers" : 50,
+			 "resourceUsageEnabled" : true,
+			 "restoreJobsEnabled" : false,
+			 "restoreQueryableJobsEnabled" : true
+}`)
+	})
+
+	deamon := &Daemon{
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			Labels:               []string{"l1", "l2"},
+		},
+		BackupJobsEnabled:           false,
+		Configured:                  true,
+		GarbageCollectionEnabled:    true,
+		ResourceUsageEnabled:        true,
+		RestoreQueryableJobsEnabled: true,
+		HeadDiskType:                "SSD",
+		NumWorkers:                  50,
+		Machine:                     Machine{
+			Machine:           "localhost",
+			HeadRootDirectory: "/data/backup/",
+		},
+	}
+
+	config, _, err := client.BackupAdministrator.UpdateDaemon(ctx, ID, deamon)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.UpdateDaemon returned error: %v", err)
+	}
+
+	expected := &Daemon{
+		AdminConfig: AdminConfig{
+			ID:                   ID,
+			AssignmentEnabled:    true,
+			EncryptedCredentials: false,
+			Labels:               []string{"l1", "l2"},
+		},
+		BackupJobsEnabled:           false,
+		Configured:                  true,
+		GarbageCollectionEnabled:    true,
+		ResourceUsageEnabled:        true,
+		RestoreQueryableJobsEnabled: true,
+		HeadDiskType:                "SSD",
+		NumWorkers:                  50,
+		Machine:                     Machine{
+			Machine:           "localhost",
+			HeadRootDirectory: "/data/backup/",
+		},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestBackupAdministratorServiceOp_DeleteDaemn(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/admin/backup/daemon/configs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodDelete)
+	})
+
+	_, err := client.BackupAdministrator.DeleteDaemon(ctx, ID)
+	if err != nil {
+		t.Fatalf("BackupAdministrator.DeleteDaemon returned error: %v", err)
+	}
+}
