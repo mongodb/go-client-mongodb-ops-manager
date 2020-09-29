@@ -87,7 +87,7 @@ type S3BlockstoreService interface {
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog-store-config/
 type OplogService interface {
-	ListOplog(context.Context, *atlas.ListOptions) (*Oplogs, *atlas.Response, error)
+	ListOplogs(context.Context, *atlas.ListOptions) (*Oplogs, *atlas.Response, error)
 	GetOplog(context.Context, string) (*Oplog, *atlas.Response, error)
 	CreateOplog(context.Context, *Oplog) (*Oplog, *atlas.Response, error)
 	UpdateOplog(context.Context, string, *Oplog) (*Oplog, *atlas.Response, error)
@@ -571,10 +571,10 @@ func (s *BackupAdministratorServiceOp) GetOplog(ctx context.Context, oplog strin
 	return root, resp, err
 }
 
-// ListOplog retrieves all the Oplogs.
+// ListOplogs retrieves all the Oplogs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-all-oplog-configurations/
-func (s *BackupAdministratorServiceOp) ListOplog(ctx context.Context, options *atlas.ListOptions) (*Oplogs, *atlas.Response, error) {
+func (s *BackupAdministratorServiceOp) ListOplogs(ctx context.Context, options *atlas.ListOptions) (*Oplogs, *atlas.Response, error) {
 	path, err := setQueryParams(backupAdministratorOplogBasePath, options)
 	if err != nil {
 		return nil, nil, err

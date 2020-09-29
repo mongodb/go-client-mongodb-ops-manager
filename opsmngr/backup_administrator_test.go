@@ -811,9 +811,9 @@ func TestBackupAdministratorServiceOp_ListOplogs(t *testing.T) {
 }`)
 	})
 
-	config, _, err := client.BackupAdministrator.ListOplog(ctx, nil)
+	config, _, err := client.BackupAdministrator.ListOplogs(ctx, nil)
 	if err != nil {
-		t.Fatalf("BackupAdministrator.ListOplog returned error: %v", err)
+		t.Fatalf("BackupAdministrator.ListOplogs returned error: %v", err)
 	}
 
 	expected := &Oplogs{
