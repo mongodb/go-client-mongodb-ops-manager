@@ -75,7 +75,13 @@ type Client struct {
 	PerformanceAdvisor     PerformanceAdvisorService
 	VersionManifest        VersionManifestService
 	BackupConfigs          BackupConfigsService
-	BackupAdministrator    BackupAdministratorService
+	ProjectJobConfig       ProjectJobConfigService
+	BlockstoreConfig       BlockstoreConfigService
+	FileSystemStoreConfig  FileSystemStoreConfigService
+	S3BlockstoreConfig     S3BlockstoreConfigService
+	OplogStoreConfig       OplogStoreConfigService
+	SyncStoreConfig        SyncStoreConfigService
+	DaemonConfig           DaemonConfigService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -130,7 +136,14 @@ func NewClient(httpClient *http.Client) *Client {
 	c.PerformanceAdvisor = &PerformanceAdvisorServiceOp{Client: c}
 	c.VersionManifest = &VersionManifestServiceOp{Client: c}
 	c.BackupConfigs = &BackupConfigsServiceOp{Client: c}
-	c.BackupAdministrator = &BackupAdministratorServiceOp{Client: c}
+	c.ProjectJobConfig = &ProjectJobConfigServiceOp{Client: c}
+	c.BlockstoreConfig = &BlockstoreConfigServiceOp{Client: c}
+	c.FileSystemStoreConfig = &FileSystemStoreConfigServiceOp{Client: c}
+	c.S3BlockstoreConfig = &S3BlockstoreConfigServiceOp{Client: c}
+	c.OplogStoreConfig = &OplogStoreConfigServiceOp{Client: c}
+	c.SyncStoreConfig = &SyncStoreConfigServiceOp{Client: c}
+	c.DaemonConfig = &DaemonConfigServiceOp{Client: c}
+
 	return c
 }
 
