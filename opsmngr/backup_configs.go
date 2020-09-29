@@ -47,18 +47,18 @@ type BackupConfig struct {
 	ClusterID          string   `json:"clusterId,omitempty"`
 	StatusName         string   `json:"statusName,omitempty"`
 	StorageEngineName  string   `json:"storageEngineName,omitempty"`
-	EncryptionEnabled  bool     `json:"encryptionEnabled,omitempty"`
-	SSLEnabled         bool     `json:"sslEnabled,omitempty"`
+	EncryptionEnabled  bool     `json:"encryptionEnabled"`
+	SSLEnabled         bool     `json:"sslEnabled"`
 	ExcludedNamespaces []string `json:"excludedNamespaces,omitempty"`
 	IncludedNamespaces []string `json:"includedNamespaces,omitempty"`
 	AuthMechanismName  string   `json:"authMechanismName,omitempty"`
 	Password           string   `json:"password,omitempty"`
-	Provisioned        bool     `json:"provisioned,omitempty"`
+	Provisioned        bool     `json:"provisioned"`
 	SyncSource         string   `json:"syncSource,omitempty"`
 	Username           string   `json:"username,omitempty"`
 }
 
-// BackupConfigs represents an array of BackupConfig
+// BackupConfigs represents a paginated collection of BackupConfig
 type BackupConfigs struct {
 	Links      []*atlas.Link   `json:"links"`
 	Results    []*BackupConfig `json:"results"`

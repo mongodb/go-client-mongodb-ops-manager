@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-func TestAutomation_GetBackupConfig(t *testing.T) {
+func TestBackupConfigsServiceOp_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -56,7 +56,7 @@ func TestAutomation_GetBackupConfig(t *testing.T) {
 	}
 }
 
-func TestAutomation_ListBackupConfig(t *testing.T) {
+func TestBackupConfigsServiceOp_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -97,7 +97,7 @@ func TestAutomation_ListBackupConfig(t *testing.T) {
 	}
 }
 
-func TestAutomation_UpdateBackupConfig(t *testing.T) {
+func TestBackupConfigsServiceOp_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
