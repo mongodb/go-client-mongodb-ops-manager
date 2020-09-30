@@ -43,13 +43,16 @@ func TestBackupConfigsServiceOp_Get(t *testing.T) {
 		t.Fatalf("BackupConfigs.Get returned error: %v", err)
 	}
 
+	encryptionEnabled := false
+	sslEnabled := false
+
 	expected := &BackupConfig{
 		GroupID:           "1",
 		ClusterID:         "1",
 		StatusName:        "STARTED",
 		StorageEngineName: "WIRED_TIGER",
-		EncryptionEnabled: false,
-		SSLEnabled:        false,
+		EncryptionEnabled: &encryptionEnabled,
+		SSLEnabled:        &sslEnabled,
 	}
 	if diff := deep.Equal(config, expected); diff != nil {
 		t.Error(diff)
@@ -79,6 +82,8 @@ func TestBackupConfigsServiceOp_List(t *testing.T) {
 		t.Fatalf("Get.List returned error: %v", err)
 	}
 
+	sslEnabled := false
+
 	expected := &BackupConfigs{
 		Results: []*BackupConfig{
 			{
@@ -86,7 +91,7 @@ func TestBackupConfigsServiceOp_List(t *testing.T) {
 				ClusterID:         "1",
 				StatusName:        "STARTED",
 				StorageEngineName: "WIRED_TIGER",
-				SSLEnabled:        false,
+				SSLEnabled:        &sslEnabled,
 			},
 		},
 		TotalCount: 1,
@@ -113,13 +118,16 @@ func TestBackupConfigsServiceOp_Update(t *testing.T) {
 }`)
 	})
 
+	encryptionEnabled := false
+	sslEnabled := false
+
 	backupConfig := &BackupConfig{
 		GroupID:           "1",
 		ClusterID:         "1",
 		StatusName:        "STARTED",
 		StorageEngineName: "WIRED_TIGER",
-		EncryptionEnabled: false,
-		SSLEnabled:        false,
+		EncryptionEnabled: &encryptionEnabled,
+		SSLEnabled:        &sslEnabled,
 	}
 
 	config, _, err := client.BackupConfigs.Update(ctx, projectID, clusterID, backupConfig)
@@ -132,8 +140,8 @@ func TestBackupConfigsServiceOp_Update(t *testing.T) {
 		ClusterID:         "1",
 		StatusName:        "STARTED",
 		StorageEngineName: "WIRED_TIGER",
-		EncryptionEnabled: false,
-		SSLEnabled:        false,
+		EncryptionEnabled: &encryptionEnabled,
+		SSLEnabled:        &sslEnabled,
 	}
 	if diff := deep.Equal(config, expected); diff != nil {
 		t.Error(diff)
