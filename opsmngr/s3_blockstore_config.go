@@ -51,9 +51,9 @@ type S3Blockstore struct {
 	S3BucketEndpoint       string `json:"s3BucketEndpoint,omitempty"`
 	S3BucketName           string `json:"s3BucketName,omitempty"`
 	S3MaxConnections       int64  `json:"s3MaxConnections,omitempty"`
-	AcceptedTos            bool   `json:"acceptedTos"`
-	SSEEnabled             bool   `json:"sseEnabled"`
-	PathStyleAccessEnabled bool   `json:"pathStyleAccessEnabled"`
+	AcceptedTos            *bool  `json:"acceptedTos"`
+	SSEEnabled             *bool  `json:"sseEnabled"`
+	PathStyleAccessEnabled *bool  `json:"pathStyleAccessEnabled"`
 }
 
 // S3Blockstores represents a paginated collection of S3Blockstore

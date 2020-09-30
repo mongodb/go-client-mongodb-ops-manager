@@ -44,12 +44,12 @@ var _ OplogStoreConfigService = &OplogStoreConfigServiceOp{}
 // Get retrieves a Oplog.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-one-oplog-configuration-by-id/
-func (s *OplogStoreConfigServiceOp) Get(ctx context.Context, oplog string) (*BackupStore, *atlas.Response, error) {
-	if oplog == "" {
-		return nil, nil, atlas.NewArgError("oplog", "must be set")
+func (s *OplogStoreConfigServiceOp) Get(ctx context.Context, oplogID string) (*BackupStore, *atlas.Response, error) {
+	if oplogID == "" {
+		return nil, nil, atlas.NewArgError("oplogID", "must be set")
 	}
 
-	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplog)
+	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplogID)
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err

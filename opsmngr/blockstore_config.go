@@ -1,4 +1,4 @@
-// Copyright 2029 MongoDB Inc
+// Copyright 2020 MongoDB Inc
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -44,8 +44,8 @@ var _ BlockstoreConfigService = &BlockstoreConfigServiceOp{}
 // BackupStore represents a Blockstore, Oplog and Sync in the MongoDB Ops Manager API
 type BackupStore struct {
 	AdminBackupConfig
-	LoadFactor    int64  `json:"loadFactor,omitempty"`
-	MaxCapacityGB int64  `json:"maxCapacityGB,omitempty"`
+	LoadFactor    *int64 `json:"loadFactor,omitempty"`
+	MaxCapacityGB *int64 `json:"maxCapacityGB,omitempty"`
 	Provisioned   *bool  `json:"provisioned,omitempty"`
 	SyncSource    string `json:"syncSource,omitempty"`
 	Username      string `json:"username,omitempty"`
@@ -97,7 +97,7 @@ func (s *BlockstoreConfigServiceOp) List(ctx context.Context, options *atlas.Lis
 	return root, resp, err
 }
 
-// Create create a blockstore.
+// Create creates a blockstore.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/create-one-blockstore-configuration/
 func (s *BlockstoreConfigServiceOp) Create(ctx context.Context, blockstore *BackupStore) (*BackupStore, *atlas.Response, error) {

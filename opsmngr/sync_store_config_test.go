@@ -52,12 +52,12 @@ func TestSyncStoreConfigServiceOp_List(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	maxCapacityGB := int64(8)
 
 	expected := &BackupStores{
 		Results: []*BackupStore{
 			{
-				LoadFactor:    0,
-				MaxCapacityGB: 8,
+				MaxCapacityGB: &maxCapacityGB,
 				AdminBackupConfig: AdminBackupConfig{
 					ID:                   ID,
 					AssignmentEnabled:    &assignmentEnabled,
@@ -104,10 +104,10 @@ func TestSyncStoreConfigServiceOp_Get(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	maxCapacityGB := int64(8)
 
 	expected := &BackupStore{
-		LoadFactor:    0,
-		MaxCapacityGB: 8,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -146,10 +146,10 @@ func TestSyncStoreConfigServiceOp_Create(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	maxCapacityGB := int64(8)
 
 	sync := &BackupStore{
-		LoadFactor:    0,
-		MaxCapacityGB: 8,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -168,8 +168,7 @@ func TestSyncStoreConfigServiceOp_Create(t *testing.T) {
 	}
 
 	expected := &BackupStore{
-		LoadFactor:    0,
-		MaxCapacityGB: 8,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -208,10 +207,10 @@ func TestSyncStoreConfigServiceOp_Update(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	maxCapacityGB := int64(8)
 
 	sync := &BackupStore{
-		LoadFactor:    0,
-		MaxCapacityGB: 8,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -230,8 +229,7 @@ func TestSyncStoreConfigServiceOp_Update(t *testing.T) {
 	}
 
 	expected := &BackupStore{
-		LoadFactor:    0,
-		MaxCapacityGB: 8,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,

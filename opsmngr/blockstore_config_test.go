@@ -53,12 +53,14 @@ func TestBlockstoreConfigServiceOp_List(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	loadFactor := int64(2)
+	maxCapacityGB := int64(8)
 
 	expected := &BackupStores{
 		Results: []*BackupStore{
 			{
-				LoadFactor:    2,
-				MaxCapacityGB: 8,
+				LoadFactor:    &loadFactor,
+				MaxCapacityGB: &maxCapacityGB,
 				AdminBackupConfig: AdminBackupConfig{
 					ID:                   ID,
 					AssignmentEnabled:    &assignmentEnabled,
@@ -106,10 +108,12 @@ func TestBlockstoreConfigServiceOp_Get(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	loadFactor := int64(2)
+	maxCapacityGB := int64(8)
 
 	expected := &BackupStore{
-		LoadFactor:    2,
-		MaxCapacityGB: 8,
+		LoadFactor:    &loadFactor,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -150,10 +154,12 @@ func TestBlockstoreConfigServiceOp_Create(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	loadFactor := int64(2)
+	maxCapacityGB := int64(8)
 
 	blockstore := &BackupStore{
-		LoadFactor:    2,
-		MaxCapacityGB: 8,
+		LoadFactor:    &loadFactor,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -172,8 +178,8 @@ func TestBlockstoreConfigServiceOp_Create(t *testing.T) {
 	}
 
 	expected := &BackupStore{
-		LoadFactor:    2,
-		MaxCapacityGB: 8,
+		LoadFactor:    &loadFactor,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -214,10 +220,12 @@ func TestBlockstoreConfigServiceOp_Update(t *testing.T) {
 	assignmentEnabled := true
 	encryptedCredentials := false
 	ssl := true
+	loadFactor := int64(2)
+	maxCapacityGB := int64(8)
 
 	blockstore := &BackupStore{
-		LoadFactor:    2,
-		MaxCapacityGB: 8,
+		LoadFactor:    &loadFactor,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,
@@ -236,8 +244,8 @@ func TestBlockstoreConfigServiceOp_Update(t *testing.T) {
 	}
 
 	expected := &BackupStore{
-		LoadFactor:    2,
-		MaxCapacityGB: 8,
+		LoadFactor:    &loadFactor,
+		MaxCapacityGB: &maxCapacityGB,
 		AdminBackupConfig: AdminBackupConfig{
 			ID:                   ID,
 			AssignmentEnabled:    &assignmentEnabled,

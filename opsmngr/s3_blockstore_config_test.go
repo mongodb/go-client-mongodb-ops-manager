@@ -64,12 +64,16 @@ func TestS3BlockstoreConfigServiceOp_List(t *testing.T) {
 	assignmentEnabled := true
 	ssl := false
 	encryptedCredentials := true
+	pathStyleAccessEnabled := false
+	acceptedTos := true
+	sseEnabled := true
+	loadFactor := int64(50)
 
 	expected := &S3Blockstores{
 		Results: []*S3Blockstore{
 			{
 				BackupStore: BackupStore{
-					LoadFactor: 50,
+					LoadFactor: &loadFactor,
 					AdminBackupConfig: AdminBackupConfig{
 						ID:                   ID,
 						AssignmentEnabled:    &assignmentEnabled,
@@ -83,13 +87,13 @@ func TestS3BlockstoreConfigServiceOp_List(t *testing.T) {
 				},
 				AWSAccessKey:           "5628faffd4c606594adaa3b2",
 				AWSSecretKey:           "5628faffd4c606594adaa3b2",
-				PathStyleAccessEnabled: false,
+				PathStyleAccessEnabled: &pathStyleAccessEnabled,
 				S3AuthMethod:           "KEYS",
 				S3BucketEndpoint:       "http://example.com/backupbucket",
 				S3BucketName:           "bucketname",
 				S3MaxConnections:       50,
-				AcceptedTos:            true,
-				SSEEnabled:             true,
+				AcceptedTos:            &acceptedTos,
+				SSEEnabled:             &sseEnabled,
 			},
 		},
 		TotalCount: 1,
@@ -138,10 +142,14 @@ func TestS3BlockstoreConfigServiceOp_Get(t *testing.T) {
 	assignmentEnabled := true
 	ssl := false
 	encryptedCredentials := false
+	pathStyleAccessEnabled := false
+	acceptedTos := true
+	sseEnabled := true
+	loadFactor := int64(50)
 
 	expected := &S3Blockstore{
 		BackupStore: BackupStore{
-			LoadFactor: 50,
+			LoadFactor: &loadFactor,
 			AdminBackupConfig: AdminBackupConfig{
 				ID:                   ID,
 				AssignmentEnabled:    &assignmentEnabled,
@@ -155,13 +163,13 @@ func TestS3BlockstoreConfigServiceOp_Get(t *testing.T) {
 		},
 		AWSAccessKey:           "5628faffd4c606594adaa3b2",
 		AWSSecretKey:           "5628faffd4c606594adaa3b2",
-		PathStyleAccessEnabled: false,
+		PathStyleAccessEnabled: &pathStyleAccessEnabled,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
 		S3BucketName:           "bucketname",
 		S3MaxConnections:       50,
-		AcceptedTos:            true,
-		SSEEnabled:             true,
+		AcceptedTos:            &acceptedTos,
+		SSEEnabled:             &sseEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -203,10 +211,14 @@ func TestS3BlockstoreConfigServiceOp_Create(t *testing.T) {
 	assignmentEnabled := true
 	ssl := false
 	encryptedCredentials := false
+	pathStyleAccessEnabled := false
+	acceptedTos := true
+	sseEnabled := true
+	loadFactor := int64(50)
 
 	blockstore := &S3Blockstore{
 		BackupStore: BackupStore{
-			LoadFactor: 50,
+			LoadFactor: &loadFactor,
 			AdminBackupConfig: AdminBackupConfig{
 				ID:                   ID,
 				AssignmentEnabled:    &assignmentEnabled,
@@ -220,13 +232,13 @@ func TestS3BlockstoreConfigServiceOp_Create(t *testing.T) {
 		},
 		AWSAccessKey:           "5628faffd4c606594adaa3b2",
 		AWSSecretKey:           "5628faffd4c606594adaa3b2",
-		PathStyleAccessEnabled: false,
+		PathStyleAccessEnabled: &pathStyleAccessEnabled,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
 		S3BucketName:           "bucketname",
 		S3MaxConnections:       50,
-		AcceptedTos:            true,
-		SSEEnabled:             true,
+		AcceptedTos:            &acceptedTos,
+		SSEEnabled:             &sseEnabled,
 	}
 
 	config, _, err := client.S3BlockstoreConfig.Create(ctx, blockstore)
@@ -236,7 +248,7 @@ func TestS3BlockstoreConfigServiceOp_Create(t *testing.T) {
 
 	expected := &S3Blockstore{
 		BackupStore: BackupStore{
-			LoadFactor: 50,
+			LoadFactor: &loadFactor,
 			AdminBackupConfig: AdminBackupConfig{
 				ID:                   ID,
 				AssignmentEnabled:    &assignmentEnabled,
@@ -250,13 +262,13 @@ func TestS3BlockstoreConfigServiceOp_Create(t *testing.T) {
 		},
 		AWSAccessKey:           "5628faffd4c606594adaa3b2",
 		AWSSecretKey:           "5628faffd4c606594adaa3b2",
-		PathStyleAccessEnabled: false,
+		PathStyleAccessEnabled: &pathStyleAccessEnabled,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
 		S3BucketName:           "bucketname",
 		S3MaxConnections:       50,
-		AcceptedTos:            true,
-		SSEEnabled:             true,
+		AcceptedTos:            &acceptedTos,
+		SSEEnabled:             &sseEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -298,10 +310,14 @@ func TestS3BlockstoreConfigServiceOp_Update(t *testing.T) {
 	assignmentEnabled := true
 	ssl := false
 	encryptedCredentials := false
+	pathStyleAccessEnabled := false
+	acceptedTos := true
+	sseEnabled := true
+	loadFactor := int64(50)
 
 	blockstore := &S3Blockstore{
 		BackupStore: BackupStore{
-			LoadFactor: 50,
+			LoadFactor: &loadFactor,
 			AdminBackupConfig: AdminBackupConfig{
 				ID:                   ID,
 				AssignmentEnabled:    &assignmentEnabled,
@@ -315,13 +331,13 @@ func TestS3BlockstoreConfigServiceOp_Update(t *testing.T) {
 		},
 		AWSAccessKey:           "5628faffd4c606594adaa3b2",
 		AWSSecretKey:           "5628faffd4c606594adaa3b2",
-		PathStyleAccessEnabled: false,
+		PathStyleAccessEnabled: &pathStyleAccessEnabled,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
 		S3BucketName:           "bucketname",
 		S3MaxConnections:       50,
-		AcceptedTos:            true,
-		SSEEnabled:             true,
+		AcceptedTos:            &acceptedTos,
+		SSEEnabled:             &sseEnabled,
 	}
 
 	config, _, err := client.S3BlockstoreConfig.Update(ctx, ID, blockstore)
@@ -331,7 +347,7 @@ func TestS3BlockstoreConfigServiceOp_Update(t *testing.T) {
 
 	expected := &S3Blockstore{
 		BackupStore: BackupStore{
-			LoadFactor: 50,
+			LoadFactor: &loadFactor,
 			AdminBackupConfig: AdminBackupConfig{
 				ID:                   ID,
 				AssignmentEnabled:    &assignmentEnabled,
@@ -345,13 +361,13 @@ func TestS3BlockstoreConfigServiceOp_Update(t *testing.T) {
 		},
 		AWSAccessKey:           "5628faffd4c606594adaa3b2",
 		AWSSecretKey:           "5628faffd4c606594adaa3b2",
-		PathStyleAccessEnabled: false,
+		PathStyleAccessEnabled: &pathStyleAccessEnabled,
 		S3AuthMethod:           "KEYS",
 		S3BucketEndpoint:       "http://example.com/backupbucket",
 		S3BucketName:           "bucketname",
 		S3MaxConnections:       50,
-		AcceptedTos:            true,
-		SSEEnabled:             true,
+		AcceptedTos:            &acceptedTos,
+		SSEEnabled:             &sseEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
