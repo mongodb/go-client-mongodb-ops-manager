@@ -75,7 +75,8 @@ func (s *VersionManifestServiceOp) Get(ctx context.Context, version string) (*Ve
 	}
 
 	path := fmt.Sprintf(versionManifestStaticPath, version)
-	req, err := http.NewRequest(http.MethodGet, path, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+
 	if err != nil {
 		return nil, nil, err
 	}
