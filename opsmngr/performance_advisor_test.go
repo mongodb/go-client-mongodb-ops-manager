@@ -217,8 +217,8 @@ func TestPerformanceAdvisor_GetSuggestedIndexes(t *testing.T) {
 							NScanned:  50000,
 							TS:        1534353251147,
 						},
-						Predicates: []map[string]map[string]string{
-							{"find": {"emails": "la@sa.kp"}},
+						Predicates: []map[string]interface{}{
+							{"find": map[string]interface{}{"emails": "la@sa.kp"}},
 						},
 					},
 					{
@@ -229,8 +229,8 @@ func TestPerformanceAdvisor_GetSuggestedIndexes(t *testing.T) {
 							NScanned:  50000,
 							TS:        1534353258697,
 						},
-						Predicates: []map[string]map[string]string{
-							{"find": {"emails": "tocde@fijoow.to"}},
+						Predicates: []map[string]interface{}{
+							{"find": map[string]interface{}{"emails": "tocde@fijoow.to"}},
 						},
 					},
 				},
