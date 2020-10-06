@@ -27,6 +27,8 @@ func TestFileSystemStoreConfigServiceOp_List(t *testing.T) {
 	defer teardown()
 
 	assignmentEnabled := true
+	loadFactor := int64(50)
+
 	mux.HandleFunc("/admin/backup/snapshot/fileSystemConfigs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
@@ -51,15 +53,17 @@ func TestFileSystemStoreConfigServiceOp_List(t *testing.T) {
 	expected := &FileSystemStoreConfigurations{
 		Results: []*FileSystemStoreConfiguration{
 			{
-				AdminBackupConfig: AdminBackupConfig{
-					ID:     ID,
-					Labels: []string{"l1", "l2"},
+				BackupStore: BackupStore{
+					AdminBackupConfig: AdminBackupConfig{
+						ID:                ID,
+						Labels:            []string{"l1", "l2"},
+						AssignmentEnabled: &assignmentEnabled,
+					},
+					LoadFactor: &loadFactor,
 				},
-				LoadFactor:               50,
 				MMAPV1CompressionSetting: "NONE",
 				StorePath:                "/data/backup",
 				WTCompressionSetting:     "ZLIB",
-				AssignmentEnabled:        &assignmentEnabled,
 			},
 		},
 		TotalCount: 1,
@@ -74,6 +78,8 @@ func TestFileSystemStoreConfigServiceOp_Get(t *testing.T) {
 	defer teardown()
 
 	assignmentEnabled := true
+	loadFactor := int64(50)
+
 	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
@@ -93,15 +99,17 @@ func TestFileSystemStoreConfigServiceOp_Get(t *testing.T) {
 	}
 
 	expected := &FileSystemStoreConfiguration{
-		AdminBackupConfig: AdminBackupConfig{
-			ID:     ID,
-			Labels: []string{"l1", "l2"},
+		BackupStore: BackupStore{
+			AdminBackupConfig: AdminBackupConfig{
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
+			},
+			LoadFactor: &loadFactor,
 		},
-		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -112,7 +120,9 @@ func TestFileSystemStoreConfigServiceOp_Get(t *testing.T) {
 func TestFileSystemStoreConfigServiceOp_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
+
 	assignmentEnabled := true
+	loadFactor := int64(50)
 
 	mux.HandleFunc("/admin/backup/snapshot/fileSystemConfigs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
@@ -128,15 +138,17 @@ func TestFileSystemStoreConfigServiceOp_Create(t *testing.T) {
 	})
 
 	fileSystem := &FileSystemStoreConfiguration{
-		AdminBackupConfig: AdminBackupConfig{
-			ID:     ID,
-			Labels: []string{"l1", "l2"},
+		BackupStore: BackupStore{
+			AdminBackupConfig: AdminBackupConfig{
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
+			},
+			LoadFactor: &loadFactor,
 		},
-		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	config, _, err := client.FileSystemStoreConfig.Create(ctx, fileSystem)
@@ -145,15 +157,17 @@ func TestFileSystemStoreConfigServiceOp_Create(t *testing.T) {
 	}
 
 	expected := &FileSystemStoreConfiguration{
-		AdminBackupConfig: AdminBackupConfig{
-			ID:     ID,
-			Labels: []string{"l1", "l2"},
+		BackupStore: BackupStore{
+			AdminBackupConfig: AdminBackupConfig{
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
+			},
+			LoadFactor: &loadFactor,
 		},
-		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -164,7 +178,9 @@ func TestFileSystemStoreConfigServiceOp_Create(t *testing.T) {
 func TestFileSystemStoreConfigServiceOp_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
+
 	assignmentEnabled := true
+	loadFactor := int64(50)
 
 	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
@@ -180,15 +196,17 @@ func TestFileSystemStoreConfigServiceOp_Update(t *testing.T) {
 	})
 
 	fileSystem := &FileSystemStoreConfiguration{
-		AdminBackupConfig: AdminBackupConfig{
-			ID:     ID,
-			Labels: []string{"l1", "l2"},
+		BackupStore: BackupStore{
+			AdminBackupConfig: AdminBackupConfig{
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
+			},
+			LoadFactor: &loadFactor,
 		},
-		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	config, _, err := client.FileSystemStoreConfig.Update(ctx, ID, fileSystem)
@@ -197,15 +215,21 @@ func TestFileSystemStoreConfigServiceOp_Update(t *testing.T) {
 	}
 
 	expected := &FileSystemStoreConfiguration{
-		AdminBackupConfig: AdminBackupConfig{
-			ID:     ID,
-			Labels: []string{"l1", "l2"},
+		BackupStore: BackupStore{
+			AdminBackupConfig: AdminBackupConfig{
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
+			},
+			LoadFactor:    &loadFactor,
+			MaxCapacityGB: nil,
+			Provisioned:   nil,
+			SyncSource:    "",
+			Username:      "",
 		},
-		LoadFactor:               50,
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
