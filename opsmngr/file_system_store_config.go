@@ -47,7 +47,6 @@ type FileSystemStoreConfiguration struct {
 	MMAPV1CompressionSetting string `json:"mmapv1CompressionSetting,omitempty"`
 	StorePath                string `json:"storePath,omitempty"`
 	WTCompressionSetting     string `json:"wtCompressionSetting,omitempty"`
-	AssignmentEnabled        *bool  `json:"assignmentEnabled,omitempty"`
 }
 
 // FileSystemStoreConfigurations represents a paginated collection of FileSystemStoreConfiguration

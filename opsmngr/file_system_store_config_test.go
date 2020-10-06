@@ -55,15 +55,15 @@ func TestFileSystemStoreConfigServiceOp_List(t *testing.T) {
 			{
 				BackupStore: BackupStore{
 					AdminBackupConfig: AdminBackupConfig{
-						ID:     ID,
-						Labels: []string{"l1", "l2"},
+						ID:                ID,
+						Labels:            []string{"l1", "l2"},
+						AssignmentEnabled: &assignmentEnabled,
 					},
 					LoadFactor: &loadFactor,
 				},
 				MMAPV1CompressionSetting: "NONE",
 				StorePath:                "/data/backup",
 				WTCompressionSetting:     "ZLIB",
-				AssignmentEnabled:        &assignmentEnabled,
 			},
 		},
 		TotalCount: 1,
@@ -101,15 +101,15 @@ func TestFileSystemStoreConfigServiceOp_Get(t *testing.T) {
 	expected := &FileSystemStoreConfiguration{
 		BackupStore: BackupStore{
 			AdminBackupConfig: AdminBackupConfig{
-				ID:     ID,
-				Labels: []string{"l1", "l2"},
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
 			},
 			LoadFactor: &loadFactor,
 		},
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -140,15 +140,15 @@ func TestFileSystemStoreConfigServiceOp_Create(t *testing.T) {
 	fileSystem := &FileSystemStoreConfiguration{
 		BackupStore: BackupStore{
 			AdminBackupConfig: AdminBackupConfig{
-				ID:     ID,
-				Labels: []string{"l1", "l2"},
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
 			},
 			LoadFactor: &loadFactor,
 		},
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	config, _, err := client.FileSystemStoreConfig.Create(ctx, fileSystem)
@@ -159,15 +159,15 @@ func TestFileSystemStoreConfigServiceOp_Create(t *testing.T) {
 	expected := &FileSystemStoreConfiguration{
 		BackupStore: BackupStore{
 			AdminBackupConfig: AdminBackupConfig{
-				ID:     ID,
-				Labels: []string{"l1", "l2"},
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
 			},
 			LoadFactor: &loadFactor,
 		},
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
@@ -198,15 +198,15 @@ func TestFileSystemStoreConfigServiceOp_Update(t *testing.T) {
 	fileSystem := &FileSystemStoreConfiguration{
 		BackupStore: BackupStore{
 			AdminBackupConfig: AdminBackupConfig{
-				ID:     ID,
-				Labels: []string{"l1", "l2"},
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
 			},
 			LoadFactor: &loadFactor,
 		},
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	config, _, err := client.FileSystemStoreConfig.Update(ctx, ID, fileSystem)
@@ -217,8 +217,9 @@ func TestFileSystemStoreConfigServiceOp_Update(t *testing.T) {
 	expected := &FileSystemStoreConfiguration{
 		BackupStore: BackupStore{
 			AdminBackupConfig: AdminBackupConfig{
-				ID:     ID,
-				Labels: []string{"l1", "l2"},
+				ID:                ID,
+				Labels:            []string{"l1", "l2"},
+				AssignmentEnabled: &assignmentEnabled,
 			},
 			LoadFactor:    &loadFactor,
 			MaxCapacityGB: nil,
@@ -229,7 +230,6 @@ func TestFileSystemStoreConfigServiceOp_Update(t *testing.T) {
 		MMAPV1CompressionSetting: "NONE",
 		StorePath:                "/data/backup",
 		WTCompressionSetting:     "ZLIB",
-		AssignmentEnabled:        &assignmentEnabled,
 	}
 
 	if diff := deep.Equal(config, expected); diff != nil {
