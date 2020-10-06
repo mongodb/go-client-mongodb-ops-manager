@@ -30,7 +30,7 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/
 type OrganizationsService interface {
-	List(context.Context, *atlas.ListOptions) (*atlas.Organizations, *atlas.Response, error)
+	List(context.Context, *atlas.OrganizationsListOptions) (*atlas.Organizations, *atlas.Response, error)
 	ListUsers(context.Context, string, *atlas.ListOptions) (*UsersResponse, *atlas.Response, error)
 	Get(context.Context, string) (*atlas.Organization, *atlas.Response, error)
 	Projects(context.Context, string, *atlas.ListOptions) (*Projects, *atlas.Response, error)
@@ -46,7 +46,7 @@ var _ OrganizationsService = &OrganizationsServiceOp{}
 // List gets all organizations.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all/
-func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*atlas.Organizations, *atlas.Response, error) {
+func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.OrganizationsListOptions) (*atlas.Organizations, *atlas.Response, error) {
 	path, err := setQueryParams(orgsBasePath, opts)
 	if err != nil {
 		return nil, nil, err

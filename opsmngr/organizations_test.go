@@ -42,20 +42,20 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 					"href": "https://cloud.mongodb.com/api/public/v1.0/orgs/56a10a80e4b0fd3b9a9bb0c2",
 					"rel": "self"
 				}],
-				"name": "012i3091203jioawjioej"
+				"name": "foo-012i3091203jioawjioej"
 			}, {
 				"id": "56aa691ce4b0a0e8c4be51f7",
 				"links": [{
 					"href": "https://cloud.mongodb.com/api/public/v1.0/orgs/56aa691ce4b0a0e8c4be51f7",
 					"rel": "self"
 				}],
-				"name": "1454008603036"
+				"name": "foo-1454008603036"
 			}],
 			"totalCount": 2
 		}`)
 	})
 
-	orgs, _, err := client.Organizations.List(ctx, nil)
+	orgs, _, err := client.Organizations.List(ctx, &mongodbatlas.OrganizationsListOptions{Name: "foo"})
 	if err != nil {
 		t.Fatalf("Organizations.List returned error: %v", err)
 	}
@@ -76,7 +76,7 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 						Rel:  "self",
 					},
 				},
-				Name: "012i3091203jioawjioej",
+				Name: "foo-012i3091203jioawjioej",
 			},
 			{
 				ID: "56aa691ce4b0a0e8c4be51f7",
@@ -86,7 +86,7 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 						Rel:  "self",
 					},
 				},
-				Name: "1454008603036",
+				Name: "foo-1454008603036",
 			},
 		},
 		TotalCount: 2,
