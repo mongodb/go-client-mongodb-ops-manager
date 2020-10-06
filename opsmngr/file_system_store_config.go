@@ -43,8 +43,7 @@ var _ FileSystemStoreConfigService = &FileSystemStoreConfigServiceOp{}
 
 // FileSystemStoreConfiguration represents a File System Store Configuration in the MongoDB Ops Manager API
 type FileSystemStoreConfiguration struct {
-	AdminBackupConfig
-	LoadFactor               int64  `json:"loadFactor,omitempty"`
+	BackupStore
 	MMAPV1CompressionSetting string `json:"mmapv1CompressionSetting,omitempty"`
 	StorePath                string `json:"storePath,omitempty"`
 	WTCompressionSetting     string `json:"wtCompressionSetting,omitempty"`
