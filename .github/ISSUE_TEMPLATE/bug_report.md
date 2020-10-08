@@ -21,6 +21,8 @@ If applicable, add screenshots to help explain your problem.
 **Desktop (please complete the following information):**
  - OS: [e.g. macOS]
  - Lib Version [e.g. 22]
+ - Product (Ops Manager or Cloud Manager):
+ - Ops Manager Version: [if applicable]
 
 **Additional context**
 Add any other context about the problem here.
