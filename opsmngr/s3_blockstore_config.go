@@ -46,11 +46,11 @@ type S3Blockstore struct {
 	BackupStore
 	AWSAccessKey           string `json:"awsAccessKey,omitempty"`
 	AWSSecretKey           string `json:"awsSecretKey,omitempty"`
-	DisableProxyS3         string `json:"disableProxyS3,omitempty"`
 	S3AuthMethod           string `json:"s3AuthMethod,omitempty"`
 	S3BucketEndpoint       string `json:"s3BucketEndpoint,omitempty"`
 	S3BucketName           string `json:"s3BucketName,omitempty"`
 	S3MaxConnections       int64  `json:"s3MaxConnections,omitempty"`
+	DisableProxyS3         *bool  `json:"disableProxyS3,omitempty"`
 	AcceptedTos            *bool  `json:"acceptedTos"`
 	SSEEnabled             *bool  `json:"sseEnabled"`
 	PathStyleAccessEnabled *bool  `json:"pathStyleAccessEnabled"`
