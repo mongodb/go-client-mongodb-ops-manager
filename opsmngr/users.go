@@ -54,6 +54,7 @@ type User struct {
 	TeamIds      []string      `json:"teamIds,omitempty"`
 	Roles        []*UserRole   `json:"roles,omitempty"`
 	Username     string        `json:"username"`
+	Country      string        `json:"country,omitempty"`
 }
 
 // UserRole denotes a single user role
