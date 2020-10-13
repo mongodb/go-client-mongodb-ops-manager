@@ -45,11 +45,13 @@ func TestSnapshotScheduleServiceOp_Get(t *testing.T) {
 		t.Fatalf("SnapshotSchedule.Get returned error: %v", err)
 	}
 
+	pointInTimeWindowHours := 24
+
 	expected := &SnapshotSchedule{
 		ClusterID:                      clusterID,
 		GroupID:                        groupID,
 		MonthlySnapshotRetentionMonths: 13,
-		PointInTimeWindowHours:         24,
+		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
 		SnapshotRetentionDays:          2,
 		WeeklySnapshotRetentionWeeks:   4,
@@ -78,11 +80,13 @@ func TestSnapshotScheduleServiceOp_Update(t *testing.T) {
 }`)
 	})
 
+	pointInTimeWindowHours := 24
+
 	snapshotSchedule := &SnapshotSchedule{
 		ClusterID:                      clusterID,
 		GroupID:                        groupID,
 		MonthlySnapshotRetentionMonths: 13,
-		PointInTimeWindowHours:         24,
+		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
 		SnapshotRetentionDays:          2,
 		WeeklySnapshotRetentionWeeks:   4,
@@ -98,7 +102,7 @@ func TestSnapshotScheduleServiceOp_Update(t *testing.T) {
 		ClusterID:                      clusterID,
 		GroupID:                        groupID,
 		MonthlySnapshotRetentionMonths: 13,
-		PointInTimeWindowHours:         24,
+		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
 		SnapshotRetentionDays:          2,
 		WeeklySnapshotRetentionWeeks:   4,

@@ -46,9 +46,9 @@ type SnapshotSchedule struct {
 	ClusterCheckpointIntervalMin   int           `json:"clusterCheckpointIntervalMin,omitempty"`
 	Links                          []*atlas.Link `json:"links,omitempty"`
 	MonthlySnapshotRetentionMonths int           `json:"monthlySnapshotRetentionMonths,omitempty"`
-	PointInTimeWindowHours         int           `json:"pointInTimeWindowHours,omitempty"`
-	ReferenceHourOfDay             int           `json:"referenceHourOfDay,omitempty"`
-	ReferenceMinuteOfHour          int           `json:"referenceMinuteOfHour,omitempty"`
+	PointInTimeWindowHours         *int          `json:"pointInTimeWindowHours,omitempty"`
+	ReferenceHourOfDay             *int          `json:"referenceHourOfDay,omitempty"`
+	ReferenceMinuteOfHour          *int          `json:"referenceMinuteOfHour,omitempty"`
 	SnapshotIntervalHours          int           `json:"snapshotIntervalHours,omitempty"`
 	SnapshotRetentionDays          int           `json:"snapshotRetentionDays,omitempty"`
 	WeeklySnapshotRetentionWeeks   int           `json:"weeklySnapshotRetentionWeeks,omitempty"`
