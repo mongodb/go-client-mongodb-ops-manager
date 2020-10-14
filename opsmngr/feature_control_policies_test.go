@@ -31,7 +31,6 @@ func TestFeatureControlPoliciesServiceOp_List(t *testing.T) {
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
-			  "_id": "5c8100bcf2a30b12ff88258f",
 			  "created": "2019-08-29T15:03:24Z",
 			  "updated": "2019-08-29T15:03:24Z",
 			  "externalManagementSystem":
@@ -59,7 +58,6 @@ func TestFeatureControlPoliciesServiceOp_List(t *testing.T) {
 	}
 
 	expected := &FeaturePolicy{
-		ID:      groupID,
 		Created: "2019-08-29T15:03:24Z",
 		Updated: "2019-08-29T15:03:24Z",
 		ExternalManagementSystem: &ExternalManagementSystem{
@@ -101,7 +99,6 @@ func TestFeatureControlPoliciesServiceOp_Update(t *testing.T) {
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
-			  "_id": "5c8100bcf2a30b12ff88258f",
 			  "created": "2019-08-29T15:03:24Z",
 			  "updated": "2019-08-29T15:03:24Z",
 			  "externalManagementSystem":
@@ -124,7 +121,6 @@ func TestFeatureControlPoliciesServiceOp_Update(t *testing.T) {
 	})
 
 	policy := &FeaturePolicy{
-		ID:      groupID,
 		Created: "2019-08-29T15:03:24Z",
 		Updated: "2019-08-29T15:03:24Z",
 		ExternalManagementSystem: &ExternalManagementSystem{
@@ -158,7 +154,6 @@ func TestFeatureControlPoliciesServiceOp_Update(t *testing.T) {
 	}
 
 	expected := &FeaturePolicy{
-		ID:      groupID,
 		Created: "2019-08-29T15:03:24Z",
 		Updated: "2019-08-29T15:03:24Z",
 		ExternalManagementSystem: &ExternalManagementSystem{
@@ -198,7 +193,6 @@ func TestFeatureControlPoliciesServiceOp_ListAll(t *testing.T) {
 	mux.HandleFunc("/groups/availablePolicies", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
-			  "_id": "5c8100bcf2a30b12ff88258f",
 			  "created": "2019-08-29T15:03:24Z",
 			  "updated": "2019-08-29T15:03:24Z",
 			  "externalManagementSystem":
@@ -226,7 +220,6 @@ func TestFeatureControlPoliciesServiceOp_ListAll(t *testing.T) {
 	}
 
 	expected := &FeaturePolicy{
-		ID:      groupID,
 		Created: "2019-08-29T15:03:24Z",
 		Updated: "2019-08-29T15:03:24Z",
 		ExternalManagementSystem: &ExternalManagementSystem{

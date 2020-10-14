@@ -43,8 +43,7 @@ var _ FeatureControlPoliciesService = new(FeatureControlPoliciesServiceOp)
 
 // Agent represents an Ops Manager agent
 type FeaturePolicy struct {
-	ID                       string                    `json:"_id"`
-	Created                  string                    `json:"created"`
+	Created                  string                    `json:"created,omitempty"`
 	Updated                  string                    `json:"updated,omitempty"`
 	ExternalManagementSystem *ExternalManagementSystem `json:"externalManagementSystem,omitempty"`
 	Policies                 []*Policy                 `json:"policies,omitempty"`
@@ -54,7 +53,7 @@ type FeaturePolicy struct {
 type ExternalManagementSystem struct {
 	Name     string `json:"name"`
 	SystemID string `json:"systemId"`
-	Version  string `json:"version"`
+	Version  string `json:"version,omitempty"`
 }
 
 // Policy contains policies that the external system applies to this Ops Manager Project
