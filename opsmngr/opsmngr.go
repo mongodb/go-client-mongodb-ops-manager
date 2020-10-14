@@ -86,6 +86,7 @@ type Client struct {
 	FeatureControlPolicies FeatureControlPoliciesService
 	ServerUsage            ServerUsageService
 	ServerUsageReport      ServerUsageReportService
+	
 	onRequestCompleted     atlas.RequestCompletionCallback
 }
 
