@@ -52,7 +52,7 @@ type FeaturePolicy struct {
 // ExternalManagementSystem contains parameters for the external system that manages this Ops Manager Project
 type ExternalManagementSystem struct {
 	Name     string `json:"name"`
-	SystemID string `json:"systemId"`
+	SystemID string `json:"systemId,omitempty"`
 	Version  string `json:"version,omitempty"`
 }
 
