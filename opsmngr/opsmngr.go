@@ -83,6 +83,7 @@ type Client struct {
 	SyncStoreConfig        SyncStoreConfigService
 	DaemonConfig           DaemonConfigService
 	SnapshotSchedule       SnapshotScheduleService
+	FeatureControlPolicies FeatureControlPoliciesService
 
 	onRequestCompleted atlas.RequestCompletionCallback
 }
@@ -145,6 +146,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.SyncStoreConfig = &SyncStoreConfigServiceOp{Client: c}
 	c.DaemonConfig = &DaemonConfigServiceOp{Client: c}
 	c.SnapshotSchedule = &SnapshotScheduleServiceOp{Client: c}
+	c.FeatureControlPolicies = &FeatureControlPoliciesServiceOp{Client: c}
 
 	return c
 }
