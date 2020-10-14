@@ -214,9 +214,9 @@ func TestFeatureControlPoliciesServiceOp_ListAll(t *testing.T) {
 			}`)
 	})
 
-	logs, _, err := client.FeatureControlPolicies.ListAll(ctx, nil)
+	logs, _, err := client.FeatureControlPolicies.ListSupportedPolicies(ctx, nil)
 	if err != nil {
-		t.Fatalf("FeatureControlPolicies.ListAll returned error: %v", err)
+		t.Fatalf("FeatureControlPolicies.ListSupportedPolicies returned error: %v", err)
 	}
 
 	expected := &FeaturePolicy{

@@ -33,7 +33,7 @@ const (
 type FeatureControlPoliciesService interface {
 	List(context.Context, string, *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error)
 	Update(context.Context, string, *FeaturePolicy) (*FeaturePolicy, *atlas.Response, error)
-	ListAll(context.Context, *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error)
+	ListSupportedPolicies(context.Context, *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error)
 }
 
 // AgentsServiceOp provides an implementation of the AgentsService interface
@@ -62,7 +62,7 @@ type Policy struct {
 	DisabledParams []string `json:"disabledParams,omitempty"`
 }
 
-// List retrieves the Feature Control Policies for one Project.
+// List retrieves the policies that have been set on a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/controlled-features/get-controlled-features-for-one-project/
 func (s *FeatureControlPoliciesServiceOp) List(ctx context.Context, groupID string, opts *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error) {
@@ -113,10 +113,10 @@ func (s *FeatureControlPoliciesServiceOp) Update(ctx context.Context, groupID st
 	return root, resp, err
 }
 
-// ListAll retrieves the available Feature Control Policies.
+// ListSupportedPolicies retrieves all supported policies by Ops Manager.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/controlled-features/get-all-feature-control-policies/
-func (s *FeatureControlPoliciesServiceOp) ListAll(ctx context.Context, opts *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error) {
+func (s *FeatureControlPoliciesServiceOp) ListSupportedPolicies(ctx context.Context, opts *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error) {
 	path, err := setQueryParams(availablePoliciesBasePath, opts)
 	if err != nil {
 		return nil, nil, err
