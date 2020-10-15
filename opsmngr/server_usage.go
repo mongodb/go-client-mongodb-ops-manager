@@ -40,8 +40,8 @@ type ServerUsageService interface {
 	OrganizationHostAssignments(context.Context, string, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
 	GetServerTypeProject(context.Context, string) (*ServerType, *atlas.Response, error)
 	GetServerTypeOrganization(context.Context, string) (*ServerType, *atlas.Response, error)
-	UpdateProjectServerType(context.Context, string, *ServerType) (*ServerType, *atlas.Response, error)
-	UpdateOrganizationServerType(context.Context, string, *ServerType) (*ServerType, *atlas.Response, error)
+	UpdateProjectServerType(context.Context, string, *HostAssignment) (*atlas.Response, error)
+	UpdateOrganizationServerType(context.Context, string, *HostAssignment) (*atlas.Response, error)
 }
 
 // ServerUsageServiceOp provides an implementation of the ServerUsageService
@@ -88,7 +88,7 @@ type HostAssignment struct {
 	Processes    []*HostAssignmentProcess `json:"processes,omitempty"`
 	ServerType   *ServerType              `json:"serverType,omitempty"`
 	MemSizeMB    int64                    `json:"memSizeMB,omitempty"`
-	IsChargeable bool                     `json:"isChargeable"`
+	IsChargeable *bool                    `json:"isChargeable,omitempty"`
 }
 
 // HostAssignmentProcess represents a HostAssignmentProcess in the MongoDB Ops Manager API
@@ -240,9 +240,9 @@ func (s *ServerUsageServiceOp) GetServerTypeOrganization(ctx context.Context, or
 // UpdateProjectServerType update the default server type for one project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-project/
-func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, groupID string, serverType *ServerType) (*ServerType, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, groupID string, serverType *HostAssignment) (*atlas.Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, atlas.NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageGroupPath, groupID)
@@ -250,21 +250,20 @@ func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, grou
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, serverType)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	root := new(ServerType)
-	resp, err := s.Client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, nil)
 
-	return root, resp, err
+	return resp, err
 }
 
 // UpdateOrganizationServerType update the default server type for one organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-organization/
-func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context, groupID string, serverType *ServerType) (*ServerType, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context, groupID string, serverType *HostAssignment) (*atlas.Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, atlas.NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageOrgPath, groupID)
@@ -272,13 +271,12 @@ func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context,
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, serverType)
 	if err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
-	root := new(ServerType)
-	resp, err := s.Client.Do(ctx, req, root)
+	resp, err := s.Client.Do(ctx, req, nil)
 
-	return root, resp, err
+	return resp, err
 }
 
 // Download downloads a compressed report of server usage in a given timeframe.

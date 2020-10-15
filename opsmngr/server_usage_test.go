@@ -44,22 +44,16 @@ func TestServerUsageServiceOp_UpdateProjectServerType(t *testing.T) {
 	mux.HandleFunc(fmt.Sprintf("/usage/groups/%s/defaultServerType", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
-						 "name": "RAM_POOL",
-						 "label": "RAM Pool"
+			   "serverType":{
+				  "name":"RAM_POOL",
+				  "label":"RAM Pool"
+			   }
 		}`)
 	})
-	serverType, _, err := client.ServerUsage.UpdateProjectServerType(ctx, groupID, nil)
+	_, err := client.ServerUsage.UpdateProjectServerType(ctx, groupID, nil)
+
 	if err != nil {
 		t.Fatalf("ServerUsage.UpdateProjectServerType returned error: %v", err)
-	}
-
-	expected := &ServerType{
-		Name:  "RAM_POOL",
-		Label: "RAM Pool",
-	}
-
-	if diff := deep.Equal(serverType, expected); diff != nil {
-		t.Error(diff)
 	}
 }
 
@@ -70,22 +64,16 @@ func TestServerUsageServiceOp_UpdateOrganizationServerType(t *testing.T) {
 	mux.HandleFunc(fmt.Sprintf("/usage/organizations/%s/defaultServerType", orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
-						 "name": "RAM_POOL",
-						 "label": "RAM Pool"
+			   "serverType":{
+				  "name":"RAM_POOL",
+				  "label":"RAM Pool"
+			   }
 	}`)
 	})
-	serverType, _, err := client.ServerUsage.UpdateOrganizationServerType(ctx, orgID, nil)
+	_, err := client.ServerUsage.UpdateOrganizationServerType(ctx, orgID, nil)
+
 	if err != nil {
 		t.Fatalf("ServerUsage.UpdateOrganizationServerType returned error: %v", err)
-	}
-
-	expected := &ServerType{
-		Name:  "RAM_POOL",
-		Label: "RAM Pool",
-	}
-
-	if diff := deep.Equal(serverType, expected); diff != nil {
-		t.Error(diff)
 	}
 }
 
@@ -144,6 +132,7 @@ func TestServerUsageServiceOp_ListAllHostAssignment(t *testing.T) {
 		t.Fatalf("ServerUsage.ListAllHostAssignment returned error: %v", err)
 	}
 
+	isChargeable := true
 	expected := &HostAssignments{
 		Results: []*HostAssignment{
 			{
@@ -164,7 +153,7 @@ func TestServerUsageServiceOp_ListAllHostAssignment(t *testing.T) {
 					Label: "RAM Pool",
 				},
 				MemSizeMB:    178,
-				IsChargeable: true,
+				IsChargeable: &isChargeable,
 			},
 		},
 		TotalCount: 1,
@@ -209,6 +198,7 @@ func TestServerUsageServiceOp_ProjectHostAssignments(t *testing.T) {
 		t.Fatalf("ServerUsage.ProjectHostAssignments returned error: %v", err)
 	}
 
+	isChargeable := true
 	expected := &HostAssignments{
 		Results: []*HostAssignment{
 			{
@@ -229,7 +219,7 @@ func TestServerUsageServiceOp_ProjectHostAssignments(t *testing.T) {
 					Label: "RAM Pool",
 				},
 				MemSizeMB:    178,
-				IsChargeable: true,
+				IsChargeable: &isChargeable,
 			},
 		},
 		TotalCount: 1,
@@ -274,6 +264,7 @@ func TestServerUsageServiceOp_OrganizationHostAssignments(t *testing.T) {
 		t.Fatalf("ServerUsage.OrganizationHostAssignments returned error: %v", err)
 	}
 
+	isChargeable := true
 	expected := &HostAssignments{
 		Results: []*HostAssignment{
 			{
@@ -294,7 +285,7 @@ func TestServerUsageServiceOp_OrganizationHostAssignments(t *testing.T) {
 					Label: "RAM Pool",
 				},
 				MemSizeMB:    178,
-				IsChargeable: true,
+				IsChargeable: &isChargeable,
 			},
 		},
 		TotalCount: 1,
