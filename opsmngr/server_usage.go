@@ -36,12 +36,12 @@ const (
 type ServerUsageService interface {
 	GenerateDailyUsageSnapshot(context.Context) (*atlas.Response, error)
 	ListAllHostAssignment(context.Context, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
-	ListHostAssignmentProject(context.Context, string, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
-	ListHostAssignmentOrganization(context.Context, string, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
+	ProjectHostAssignments(context.Context, string, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
+	OrganizationHostAssignments(context.Context, string, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
 	GetServerTypeProject(context.Context, string) (*ServerType, *atlas.Response, error)
 	GetServerTypeOrganization(context.Context, string) (*ServerType, *atlas.Response, error)
-	UpdateServerTypeProject(context.Context, string, *ServerType) (*ServerType, *atlas.Response, error)
-	UpdateServerTypeOrganization(context.Context, string, *ServerType) (*ServerType, *atlas.Response, error)
+	UpdateProjectServerType(context.Context, string, *ServerType) (*ServerType, *atlas.Response, error)
+	UpdateOrganizationServerType(context.Context, string, *ServerType) (*ServerType, *atlas.Response, error)
 }
 
 // ServerUsageServiceOp provides an implementation of the ServerUsageService
@@ -143,10 +143,10 @@ func (s *ServerUsageServiceOp) ListAllHostAssignment(ctx context.Context, option
 	return root, resp, err
 }
 
-// ListHostAssignmentProject retrieves all host assignments in a project.
+// ProjectHostAssignments retrieves all host assignments in a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/list-all-host-assignments-in-one-project/
-func (s *ServerUsageServiceOp) ListHostAssignmentProject(ctx context.Context, groupID string, options *ServerTypeOptions) (*HostAssignments, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) ProjectHostAssignments(ctx context.Context, groupID string, options *ServerTypeOptions) (*HostAssignments, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -168,10 +168,10 @@ func (s *ServerUsageServiceOp) ListHostAssignmentProject(ctx context.Context, gr
 	return root, resp, err
 }
 
-// ListHostAssignmentOrganization retrieves all host assignments in a organization.
+// OrganizationHostAssignments retrieves all host assignments in a organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/list-all-host-assignments-in-one-organization/
-func (s *ServerUsageServiceOp) ListHostAssignmentOrganization(ctx context.Context, orgID string, options *ServerTypeOptions) (*HostAssignments, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) OrganizationHostAssignments(ctx context.Context, orgID string, options *ServerTypeOptions) (*HostAssignments, *atlas.Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -237,10 +237,10 @@ func (s *ServerUsageServiceOp) GetServerTypeOrganization(ctx context.Context, or
 	return root, resp, err
 }
 
-// UpdateServerTypeProject update the default server type for one project.
+// UpdateProjectServerType update the default server type for one project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-project/
-func (s *ServerUsageServiceOp) UpdateServerTypeProject(ctx context.Context, groupID string, serverType *ServerType) (*ServerType, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, groupID string, serverType *ServerType) (*ServerType, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -259,10 +259,10 @@ func (s *ServerUsageServiceOp) UpdateServerTypeProject(ctx context.Context, grou
 	return root, resp, err
 }
 
-// UpdateServerTypeOrganization update the default server type for one organization.
+// UpdateOrganizationServerType update the default server type for one organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-organization/
-func (s *ServerUsageServiceOp) UpdateServerTypeOrganization(ctx context.Context, groupID string, serverType *ServerType) (*ServerType, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context, groupID string, serverType *ServerType) (*ServerType, *atlas.Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

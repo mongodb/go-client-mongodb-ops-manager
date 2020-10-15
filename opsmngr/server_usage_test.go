@@ -37,7 +37,7 @@ func TestServerUsageServiceOp_GenerateDailyUsageSnapshot(t *testing.T) {
 	}
 }
 
-func TestServerUsageServiceOp_UpdateServerTypeProject(t *testing.T) {
+func TestServerUsageServiceOp_UpdateProjectServerType(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -48,9 +48,9 @@ func TestServerUsageServiceOp_UpdateServerTypeProject(t *testing.T) {
 						 "label": "RAM Pool"
 		}`)
 	})
-	serverType, _, err := client.ServerUsage.UpdateServerTypeProject(ctx, groupID, nil)
+	serverType, _, err := client.ServerUsage.UpdateProjectServerType(ctx, groupID, nil)
 	if err != nil {
-		t.Fatalf("ServerUsage.UpdateServerTypeProject returned error: %v", err)
+		t.Fatalf("ServerUsage.UpdateProjectServerType returned error: %v", err)
 	}
 
 	expected := &ServerType{
@@ -63,7 +63,7 @@ func TestServerUsageServiceOp_UpdateServerTypeProject(t *testing.T) {
 	}
 }
 
-func TestServerUsageServiceOp_UpdateServerTypeOrganization(t *testing.T) {
+func TestServerUsageServiceOp_UpdateOrganizationServerType(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -74,9 +74,9 @@ func TestServerUsageServiceOp_UpdateServerTypeOrganization(t *testing.T) {
 						 "label": "RAM Pool"
 	}`)
 	})
-	serverType, _, err := client.ServerUsage.UpdateServerTypeOrganization(ctx, orgID, nil)
+	serverType, _, err := client.ServerUsage.UpdateOrganizationServerType(ctx, orgID, nil)
 	if err != nil {
-		t.Fatalf("ServerUsage.UpdateServerTypeOrganization returned error: %v", err)
+		t.Fatalf("ServerUsage.UpdateOrganizationServerType returned error: %v", err)
 	}
 
 	expected := &ServerType{
@@ -174,7 +174,7 @@ func TestServerUsageServiceOp_ListAllHostAssignment(t *testing.T) {
 	}
 }
 
-func TestServerUsageServiceOp_ListHostAssignmentProject(t *testing.T) {
+func TestServerUsageServiceOp_ProjectHostAssignments(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -204,9 +204,9 @@ func TestServerUsageServiceOp_ListHostAssignmentProject(t *testing.T) {
 }`)
 	})
 
-	hostAssignments, _, err := client.ServerUsage.ListHostAssignmentProject(ctx, groupID, nil)
+	hostAssignments, _, err := client.ServerUsage.ProjectHostAssignments(ctx, groupID, nil)
 	if err != nil {
-		t.Fatalf("ServerUsage.ListHostAssignmentProject returned error: %v", err)
+		t.Fatalf("ServerUsage.ProjectHostAssignments returned error: %v", err)
 	}
 
 	expected := &HostAssignments{
@@ -239,7 +239,7 @@ func TestServerUsageServiceOp_ListHostAssignmentProject(t *testing.T) {
 	}
 }
 
-func TestServerUsageServiceOp_ListHostAssignmentOrganization(t *testing.T) {
+func TestServerUsageServiceOp_OrganizationHostAssignments(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -269,9 +269,9 @@ func TestServerUsageServiceOp_ListHostAssignmentOrganization(t *testing.T) {
 }`)
 	})
 
-	hostAssignments, _, err := client.ServerUsage.ListHostAssignmentOrganization(ctx, orgID, nil)
+	hostAssignments, _, err := client.ServerUsage.OrganizationHostAssignments(ctx, orgID, nil)
 	if err != nil {
-		t.Fatalf("ServerUsage.ListHostAssignmentOrganization returned error: %v", err)
+		t.Fatalf("ServerUsage.OrganizationHostAssignments returned error: %v", err)
 	}
 
 	expected := &HostAssignments{
