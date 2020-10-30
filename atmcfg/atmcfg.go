@@ -57,8 +57,17 @@ func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled
 	})
 	if found {
 		s := out.Sharding[i]
+		// disable shards
 		for _, rs := range s.Shards {
 			setDisabledByReplicaSetName(out, rs.ID, disabled)
+		}
+		// disable config rs
+		setDisabledByReplicaSetName(out, s.ConfigServerReplica, disabled)
+		// disable mongos
+		for i := range out.Processes {
+			if out.Processes[i].Cluster == name {
+				out.Processes[i].Disabled = disabled
+			}
 		}
 	}
 }
@@ -140,8 +149,17 @@ func removeByShardName(out *opsmngr.AutomationConfig, name string) {
 	if found {
 		s := out.Sharding[i]
 		out.Sharding = append(out.Sharding[:i], out.Sharding[i+1:]...)
+		// remove shards
 		for _, rs := range s.Shards {
 			removeByReplicaSetName(out, rs.ID)
+		}
+		// remove config rs
+		removeByReplicaSetName(out, s.ConfigServerReplica)
+		// remove mongos
+		for j := range out.Processes {
+			if out.Processes[j].Cluster == name {
+				out.Processes = append(out.Processes[:j], out.Processes[j+1:]...)
+			}
 		}
 	}
 }
