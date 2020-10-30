@@ -105,6 +105,63 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 				ProcessType: "mongod",
 				Version:     "4.2.2",
 			},
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: 27019,
+					},
+					Replication: &opsmngr.Replication{
+						ReplSetName: name + "_configRS",
+					},
+					Sharding: &opsmngr.Sharding{
+						ClusterRole: "configsvr",
+					},
+					Storage: &opsmngr.Storage{
+						DBPath: "/data/db/",
+					},
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongodb.log",
+					},
+				},
+				AuthSchemaVersion:           5,
+				Name:                        name + "_configRS_0",
+				Disabled:                    disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host2",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  1000,
+					TimeThresholdHrs: 24,
+				},
+				ProcessType: "mongod",
+				Version:     "4.2.2",
+			},
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: 27018,
+					},
+					Replication: nil,
+					Sharding:    nil,
+					Storage:     nil,
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongos.log",
+					},
+				},
+				AuthSchemaVersion:           5,
+				Cluster:                     name,
+				Name:                        name + "_mongos_0",
+				Disabled:                    disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host1",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  1000,
+					TimeThresholdHrs: 24,
+				},
+				ProcessType: "mongos",
+				Version:     "4.2.2",
+			},
 		},
 		ReplicaSets: []*opsmngr.ReplicaSet{
 			{
@@ -122,10 +179,26 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 					},
 				},
 			},
+			{
+				ID:              name + "_configRS",
+				ProtocolVersion: "1",
+				Members: []opsmngr.Member{
+					{
+						ArbiterOnly:  false,
+						BuildIndexes: true,
+						Hidden:       false,
+						Host:         name + "_configRS_0",
+						Priority:     1,
+						SlaveDelay:   0,
+						Votes:        1,
+					},
+				},
+			},
 		},
 		Sharding: []*opsmngr.ShardingConfig{
 			{
-				Name: name,
+				Name:                name,
+				ConfigServerReplica: name + "_configRS",
 				Shards: []*opsmngr.Shard{
 					{
 						ID: name + "_shard_0",
@@ -206,8 +279,10 @@ func TestShutdown(t *testing.T) {
 	t.Run("sharded cluster", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, false)
 		Shutdown(config, clusterName)
-		if !config.Processes[0].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+		for i := range config.Processes {
+			if !config.Processes[i].Disabled {
+				t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, true)
+			}
 		}
 	})
 }
@@ -225,8 +300,10 @@ func TestStartup(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
 
 		Startup(config, clusterName)
-		if config.Processes[0].Disabled {
-			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+		for i := range config.Processes {
+			if config.Processes[i].Disabled {
+				t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, false)
+			}
 		}
 	})
 }
