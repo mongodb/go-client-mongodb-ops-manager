@@ -322,7 +322,6 @@ func TestRemoveByClusterName(t *testing.T) {
 
 		RemoveByClusterName(config, clusterName)
 		if len(config.Processes) != 0 {
-			t.Errorf("%#v", config.Processes[0])
 			t.Errorf("RemoveByClusterName\n got=%#v\nwant=0\n", len(config.Processes))
 		}
 	})
