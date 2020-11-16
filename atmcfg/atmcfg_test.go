@@ -538,6 +538,52 @@ func TestEnableMonitoring(t *testing.T) {
 	}
 }
 
+func TestDisableMonitoring(t *testing.T) {
+	type args struct {
+		out      *opsmngr.AutomationConfig
+		hostname string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "empty config",
+			args: args{
+				out:      &opsmngr.AutomationConfig{},
+				hostname: "test",
+			},
+			wantErr: true,
+		},
+		{
+			name: "empty config",
+			args: args{
+				out: &opsmngr.AutomationConfig{
+					MonitoringVersions: []*opsmngr.ConfigVersion{
+						{
+							Name:     "1",
+							Hostname: "test",
+						},
+					},
+				},
+				hostname: "test",
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		out := tt.args.out
+		hostname := tt.args.hostname
+		wantErr := tt.wantErr
+		t.Run(tt.name, func(t *testing.T) {
+			if err := DisableMonitoring(out, hostname); (err != nil) != wantErr {
+				t.Errorf("EnableMonitoring() error = %v, wantErr %v", err, wantErr)
+			}
+		})
+	}
+}
+
 func TestEnableBackup(t *testing.T) {
 	type args struct {
 		out      *opsmngr.AutomationConfig
@@ -578,6 +624,52 @@ func TestEnableBackup(t *testing.T) {
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
 			if err := EnableBackup(out, hostname); (err != nil) != wantErr {
+				t.Errorf("EnableBackup() error = %v, wantErr %v", err, wantErr)
+			}
+		})
+	}
+}
+
+func TestDisableBackup(t *testing.T) {
+	type args struct {
+		out      *opsmngr.AutomationConfig
+		hostname string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			name: "empty config",
+			args: args{
+				out:      &opsmngr.AutomationConfig{},
+				hostname: "test",
+			},
+			wantErr: true,
+		},
+		{
+			name: "empty config",
+			args: args{
+				out: &opsmngr.AutomationConfig{
+					BackupVersions: []*opsmngr.ConfigVersion{
+						{
+							Name:     "1",
+							Hostname: "test",
+						},
+					},
+				},
+				hostname: "test",
+			},
+			wantErr: false,
+		},
+	}
+	for _, tt := range tests {
+		out := tt.args.out
+		hostname := tt.args.hostname
+		wantErr := tt.wantErr
+		t.Run(tt.name, func(t *testing.T) {
+			if err := DisableBackup(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableBackup() error = %v, wantErr %v", err, wantErr)
 			}
 		})
