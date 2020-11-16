@@ -84,7 +84,7 @@ func Startup(out *opsmngr.AutomationConfig, name string) {
 
 const monitoringVersion = "7.2.0.488-1" // Last monitoring version released
 
-// EnableMonitoring enables all processes of the given cluster name
+// EnableMonitoring enables monitoring for the given hostname
 func EnableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
 	for _, v := range out.MonitoringVersions {
 		if v.Hostname == hostname {
@@ -98,9 +98,20 @@ func EnableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
 	return nil
 }
 
+// DisableMonitoring disables monitoring for the given hostname
+func DisableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
+	for i, v := range out.MonitoringVersions {
+		if v.Hostname == hostname {
+			out.MonitoringVersions = append(out.MonitoringVersions[:i], out.MonitoringVersions[i+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("no monitoring for '%s'", hostname)
+}
+
 const backupVersion = "7.8.1.1109-1" // Last backup version released
 
-// EnableMonitoring enables all processes of the given cluster name
+// EnableMonitoring enables backup for the given hostname
 func EnableBackup(out *opsmngr.AutomationConfig, hostname string) error {
 	for _, v := range out.BackupVersions {
 		if v.Hostname == hostname {
@@ -112,6 +123,17 @@ func EnableBackup(out *opsmngr.AutomationConfig, hostname string) error {
 		Hostname: hostname,
 	})
 	return nil
+}
+
+// DisableBackup disables backup for the given hostname
+func DisableBackup(out *opsmngr.AutomationConfig, hostname string) error {
+	for i, v := range out.BackupVersions {
+		if v.Hostname == hostname {
+			out.BackupVersions = append(out.BackupVersions[:i], out.BackupVersions[i+1:]...)
+			return nil
+		}
+	}
+	return fmt.Errorf("no backup for '%s'", hostname)
 }
 
 // RemoveByClusterName removes a cluster and its associated processes from the config.
