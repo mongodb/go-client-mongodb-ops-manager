@@ -111,7 +111,7 @@ func DisableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
 
 const backupVersion = "7.8.1.1109-1" // Last backup version released
 
-// EnableMonitoring enables backup for the given hostname
+// EnableBackup enables backup for the given hostname
 func EnableBackup(out *opsmngr.AutomationConfig, hostname string) error {
 	for _, v := range out.BackupVersions {
 		if v.Hostname == hostname {
