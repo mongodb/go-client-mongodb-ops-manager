@@ -37,6 +37,9 @@ const jsonBlob = `{
       "replication" : {
         "replSetName" : "myReplicaSet"
       },
+      "setParameter": {
+        "opensslCipherConfig": "HIGH:EXPORT:!aNULL@STRENGTH;!DES:!3DES"
+      },
       "storage" : {
         "dbPath" : "/data/rs1",
         "wiredTiger" : {
@@ -126,6 +129,7 @@ const jsonBlob = `{
     "disabled" : false,
     "featureCompatibilityVersion" : "4.2",
     "hostname" : "host0",
+    "numCores": 2,
     "logRotate" : {
       "sizeThresholdMB" : 1000.0,
       "timeThresholdHrs" : 24
@@ -206,6 +210,9 @@ func TestAutomation_GetConfig(t *testing.T) {
 					NET: Net{
 						Port: 27000,
 					},
+					SetParameter: &map[string]interface{}{
+						"opensslCipherConfig": "HIGH:EXPORT:!aNULL@STRENGTH;!DES:!3DES",
+					},
 					Storage: &Storage{
 						DBPath: "/data/rs1",
 						WiredTiger: &map[string]interface{}{
@@ -230,6 +237,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 				},
 				LastGoalVersionAchieved: 0,
 				Cluster:                 "",
+				NumCores:                0,
 			},
 			{
 				Name:                        "myReplicaSet_2",
@@ -268,6 +276,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 				},
 				LastGoalVersionAchieved: 0,
 				Cluster:                 "",
+				NumCores:                0,
 			},
 			{
 				Name:                        "myReplicaSet_3",
@@ -306,6 +315,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 				},
 				LastGoalVersionAchieved: 0,
 				Cluster:                 "",
+				NumCores:                2,
 			},
 		},
 		ReplicaSets: []*ReplicaSet{

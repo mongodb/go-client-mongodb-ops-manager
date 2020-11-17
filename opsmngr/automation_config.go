@@ -162,6 +162,7 @@ type Args26 struct {
 	OperationProfiling *map[string]interface{} `json:"operationProfiling,omitempty"`
 	ProcessManagement  *map[string]interface{} `json:"processManagement,omitempty"`
 	Replication        *Replication            `json:"replication,omitempty"` // Replication configuration for ReplicaSets, omit this field if setting Sharding
+	SetParameter       *map[string]interface{} `json:"setParameter,omitempty"`
 	Security           *map[string]interface{} `json:"security,omitempty"`
 	Sharding           *Sharding               `json:"sharding,omitempty"` // Replication configuration for sharded clusters, omit this field if setting Replication
 	Storage            *Storage                `json:"storage,omitempty"`  // Storage configuration for dbpath, config servers don't define this
@@ -344,7 +345,7 @@ type Process struct {
 	LogRotate                                  *LogRotate         `json:"logRotate,omitempty"`
 	ManualMode                                 bool               `json:"manualMode"`
 	Name                                       string             `json:"name,omitempty"`
-	NumCores                                   int                `json:"numCores"`
+	NumCores                                   int                `json:"numCores,omitempty"`
 	Plan                                       []string           `json:"plan,omitempty"`
 	ProcessType                                string             `json:"processType,omitempty"`
 	Version                                    string             `json:"version,omitempty"`
