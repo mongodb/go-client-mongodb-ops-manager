@@ -15,7 +15,9 @@
 package opsmngr
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -36,8 +38,14 @@ func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*A
 		return nil, nil, err
 	}
 
-	root := new(AutomationConfig)
-	resp, err := s.Client.Do(ctx, req, root)
+	body := new(bytes.Buffer)
+	resp, err := s.Client.Do(ctx, req, body)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	root := &AutomationConfig{raw: body.Bytes()}
+	err = json.NewDecoder(body).Decode(root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -71,6 +79,8 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/cluster-configuration/
 type AutomationConfig struct {
 	AgentVersion         *map[string]interface{}   `json:"agentVersion,omitempty"`
+	AtlasProxies         *[]interface{}            `json:"atlasProxies,omitempty"`
+	Filebeat             *map[string]interface{}   `json:"filebeat,omitempty"`
 	Auth                 Auth                      `json:"auth"`
 	BackupVersions       []*ConfigVersion          `json:"backupVersions"`
 	Balancer             *map[string]interface{}   `json:"balancer"`
@@ -80,10 +90,10 @@ type AutomationConfig struct {
 	LDAP                 *map[string]interface{}   `json:"ldap,omitempty"`
 	MongoDBToolsVersion  *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
 	MongoDBVersions      []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
-	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds,omitempty"`
+	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds"`
 	MonitoringVersions   []*ConfigVersion          `json:"monitoringVersions,omitempty"`
-	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules,omitempty"`
-	MongoTS              []*map[string]interface{} `json:"mongots,omitempty"`
+	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules"`
+	MongoTS              []*map[string]interface{} `json:"mongots"`
 	Options              *map[string]interface{}   `json:"options"`
 	Processes            []*Process                `json:"processes"`
 	ReplicaSets          []*ReplicaSet             `json:"replicaSets"`
@@ -91,8 +101,14 @@ type AutomationConfig struct {
 	Sharding             []*ShardingConfig         `json:"sharding"`
 	SSL                  *SSL                      `json:"ssl,omitempty"`
 	TLS                  *SSL                      `json:"tls,omitempty"`
-	UIBaseURL            *string                   `json:"uiBaseUrl"`
+	UIBaseURL            *string                   `json:"uiBaseUrl,omitempty"`
 	Version              int                       `json:"version,omitempty"`
+	raw                  []byte
+}
+
+// Raw returns original Automation Config in bytes.
+func (ac *AutomationConfig) Raw() []byte {
+	return ac.raw
 }
 
 type ConfigVersion struct {
@@ -173,6 +189,7 @@ type Args26 struct {
 // MongoDBUser database user
 type MongoDBUser struct {
 	AuthenticationRestrictions []string       `json:"authenticationRestrictions"`
+	CustomData                 interface{}    `json:"customData,omitempty"`
 	Database                   string         `json:"db"`
 	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
 	Mechanisms                 []string       `json:"mechanisms"`
@@ -206,7 +223,7 @@ type Member struct {
 	Host         string                  `json:"host"`
 	Priority     float64                 `json:"priority"`
 	SlaveDelay   float64                 `json:"slaveDelay"`
-	Tags         *map[string]interface{} `json:"tags"`
+	Tags         *map[string]interface{} `json:"tags,omitempty"`
 	Votes        float64                 `json:"votes"`
 }
 
