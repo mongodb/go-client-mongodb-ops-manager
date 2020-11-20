@@ -15,9 +15,7 @@
 package opsmngr
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"fmt"
 	"net/http"
 
@@ -38,14 +36,8 @@ func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*A
 		return nil, nil, err
 	}
 
-	body := new(bytes.Buffer)
-	resp, err := s.Client.Do(ctx, req, body)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	root := &AutomationConfig{raw: body.Bytes()}
-	err = json.NewDecoder(body).Decode(root)
+	root := new(AutomationConfig)
+	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
 	}
@@ -103,12 +95,6 @@ type AutomationConfig struct {
 	TLS                  *SSL                      `json:"tls,omitempty"`
 	UIBaseURL            *string                   `json:"uiBaseUrl,omitempty"`
 	Version              int                       `json:"version,omitempty"`
-	raw                  []byte
-}
-
-// Raw returns original Automation Config in bytes.
-func (ac *AutomationConfig) Raw() []byte {
-	return ac.raw
 }
 
 type ConfigVersion struct {

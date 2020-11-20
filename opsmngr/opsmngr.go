@@ -47,6 +47,9 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
+	// copy raw atlas server response to the Response struct
+	withRaw bool
+
 	Organizations          OrganizationsService
 	Projects               ProjectsService
 	Users                  UsersService
@@ -184,6 +187,14 @@ func SetBaseURL(bu string) ClientOpt {
 	}
 }
 
+// SetWithRaw is a client option for getting raw atlas server response within Response structure.
+func SetWithRaw() ClientOpt {
+	return func(c *Client) error {
+		c.withRaw = true
+		return nil
+	}
+}
+
 // SetUserAgent is a client option for setting the user agent.
 func SetUserAgent(ua string) ClientOpt {
 	return func(c *Client) error {
@@ -315,11 +326,24 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 		return response, err
 	}
 
+	body := resp.Body
+
+	if c.withRaw {
+		raw := new(bytes.Buffer)
+		_, err = io.Copy(raw, body)
+		if err != nil {
+			return response, err
+		}
+
+		response.Raw = raw.Bytes()
+		body = ioutil.NopCloser(raw)
+	}
+
 	if v != nil {
 		if w, ok := v.(io.Writer); ok {
-			_, _ = io.Copy(w, resp.Body)
+			_, _ = io.Copy(w, body)
 		} else {
-			decErr := json.NewDecoder(resp.Body).Decode(v)
+			decErr := json.NewDecoder(body).Decode(v)
 			if decErr == io.EOF {
 				decErr = nil // ignore EOF errors caused by empty response body
 			}
