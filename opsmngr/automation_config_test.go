@@ -189,6 +189,10 @@ func TestAutomation_GetConfig(t *testing.T) {
 		t.Fatalf("Automation.GetConfig returned error: %v", err)
 	}
 
+	if string(config.Raw()) != jsonBlob {
+		t.Fatalf("Raw returned config isn't equal origin")
+	}
+
 	expected := &AutomationConfig{
 		Auth: Auth{
 			AutoAuthMechanism: "MONGODB-CR",
