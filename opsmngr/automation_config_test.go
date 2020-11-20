@@ -172,7 +172,6 @@ const jsonBlob = `{
     "protocolVersion" : "1",
     "settings" : { }
   } ],
-  "uiBaseUrl" : null,
   "version" : 1
 }`
 

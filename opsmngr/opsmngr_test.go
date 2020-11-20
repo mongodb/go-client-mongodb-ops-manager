@@ -305,6 +305,36 @@ func TestClient_Do_redirectLoop(t *testing.T) {
 	}
 }
 
+func TestClient_withRaw(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	type foo struct {
+		A string
+	}
+
+	client.withRaw = true
+	expected := `{"A":"a"}`
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if m := http.MethodGet; m != r.Method {
+			t.Errorf("Request method = %v, expected %v", r.Method, m)
+		}
+		_, _ = fmt.Fprint(w, expected)
+	})
+
+	body := new(foo)
+	req, _ := client.NewRequest(ctx, http.MethodGet, ".", nil)
+	resp, err := client.Do(context.Background(), req, body)
+	if err != nil {
+		t.Fatalf("Do(): %v", err)
+	}
+
+	if string(resp.Raw) != expected {
+		t.Errorf("expected response to be %v, Response = %v", expected, string(resp.Raw))
+	}
+}
+
 func TestClient_OnRequestCompleted(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -370,6 +400,19 @@ func TestSetBaseURL(t *testing.T) {
 	expected := baseURL
 	if got := c.BaseURL.String(); got != expected {
 		t.Errorf("New() BaseURL = %s; expected %s", got, expected)
+	}
+}
+
+func TestSetWithRaw(t *testing.T) {
+	c, err := New(nil, SetWithRaw())
+
+	if err != nil {
+		t.Fatalf("New() unexpected error: %v", err)
+	}
+
+	expected := true
+	if c.withRaw != expected {
+		t.Errorf("New() withRaw = %v; expected %v", c.withRaw, expected)
 	}
 }
 
