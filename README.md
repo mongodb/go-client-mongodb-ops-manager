@@ -1,7 +1,7 @@
 # MongoDB Ops Manager Go Client
 
 [![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/go.mongodb.org/ops-manager/opsmngr)
-[![Build Status](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager.svg?branch=master)](https://travis-ci.org/mongodb/go-client-mongodb-ops-manager)
+![CI](https://github.com/mongodb/go-client-mongodb-ops-manager/workflows/CI/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/go.mongodb.org/ops-manager)](https://goreportcard.com/report/go.mongodb.org/ops-manager)
 
 A go client for [Ops Manager](https://docs.opsmanager.mongodb.com/master/reference/api/) 
