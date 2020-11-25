@@ -26,7 +26,8 @@ jobs:
           - 1.14
           - 1.15
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
       - name: Install Go
         uses: actions/setup-go@v2
         with:
