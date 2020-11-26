@@ -675,3 +675,22 @@ func TestDisableBackup(t *testing.T) {
 		})
 	}
 }
+
+func TestRestart(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, false)
+		Restart(config, clusterName)
+		if config.Processes[0].LastRestart == "" {
+			t.Errorf("TestRestart\n got=%#v\nwant=%#v\n", config.Processes[0].LastRestart, true)
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		Restart(config, clusterName)
+		for i := range config.Processes {
+			if config.Processes[0].LastRestart == "" {
+				t.Errorf("TestRestart\n got=%#v\nwant=%#v\n", config.Processes[i].LastRestart, true)
+			}
+		}
+	})
+}
