@@ -677,6 +677,7 @@ func TestDisableBackup(t *testing.T) {
 }
 
 func TestRestart(t *testing.T) {
+	const clusterName = "restartTest"
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, false)
 		Restart(config, clusterName)
@@ -689,7 +690,7 @@ func TestRestart(t *testing.T) {
 		Restart(config, clusterName)
 		for i := range config.Processes {
 			if config.Processes[0].LastRestart == "" {
-				t.Errorf("TestRestart\n got=%#v\nwant=%#v\n", config.Processes[i].LastRestart, true)
+				t.Errorf("TestRestart\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, true)
 			}
 		}
 	})
