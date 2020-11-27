@@ -682,7 +682,7 @@ func TestRestart(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, false)
 		Restart(config, clusterName)
 		if config.Processes[0].LastRestart == "" {
-			t.Errorf("TestRestart\n got=%#v\nwant=%#v\n", config.Processes[0].LastRestart, true)
+			t.Errorf("TestRestart\n got=%#v", config.Processes[0].LastRestart)
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
@@ -690,7 +690,7 @@ func TestRestart(t *testing.T) {
 		Restart(config, clusterName)
 		for i := range config.Processes {
 			if config.Processes[0].LastRestart == "" {
-				t.Errorf("TestRestart\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, true)
+				t.Errorf("TestRestart\n got=%#v", config.Processes[i].LastRestart)
 			}
 		}
 	})
