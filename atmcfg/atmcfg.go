@@ -21,6 +21,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"time"
 
 	"go.mongodb.org/ops-manager/opsmngr"
 	"go.mongodb.org/ops-manager/search"
@@ -369,4 +370,52 @@ func stringInSlice(a []string, x string) bool {
 		}
 	}
 	return false
+}
+
+func restartByReplicaSetName(out *opsmngr.AutomationConfig, name, lastRestart string) {
+	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
+		return rs.ID == name
+	})
+	if found {
+		rs := out.ReplicaSets[i]
+		for _, m := range rs.Members {
+			for k, p := range out.Processes {
+				if p.Name == m.Host {
+					out.Processes[k].LastRestart = lastRestart
+				}
+			}
+		}
+	}
+}
+
+func restartByShardName(out *opsmngr.AutomationConfig, name, lastRestart string) {
+	i, found := search.ShardingConfig(out.Sharding, func(s *opsmngr.ShardingConfig) bool {
+		return s.Name == name
+	})
+	if found {
+		s := out.Sharding[i]
+		// restart shards
+		for _, rs := range s.Shards {
+			restartByReplicaSetName(out, rs.ID, lastRestart)
+		}
+		// restart config rs
+		restartByReplicaSetName(out, s.ConfigServerReplica, lastRestart)
+		// restart mongos
+		for i := range out.Processes {
+			if out.Processes[i].Cluster == name {
+				out.Processes[i].LastRestart = lastRestart
+			}
+		}
+	}
+}
+
+// Restart sets all process of a cluster to restart
+func Restart(out *opsmngr.AutomationConfig, name string) {
+	// This value may not be present and is mandatory
+	if out.Auth.DeploymentAuthMechanisms == nil {
+		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
+	}
+	lastRestart := time.Now().Format(time.RFC3339)
+	restartByReplicaSetName(out, name, lastRestart)
+	restartByShardName(out, name, lastRestart)
 }
