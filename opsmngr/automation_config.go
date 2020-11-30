@@ -256,19 +256,20 @@ type Net struct {
 
 // Storage part of the internal Process struct
 type Storage struct {
-	DBPath            string                  `json:"dbPath,omitempty"`
-	DirectoryPerDB    *bool                   `json:"directoryPerDB,omitempty"`
-	Engine            string                  `json:"engine,omitempty"`
-	IndexBuildRetry   *bool                   `json:"indexBuildRetry,omitempty"`
-	InMemory          *map[string]interface{} `json:"inMemory,omitempty"`
-	Journal           *map[string]interface{} `json:"journal,omitempty"`
-	NSSize            *int                    `json:"nsSize,omitempty"`
-	PreAllocDataFiles *bool                   `json:"preallocDataFiles,omitempty"`
-	Quota             *map[string]interface{} `json:"quota,omitempty"`
-	RepairPath        string                  `json:"repairPath,omitempty"`
-	SmallFiles        *bool                   `json:"smallFiles,omitempty"`
-	SyncPeriodSecs    *float64                `json:"syncPeriodSecs,omitempty"`
-	WiredTiger        *map[string]interface{} `json:"wiredTiger,omitempty"`
+	DBPath                 string                  `json:"dbPath,omitempty"`
+	DirectoryPerDB         *bool                   `json:"directoryPerDB,omitempty"`
+	Engine                 string                  `json:"engine,omitempty"`
+	IndexBuildRetry        *bool                   `json:"indexBuildRetry,omitempty"`
+	InMemory               *map[string]interface{} `json:"inMemory,omitempty"`
+	Journal                *map[string]interface{} `json:"journal,omitempty"`
+	NSSize                 *int                    `json:"nsSize,omitempty"`
+	OplogMinRetentionHours *float64                `json:"oplogMinRetentionHours,omitempty"`
+	PreAllocDataFiles      *bool                   `json:"preallocDataFiles,omitempty"`
+	Quota                  *map[string]interface{} `json:"quota,omitempty"`
+	RepairPath             string                  `json:"repairPath,omitempty"`
+	SmallFiles             *bool                   `json:"smallFiles,omitempty"`
+	SyncPeriodSecs         *float64                `json:"syncPeriodSecs,omitempty"`
+	WiredTiger             *map[string]interface{} `json:"wiredTiger,omitempty"`
 }
 
 // Replication is part of the internal Process struct
