@@ -254,7 +254,7 @@ func automationConfigWithMongoDBUsers() *opsmngr.AutomationConfig {
 
 func mongoDBUsers() *opsmngr.MongoDBUser {
 	return &opsmngr.MongoDBUser{
-		Mechanisms: []string{"SCRAM-SHA-1"},
+		Mechanisms: &[]string{"SCRAM-SHA-1"},
 		Roles: []*opsmngr.Role{
 			{
 				Role:     "test",

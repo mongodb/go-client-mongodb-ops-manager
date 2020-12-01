@@ -30,7 +30,7 @@ var fixture = &opsmngr.AutomationConfig{
 		AuthoritativeSet:  false,
 		Users: []*opsmngr.MongoDBUser{
 			{
-				Mechanisms: []string{"SCRAM-SHA-1"},
+				Mechanisms: &[]string{"SCRAM-SHA-1"},
 				Roles: []*opsmngr.Role{
 					{
 						Role:     "test",
