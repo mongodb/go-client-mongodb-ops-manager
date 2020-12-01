@@ -106,18 +106,18 @@ type ConfigVersion struct {
 type ShardingConfig struct {
 	Collections         []*map[string]interface{} `json:"collections"`
 	ConfigServerReplica string                    `json:"configServerReplica"`
-	Draining            []string                  `json:"draining"`
+	Draining            JSONArrayStr              `json:"draining"`
 	ManagedSharding     bool                      `json:"managedSharding"`
 	Name                string                    `json:"name"`
 	Shards              []*Shard                  `json:"shards"`
-	Tags                []string                  `json:"tags"`
+	Tags                JSONArrayStr              `json:"tags"`
 }
 
 // Shard details
 type Shard struct {
-	ID   string   `json:"_id"`
-	RS   string   `json:"rs"`
-	Tags []string `json:"tags"`
+	ID   string       `json:"_id"`
+	RS   string       `json:"rs"`
+	Tags JSONArrayStr `json:"tags"`
 }
 
 // IndexConfig represents a new index requests for a given database and collection.
@@ -125,7 +125,7 @@ type IndexConfig struct {
 	DBName         string                  `json:"dbName"`              // Database that is indexed
 	CollectionName string                  `json:"collectionName"`      // Collection that is indexed
 	RSName         string                  `json:"rsName"`              // The replica set that the index is built on
-	Key            [][]string              `json:"key"`                 // Keys array of keys to index and their type, sorting of keys is important for an index
+	Key            JSONArrayOfArrayStr     `json:"key"`                 // Keys array of keys to index and their type, sorting of keys is important for an index
 	Options        *atlas.IndexOptions     `json:"options,omitempty"`   // Options MongoDB index options
 	Collation      *atlas.CollationOptions `json:"collation,omitempty"` // Collation Mongo collation index options
 }
@@ -174,11 +174,11 @@ type Args26 struct {
 
 // MongoDBUser database user
 type MongoDBUser struct {
-	AuthenticationRestrictions []string       `json:"authenticationRestrictions"`
+	AuthenticationRestrictions JSONArrayStr   `json:"authenticationRestrictions"`
 	CustomData                 interface{}    `json:"customData,omitempty"`
 	Database                   string         `json:"db"`
 	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
-	Mechanisms                 []string       `json:"mechanisms"`
+	Mechanisms                 JSONArrayStr   `json:"mechanisms"`
 	Password                   string         `json:"pwd,omitempty"`
 	Roles                      []*Role        `json:"roles"`
 	ScramSha256Creds           *ScramShaCreds `json:"scramSha256Creds,omitempty"`
@@ -322,9 +322,11 @@ type Process struct {
 	BackupRestoreCertificateValidationHostname string             `json:"backupRestoreCertificateValidationHostname,omitempty"`
 	BackupRestoreCheckpointTimestamp           string             `json:"backupRestoreCheckpointTimestamp,omitempty"`
 	BackupRestoreDesiredTime                   string             `json:"backupRestoreDesiredTime,omitempty"`
+	BackupRestoreFilterList                    interface{}        `json:"backupRestoreFilterList,omitempty"`
 	BackupRestoreJobID                         string             `json:"backupRestoreJobId,omitempty"`
 	BackupRestoreURL                           string             `json:"backupRestoreUrl,omitempty"`
 	BackupRestoreOplogBaseURL                  string             `json:"backupRestoreOplogBaseUrl,omitempty"`
+	BackupRestoreOplog                         interface{}        `json:"backupRestoreOplog,omitempty"`
 	BackupRestoreRsVersion                     *int               `json:"backupRestoreRsVersion,omitempty"`
 	BackupRestoreSourceGroupID                 string             `json:"backupRestoreSourceGroupId,omitempty"`
 	BackupRestoreSourceRsID                    string             `json:"backupRestoreSourceRsId,omitempty"`
