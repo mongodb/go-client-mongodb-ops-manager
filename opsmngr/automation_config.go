@@ -178,7 +178,7 @@ type MongoDBUser struct {
 	CustomData                 interface{}    `json:"customData,omitempty"`
 	Database                   string         `json:"db"`
 	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
-	Mechanisms                 []string       `json:"mechanisms"`
+	Mechanisms                 *[]string      `json:"mechanisms,omitempty"`
 	Password                   string         `json:"pwd,omitempty"`
 	Roles                      []*Role        `json:"roles"`
 	ScramSha256Creds           *ScramShaCreds `json:"scramSha256Creds,omitempty"`
@@ -322,9 +322,11 @@ type Process struct {
 	BackupRestoreCertificateValidationHostname string             `json:"backupRestoreCertificateValidationHostname,omitempty"`
 	BackupRestoreCheckpointTimestamp           string             `json:"backupRestoreCheckpointTimestamp,omitempty"`
 	BackupRestoreDesiredTime                   string             `json:"backupRestoreDesiredTime,omitempty"`
+	BackupRestoreFilterList                    interface{}        `json:"backupRestoreFilterList,omitempty"`
 	BackupRestoreJobID                         string             `json:"backupRestoreJobId,omitempty"`
 	BackupRestoreURL                           string             `json:"backupRestoreUrl,omitempty"`
 	BackupRestoreOplogBaseURL                  string             `json:"backupRestoreOplogBaseUrl,omitempty"`
+	BackupRestoreOplog                         interface{}        `json:"backupRestoreOplog,omitempty"`
 	BackupRestoreRsVersion                     *int               `json:"backupRestoreRsVersion,omitempty"`
 	BackupRestoreSourceGroupID                 string             `json:"backupRestoreSourceGroupId,omitempty"`
 	BackupRestoreSourceRsID                    string             `json:"backupRestoreSourceRsId,omitempty"`
