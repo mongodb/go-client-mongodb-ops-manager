@@ -1,6 +1,6 @@
 # MongoDB Ops Manager Go Client
 
-[![GoDoc](https://img.shields.io/static/v1?label=godoc&message=reference&color=blue)](https://pkg.go.dev/go.mongodb.org/ops-manager/opsmngr)
+[![Go Reference](https://pkg.go.dev/badge/go.mongodb.org/ops-manager.svg)](https://pkg.go.dev/go.mongodb.org/ops-manager)
 ![CI](https://github.com/mongodb/go-client-mongodb-ops-manager/workflows/CI/badge.svg)
 [![Go Report Card](https://goreportcard.com/badge/go.mongodb.org/ops-manager)](https://goreportcard.com/report/go.mongodb.org/ops-manager)
 
