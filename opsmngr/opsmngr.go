@@ -63,6 +63,7 @@ type Client struct {
 	Events                 atlas.EventsService
 	OrganizationAPIKeys    atlas.APIKeysService
 	ProjectAPIKeys         atlas.ProjectAPIKeysService
+	WhitelistAPIKeys       atlas.WhitelistAPIKeysService //nolint // we keep whitelist to support OM 4.2 and 4.4
 	AccessListAPIKeys      atlas.AccessListAPIKeysService
 	Agents                 AgentsService
 	Checkpoints            CheckpointsService
@@ -137,6 +138,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Diagnostics = &DiagnosticsServiceOp{Client: c}
 	c.OrganizationAPIKeys = &atlas.APIKeysServiceOp{Client: c}
 	c.ProjectAPIKeys = &atlas.ProjectAPIKeysOp{Client: c}
+	c.WhitelistAPIKeys = &atlas.WhitelistAPIKeysServiceOp{Client: c}
 	c.AccessListAPIKeys = &atlas.AccessListAPIKeysServiceOp{Client: c}
 	c.GlobalAPIKeys = &GlobalAPIKeysServiceOp{Client: c}
 	c.GlobalAPIKeysWhitelist = &GlobalAPIKeyWhitelistsServiceOp{Client: c}
