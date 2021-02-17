@@ -23,8 +23,7 @@ client := opsmngr.NewClient(nil)
 ```
 
 The services of a client divide the API into logical chunks and correspond to
-the structure of the Ops Manager API documentation at
-https://docs.opsmanager.mongodb.com/v4.2/reference/api/.
+the structure of the [Ops Manager API documentation](https://docs.opsmanager.mongodb.com/v4.4/reference/api/).
 
 **NOTE:** Using the [context](https://godoc.org/context) package, one can easily
 pass cancellation signals and deadlines to various services of the client for
