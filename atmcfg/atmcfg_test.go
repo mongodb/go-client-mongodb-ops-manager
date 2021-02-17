@@ -695,3 +695,23 @@ func TestRestart(t *testing.T) {
 		}
 	})
 }
+
+func TestReclaimFreeSpace(t *testing.T) {
+	const clusterName = "restartTest"
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, false)
+		ReclaimFreeSpace(config, clusterName)
+		if config.Processes[0].LastCompact == "" {
+			t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[0].LastRestart)
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		ReclaimFreeSpace(config, clusterName)
+		for i := range config.Processes {
+			if config.Processes[0].LastCompact == "" {
+				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
+			}
+		}
+	})
+}
