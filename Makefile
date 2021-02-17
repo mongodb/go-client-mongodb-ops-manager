@@ -1,7 +1,7 @@
 # A Self-Documenting Makefile: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 
 SOURCE_FILES?=./...
-GOLANGCI_VERSION=v1.35.2
+GOLANGCI_VERSION=v1.37.0
 COVERAGE=coverage.out
 
 export PATH := ./bin:$(PATH)
