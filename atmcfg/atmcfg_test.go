@@ -531,6 +531,7 @@ func TestEnableMonitoring(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := EnableMonitoring(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableMonitoring() error = %v, wantErr %v", err, wantErr)
 			}
@@ -577,6 +578,7 @@ func TestDisableMonitoring(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := DisableMonitoring(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableMonitoring() error = %v, wantErr %v", err, wantErr)
 			}
@@ -623,6 +625,7 @@ func TestEnableBackup(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := EnableBackup(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableBackup() error = %v, wantErr %v", err, wantErr)
 			}
@@ -669,6 +672,7 @@ func TestDisableBackup(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := DisableBackup(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableBackup() error = %v, wantErr %v", err, wantErr)
 			}
@@ -697,7 +701,7 @@ func TestRestart(t *testing.T) {
 }
 
 func TestReclaimFreeSpace(t *testing.T) {
-	const clusterName = "restartTest"
+	const clusterName = "reclaimTest"
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, false)
 		ReclaimFreeSpace(config, clusterName)
