@@ -75,12 +75,14 @@ func setup() (client *Client, mux *http.ServeMux, teardown func()) {
 }
 
 func testMethod(t *testing.T, r *http.Request, expected string) {
+	t.Helper()
 	if expected != r.Method {
 		t.Errorf("Request method = %v, expected %v", r.Method, expected)
 	}
 }
 
 func testURLParseError(t *testing.T, err error) {
+	t.Helper()
 	if err == nil {
 		t.Errorf("Expected error to be returned")
 	}
@@ -90,18 +92,21 @@ func testURLParseError(t *testing.T, err error) {
 }
 
 func testClientDefaultBaseURL(t *testing.T, c *Client) {
+	t.Helper()
 	if c.BaseURL == nil || c.BaseURL.String() != defaultBaseURL {
 		t.Errorf("NewClient BaseURL = %v, expected %v", c.BaseURL, defaultBaseURL)
 	}
 }
 
 func testClientDefaultUserAgent(t *testing.T, c *Client) {
+	t.Helper()
 	if c.UserAgent != userAgent {
 		t.Errorf("NewClient UserAgent = %v, expected %v", c.UserAgent, userAgent)
 	}
 }
 
 func testClientDefaults(t *testing.T, c *Client) {
+	t.Helper()
 	testClientDefaultBaseURL(t, c)
 	testClientDefaultUserAgent(t, c)
 }
@@ -369,8 +374,7 @@ func TestClient_OnRequestCompleted(t *testing.T) {
 	if diff := deep.Equal(req, completedReq); diff != nil {
 		t.Error(diff)
 	}
-	expected := `{"A":"a"}`
-	if !strings.Contains(completedResp, expected) {
+	if expected := `{"A":"a"}`; !strings.Contains(completedResp, expected) {
 		t.Errorf("expected response to contain %v, Response = %v", expected, completedResp)
 	}
 }
@@ -397,9 +401,8 @@ func TestSetBaseURL(t *testing.T) {
 		t.Fatalf("New() unexpected error: %v", err)
 	}
 
-	expected := baseURL
-	if got := c.BaseURL.String(); got != expected {
-		t.Errorf("New() BaseURL = %s; expected %s", got, expected)
+	if got := c.BaseURL.String(); got != baseURL {
+		t.Errorf("New() BaseURL = %s; expected %s", got, baseURL)
 	}
 }
 
@@ -410,9 +413,8 @@ func TestSetWithRaw(t *testing.T) {
 		t.Fatalf("New() unexpected error: %v", err)
 	}
 
-	expected := true
-	if c.withRaw != expected {
-		t.Errorf("New() withRaw = %v; expected %v", c.withRaw, expected)
+	if !c.withRaw {
+		t.Errorf("New() withRaw = %v", c.withRaw)
 	}
 }
 
