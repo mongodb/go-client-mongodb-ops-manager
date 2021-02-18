@@ -39,22 +39,28 @@ library, but you can always use any other library that provides an `http.Client`
 If you have a private and public API token pair, you can use it with the digest library using:
 ```go
 import (
-    "context"
-    "log"
+	"context"
+	"log"
 
-    "github.com/mongodb-forks/digest"
-    "go.mongodb.org/ops-manager/opsmngr"
+	"github.com/mongodb-forks/digest"
+	"go.mongodb.org/ops-manager/opsmngr"
 )
 
 func main() {
-    t := digest.NewTransport("your public key", "your private key")
-    tc, err := t.Client()
-    if err != nil {
-        log.Fatalf(err.Error())
-    }
+	t := digest.NewTransport("your public key", "your private key")
+	tc, err := t.Client()
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
 
-    client := opsmngr.NewClient(tc)
-    orgs, _, err := client.Organizations.List(context.Background(), nil)
+	// Note: If no Base URL is set the client will work with the cloud manager by default
+	clientops := opsmngr.SetBaseURL("https://opsmanagerurl/" + opsmngr.APIPublicV1Path)
+	client, err := opsmngr.New(tc, clientops)
+	if err != nil {
+		log.Fatalf(err.Error())
+	}
+
+	orgs, _, err := client.Organizations.List(context.Background(), nil)
 }
 ```
 
