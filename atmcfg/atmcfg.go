@@ -419,3 +419,46 @@ func Restart(out *opsmngr.AutomationConfig, name string) {
 	restartByReplicaSetName(out, name, lastRestart)
 	restartByShardName(out, name, lastRestart)
 }
+
+// ReclaimFreeSpace sets all process of a cluster to reclaim free space
+func ReclaimFreeSpace(out *opsmngr.AutomationConfig, name string) {
+	// This value may not be present and is mandatory
+	if out.Auth.DeploymentAuthMechanisms == nil {
+		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
+	}
+	lastCompact := time.Now().Format(time.RFC3339)
+	reclaimByReplicaSetName(out, name, lastCompact)
+	reclaimByShardName(out, name, lastCompact)
+}
+
+func reclaimByReplicaSetName(out *opsmngr.AutomationConfig, name, lastCompact string) {
+	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
+		return rs.ID == name
+	})
+	if found {
+		rs := out.ReplicaSets[i]
+		for _, m := range rs.Members {
+			for k, p := range out.Processes {
+				if p.Name == m.Host {
+					out.Processes[k].LastCompact = lastCompact
+				}
+			}
+		}
+	}
+}
+
+func reclaimByShardName(out *opsmngr.AutomationConfig, name, lastCompact string) {
+	i, found := search.ShardingConfig(out.Sharding, func(s *opsmngr.ShardingConfig) bool {
+		return s.Name == name
+	})
+	if found {
+		s := out.Sharding[i]
+		// compact shards
+		for _, rs := range s.Shards {
+			reclaimByReplicaSetName(out, rs.ID, lastCompact)
+		}
+		// compact config rs
+		reclaimByReplicaSetName(out, s.ConfigServerReplica, lastCompact)
+		// compact doesn't run on mongoses
+	}
+}

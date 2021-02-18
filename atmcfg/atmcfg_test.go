@@ -20,252 +20,6 @@ import (
 	"go.mongodb.org/ops-manager/opsmngr"
 )
 
-func automationConfigWithOneReplicaSet(name string, disabled bool) *opsmngr.AutomationConfig {
-	return &opsmngr.AutomationConfig{
-		Processes: []*opsmngr.Process{
-			{
-				Args26: opsmngr.Args26{
-					NET: opsmngr.Net{
-						Port: 27017,
-					},
-					Replication: &opsmngr.Replication{
-						ReplSetName: name,
-					},
-					Sharding: nil,
-					Storage: &opsmngr.Storage{
-						DBPath: "/data/db/",
-					},
-					SystemLog: opsmngr.SystemLog{
-						Destination: "file",
-						Path:        "/data/db/mongodb.log",
-					},
-				},
-				AuthSchemaVersion:           5,
-				Name:                        name + "_0",
-				Disabled:                    disabled,
-				FeatureCompatibilityVersion: "4.2",
-				Hostname:                    "host0",
-				LogRotate: &opsmngr.LogRotate{
-					SizeThresholdMB:  1000,
-					TimeThresholdHrs: 24,
-				},
-				ProcessType: "mongod",
-				Version:     "4.2.2",
-			},
-		},
-		ReplicaSets: []*opsmngr.ReplicaSet{
-			{
-				ID:              name,
-				ProtocolVersion: "1",
-				Members: []opsmngr.Member{
-					{
-						ArbiterOnly:  false,
-						BuildIndexes: true,
-						Hidden:       false,
-						Host:         name + "_0",
-						Priority:     1,
-						SlaveDelay:   0,
-						Votes:        1,
-					},
-				},
-			},
-		},
-	}
-}
-
-func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.AutomationConfig {
-	return &opsmngr.AutomationConfig{
-		Processes: []*opsmngr.Process{
-			{
-				Args26: opsmngr.Args26{
-					NET: opsmngr.Net{
-						Port: 27017,
-					},
-					Replication: &opsmngr.Replication{
-						ReplSetName: name,
-					},
-					Sharding: nil,
-					Storage: &opsmngr.Storage{
-						DBPath: "/data/db/",
-					},
-					SystemLog: opsmngr.SystemLog{
-						Destination: "file",
-						Path:        "/data/db/mongodb.log",
-					},
-				},
-				AuthSchemaVersion:           5,
-				Name:                        name + "_shard_0_0",
-				Disabled:                    disabled,
-				FeatureCompatibilityVersion: "4.2",
-				Hostname:                    "host0",
-				LogRotate: &opsmngr.LogRotate{
-					SizeThresholdMB:  1000,
-					TimeThresholdHrs: 24,
-				},
-				ProcessType: "mongod",
-				Version:     "4.2.2",
-			},
-			{
-				Args26: opsmngr.Args26{
-					NET: opsmngr.Net{
-						Port: 27019,
-					},
-					Replication: &opsmngr.Replication{
-						ReplSetName: name + "_configRS",
-					},
-					Sharding: &opsmngr.Sharding{
-						ClusterRole: "configsvr",
-					},
-					Storage: &opsmngr.Storage{
-						DBPath: "/data/db/",
-					},
-					SystemLog: opsmngr.SystemLog{
-						Destination: "file",
-						Path:        "/data/db/mongodb.log",
-					},
-				},
-				AuthSchemaVersion:           5,
-				Name:                        name + "_configRS_0",
-				Disabled:                    disabled,
-				FeatureCompatibilityVersion: "4.2",
-				Hostname:                    "host2",
-				LogRotate: &opsmngr.LogRotate{
-					SizeThresholdMB:  1000,
-					TimeThresholdHrs: 24,
-				},
-				ProcessType: "mongod",
-				Version:     "4.2.2",
-			},
-			{
-				Args26: opsmngr.Args26{
-					NET: opsmngr.Net{
-						Port: 27018,
-					},
-					Replication: nil,
-					Sharding:    nil,
-					Storage:     nil,
-					SystemLog: opsmngr.SystemLog{
-						Destination: "file",
-						Path:        "/data/db/mongos.log",
-					},
-				},
-				AuthSchemaVersion:           5,
-				Cluster:                     name,
-				Name:                        name + "_mongos_0",
-				Disabled:                    disabled,
-				FeatureCompatibilityVersion: "4.2",
-				Hostname:                    "host1",
-				LogRotate: &opsmngr.LogRotate{
-					SizeThresholdMB:  1000,
-					TimeThresholdHrs: 24,
-				},
-				ProcessType: "mongos",
-				Version:     "4.2.2",
-			},
-		},
-		ReplicaSets: []*opsmngr.ReplicaSet{
-			{
-				ID:              name + "_shard_0",
-				ProtocolVersion: "1",
-				Members: []opsmngr.Member{
-					{
-						ArbiterOnly:  false,
-						BuildIndexes: true,
-						Hidden:       false,
-						Host:         name + "_shard_0_0",
-						Priority:     1,
-						SlaveDelay:   0,
-						Votes:        1,
-					},
-				},
-			},
-			{
-				ID:              name + "_configRS",
-				ProtocolVersion: "1",
-				Members: []opsmngr.Member{
-					{
-						ArbiterOnly:  false,
-						BuildIndexes: true,
-						Hidden:       false,
-						Host:         name + "_configRS_0",
-						Priority:     1,
-						SlaveDelay:   0,
-						Votes:        1,
-					},
-				},
-			},
-		},
-		Sharding: []*opsmngr.ShardingConfig{
-			{
-				Name:                name,
-				ConfigServerReplica: name + "_configRS",
-				Shards: []*opsmngr.Shard{
-					{
-						ID: name + "_shard_0",
-						RS: name + "_shard_0",
-					},
-				},
-			},
-		},
-	}
-}
-
-func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
-	return &opsmngr.AutomationConfig{
-		Auth: opsmngr.Auth{
-			AutoAuthMechanism: "MONGODB-CR",
-			Disabled:          true,
-			AuthoritativeSet:  false,
-			Users:             make([]*opsmngr.MongoDBUser, 0),
-		},
-	}
-}
-
-func automationConfigWithIndexConfig() *opsmngr.AutomationConfig {
-	return &opsmngr.AutomationConfig{
-		IndexConfigs: []*opsmngr.IndexConfig{
-			{
-				DBName:         "test",
-				CollectionName: "test",
-				RSName:         "myReplicaSet",
-				Key: [][]string{
-					{
-						"test", "test",
-					},
-				},
-				Options:   nil,
-				Collation: nil,
-			}},
-	}
-}
-
-func automationConfigWithMongoDBUsers() *opsmngr.AutomationConfig {
-	return &opsmngr.AutomationConfig{
-		Auth: opsmngr.Auth{
-			AutoAuthMechanism: "MONGODB-CR",
-			Disabled:          true,
-			AuthoritativeSet:  false,
-			Users: []*opsmngr.MongoDBUser{
-				mongoDBUsers(),
-			},
-		},
-	}
-}
-
-func mongoDBUsers() *opsmngr.MongoDBUser {
-	return &opsmngr.MongoDBUser{
-		Mechanisms: &[]string{"SCRAM-SHA-1"},
-		Roles: []*opsmngr.Role{
-			{
-				Role:     "test",
-				Database: "test",
-			},
-		},
-		Username: "test",
-		Database: "test",
-	}
-}
-
 const clusterName = "cluster_1"
 
 func TestShutdown(t *testing.T) {
@@ -531,6 +285,7 @@ func TestEnableMonitoring(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := EnableMonitoring(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableMonitoring() error = %v, wantErr %v", err, wantErr)
 			}
@@ -577,6 +332,7 @@ func TestDisableMonitoring(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := DisableMonitoring(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableMonitoring() error = %v, wantErr %v", err, wantErr)
 			}
@@ -623,6 +379,7 @@ func TestEnableBackup(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := EnableBackup(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableBackup() error = %v, wantErr %v", err, wantErr)
 			}
@@ -669,6 +426,7 @@ func TestDisableBackup(t *testing.T) {
 		hostname := tt.args.hostname
 		wantErr := tt.wantErr
 		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
 			if err := DisableBackup(out, hostname); (err != nil) != wantErr {
 				t.Errorf("EnableBackup() error = %v, wantErr %v", err, wantErr)
 			}
@@ -681,16 +439,43 @@ func TestRestart(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, false)
 		Restart(config, clusterName)
-		if config.Processes[0].LastRestart == "" {
-			t.Errorf("TestRestart\n got=%#v", config.Processes[0].LastRestart)
+		for i := range config.Processes {
+			if config.Processes[i].LastRestart == "" {
+				t.Errorf("TestRestart\n got=%#v", config.Processes[i].LastRestart)
+			}
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, false)
 		Restart(config, clusterName)
 		for i := range config.Processes {
-			if config.Processes[0].LastRestart == "" {
+			if config.Processes[i].LastRestart == "" {
 				t.Errorf("TestRestart\n got=%#v", config.Processes[i].LastRestart)
+			}
+		}
+	})
+}
+
+func TestReclaimFreeSpace(t *testing.T) {
+	const clusterName = "reclaimTest"
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, false)
+		ReclaimFreeSpace(config, clusterName)
+		for i := range config.Processes {
+			if config.Processes[i].LastCompact == "" {
+				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
+			}
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		ReclaimFreeSpace(config, clusterName)
+		for i := range config.Processes {
+			if config.Processes[i].ProcessType == "mongod" && config.Processes[i].LastCompact == "" {
+				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
+			}
+			if config.Processes[i].ProcessType == "mongos" && config.Processes[i].LastCompact != "" {
+				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
 			}
 		}
 	})
