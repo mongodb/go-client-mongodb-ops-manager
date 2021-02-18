@@ -459,11 +459,6 @@ func reclaimByShardName(out *opsmngr.AutomationConfig, name, lastCompact string)
 		}
 		// compact config rs
 		reclaimByReplicaSetName(out, s.ConfigServerReplica, lastCompact)
-		// compact mongos
-		for i := range out.Processes {
-			if out.Processes[i].Cluster == name {
-				out.Processes[i].LastCompact = lastCompact
-			}
-		}
+		// compact doesn't run on mongoses
 	}
 }
