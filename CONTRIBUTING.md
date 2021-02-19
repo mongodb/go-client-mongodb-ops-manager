@@ -25,7 +25,7 @@ For patches to be accepted, contributors must sign our [CLA](https://www.mongodb
 
 ### Prerequisite Tools 
 - [Git](https://git-scm.com/)
-- [Go (at least Go 1.12)](https://golang.org/dl/)
+- [Go (at least Go 1.16)](https://golang.org/dl/)
 
 ### Environment
 - Fork the repository.
@@ -48,3 +48,7 @@ We provide a git pre-commit hook to format and check the code, to install it run
 
 We scan our dependencies for vulnerabilities and incompatible licenses using [Snyk](https://snyk.io/).
 To run Snyk locally please follow their [CLI reference](https://support.snyk.io/hc/en-us/articles/360003812458-Getting-started-with-the-CLI) 
+
+## Maintainer's Guide
+
+Reviewers, please ensure that the CLA has been signed by referring to [the contributors tool](https://contributors.corp.mongodb.com/) (internal link).
