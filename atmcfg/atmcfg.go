@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Package atmcfg provides helpers for updating Ops Manager automation config.
 package atmcfg // import "go.mongodb.org/ops-manager/atmcfg"
 
 import (
