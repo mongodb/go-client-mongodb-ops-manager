@@ -193,7 +193,7 @@ var fixture = &opsmngr.AutomationConfig{
 // This example demonstrates searching a list of processes by name.
 func ExampleProcesses() {
 	a := fixture.Processes
-	x := "myReplicaSet_2"
+	const x = "myReplicaSet_2"
 	i, found := search.Processes(a, func(p *opsmngr.Process) bool { return p.Name == x })
 	if i < len(a) && found {
 		fmt.Printf("found %v at index %d\n", x, i)
@@ -207,7 +207,7 @@ func ExampleProcesses() {
 // This example demonstrates searching a list of replica sets by ID.
 func ExampleReplicaSets() {
 	a := fixture.ReplicaSets
-	x := "myReplicaSet"
+	const x = "myReplicaSet"
 	i, found := search.ReplicaSets(a, func(r *opsmngr.ReplicaSet) bool { return r.ID == x })
 	if i < len(a) && found {
 		fmt.Printf("found %v at index %d\n", x, i)
@@ -221,7 +221,7 @@ func ExampleReplicaSets() {
 // This example demonstrates searching a list of replica sets by ID.
 func ExampleShardingConfig() {
 	a := []*opsmngr.ShardingConfig{{Name: "myCluster"}}
-	x := "myCluster"
+	const x = "myCluster"
 	i, found := search.ShardingConfig(a, func(r *opsmngr.ShardingConfig) bool { return r.Name == x })
 	if i < len(a) && found {
 		fmt.Printf("found %v at index %d\n", x, i)
@@ -235,7 +235,7 @@ func ExampleShardingConfig() {
 // This example demonstrates searching a list of members by host.
 func ExampleMembers() {
 	a := fixture.ReplicaSets[0].Members
-	x := "myReplicaSet_2"
+	const x = "myReplicaSet_2"
 	i, found := search.Members(a, func(m opsmngr.Member) bool { return m.Host == x })
 	if i < len(a) && found {
 		fmt.Printf("found %v at index %d\n", x, i)
@@ -249,7 +249,7 @@ func ExampleMembers() {
 // This example demonstrates searching a list of db users by username.
 func ExampleMongoDBUsers() {
 	a := fixture.Auth.Users
-	x := "test"
+	const x = "test"
 	i, found := search.MongoDBUsers(a, func(m *opsmngr.MongoDBUser) bool { return m.Username == x })
 	if i < len(a) && found {
 		fmt.Printf("found %v at index %d\n", x, i)
@@ -263,7 +263,7 @@ func ExampleMongoDBUsers() {
 // This example demonstrates searching an index by RSName.
 func ExampleMongoDBIndexes() {
 	a := fixture
-	x := "myReplicaSet_1"
+	const x = "myReplicaSet_1"
 	i, found := search.MongoDBIndexes(a.IndexConfigs, func(r *opsmngr.IndexConfig) bool {
 		return r.RSName == x
 	})
