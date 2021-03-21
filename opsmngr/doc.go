@@ -56,7 +56,9 @@ If you have a private and public API token pair, you can use it with the digest 
 			log.Fatalf(err.Error())
 		}
 
-		client := opsmngr.NewClient(tc)
+		// Note: If no Base URL is set the client is set to work with Cloud Manager by default
+		clientops := opsmngr.SetBaseURL("https://opsmanagerurl/" + opsmngr.APIPublicV1Path)
+		client, err := opsmngr.New(tc, clientops)
 		orgs, _, err := client.Organizations.List(context.Background(), nil)
 	}
 

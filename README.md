@@ -53,7 +53,7 @@ func main() {
 		log.Fatalf(err.Error())
 	}
 
-	// Note: If no Base URL is set the client will work with the cloud manager by default
+	// Note: If no Base URL is set the client is set to work with Cloud Manager by default
 	clientops := opsmngr.SetBaseURL("https://opsmanagerurl/" + opsmngr.APIPublicV1Path)
 	client, err := opsmngr.New(tc, clientops)
 	if err != nil {
