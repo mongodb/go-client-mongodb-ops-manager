@@ -8,7 +8,7 @@ require (
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
 	github.com/stretchr/testify v1.7.0
 	github.com/xdg-go/stringprep v1.0.2
-	go.mongodb.org/atlas v0.7.3-0.20210329080711-50ae4381af6f
+	go.mongodb.org/atlas v0.7.3-0.20210406155339-368ac0d15719
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 )
