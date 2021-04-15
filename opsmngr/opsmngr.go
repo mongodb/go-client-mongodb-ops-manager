@@ -164,6 +164,18 @@ func NewClient(httpClient *http.Client) *Client {
 // ClientOpt are options for New.
 type ClientOpt func(*Client) error
 
+// Options turns a list of ClientOpt instances into a ClientOpt.
+func Options(opts ...ClientOpt) ClientOpt {
+	return func(c *Client) error {
+		for _, opt := range opts {
+			if err := opt(c); err != nil {
+				return err
+			}
+		}
+		return nil
+	}
+}
+
 // New returns a new Ops Manager API client instance.
 func New(httpClient *http.Client, opts ...ClientOpt) (*Client, error) {
 	c := NewClient(httpClient)
