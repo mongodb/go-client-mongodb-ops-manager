@@ -32,13 +32,12 @@ import (
 )
 
 const (
-	cloudURL       = "https://cloud.mongodb.com/"
-	defaultBaseURL = cloudURL + APIPublicV1Path
-	userAgent      = "go-ops-manager"
-	jsonMediaType  = "application/json"
-	gzipMediaType  = "application/gzip"
-	// APIPublicV1Path specifies the v1 api path
-	APIPublicV1Path = "api/public/v1.0/"
+	CloudURL        = atlas.CloudURL
+	APIPublicV1Path = "api/public/v1.0/" // APIPublicV1Path specifies the v1 api path
+	defaultBaseURL  = CloudURL + APIPublicV1Path
+	userAgent       = "go-ops-manager"
+	jsonMediaType   = "application/json"
+	gzipMediaType   = "application/gzip"
 )
 
 // Client manages communication with Ops Manager API
