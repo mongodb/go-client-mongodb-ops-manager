@@ -57,14 +57,14 @@ type AgentConfig struct {
 	HasPassword             *bool                   `json:"hasPassword,omitempty"`
 	Username                string                  `json:"username,omitempty"`
 	Password                string                  `json:"password,omitempty"`
-	SSLPEMKeyFile           string                  `json:"sslPEMKeyFile,omitempty"`
-	SSLPEMKeyFileWindows    string                  `json:"sslPEMKeyFileWindows,omitempty"`
-	SSLPEMKeyPwd            string                  `json:"sslPEMKeyPwd,omitempty"`
+	SSLPEMKeyFile           string                  `json:"sslPEMKeyFile,omitempty"`        //nolint:tagliatelle // correct from API
+	SSLPEMKeyFileWindows    string                  `json:"sslPEMKeyFileWindows,omitempty"` //nolint:tagliatelle // correct from API
+	SSLPEMKeyPwd            string                  `json:"sslPEMKeyPwd,omitempty"`         //nolint:tagliatelle // correct from API
 	KerberosPrincipal       string                  `json:"kerberosPrincipal,omitempty"`
 	KerberosKeytab          string                  `json:"kerberosKeytab,omitempty"`
 	KerberosWindowsUsername string                  `json:"kerberosWindowsUsername,omitempty"`
 	KerberosWindowsPassword string                  `json:"kerberosWindowsPassword,omitempty"`
-	HasSslPEMKeyPwd         *bool                   `json:"hasSslPEMKeyPwd,omitempty"`
-	LDAPGroupDN             string                  `json:"ldapGroupDN,omitempty"`
-	URLs                    *map[string]interface{} `json:"urls,omitempty"`
+	HasSslPEMKeyPwd         *bool                   `json:"hasSslPEMKeyPwd,omitempty"` //nolint:tagliatelle // correct from API
+	LDAPGroupDN             string                  `json:"ldapGroupDN,omitempty"`     //nolint:tagliatelle // correct from API
+	URLs                    *map[string]interface{} `json:"urls,omitempty"`            //nolint:tagliatelle // correct from API
 }

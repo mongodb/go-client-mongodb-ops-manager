@@ -28,7 +28,7 @@ const (
 
 // AgentAPIKey defines the structure for an Agent API key
 type AgentAPIKey struct {
-	ID            string  `json:"_id"`
+	ID            string  `json:"_id"` //nolint:tagliatelle // correct from API
 	Key           string  `json:"key"`
 	Desc          string  `json:"desc"`
 	CreatedTime   int64   `json:"createdTime"`

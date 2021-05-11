@@ -28,7 +28,7 @@ var fixture = &opsmngr.AutomationConfig{
 		AutoAuthMechanism: "MONGODB-CR",
 		Disabled:          true,
 		AuthoritativeSet:  false,
-		Users: []*opsmngr.MongoDBUser{
+		UsersWanted: []*opsmngr.MongoDBUser{
 			{
 				Mechanisms: &[]string{"SCRAM-SHA-1"},
 				Roles: []*opsmngr.Role{
@@ -248,7 +248,7 @@ func ExampleMembers() {
 
 // This example demonstrates searching a list of db users by username.
 func ExampleMongoDBUsers() {
-	a := fixture.Auth.Users
+	a := fixture.Auth.UsersWanted
 	const x = "test"
 	i, found := search.MongoDBUsers(a, func(m *opsmngr.MongoDBUser) bool { return m.Username == x })
 	if i < len(a) && found {

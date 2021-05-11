@@ -45,7 +45,7 @@ var _ BlockstoreConfigService = &BlockstoreConfigServiceOp{}
 type BackupStore struct {
 	AdminBackupConfig
 	LoadFactor    *int64 `json:"loadFactor,omitempty"`
-	MaxCapacityGB *int64 `json:"maxCapacityGB,omitempty"`
+	MaxCapacityGB *int64 `json:"maxCapacityGB,omitempty"` //nolint:tagliatelle // Bytes vs bits
 	Provisioned   *bool  `json:"provisioned,omitempty"`
 	SyncSource    string `json:"syncSource,omitempty"`
 	Username      string `json:"username,omitempty"`

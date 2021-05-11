@@ -111,7 +111,7 @@ func TestShardingConfig(t *testing.T) {
 }
 
 func TestMongoDBUsers(t *testing.T) {
-	users := fixture.Auth.Users
+	users := fixture.Auth.UsersWanted
 	t.Run("value exists", func(t *testing.T) {
 		_, e := search.MongoDBUsers(users, func(p *opsmngr.MongoDBUser) bool {
 			return p.Username == "test"

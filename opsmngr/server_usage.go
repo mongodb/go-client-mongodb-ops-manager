@@ -87,7 +87,7 @@ type HostAssignment struct {
 	Hostname     string                   `json:"hostname,omitempty"`
 	Processes    []*HostAssignmentProcess `json:"processes,omitempty"`
 	ServerType   *ServerType              `json:"serverType,omitempty"`
-	MemSizeMB    int64                    `json:"memSizeMB,omitempty"`
+	MemSizeMB    int64                    `json:"memSizeMB,omitempty"` //nolint:tagliatelle // Bytes vs bits
 	IsChargeable *bool                    `json:"isChargeable,omitempty"`
 }
 
