@@ -6,11 +6,11 @@ updates:
       interval: weekly
       day: tuesday
     reviewers:
-      - "mongodb/mongocli"
+      - "mongodb/apix"
   - package-ecosystem: github-actions
     directory: "/"
     schedule:
       interval: weekly
       day: tuesday
     reviewers:
-      - "mongodb/mongocli"
+      - "mongodb/apix"
