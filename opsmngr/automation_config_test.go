@@ -189,6 +189,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 		t.Fatalf("Automation.GetConfig returned error: %v", err)
 	}
 
+	slaveDelay := float64(0)
 	expected := &AutomationConfig{
 		Auth: Auth{
 			AutoAuthMechanism: "MONGODB-CR",
@@ -329,7 +330,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 						Hidden:       false,
 						Host:         "myReplicaSet_1",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 					{
@@ -339,7 +340,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 						Hidden:       false,
 						Host:         "myReplicaSet_2",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 					{
@@ -349,7 +350,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 						Hidden:       false,
 						Host:         "myReplicaSet_3",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 				},
@@ -368,6 +369,7 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 	defer teardown()
 
 	clusterName := "myReplicaSet"
+	slaveDelay := float64(0)
 	updateRequest := &AutomationConfig{
 		Auth: Auth{
 			AutoAuthMechanism: "MONGODB-CR",
@@ -480,7 +482,7 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 						Hidden:       false,
 						Host:         "myReplicaSet_1",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 					{
@@ -490,7 +492,7 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 						Hidden:       false,
 						Host:         "myReplicaSet_2",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 					{
@@ -500,7 +502,7 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 						Hidden:       false,
 						Host:         "myReplicaSet_3",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 				},
