@@ -10,6 +10,7 @@ const (
 )
 
 func automationConfigWithOneReplicaSet(name string, disabled bool) *opsmngr.AutomationConfig {
+	slaveDelay := float64(0)
 	return &opsmngr.AutomationConfig{
 		Processes: []*opsmngr.Process{
 			{
@@ -53,7 +54,7 @@ func automationConfigWithOneReplicaSet(name string, disabled bool) *opsmngr.Auto
 						Hidden:       false,
 						Host:         name + "_0",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 				},
@@ -65,6 +66,7 @@ func automationConfigWithOneReplicaSet(name string, disabled bool) *opsmngr.Auto
 func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.AutomationConfig {
 	configRSPort := defaultMongoPort + 1
 	mongosPort := configRSPort + 1
+	slaveDelay := float64(0)
 	return &opsmngr.AutomationConfig{
 		Processes: []*opsmngr.Process{
 			{
@@ -165,7 +167,7 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 						Hidden:       false,
 						Host:         name + "_shard_0_0",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 				},
@@ -180,7 +182,7 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 						Hidden:       false,
 						Host:         name + "_configRS_0",
 						Priority:     1,
-						SlaveDelay:   0,
+						SlaveDelay:   &slaveDelay,
 						Votes:        1,
 					},
 				},

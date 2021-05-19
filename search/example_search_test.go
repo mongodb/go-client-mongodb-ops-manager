@@ -23,6 +23,8 @@ import (
 
 const rsName = "myReplicaSet_1"
 
+var slaveDelay = float64(0)
+
 var fixture = &opsmngr.AutomationConfig{
 	Auth: opsmngr.Auth{
 		AutoAuthMechanism: "MONGODB-CR",
@@ -149,7 +151,7 @@ var fixture = &opsmngr.AutomationConfig{
 					Hidden:       false,
 					Host:         rsName,
 					Priority:     1,
-					SlaveDelay:   0,
+					SlaveDelay:   &slaveDelay,
 					Votes:        1,
 				},
 				{
@@ -159,7 +161,7 @@ var fixture = &opsmngr.AutomationConfig{
 					Hidden:       false,
 					Host:         "myReplicaSet_2",
 					Priority:     1,
-					SlaveDelay:   0,
+					SlaveDelay:   &slaveDelay,
 					Votes:        1,
 				},
 				{
@@ -169,7 +171,7 @@ var fixture = &opsmngr.AutomationConfig{
 					Hidden:       false,
 					Host:         "myReplicaSet_3",
 					Priority:     1,
-					SlaveDelay:   0,
+					SlaveDelay:   &slaveDelay,
 					Votes:        1,
 				},
 			},

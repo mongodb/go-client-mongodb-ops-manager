@@ -202,15 +202,16 @@ type ScramShaCreds struct {
 
 // Member configs
 type Member struct {
-	ID           int                     `json:"_id"` //nolint:tagliatelle // correct from API
-	ArbiterOnly  bool                    `json:"arbiterOnly"`
-	BuildIndexes bool                    `json:"buildIndexes"`
-	Hidden       bool                    `json:"hidden"`
-	Host         string                  `json:"host"`
-	Priority     float64                 `json:"priority"`
-	SlaveDelay   float64                 `json:"slaveDelay"`
-	Tags         *map[string]interface{} `json:"tags,omitempty"`
-	Votes        float64                 `json:"votes"`
+	ID                 int                     `json:"_id"` //nolint:tagliatelle // correct from API
+	ArbiterOnly        bool                    `json:"arbiterOnly"`
+	BuildIndexes       bool                    `json:"buildIndexes"`
+	Hidden             bool                    `json:"hidden"`
+	Host               string                  `json:"host"`
+	Priority           float64                 `json:"priority"`
+	SlaveDelay         *float64                `json:"slaveDelay,omitempty"`
+	SecondaryDelaySecs *float64                `json:"secondaryDelaySecs,omitempty"`
+	Tags               *map[string]interface{} `json:"tags,omitempty"`
+	Votes              float64                 `json:"votes"`
 }
 
 // ReplicaSet configs
