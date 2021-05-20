@@ -73,11 +73,11 @@ type LogCollectionJob struct {
 	ResourceName               string      `json:"resourceName,omitempty"`
 	RootResourceName           string      `json:"rootResourceName,omitempty"`
 	RootResourceType           string      `json:"rootResourceType,omitempty"`
-	URL                        string      `json:"downloadUrl,omitempty"`
+	DownloadURL                string      `json:"downloadUrl,omitempty"`
 	Redacted                   *bool       `json:"redacted,omitempty"`
 	LogTypes                   []string    `json:"logTypes,omitempty"`
 	SizeRequestedPerFileBytes  int64       `json:"sizeRequestedPerFileBytes,omitempty"`
-	UncompressedDiskSpaceBytes int64       `json:"uncompressedSizeTotalBytes,omitempty"`
+	UncompressedSizeTotalBytes int64       `json:"uncompressedSizeTotalBytes,omitempty"`
 	ChildJobs                  []*ChildJob `json:"childJobs,omitempty"` // ChildJobs included if verbose is true
 }
 

@@ -126,9 +126,9 @@ func TestNew(t *testing.T) {
 }
 
 type testRequestBody struct {
-	TestName    string `json:"testName"`
-	TestCounter int64  `json:"testCounter"`
-	TestData    string `json:"testUserData"`
+	TestName     string `json:"testName"`
+	TestCounter  int64  `json:"testCounter"`
+	TestUserData string `json:"testUserData"`
 }
 
 func TestNewRequest_withUserData(t *testing.T) {
@@ -137,7 +137,7 @@ func TestNewRequest_withUserData(t *testing.T) {
 	requestPath := "foo"
 
 	inURL, outURL := requestPath, defaultBaseURL+requestPath
-	inBody, outBody := &testRequestBody{TestName: "l", TestData: "u"},
+	inBody, outBody := &testRequestBody{TestName: "l", TestUserData: "u"},
 		`{"testName":"l","testCounter":0,`+
 			`"testUserData":"u"}`+"\n"
 	req, _ := c.NewRequest(ctx, http.MethodGet, inURL, inBody)

@@ -59,10 +59,10 @@ type Build struct {
 	MaxOSVersion       string    `json:"maxOsVersion,omitempty"`
 	MinOSVersion       string    `json:"minOsVersion,omitempty"`
 	Win2008plus        bool      `json:"win2008plus,omitempty"`
-	WinVCRedistDLL     string    `json:"winVCRedistDll,omitempty"`
-	WinVCRedistOptions []*string `json:"winVCRedistOptions,omitempty"`
-	WinVCRedistURL     string    `json:"winVCRedistUrl,omitempty"`
-	WinVCRedistVersion string    `json:"winVCRedistVersion,omitempty"`
+	WinVCRedistDLL     string    `json:"winVCRedistDll,omitempty"`     //nolint:tagliatelle // correct from API
+	WinVCRedistOptions []*string `json:"winVCRedistOptions,omitempty"` //nolint:tagliatelle // correct from API
+	WinVCRedistURL     string    `json:"winVCRedistUrl,omitempty"`     //nolint:tagliatelle // correct from API
+	WinVCRedistVersion string    `json:"winVCRedistVersion,omitempty"` //nolint:tagliatelle // correct from API
 	Flavor             string    `json:"flavor,omitempty"`
 }
 

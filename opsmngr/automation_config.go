@@ -82,10 +82,10 @@ type AutomationConfig struct {
 	LDAP                 *map[string]interface{}   `json:"ldap,omitempty"`
 	MongoDBToolsVersion  *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
 	MongoDBVersions      []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
-	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds"`
+	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds"` //nolint:tagliatelle // correct from API
 	MonitoringVersions   []*ConfigVersion          `json:"monitoringVersions,omitempty"`
 	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules"`
-	MongoTS              []*map[string]interface{} `json:"mongots"`
+	Mongots              []*map[string]interface{} `json:"mongots"`
 	Options              *map[string]interface{}   `json:"options"`
 	Processes            []*Process                `json:"processes"`
 	ReplicaSets          []*ReplicaSet             `json:"replicaSets"`
@@ -115,45 +115,45 @@ type ShardingConfig struct {
 
 // Shard details
 type Shard struct {
-	ID   string   `json:"_id"`
+	ID   string   `json:"_id"` //nolint:tagliatelle // correct from API
 	RS   string   `json:"rs"`
 	Tags []string `json:"tags"`
 }
 
 // IndexConfig represents a new index requests for a given database and collection.
 type IndexConfig struct {
-	DBName         string                  `json:"dbName"`              // Database that is indexed
-	CollectionName string                  `json:"collectionName"`      // Collection that is indexed
-	RSName         string                  `json:"rsName"`              // The replica set that the index is built on
-	Key            [][]string              `json:"key"`                 // Keys array of keys to index and their type, sorting of keys is important for an index
+	DBName         string                  `json:"dbName"`              // DBName of the database that is indexed
+	CollectionName string                  `json:"collectionName"`      // CollectionName that is indexed
+	RSName         string                  `json:"rsName"`              // RSName that the index is built on
+	Key            [][]string              `json:"key"`                 // Key array of keys to index and their type, sorting of keys is important for an index
 	Options        *atlas.IndexOptions     `json:"options,omitempty"`   // Options MongoDB index options
 	Collation      *atlas.CollationOptions `json:"collation,omitempty"` // Collation Mongo collation index options
 }
 
 // SSL config properties
 type SSL struct {
-	AutoPEMKeyFilePath    string `json:"autoPEMKeyFilePath,omitempty"`
-	CAFilePath            string `json:"CAFilePath,omitempty"`
+	AutoPEMKeyFilePath    string `json:"autoPEMKeyFilePath,omitempty"` //nolint:tagliatelle // correct from API
+	CAFilePath            string `json:"CAFilePath,omitempty"`         //nolint:tagliatelle // correct from API
 	ClientCertificateMode string `json:"clientCertificateMode,omitempty"`
 }
 
 // Auth authentication config
 type Auth struct {
-	AuthoritativeSet         bool           `json:"authoritativeSet"`             // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of Users
+	AuthoritativeSet         bool           `json:"authoritativeSet"`             // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of UsersWanted
 	AutoAuthMechanism        string         `json:"autoAuthMechanism"`            // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
 	AutoAuthMechanisms       []string       `json:"autoAuthMechanisms,omitempty"` // AutoAuthMechanisms is a list of auth mechanisms the Automation Agent is able to use
 	AutoAuthRestrictions     []interface{}  `json:"autoAuthRestrictions"`
 	AutoKerberosKeytabPath   string         `json:"autoKerberosKeytabPath,omitempty"`
-	AutoLdapGroupDN          string         `json:"autoLdapGroupDN,omitempty"`
+	AutoLdapGroupDN          string         `json:"autoLdapGroupDN,omitempty"`          //nolint:tagliatelle // AutoLdapGroupDN follows go convention while tag is correct from API
 	AutoPwd                  string         `json:"autoPwd,omitempty"`                  // AutoPwd is a required field when going from `Disabled=false` to `Disabled=true`
 	AutoUser                 string         `json:"autoUser,omitempty"`                 // AutoUser is the MongoDB Automation Agent user, when x509 is enabled, it should be set to the subject of the AA's certificate
 	DeploymentAuthMechanisms []string       `json:"deploymentAuthMechanisms,omitempty"` // DeploymentAuthMechanisms is a list of possible auth mechanisms that can be used within deployments
 	Disabled                 bool           `json:"disabled"`
-	Key                      string         `json:"key,omitempty"`            // Key is the contents of the KeyFile, the automation agent will ensure this a KeyFile with these contents exists at the `KeyFile` path
-	KeyFile                  string         `json:"keyfile,omitempty"`        // KeyFile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
-	KeyFileWindows           string         `json:"keyfileWindows,omitempty"` // KeyFileWindows is required if `Disabled=false` even if the value is not used
-	UsersDelete              []*MongoDBUser `json:"usersDeleted"`
-	Users                    []*MongoDBUser `json:"usersWanted"` // Users is a list which contains the desired users at the project level.
+	Key                      string         `json:"key,omitempty"`            // Key is the contents of the Keyfile, the automation agent will ensure this a Keyfile with these contents exists at the `Keyfile` path
+	Keyfile                  string         `json:"keyfile,omitempty"`        // Keyfile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
+	KeyfileWindows           string         `json:"keyfileWindows,omitempty"` // KeyfileWindows is required if `Disabled=false` even if the value is not used
+	UsersDeleted             []*MongoDBUser `json:"usersDeleted"`
+	UsersWanted              []*MongoDBUser `json:"usersWanted"` // UsersWanted is a list which contains the desired users at the project level.
 }
 
 // Args26 part of the internal Process struct
@@ -176,20 +176,20 @@ type Args26 struct {
 type MongoDBUser struct {
 	AuthenticationRestrictions []string       `json:"authenticationRestrictions"`
 	CustomData                 interface{}    `json:"customData,omitempty"`
-	Database                   string         `json:"db"`
+	Database                   string         `json:"db"`                //nolint:tagliatelle // Database is a better name
 	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
 	Mechanisms                 *[]string      `json:"mechanisms,omitempty"`
-	Password                   string         `json:"pwd,omitempty"`
+	Password                   string         `json:"pwd,omitempty"` //nolint:tagliatelle // Password is a better name than just pwd
 	Roles                      []*Role        `json:"roles"`
 	ScramSha256Creds           *ScramShaCreds `json:"scramSha256Creds,omitempty"`
 	ScramSha1Creds             *ScramShaCreds `json:"scramSha1Creds,omitempty"`
-	Username                   string         `json:"user"`
+	Username                   string         `json:"user"` //nolint:tagliatelle // Username is a better name than just user
 }
 
 // Role of a database user
 type Role struct {
 	Role     string `json:"role"`
-	Database string `json:"db"`
+	Database string `json:"db"` //nolint:tagliatelle // Database is a better name than just db
 }
 
 // ScramShaCreds configuration
@@ -202,21 +202,21 @@ type ScramShaCreds struct {
 
 // Member configs
 type Member struct {
-	ID                 int                     `json:"_id"`
+	ID                 int                     `json:"_id"` //nolint:tagliatelle // correct from API
 	ArbiterOnly        bool                    `json:"arbiterOnly"`
 	BuildIndexes       bool                    `json:"buildIndexes"`
 	Hidden             bool                    `json:"hidden"`
 	Host               string                  `json:"host"`
 	Priority           float64                 `json:"priority"`
-	SlaveDelay         *float64                `json:"slaveDelay,omitempty"`
-	SecondaryDelaySecs *float64                `json:"secondaryDelaySecs,omitempty"`
+	SlaveDelay         *float64                `json:"slaveDelay,omitempty"`         // Deprecated: since 5.0+ use SecondaryDelaySecs instead
+	SecondaryDelaySecs *float64                `json:"secondaryDelaySecs,omitempty"` // SecondaryDelaySecs replaces SlaveDelay since 5.0+
 	Tags               *map[string]interface{} `json:"tags,omitempty"`
 	Votes              float64                 `json:"votes"`
 }
 
 // ReplicaSet configs
 type ReplicaSet struct {
-	ID                                 string                  `json:"_id"`
+	ID                                 string                  `json:"_id"` //nolint:tagliatelle // correct from API
 	ProtocolVersion                    string                  `json:"protocolVersion,omitempty"`
 	Members                            []Member                `json:"members"`
 	Settings                           *map[string]interface{} `json:"settings,omitempty"`
@@ -225,18 +225,18 @@ type ReplicaSet struct {
 
 // TLS defines TLS parameters for Net
 type TLS struct {
-	CAFile                     string `json:"CAFile,omitempty"`
+	CAFile                     string `json:"CAFile,omitempty"` //nolint:tagliatelle // correct from API
 	CertificateKeyFile         string `json:"certificateKeyFile,omitempty"`
 	CertificateKeyFilePassword string `json:"certificateKeyFilePassword,omitempty"`
 	CertificateSelector        string `json:"certificateSelector,omitempty"`
 	ClusterCertificateSelector string `json:"clusterCertificateSelector,omitempty"`
 	ClusterFile                string `json:"clusterFile,omitempty"`
 	ClusterPassword            string `json:"clusterPassword,omitempty"`
-	CRLFile                    string `json:"CRLFile,omitempty"`
+	CRLFile                    string `json:"CRLFile,omitempty"` //nolint:tagliatelle // correct from API
 	DisabledProtocols          string `json:"disabledProtocols,omitempty"`
-	FIPSMode                   string `json:"FIPSMode,omitempty"`
+	FIPSMode                   string `json:"FIPSMode,omitempty"` //nolint:tagliatelle // correct from API
 	Mode                       string `json:"mode,omitempty"`
-	PEMKeyFile                 string `json:"PEMKeyFile,omitempty"`
+	PEMKeyFile                 string `json:"PEMKeyFile,omitempty"` //nolint:tagliatelle // correct from API
 }
 
 // Net part of the internal Process struct
@@ -244,28 +244,29 @@ type Net struct {
 	BindIP                 *string                 `json:"bindIp,omitempty"`
 	BindIPAll              *bool                   `json:"bindIpAll,omitempty"`
 	Compression            *map[string]interface{} `json:"compression,omitempty"`
-	HTTP                   *map[string]interface{} `json:"journal,omitempty"`
+	HTTP                   *map[string]interface{} `json:"http,omitempty"` // Deprecated: deprecated since 3.2 and removed in 3.6
 	IPV6                   *bool                   `json:"ipv6,omitempty"`
 	ListenBacklog          string                  `json:"listenBacklog,omitempty"`
 	MaxIncomingConnections *int                    `json:"maxIncomingConnections,omitempty"`
 	Port                   int                     `json:"port,omitempty"`
 	ServiceExecutor        string                  `json:"serviceExecutor,omitempty"`
-	SSL                    *TLS                    `json:"ssl,omitempty"`
+	SSL                    *TLS                    `json:"ssl,omitempty"` // Deprecated: deprecated since 4.4 use TLS instead
 	TLS                    *TLS                    `json:"tls,omitempty"`
 	TransportLayer         string                  `json:"transportLayer,omitempty"`
+	UnixDomainSocket       *map[string]interface{} `json:"unixDomainSocket,omitempty"`
 }
 
 // Storage part of the internal Process struct
 type Storage struct {
 	DBPath                 string                  `json:"dbPath,omitempty"`
-	DirectoryPerDB         *bool                   `json:"directoryPerDB,omitempty"`
+	DirectoryPerDB         *bool                   `json:"directoryPerDB,omitempty"` //nolint:tagliatelle // DirectoryPerDB follows go convention while directoryPerDB is correct from API
 	Engine                 string                  `json:"engine,omitempty"`
 	IndexBuildRetry        *bool                   `json:"indexBuildRetry,omitempty"`
 	InMemory               *map[string]interface{} `json:"inMemory,omitempty"`
 	Journal                *map[string]interface{} `json:"journal,omitempty"`
 	NSSize                 *int                    `json:"nsSize,omitempty"`
 	OplogMinRetentionHours *float64                `json:"oplogMinRetentionHours,omitempty"`
-	PreAllocDataFiles      *bool                   `json:"preallocDataFiles,omitempty"`
+	PreallocDataFiles      *bool                   `json:"preallocDataFiles,omitempty"`
 	Quota                  *map[string]interface{} `json:"quota,omitempty"`
 	RepairPath             string                  `json:"repairPath,omitempty"`
 	SmallFiles             *bool                   `json:"smallFiles,omitempty"`
@@ -276,7 +277,7 @@ type Storage struct {
 // Replication is part of the internal Process struct
 type Replication struct {
 	EnableMajorityReadConcern *bool  `json:"enableMajorityReadConcern,omitempty"`
-	OplogSizeMB               *int   `json:"oplogSizeMB,omitempty"`
+	OplogSizeMB               *int   `json:"oplogSizeMB,omitempty"` //nolint:tagliatelle // Bytes vs bits
 	ReplSetName               string `json:"replSetName,omitempty"`
 }
 
@@ -310,14 +311,14 @@ type AuditLog struct {
 
 // LogRotate part of the internal Process struct
 type LogRotate struct {
-	SizeThresholdMB  float64 `json:"sizeThresholdMB,omitempty"`
+	SizeThresholdMB  float64 `json:"sizeThresholdMB,omitempty"` //nolint:tagliatelle // Bytes vs bits
 	TimeThresholdHrs int     `json:"timeThresholdHrs,omitempty"`
 }
 
 // Process represents a single process in a deployment
 type Process struct {
 	Alias                                      string             `json:"alias,omitempty"`
-	Args26                                     Args26             `json:"args2_6"`
+	Args26                                     Args26             `json:"args2_6"` //nolint:tagliatelle // correct from API
 	AuthSchemaVersion                          int                `json:"authSchemaVersion,omitempty"`
 	BackupPITRestoreType                       string             `json:"backupPitRestoreType,omitempty"`
 	BackupRestoreCertificateValidationHostname string             `json:"backupRestoreCertificateValidationHostname,omitempty"`
@@ -331,8 +332,8 @@ type Process struct {
 	BackupRestoreRsVersion                     *int               `json:"backupRestoreRsVersion,omitempty"`
 	BackupRestoreSourceGroupID                 string             `json:"backupRestoreSourceGroupId,omitempty"`
 	BackupRestoreSourceRsID                    string             `json:"backupRestoreSourceRsId,omitempty"`
-	BackupRestoreSystemRolesUUID               string             `json:"backupRestoreSystemRolesUUID,omitempty"`
-	BackupRestoreSystemUsersUUID               string             `json:"backupRestoreSystemUsersUUID,omitempty"`
+	BackupRestoreSystemRolesUUID               string             `json:"backupRestoreSystemRolesUUID,omitempty"` //nolint:tagliatelle // correct from API
+	BackupRestoreSystemUsersUUID               string             `json:"backupRestoreSystemUsersUUID,omitempty"` //nolint:tagliatelle // correct from API
 	BackupRestoreVerificationKey               string             `json:"backupRestoreVerificationKey,omitempty"`
 	CPUAffinity                                []int              `json:"cpuAffinity,omitempty"`
 	Cluster                                    string             `json:"cluster,omitempty"`

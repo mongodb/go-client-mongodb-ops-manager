@@ -172,7 +172,7 @@ func TestAddUser(t *testing.T) {
 	config := automationConfigWithoutMongoDBUsers()
 	u := mongoDBUsers()
 	AddUser(config, u)
-	if len(config.Auth.Users) != 1 {
+	if len(config.Auth.UsersWanted) != 1 {
 		t.Error("User not added\n")
 	}
 }
@@ -185,7 +185,7 @@ func TestRemoveUser(t *testing.T) {
 		if err != nil {
 			t.Fatalf("RemoveUser unexpecter err: %#v\n", err)
 		}
-		if len(config.Auth.Users) != 0 {
+		if len(config.Auth.UsersWanted) != 0 {
 			t.Error("User not removed\n")
 		}
 	})
@@ -221,12 +221,12 @@ func TestEnableMechanism(t *testing.T) {
 			t.Error("config.Auth.Auto* not set\n")
 		}
 
-		if config.Auth.Key == "" || config.Auth.KeyFileWindows == "" || config.Auth.KeyFile == "" {
+		if config.Auth.Key == "" || config.Auth.KeyfileWindows == "" || config.Auth.Keyfile == "" {
 			t.Error("config.Auth.Key* not set\n")
 		}
 
-		if len(config.Auth.Users) != 0 {
-			t.Errorf("expected 0 user got: %d\n", len(config.Auth.Users))
+		if len(config.Auth.UsersWanted) != 0 {
+			t.Errorf("expected 0 user got: %d\n", len(config.Auth.UsersWanted))
 		}
 	})
 }

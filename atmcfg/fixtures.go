@@ -209,7 +209,7 @@ func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
 			AutoAuthMechanism: "MONGODB-CR",
 			Disabled:          true,
 			AuthoritativeSet:  false,
-			Users:             make([]*opsmngr.MongoDBUser, 0),
+			UsersWanted:       make([]*opsmngr.MongoDBUser, 0),
 		},
 	}
 }
@@ -238,7 +238,7 @@ func automationConfigWithMongoDBUsers() *opsmngr.AutomationConfig {
 			AutoAuthMechanism: "MONGODB-CR",
 			Disabled:          true,
 			AuthoritativeSet:  false,
-			Users: []*opsmngr.MongoDBUser{
+			UsersWanted: []*opsmngr.MongoDBUser{
 				mongoDBUsers(),
 			},
 		},

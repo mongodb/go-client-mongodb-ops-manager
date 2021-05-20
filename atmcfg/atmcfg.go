@@ -188,7 +188,7 @@ func removeByShardName(out *opsmngr.AutomationConfig, name string) {
 
 // AddUser adds a opsmngr.MongoDBUser to the opsmngr.AutomationConfi
 func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
-	out.Auth.Users = append(out.Auth.Users, u)
+	out.Auth.UsersWanted = append(out.Auth.UsersWanted, u)
 }
 
 // ConfigureScramCredentials creates both SCRAM-SHA-1 and SCRAM-SHA-256 credentials.
@@ -292,13 +292,13 @@ func compareIndexConfig(newIndex *opsmngr.IndexConfig) func(index *opsmngr.Index
 
 // RemoveUser removes a MongoDBUser from the authentication config
 func RemoveUser(out *opsmngr.AutomationConfig, username, database string) error {
-	pos, found := search.MongoDBUsers(out.Auth.Users, func(p *opsmngr.MongoDBUser) bool {
+	pos, found := search.MongoDBUsers(out.Auth.UsersWanted, func(p *opsmngr.MongoDBUser) bool {
 		return p.Username == username && p.Database == database
 	})
 	if !found {
 		return fmt.Errorf("user '%s' not found for '%s'", username, database)
 	}
-	out.Auth.Users = append(out.Auth.Users[:pos], out.Auth.Users[pos+1:]...)
+	out.Auth.UsersWanted = append(out.Auth.UsersWanted[:pos], out.Auth.UsersWanted[pos+1:]...)
 	return nil
 }
 
@@ -342,11 +342,11 @@ func EnableMechanism(out *opsmngr.AutomationConfig, m []string) error {
 			return err
 		}
 	}
-	if out.Auth.KeyFile == "" {
-		out.Auth.KeyFile = atmAgentKeyFilePathInContainer
+	if out.Auth.Keyfile == "" {
+		out.Auth.Keyfile = atmAgentKeyFilePathInContainer
 	}
-	if out.Auth.KeyFileWindows == "" {
-		out.Auth.KeyFileWindows = atmAgentWindowsKeyFilePath
+	if out.Auth.KeyfileWindows == "" {
+		out.Auth.KeyfileWindows = atmAgentWindowsKeyFilePath
 	}
 
 	return nil

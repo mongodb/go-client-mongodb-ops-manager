@@ -125,14 +125,14 @@ func TestLogs_List(t *testing.T) {
 				ResourceName:     "myReplicaSet",
 				RootResourceName: "myReplicaSet",
 				RootResourceType: "replicaset",
-				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+				DownloadURL:      "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 				Redacted:         &redacted,
 				LogTypes: []string{
 					"AUTOMATION_AGENT",
 					"MONGODB",
 				},
 				SizeRequestedPerFileBytes:  1000,
-				UncompressedDiskSpaceBytes: 63326,
+				UncompressedSizeTotalBytes: 63326,
 				ChildJobs: []*ChildJob{
 					{
 						AutomationAgentID:          "5c810cc4ff7a256345ff97bf",
@@ -158,7 +158,7 @@ func TestLogs_List(t *testing.T) {
 				ResourceName:     "myReplicaSet",
 				RootResourceName: "myReplicaSet",
 				RootResourceType: "replicaset",
-				URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+				DownloadURL:      "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 				Redacted:         &redacted,
 				LogTypes: []string{
 					"MONGODB",
@@ -166,7 +166,7 @@ func TestLogs_List(t *testing.T) {
 					"AUTOMATION_AGENT",
 				},
 				SizeRequestedPerFileBytes:  1000,
-				UncompressedDiskSpaceBytes: 44518,
+				UncompressedSizeTotalBytes: 44518,
 				ChildJobs: []*ChildJob{
 					{
 						AutomationAgentID:          "5c81086e014b76a3d85e1117",
@@ -258,14 +258,14 @@ func TestLogs_Get(t *testing.T) {
 		ResourceName:     "myReplicaSet",
 		RootResourceName: "myReplicaSet",
 		RootResourceType: "replicaset",
-		URL:              "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
+		DownloadURL:      "https://127.0.0.1:8080/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/logCollectionJobs?verbose=true&pageNum=1&itemsPerPage=100",
 		Redacted:         &redacted,
 		LogTypes: []string{
 			"AUTOMATION_AGENT",
 			"MONGODB",
 		},
 		SizeRequestedPerFileBytes:  1000,
-		UncompressedDiskSpaceBytes: 63326,
+		UncompressedSizeTotalBytes: 63326,
 		ChildJobs: []*ChildJob{
 			{
 				AutomationAgentID:          "5c810cc4ff7a256345ff97bf",

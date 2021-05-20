@@ -556,7 +556,7 @@ func TestAutomation_MongoDBUserNoMechanism(t *testing.T) {
 			AuthoritativeSet:  false,
 			AutoAuthMechanism: "MONGODB-CR",
 			Disabled:          true,
-			Users: []*MongoDBUser{
+			UsersWanted: []*MongoDBUser{
 				{
 					Database: "admin",
 				},
@@ -598,7 +598,7 @@ func TestAutomation_MongoDBUserEmptyMechanism(t *testing.T) {
 			AuthoritativeSet:  false,
 			AutoAuthMechanism: "MONGODB-CR",
 			Disabled:          true,
-			Users: []*MongoDBUser{
+			UsersWanted: []*MongoDBUser{
 				{
 					Database:   "admin",
 					Mechanisms: &[]string{},
@@ -620,7 +620,7 @@ func TestAutomation_UpdateMongoDBUserEmptyMechanism(t *testing.T) {
 			AuthoritativeSet:  false,
 			AutoAuthMechanism: "MONGODB-CR",
 			Disabled:          true,
-			Users: []*MongoDBUser{
+			UsersWanted: []*MongoDBUser{
 				{
 					Database:   "admin",
 					Mechanisms: &[]string{},
