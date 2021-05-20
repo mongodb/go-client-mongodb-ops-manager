@@ -208,8 +208,8 @@ type Member struct {
 	Hidden             bool                    `json:"hidden"`
 	Host               string                  `json:"host"`
 	Priority           float64                 `json:"priority"`
-	SlaveDelay         *float64                `json:"slaveDelay,omitempty"`
-	SecondaryDelaySecs *float64                `json:"secondaryDelaySecs,omitempty"`
+	SlaveDelay         *float64                `json:"slaveDelay,omitempty"`         // Deprecated: since 5.0+ use SecondaryDelaySecs instead
+	SecondaryDelaySecs *float64                `json:"secondaryDelaySecs,omitempty"` // SecondaryDelaySecs replaces SlaveDelay since 5.0+
 	Tags               *map[string]interface{} `json:"tags,omitempty"`
 	Votes              float64                 `json:"votes"`
 }

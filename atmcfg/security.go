@@ -126,7 +126,7 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 		return nil, fmt.Errorf("salt should have a size of %v bytes, but instead has a size of %v bytes", hashSize-rfc5802MandatedSaltSize, len(salt))
 	}
 
-	startKey := append(salt, 0, 0, 0, 1) //nolint:gocritic // this is assigment is correct
+	startKey := append(salt, 0, 0, 0, 1) //nolint:gocritic // startKey is a copy of salt plus extra values
 	result := make([]byte, hashSize)
 
 	hmacHash := hmac.New(f, input)
