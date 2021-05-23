@@ -34,12 +34,12 @@ type DiagnosticsService interface {
 	Get(context.Context, string, *DiagnosticsListOpts, io.Writer) (*atlas.Response, error)
 }
 
-// DiagnosticsServiceOp provides an implementation of the DiagnosticsService interface
+// DiagnosticsServiceOp provides an implementation of the DiagnosticsService interface.
 type DiagnosticsServiceOp struct {
 	Client atlas.GZipRequestDoer
 }
 
-// DiagnosticsListOpts query options for getting the archive
+// DiagnosticsListOpts query options for getting the archive.
 type DiagnosticsListOpts struct {
 	Limit   int64 `json:"limit,omitempty"`
 	Minutes int64 `json:"minutes,omitempty"`

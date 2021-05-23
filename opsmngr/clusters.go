@@ -35,7 +35,7 @@ type ClustersService interface {
 	ListAll(ctx context.Context) (*AllClustersProjects, *atlas.Response, error)
 }
 
-// ClustersServiceOp provides an implementation of the ClustersService interface
+// ClustersServiceOp provides an implementation of the ClustersService interface.
 type ClustersServiceOp service
 
 // List all clusters for a project

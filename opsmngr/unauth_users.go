@@ -27,12 +27,12 @@ const (
 	unauthUsersBasePath = "unauth/users"
 )
 
-// UnauthUsersService is an interface for interfacing with unauthenticated APIs
+// UnauthUsersService is an interface for interfacing with unauthenticated APIs.
 type UnauthUsersService interface {
 	CreateFirstUser(context.Context, *User, *WhitelistOpts) (*CreateUserResponse, *atlas.Response, error)
 }
 
-// UnauthUsersServiceOp handles communication with the unauthenticated API
+// UnauthUsersServiceOp handles communication with the unauthenticated API.
 type UnauthUsersServiceOp service
 
 // CreateFirstUser creates the first user for a new installation.
@@ -64,12 +64,12 @@ func (s *UnauthUsersServiceOp) CreateFirstUser(ctx context.Context, user *User, 
 	return root, resp, err
 }
 
-// WhitelistOpts allows access from given IPs
+// WhitelistOpts allows access from given IPs.
 type WhitelistOpts struct {
 	Whitelist []string `url:"whitelist"`
 }
 
-// CreateUserResponse API response for the CreateFirstUser() call
+// CreateUserResponse API response for the CreateFirstUser() call.
 type CreateUserResponse struct {
 	APIKey             string       `json:"apiKey,omitempty"`
 	ProgrammaticAPIKey atlas.APIKey `json:"programmaticApiKey,omitempty"`

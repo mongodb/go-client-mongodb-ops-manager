@@ -36,7 +36,7 @@ type AutomationService interface {
 	GetStatus(context.Context, string) (*AutomationStatus, *atlas.Response, error)
 }
 
-// AutomationServiceOp provides an implementation of the AutomationService interface
+// AutomationServiceOp provides an implementation of the AutomationService interface.
 type AutomationServiceOp service
 
 var _ AutomationService = new(AutomationServiceOp)

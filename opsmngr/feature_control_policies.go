@@ -36,12 +36,12 @@ type FeatureControlPoliciesService interface {
 	ListSupportedPolicies(context.Context, *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error)
 }
 
-// AgentsServiceOp provides an implementation of the AgentsService interface
+// AgentsServiceOp provides an implementation of the AgentsService interface.
 type FeatureControlPoliciesServiceOp service
 
 var _ FeatureControlPoliciesService = new(FeatureControlPoliciesServiceOp)
 
-// Agent represents an Ops Manager agent
+// Agent represents an Ops Manager agent.
 type FeaturePolicy struct {
 	Created                  string                    `json:"created,omitempty"`
 	Updated                  string                    `json:"updated,omitempty"`
@@ -49,14 +49,14 @@ type FeaturePolicy struct {
 	Policies                 []*Policy                 `json:"policies,omitempty"`
 }
 
-// ExternalManagementSystem contains parameters for the external system that manages this Ops Manager Project
+// ExternalManagementSystem contains parameters for the external system that manages this Ops Manager Project.
 type ExternalManagementSystem struct {
 	Name     string `json:"name"`
 	SystemID string `json:"systemId,omitempty"`
 	Version  string `json:"version,omitempty"`
 }
 
-// Policy contains policies that the external system applies to this Ops Manager Project
+// Policy contains policies that the external system applies to this Ops Manager Project.
 type Policy struct {
 	Policy         string   `json:"policy,omitempty"`
 	DisabledParams []string `json:"disabledParams,omitempty"`

@@ -22,7 +22,7 @@ import (
 
 const asciiMax = 127
 
-// generateRandomASCIIString generate a random string of printable ASCII characters
+// generateRandomASCIIString generate a random string of printable ASCII characters.
 func generateRandomASCIIString(length int) (string, error) {
 	result := ""
 	for {
@@ -42,7 +42,7 @@ func generateRandomASCIIString(length int) (string, error) {
 	}
 }
 
-// generateRandomBase64String generate a random ASCII string encoded using base64
+// generateRandomBase64String generate a random ASCII string encoded using base64.
 func generateRandomBase64String(length int) (string, error) {
 	result, err := generateRandomASCIIString(length)
 	return base64.StdEncoding.EncodeToString([]byte(result))[:length], err

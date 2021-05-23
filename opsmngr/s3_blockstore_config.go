@@ -36,12 +36,12 @@ type S3BlockstoreConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// S3BlockstoreConfigServiceOp provides an implementation of the S3BlockstoreConfigServiceinterface
+// S3BlockstoreConfigServiceOp provides an implementation of the S3BlockstoreConfigServiceinterface.
 type S3BlockstoreConfigServiceOp service
 
 var _ S3BlockstoreConfigService = &S3BlockstoreConfigServiceOp{}
 
-// S3Blockstore represents a S3Blockstore in the MongoDB Ops Manager API
+// S3Blockstore represents a S3Blockstore in the MongoDB Ops Manager API.
 type S3Blockstore struct {
 	BackupStore
 	AWSAccessKey           string `json:"awsAccessKey,omitempty"`
@@ -56,7 +56,7 @@ type S3Blockstore struct {
 	PathStyleAccessEnabled *bool  `json:"pathStyleAccessEnabled"`
 }
 
-// S3Blockstores represents a paginated collection of S3Blockstore
+// S3Blockstores represents a paginated collection of S3Blockstore.
 type S3Blockstores struct {
 	Links      []*atlas.Link   `json:"links"`
 	Results    []*S3Blockstore `json:"results"`

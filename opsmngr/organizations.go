@@ -38,7 +38,7 @@ type OrganizationsService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// OrganizationsServiceOp provides an implementation of the OrganizationsService interface
+// OrganizationsServiceOp provides an implementation of the OrganizationsService interface.
 type OrganizationsServiceOp service
 
 var _ OrganizationsService = &OrganizationsServiceOp{}

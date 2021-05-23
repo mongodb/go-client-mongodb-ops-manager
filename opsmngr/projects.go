@@ -41,7 +41,7 @@ type ProjectsService interface {
 	GetTeams(context.Context, string, *atlas.ListOptions) (*atlas.TeamsAssigned, *atlas.Response, error)
 }
 
-// ProjectsServiceOp provides an implementation of the ProjectsService interface
+// ProjectsServiceOp provides an implementation of the ProjectsService interface.
 type ProjectsServiceOp service
 
 var _ ProjectsService = &ProjectsServiceOp{}
@@ -82,7 +82,7 @@ type Project struct {
 	Tags              []*string           `json:"tags,omitempty"`
 }
 
-// Projects represents a array of project
+// Projects represents a array of project.
 type Projects struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Project    `json:"results"`

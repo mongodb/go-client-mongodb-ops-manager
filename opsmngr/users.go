@@ -37,12 +37,12 @@ type UsersService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// UsersServiceOp provides an implementation of the UsersService interface
+// UsersServiceOp provides an implementation of the UsersService interface.
 type UsersServiceOp service
 
 var _ UsersService = &UsersServiceOp{}
 
-// User wrapper for a user response, augmented with a few extra fields
+// User wrapper for a user response, augmented with a few extra fields.
 type User struct {
 	ID           string        `json:"id,omitempty"`
 	EmailAddress string        `json:"emailAddress,omitempty"`
@@ -57,14 +57,14 @@ type User struct {
 	Country      string        `json:"country,omitempty"`
 }
 
-// UserRole denotes a single user role
+// UserRole denotes a single user role.
 type UserRole struct {
 	RoleName string `json:"roleName"`
 	GroupID  string `json:"groupId,omitempty"`
 	OrgID    string `json:"orgId,omitempty"`
 }
 
-// UsersResponse represents a array of users
+// UsersResponse represents a array of users.
 type UsersResponse struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*User       `json:"results"`

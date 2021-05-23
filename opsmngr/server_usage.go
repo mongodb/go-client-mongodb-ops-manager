@@ -44,7 +44,7 @@ type ServerUsageService interface {
 	UpdateOrganizationServerType(context.Context, string, *ServerTypeRequest) (*atlas.Response, error)
 }
 
-// ServerUsageServiceOp provides an implementation of the ServerUsageService
+// ServerUsageServiceOp provides an implementation of the ServerUsageService.
 type ServerUsageServiceOp service
 
 var _ ServerUsageService = &ServerUsageServiceOp{}
@@ -58,7 +58,7 @@ type ServerUsageReportService interface {
 }
 
 // LogsServiceOp handles communication with the Log Collection Jobs download method of the
-// MongoDB Ops Manager API
+// MongoDB Ops Manager API.
 type ServerUsageReportServiceOp struct {
 	Client atlas.GZipRequestDoer
 }
@@ -74,14 +74,14 @@ type ServerTypeOptions struct {
 	FileFormat string `url:"fileFormat,omitempty"`
 }
 
-// HostAssignments represents a paginated collection of HostAssignment
+// HostAssignments represents a paginated collection of HostAssignment.
 type HostAssignments struct {
 	Links      []*atlas.Link     `json:"links"`
 	Results    []*HostAssignment `json:"results"`
 	TotalCount int               `json:"totalCount"`
 }
 
-// HostAssignment represents a HostAssignment in the MongoDB Ops Manager API
+// HostAssignment represents a HostAssignment in the MongoDB Ops Manager API.
 type HostAssignment struct {
 	GroupID      string                   `json:"groupId,omitempty"`
 	Hostname     string                   `json:"hostname,omitempty"`
@@ -91,7 +91,7 @@ type HostAssignment struct {
 	IsChargeable *bool                    `json:"isChargeable,omitempty"`
 }
 
-// HostAssignmentProcess represents a HostAssignmentProcess in the MongoDB Ops Manager API
+// HostAssignmentProcess represents a HostAssignmentProcess in the MongoDB Ops Manager API.
 type HostAssignmentProcess struct {
 	Cluster                  string `json:"cluster,omitempty"`
 	GroupName                string `json:"groupName,omitempty"`
@@ -102,13 +102,13 @@ type HostAssignmentProcess struct {
 	ProcessType              int64  `json:"processType"`
 }
 
-// ServerType represents a ServerType in the MongoDB Ops Manager API
+// ServerType represents a ServerType in the MongoDB Ops Manager API.
 type ServerType struct {
 	Name  string `json:"name,omitempty"`
 	Label string `json:"label,omitempty"`
 }
 
-// ServerTypeRequest contains request body parameters for Server Usage Service
+// ServerTypeRequest contains request body parameters for Server Usage Service.
 type ServerTypeRequest struct {
 	ServerType *ServerType `json:"serverType,omitempty"`
 }

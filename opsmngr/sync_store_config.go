@@ -36,7 +36,7 @@ type SyncStoreConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// SyncStoreConfigServiceOp provides an implementation of the SyncStoreConfigService interface
+// SyncStoreConfigServiceOp provides an implementation of the SyncStoreConfigService interface.
 type SyncStoreConfigServiceOp service
 
 var _ SyncStoreConfigService = &SyncStoreConfigServiceOp{}

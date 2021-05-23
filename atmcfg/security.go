@@ -27,7 +27,7 @@ import (
 )
 
 const (
-	// using the default MongoDB values for the number of iterations depending on mechanism
+	// using the default MongoDB values for the number of iterations depending on mechanism.
 	scramSha1Iterations     = 10000
 	scramSha256Iterations   = 15000
 	clientKeyInput          = "Client Key" // specified in RFC 5802
@@ -157,7 +157,7 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 }
 
 // generateSalt will create a salt for use with newScramShaCreds based on the given hashConstructor.
-// sha1.New should be used for MONGODB-CR/SCRAM-SHA-1 and sha256.New should be used for SCRAM-SHA-256
+// sha1.New should be used for MONGODB-CR/SCRAM-SHA-1 and sha256.New should be used for SCRAM-SHA-256.
 func generateSalt(hashConstructor func() hash.Hash) ([]byte, error) {
 	saltSize := hashConstructor().Size() - rfc5802MandatedSaltSize
 	salt, err := generateRandomBase64String(saltSize)

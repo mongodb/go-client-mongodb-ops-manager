@@ -36,12 +36,12 @@ type FileSystemStoreConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
+// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
 type FileSystemStoreConfigServiceOp service
 
 var _ FileSystemStoreConfigService = &FileSystemStoreConfigServiceOp{}
 
-// FileSystemStoreConfiguration represents a File System Store Configuration in the MongoDB Ops Manager API
+// FileSystemStoreConfiguration represents a File System Store Configuration in the MongoDB Ops Manager API.
 type FileSystemStoreConfiguration struct {
 	BackupStore
 	MMAPV1CompressionSetting string `json:"mmapv1CompressionSetting,omitempty"`
@@ -49,7 +49,7 @@ type FileSystemStoreConfiguration struct {
 	WTCompressionSetting     string `json:"wtCompressionSetting,omitempty"`
 }
 
-// FileSystemStoreConfigurations represents a paginated collection of FileSystemStoreConfiguration
+// FileSystemStoreConfigurations represents a paginated collection of FileSystemStoreConfiguration.
 type FileSystemStoreConfigurations struct {
 	Links      []*atlas.Link                   `json:"links"`
 	Results    []*FileSystemStoreConfiguration `json:"results"`

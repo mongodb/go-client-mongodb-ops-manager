@@ -34,7 +34,7 @@ type CheckpointsService interface {
 	Get(context.Context, string, string, string) (*atlas.Checkpoint, *atlas.Response, error)
 }
 
-// CheckpointsServiceOp provides an implementation of the CheckpointsService interface
+// CheckpointsServiceOp provides an implementation of the CheckpointsService interface.
 type CheckpointsServiceOp service
 
 var _ CheckpointsService = &CheckpointsServiceOp{}

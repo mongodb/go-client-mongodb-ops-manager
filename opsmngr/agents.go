@@ -40,12 +40,12 @@ type AgentsService interface {
 	ProjectVersions(context.Context, string) (*AgentVersions, *atlas.Response, error)
 }
 
-// AgentsServiceOp provides an implementation of the AgentsService interface
+// AgentsServiceOp provides an implementation of the AgentsService interface.
 type AgentsServiceOp service
 
 var _ AgentsService = new(AgentsServiceOp)
 
-// Agent represents an Ops Manager agent
+// Agent represents an Ops Manager agent.
 type Agent struct {
 	TypeName  string  `json:"typeName"`
 	Hostname  string  `json:"hostname"`
@@ -58,14 +58,14 @@ type Agent struct {
 	Tag       *string `json:"tag"`
 }
 
-// Agents is a paginated collection of Agent
+// Agents is a paginated collection of Agent.
 type Agents struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Agent      `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
 
-// SoftwareVersions is a set of software components and their expected current and minimum versions
+// SoftwareVersions is a set of software components and their expected current and minimum versions.
 type SoftwareVersions struct {
 	AutomationVersion         string        `json:"automationVersion"`
 	AutomationMinimumVersion  string        `json:"automationMinimumVersion"`
@@ -75,7 +75,7 @@ type SoftwareVersions struct {
 	MongoDBToolsVersion       string        `json:"mongoDbToolsVersion"`
 }
 
-// AgentVersions is a set of available agents and agent versions for a project
+// AgentVersions is a set of available agents and agent versions for a project.
 type AgentVersions struct {
 	Count                       int             `json:"count"`
 	Entries                     []*AgentVersion `json:"entries"`

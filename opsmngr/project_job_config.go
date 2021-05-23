@@ -34,12 +34,12 @@ type ProjectJobConfigService interface {
 	Update(context.Context, string, *ProjectJob) (*ProjectJob, *atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
+// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
 type ProjectJobConfigServiceOp service
 
 var _ ProjectJobConfigService = &ProjectJobConfigServiceOp{}
 
-// AdminBackupConfig contains the common fields of backup administrator structs
+// AdminBackupConfig contains the common fields of backup administrator structs.
 type AdminBackupConfig struct {
 	ID                   string   `json:"id,omitempty"`
 	URI                  string   `json:"uri,omitempty"`
@@ -51,7 +51,7 @@ type AdminBackupConfig struct {
 	UsedSize             int64    `json:"usedSize,omitempty"`
 }
 
-// ProjectJob represents a Backup Project Configuration Job in the MongoDB Ops Manager API
+// ProjectJob represents a Backup Project Configuration Job in the MongoDB Ops Manager API.
 type ProjectJob struct {
 	AdminBackupConfig
 	KMIPClientCertPassword string         `json:"kmipClientCertPassword,omitempty"`
@@ -63,13 +63,13 @@ type ProjectJob struct {
 	SnapshotStoreFilter    []*StoreFilter `json:"snapshotStoreFilter,omitempty"`
 }
 
-// StoreFilter represents a StoreFilter in the MongoDB Ops Manager API
+// StoreFilter represents a StoreFilter in the MongoDB Ops Manager API.
 type StoreFilter struct {
 	ID   string `json:"id,omitempty"`
 	Type string `json:"type,omitempty"`
 }
 
-// ProjectJobs represents a paginated collection of ProjectJob
+// ProjectJobs represents a paginated collection of ProjectJob.
 type ProjectJobs struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*ProjectJob `json:"results"`

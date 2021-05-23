@@ -38,7 +38,7 @@ type MaintenanceWindowsService interface {
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
-// MaintenanceWindow represents MongoDB Maintenance Windows
+// MaintenanceWindow represents MongoDB Maintenance Windows.
 type MaintenanceWindow struct {
 	ID             string   `json:"id,omitempty"`
 	GroupID        string   `json:"groupId,omitempty"`
@@ -58,7 +58,7 @@ type MaintenanceWindows struct {
 }
 
 // MaintenanceWindowsServiceOp handles communication with the MaintenanceWindows related methods
-// of the OpsManager Atlas API
+// of the OpsManager Atlas API.
 type MaintenanceWindowsServiceOp service
 
 var _ MaintenanceWindowsService = &MaintenanceWindowsServiceOp{}

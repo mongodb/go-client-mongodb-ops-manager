@@ -36,12 +36,12 @@ type BlockstoreConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
+// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
 type BlockstoreConfigServiceOp service
 
 var _ BlockstoreConfigService = &BlockstoreConfigServiceOp{}
 
-// BackupStore represents a Blockstore, Oplog and Sync in the MongoDB Ops Manager API
+// BackupStore represents a Blockstore, Oplog and Sync in the MongoDB Ops Manager API.
 type BackupStore struct {
 	AdminBackupConfig
 	LoadFactor    *int64 `json:"loadFactor,omitempty"`
@@ -51,7 +51,7 @@ type BackupStore struct {
 	Username      string `json:"username,omitempty"`
 }
 
-// BackupStores represents a paginated collection of BackupStore
+// BackupStores represents a paginated collection of BackupStore.
 type BackupStores struct {
 	Links      []*atlas.Link  `json:"links"`
 	Results    []*BackupStore `json:"results"`

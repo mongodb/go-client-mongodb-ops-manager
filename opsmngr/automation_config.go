@@ -102,7 +102,7 @@ type ConfigVersion struct {
 	Hostname string `json:"hostname"`
 }
 
-// ShardingConfig sharded clusters configuration
+// ShardingConfig sharded clusters configuration.
 type ShardingConfig struct {
 	Collections         []*map[string]interface{} `json:"collections"`
 	ConfigServerReplica string                    `json:"configServerReplica"`
@@ -113,7 +113,7 @@ type ShardingConfig struct {
 	Tags                []string                  `json:"tags"`
 }
 
-// Shard details
+// Shard details.
 type Shard struct {
 	ID   string   `json:"_id"` //nolint:tagliatelle // correct from API
 	RS   string   `json:"rs"`
@@ -130,14 +130,14 @@ type IndexConfig struct {
 	Collation      *atlas.CollationOptions `json:"collation,omitempty"` // Collation Mongo collation index options
 }
 
-// SSL config properties
+// SSL config properties.
 type SSL struct {
 	AutoPEMKeyFilePath    string `json:"autoPEMKeyFilePath,omitempty"` //nolint:tagliatelle // correct from API
 	CAFilePath            string `json:"CAFilePath,omitempty"`         //nolint:tagliatelle // correct from API
 	ClientCertificateMode string `json:"clientCertificateMode,omitempty"`
 }
 
-// Auth authentication config
+// Auth authentication config.
 type Auth struct {
 	AuthoritativeSet         bool           `json:"authoritativeSet"`             // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of UsersWanted
 	AutoAuthMechanism        string         `json:"autoAuthMechanism"`            // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
@@ -156,7 +156,7 @@ type Auth struct {
 	UsersWanted              []*MongoDBUser `json:"usersWanted"` // UsersWanted is a list which contains the desired users at the project level.
 }
 
-// Args26 part of the internal Process struct
+// Args26 part of the internal Process struct.
 type Args26 struct {
 	AuditLog           *AuditLog               `json:"auditLog,omitempty"` // AuditLog configuration for audit logs
 	BasisTech          *map[string]interface{} `json:"basisTech,omitempty"`
@@ -172,7 +172,7 @@ type Args26 struct {
 	SystemLog          SystemLog               `json:"systemLog"` // SystemLog configuration for the dblog
 }
 
-// MongoDBUser database user
+// MongoDBUser database user.
 type MongoDBUser struct {
 	AuthenticationRestrictions []string       `json:"authenticationRestrictions"`
 	CustomData                 interface{}    `json:"customData,omitempty"`
@@ -186,13 +186,13 @@ type MongoDBUser struct {
 	Username                   string         `json:"user"` //nolint:tagliatelle // Username is a better name than just user
 }
 
-// Role of a database user
+// Role of a database user.
 type Role struct {
 	Role     string `json:"role"`
 	Database string `json:"db"` //nolint:tagliatelle // Database is a better name than just db
 }
 
-// ScramShaCreds configuration
+// ScramShaCreds configuration.
 type ScramShaCreds struct {
 	IterationCount int    `json:"iterationCount"`
 	Salt           string `json:"salt"`
@@ -200,7 +200,7 @@ type ScramShaCreds struct {
 	StoredKey      string `json:"storedKey"`
 }
 
-// Member configs
+// Member configs.
 type Member struct {
 	ID                 int                     `json:"_id"` //nolint:tagliatelle // correct from API
 	ArbiterOnly        bool                    `json:"arbiterOnly"`
@@ -214,7 +214,7 @@ type Member struct {
 	Votes              float64                 `json:"votes"`
 }
 
-// ReplicaSet configs
+// ReplicaSet configs.
 type ReplicaSet struct {
 	ID                                 string                  `json:"_id"` //nolint:tagliatelle // correct from API
 	ProtocolVersion                    string                  `json:"protocolVersion,omitempty"`
@@ -223,7 +223,7 @@ type ReplicaSet struct {
 	WriteConcernMajorityJournalDefault string                  `json:"writeConcernMajorityJournalDefault,omitempty"`
 }
 
-// TLS defines TLS parameters for Net
+// TLS defines TLS parameters for Net.
 type TLS struct {
 	CAFile                     string `json:"CAFile,omitempty"` //nolint:tagliatelle // correct from API
 	CertificateKeyFile         string `json:"certificateKeyFile,omitempty"`
@@ -239,7 +239,7 @@ type TLS struct {
 	PEMKeyFile                 string `json:"PEMKeyFile,omitempty"` //nolint:tagliatelle // correct from API
 }
 
-// Net part of the internal Process struct
+// Net part of the internal Process struct.
 type Net struct {
 	BindIP                 *string                 `json:"bindIp,omitempty"`
 	BindIPAll              *bool                   `json:"bindIpAll,omitempty"`
@@ -256,7 +256,7 @@ type Net struct {
 	UnixDomainSocket       *map[string]interface{} `json:"unixDomainSocket,omitempty"`
 }
 
-// Storage part of the internal Process struct
+// Storage part of the internal Process struct.
 type Storage struct {
 	DBPath                 string                  `json:"dbPath,omitempty"`
 	DirectoryPerDB         *bool                   `json:"directoryPerDB,omitempty"` //nolint:tagliatelle // DirectoryPerDB follows go convention while directoryPerDB is correct from API
@@ -274,14 +274,14 @@ type Storage struct {
 	WiredTiger             *map[string]interface{} `json:"wiredTiger,omitempty"`
 }
 
-// Replication is part of the internal Process struct
+// Replication is part of the internal Process struct.
 type Replication struct {
 	EnableMajorityReadConcern *bool  `json:"enableMajorityReadConcern,omitempty"`
 	OplogSizeMB               *int   `json:"oplogSizeMB,omitempty"` //nolint:tagliatelle // Bytes vs bits
 	ReplSetName               string `json:"replSetName,omitempty"`
 }
 
-// Sharding is part of the internal Process struct
+// Sharding is part of the internal Process struct.
 type Sharding struct {
 	ArchiveMovedChunks *bool  `json:"archiveMovedChunks,omitempty"`
 	AutoSplit          *bool  `json:"autoSplit,omitempty"`
@@ -289,7 +289,7 @@ type Sharding struct {
 	ClusterRole        string `json:"clusterRole,omitempty"`
 }
 
-// SystemLog part of the internal Process struct
+// SystemLog part of the internal Process struct.
 type SystemLog struct {
 	Destination     string `json:"destination,omitempty"`
 	Path            string `json:"path,omitempty"`
@@ -301,7 +301,7 @@ type SystemLog struct {
 	TimeStampFormat string `json:"timeStampFormat,omitempty"`
 }
 
-// AuditLog part of the internal Process struct
+// AuditLog part of the internal Process struct.
 type AuditLog struct {
 	Destination string `json:"destination,omitempty"`
 	Path        string `json:"path,omitempty"`
@@ -309,13 +309,13 @@ type AuditLog struct {
 	Filter      string `json:"filter,omitempty"`
 }
 
-// LogRotate part of the internal Process struct
+// LogRotate part of the internal Process struct.
 type LogRotate struct {
 	SizeThresholdMB  float64 `json:"sizeThresholdMB,omitempty"` //nolint:tagliatelle // Bytes vs bits
 	TimeThresholdHrs int     `json:"timeThresholdHrs,omitempty"`
 }
 
-// Process represents a single process in a deployment
+// Process represents a single process in a deployment.
 type Process struct {
 	Alias                                      string             `json:"alias,omitempty"`
 	Args26                                     Args26             `json:"args2_6"` //nolint:tagliatelle // correct from API

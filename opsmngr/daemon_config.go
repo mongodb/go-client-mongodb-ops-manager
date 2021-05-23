@@ -35,12 +35,12 @@ type DaemonConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
+// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
 type DaemonConfigServiceOp service
 
 var _ DaemonConfigService = &DaemonConfigServiceOp{}
 
-// Daemon represents a Backup Daemon Configuration in the MongoDB Ops Manager API
+// Daemon represents a Backup Daemon Configuration in the MongoDB Ops Manager API.
 type Daemon struct {
 	AdminBackupConfig
 	BackupJobsEnabled           bool     `json:"backupJobsEnabled"`
@@ -58,7 +58,7 @@ type Machine struct {
 	HeadRootDirectory string `json:"headRootDirectory,omitempty"`
 }
 
-// Daemons represents a paginated collection of Daemon
+// Daemons represents a paginated collection of Daemon.
 type Daemons struct {
 	Links      []*atlas.Link `json:"links"`
 	Results    []*Daemon     `json:"results"`

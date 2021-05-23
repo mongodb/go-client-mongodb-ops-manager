@@ -72,19 +72,19 @@ func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled
 	}
 }
 
-// Shutdown disables all processes of the given cluster name
+// Shutdown disables all processes of the given cluster name.
 func Shutdown(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, true)
 }
 
-// Startup enables all processes of the given cluster name
+// Startup enables all processes of the given cluster name.
 func Startup(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, false)
 }
 
 const monitoringVersion = "7.2.0.488-1" // Last monitoring version released
 
-// EnableMonitoring enables monitoring for the given hostname
+// EnableMonitoring enables monitoring for the given hostname.
 func EnableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
 	for _, v := range out.MonitoringVersions {
 		if v.Hostname == hostname {
@@ -98,7 +98,7 @@ func EnableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
 	return nil
 }
 
-// DisableMonitoring disables monitoring for the given hostname
+// DisableMonitoring disables monitoring for the given hostname.
 func DisableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
 	for i, v := range out.MonitoringVersions {
 		if v.Hostname == hostname {
@@ -111,7 +111,7 @@ func DisableMonitoring(out *opsmngr.AutomationConfig, hostname string) error {
 
 const backupVersion = "7.8.1.1109-1" // Last backup version released
 
-// EnableBackup enables backup for the given hostname
+// EnableBackup enables backup for the given hostname.
 func EnableBackup(out *opsmngr.AutomationConfig, hostname string) error {
 	for _, v := range out.BackupVersions {
 		if v.Hostname == hostname {
@@ -125,7 +125,7 @@ func EnableBackup(out *opsmngr.AutomationConfig, hostname string) error {
 	return nil
 }
 
-// DisableBackup disables backup for the given hostname
+// DisableBackup disables backup for the given hostname.
 func DisableBackup(out *opsmngr.AutomationConfig, hostname string) error {
 	for i, v := range out.BackupVersions {
 		if v.Hostname == hostname {
@@ -186,7 +186,7 @@ func removeByShardName(out *opsmngr.AutomationConfig, name string) {
 	}
 }
 
-// AddUser adds a opsmngr.MongoDBUser to the opsmngr.AutomationConfi
+// AddUser adds a opsmngr.MongoDBUser to the opsmngr.AutomationConfi.
 func AddUser(out *opsmngr.AutomationConfig, u *opsmngr.MongoDBUser) {
 	out.Auth.UsersWanted = append(out.Auth.UsersWanted, u)
 }
@@ -259,7 +259,7 @@ func newScramShaCreds(salt []byte, username, password, mechanism string) (*opsmn
 	return computeScramCredentials(hashConstructor, iterations, base64EncodedSalt, password)
 }
 
-// AddIndexConfig adds an opsmngr.IndexConfig to the opsmngr.AutomationConfig
+// AddIndexConfig adds an opsmngr.IndexConfig to the opsmngr.AutomationConfig.
 func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig) error {
 	if out == nil {
 		return errors.New("the Automation Config has not been initialized")
@@ -274,7 +274,7 @@ func AddIndexConfig(out *opsmngr.AutomationConfig, newIndex *opsmngr.IndexConfig
 	return nil
 }
 
-// compareIndexConfig returns a function that compares two indexConfig struts
+// compareIndexConfig returns a function that compares two indexConfig struts.
 func compareIndexConfig(newIndex *opsmngr.IndexConfig) func(index *opsmngr.IndexConfig) bool {
 	return func(index *opsmngr.IndexConfig) bool {
 		if newIndex.RSName == index.RSName && newIndex.CollectionName == index.CollectionName && newIndex.DBName == index.DBName && len(newIndex.Key) == len(index.Key) {
@@ -290,7 +290,7 @@ func compareIndexConfig(newIndex *opsmngr.IndexConfig) func(index *opsmngr.Index
 	}
 }
 
-// RemoveUser removes a MongoDBUser from the authentication config
+// RemoveUser removes a MongoDBUser from the authentication config.
 func RemoveUser(out *opsmngr.AutomationConfig, username, database string) error {
 	pos, found := search.MongoDBUsers(out.Auth.UsersWanted, func(p *opsmngr.MongoDBUser) bool {
 		return p.Username == username && p.Database == database
@@ -312,7 +312,7 @@ const (
 )
 
 // EnableMechanism allows you to enable a given set of authentication mechanisms to an opsmngr.AutomationConfig.
-// This method currently only supports MONGODB-CR, and SCRAM-SHA-256
+// This method currently only supports MONGODB-CR, and SCRAM-SHA-256.
 func EnableMechanism(out *opsmngr.AutomationConfig, m []string) error {
 	out.Auth.Disabled = false
 	for _, v := range m {
@@ -408,7 +408,7 @@ func restartByShardName(out *opsmngr.AutomationConfig, name, lastRestart string)
 	}
 }
 
-// Restart sets all process of a cluster to restart
+// Restart sets all process of a cluster to restart.
 func Restart(out *opsmngr.AutomationConfig, name string) {
 	// This value may not be present and is mandatory
 	if out.Auth.DeploymentAuthMechanisms == nil {
@@ -419,7 +419,7 @@ func Restart(out *opsmngr.AutomationConfig, name string) {
 	restartByShardName(out, name, lastRestart)
 }
 
-// ReclaimFreeSpace sets all process of a cluster to reclaim free space
+// ReclaimFreeSpace sets all process of a cluster to reclaim free space.
 func ReclaimFreeSpace(out *opsmngr.AutomationConfig, name string) {
 	// This value may not be present and is mandatory
 	if out.Auth.DeploymentAuthMechanisms == nil {

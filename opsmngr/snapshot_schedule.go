@@ -33,7 +33,7 @@ type SnapshotScheduleService interface {
 	Update(context.Context, string, string, *SnapshotSchedule) (*SnapshotSchedule, *atlas.Response, error)
 }
 
-// SnapshotScheduleServiceOp provides an implementation of the SnapshotScheduleService interface
+// SnapshotScheduleServiceOp provides an implementation of the SnapshotScheduleService interface.
 type SnapshotScheduleServiceOp service
 
 var _ SnapshotScheduleService = &SnapshotScheduleServiceOp{}

@@ -40,6 +40,7 @@ linters:
     - goconst
     - gocritic
     - gocyclo
+    - godot # Check if comments end in a period [fast: true, auto-fix: true]
     - gofmt
     - goimports
     - golint
@@ -71,7 +72,6 @@ linters:
     # - funlen
     # - gochecknoglobals
     # - gocognit
-    # - godot
     # - godox
     # - goerr113
     # - lll

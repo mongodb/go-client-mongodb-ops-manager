@@ -36,7 +36,7 @@ type DeploymentsService interface {
 	GetDatabase(context.Context, string, string, string) (*atlas.ProcessDatabase, *atlas.Response, error)
 }
 
-// DeploymentsServiceOp provides an implementation of the DeploymentsService interface
+// DeploymentsServiceOp provides an implementation of the DeploymentsService interface.
 type DeploymentsServiceOp service
 
 var _ DeploymentsService = new(DeploymentsServiceOp)

@@ -37,7 +37,7 @@ type GlobalAPIKeysService interface {
 	// Roles(context.Context) ([]atlas.AtlasRole, *atlas.Response, error)
 }
 
-// GlobalAPIKeysServiceOp provides an implementation of the GlobalAPIKeysService interface
+// GlobalAPIKeysServiceOp provides an implementation of the GlobalAPIKeysService interface.
 type GlobalAPIKeysServiceOp service
 
 var _ GlobalAPIKeysService = &GlobalAPIKeysServiceOp{}

@@ -40,7 +40,7 @@ const (
 	gzipMediaType   = "application/gzip"
 )
 
-// Client manages communication with Ops Manager API
+// Client manages communication with Ops Manager API.
 type Client struct {
 	client    *http.Client
 	BaseURL   *url.URL
@@ -284,7 +284,7 @@ func (c *Client) NewGZipRequest(ctx context.Context, method, urlStr string) (*ht
 	return req, nil
 }
 
-// OnRequestCompleted sets the DO API request completion callback
+// OnRequestCompleted sets the DO API request completion callback.
 func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
 	c.onRequestCompleted = rc
 }

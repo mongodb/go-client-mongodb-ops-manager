@@ -36,7 +36,7 @@ type VersionManifestService interface {
 	Update(context.Context, *VersionManifest) (*VersionManifest, *atlas.Response, error)
 }
 
-// VersionManifestServiceOp provides an implementation of the VersionManifestService interface
+// VersionManifestServiceOp provides an implementation of the VersionManifestService interface.
 type VersionManifestServiceOp service
 
 var _ VersionManifestService = &VersionManifestServiceOp{}

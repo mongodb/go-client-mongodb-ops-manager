@@ -34,7 +34,7 @@ type GlobalAPIKeyWhitelistsService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// GlobalAPIKeyWhitelistsServiceOp provides an implementation of the GlobalAPIKeyWhitelistsService interface
+// GlobalAPIKeyWhitelistsServiceOp provides an implementation of the GlobalAPIKeyWhitelistsService interface.
 type GlobalAPIKeyWhitelistsServiceOp service
 
 var _ GlobalAPIKeyWhitelistsService = &GlobalAPIKeyWhitelistsServiceOp{}
@@ -56,7 +56,7 @@ type GlobalWhitelistAPIKeys struct {
 	TotalCount int                      `json:"totalCount,omitempty"` // Count of the total number of items in the result set. It may be greater than the number of objects in the results array if the entire result set is paginated.
 }
 
-// WhitelistAPIKeysReq represents a source allowed to use global API keys
+// WhitelistAPIKeysReq represents a source allowed to use global API keys.
 type WhitelistAPIKeysReq struct {
 	CidrBlock   string `json:"cidrBlock"`
 	Description string `json:"description"`

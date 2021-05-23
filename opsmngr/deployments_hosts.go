@@ -26,7 +26,7 @@ const (
 	hostsBasePath = "groups/%s/hosts"
 )
 
-// Host represents a MongoDB host process in Ops Manager
+// Host represents a MongoDB host process in Ops Manager.
 type Host struct {
 	Aliases            []string      `json:"aliases,omitempty"`
 	AuthMechanismName  string        `json:"authMechanismName,omitempty"`

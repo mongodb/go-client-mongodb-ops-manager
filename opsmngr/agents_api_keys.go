@@ -26,7 +26,7 @@ const (
 	agentAPIKeysBasePath = "groups/%s/agentapikeys"
 )
 
-// AgentAPIKey defines the structure for an Agent API key
+// AgentAPIKey defines the structure for an Agent API key.
 type AgentAPIKey struct {
 	ID            string  `json:"_id"` //nolint:tagliatelle // correct from API
 	Key           string  `json:"key"`
@@ -37,7 +37,7 @@ type AgentAPIKey struct {
 	CreatedBy     string  `json:"createdBy"`
 }
 
-// AgentAPIKeysRequest a creation request for Agent API keys
+// AgentAPIKeysRequest a creation request for Agent API keys.
 type AgentAPIKeysRequest struct {
 	Desc string `json:"desc"`
 }

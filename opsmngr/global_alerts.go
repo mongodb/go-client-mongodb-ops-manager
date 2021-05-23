@@ -35,10 +35,10 @@ type GlobalAlertsService interface {
 	Acknowledge(context.Context, string, *atlas.AcknowledgeRequest) (*GlobalAlert, *atlas.Response, error)
 }
 
-// GlobalAlertsServiceOp provides an implementation of the GlobalAlertsService interface
+// GlobalAlertsServiceOp provides an implementation of the GlobalAlertsService interface.
 type GlobalAlertsServiceOp service
 
-// GlobalAlert configuration struct
+// GlobalAlert configuration struct.
 type GlobalAlert struct {
 	atlas.Alert
 	SourceTypeName string        `json:"sourceTypeName,omitempty"`
@@ -48,7 +48,7 @@ type GlobalAlert struct {
 	ClusterID      string        `json:"clusterId,omitempty"`
 }
 
-// GlobalAlerts collection of configurations
+// GlobalAlerts collection of configurations.
 type GlobalAlerts struct {
 	Links      []*atlas.Link  `json:"links"`
 	Results    []*GlobalAlert `json:"results"`

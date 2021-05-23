@@ -43,7 +43,7 @@ type TeamsService interface {
 	RemoveTeamFromProject(context.Context, string, string) (*atlas.Response, error)
 }
 
-// TeamsServiceOp provides an implementation of the TeamsService interface
+// TeamsServiceOp provides an implementation of the TeamsService interface.
 type TeamsServiceOp service
 
 var _ TeamsService = &TeamsServiceOp{}

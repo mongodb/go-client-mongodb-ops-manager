@@ -29,7 +29,7 @@ type MeasurementsService interface {
 	Database(context.Context, string, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDatabaseMeasurements, *atlas.Response, error)
 }
 
-// MeasurementsServiceOp provides an implementation of the MeasurementsService interface
+// MeasurementsServiceOp provides an implementation of the MeasurementsService interface.
 type MeasurementsServiceOp service
 
 var _ MeasurementsService = &MeasurementsServiceOp{}

@@ -40,7 +40,7 @@ type LogCollectionService interface {
 	Delete(context.Context, string, string) (*atlas.Response, error)
 }
 
-// LogCollectionServiceOp provides an implementation of the DiagnosticsService interface
+// LogCollectionServiceOp provides an implementation of the DiagnosticsService interface.
 type LogCollectionServiceOp service
 
 var _ LogCollectionService = &LogCollectionServiceOp{}
@@ -54,7 +54,7 @@ type LogsService interface {
 }
 
 // LogsServiceOp handles communication with the Log Collection Jobs download method of the
-// MongoDB Ops Manager API
+// MongoDB Ops Manager API.
 type LogsServiceOp struct {
 	Client atlas.GZipRequestDoer
 }
@@ -94,7 +94,7 @@ type ChildJob struct {
 	UncompressedDiskSpaceBytes int64  `json:"uncompressedDiskSpaceBytes"`
 }
 
-// LogCollectionJobs represents a array of LogCollectionJobs
+// LogCollectionJobs represents a array of LogCollectionJobs.
 type LogCollectionJobs struct {
 	Links      []*atlas.Link       `json:"links"`
 	Results    []*LogCollectionJob `json:"results"`

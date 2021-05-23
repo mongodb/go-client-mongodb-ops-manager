@@ -38,7 +38,7 @@ type PerformanceAdvisorService interface {
 	GetSuggestedIndexes(context.Context, string, string, *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *atlas.Response, error)
 }
 
-// PerformanceAdvisorServiceOp handles communication with the Performance Advisor related methods of the MongoDB Atlas API
+// PerformanceAdvisorServiceOp handles communication with the Performance Advisor related methods of the MongoDB Atlas API.
 type PerformanceAdvisorServiceOp service
 
 var _ PerformanceAdvisorService = &PerformanceAdvisorServiceOp{}

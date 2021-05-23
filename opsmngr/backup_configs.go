@@ -36,12 +36,12 @@ type BackupConfigsService interface {
 	Update(context.Context, string, string, *BackupConfig) (*BackupConfig, *atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface
+// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
 type BackupConfigsServiceOp service
 
 var _ BackupConfigsService = &BackupConfigsServiceOp{}
 
-// BackupConfigs represents a Backup configuration in the MongoDB Ops Manager API
+// BackupConfigs represents a Backup configuration in the MongoDB Ops Manager API.
 type BackupConfig struct {
 	GroupID            string   `json:"groupId,omitempty"`
 	ClusterID          string   `json:"clusterId,omitempty"`
@@ -58,7 +58,7 @@ type BackupConfig struct {
 	SSLEnabled         *bool    `json:"sslEnabled,omitempty"`
 }
 
-// BackupConfigs represents a paginated collection of BackupConfig
+// BackupConfigs represents a paginated collection of BackupConfig.
 type BackupConfigs struct {
 	Links      []*atlas.Link   `json:"links"`
 	Results    []*BackupConfig `json:"results"`
