@@ -357,7 +357,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 			_, _ = io.Copy(w, body)
 		} else {
 			decErr := json.NewDecoder(body).Decode(v)
-			if decErr == io.EOF {
+			if errors.Is(decErr, io.EOF) {
 				decErr = nil // ignore EOF errors caused by empty response body
 			}
 			if decErr != nil {

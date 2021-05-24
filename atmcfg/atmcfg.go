@@ -211,11 +211,11 @@ func ConfigureScramCredentials(user *opsmngr.MongoDBUser, password string) error
 func newScramSha1Creds(user *opsmngr.MongoDBUser, password string) (*opsmngr.ScramShaCreds, error) {
 	scram1Salt, err := generateSalt(sha1.New)
 	if err != nil {
-		return nil, fmt.Errorf("error generating scramSha1 salt: %s", err)
+		return nil, fmt.Errorf("error generating scramSha1 salt: %w", err)
 	}
 	scram1Creds, err := newScramShaCreds(scram1Salt, user.Username, password, mongoCR)
 	if err != nil {
-		return nil, fmt.Errorf("error generating scramSha1Creds: %s", err)
+		return nil, fmt.Errorf("error generating scramSha1Creds: %w", err)
 	}
 	return scram1Creds, nil
 }
@@ -223,20 +223,22 @@ func newScramSha1Creds(user *opsmngr.MongoDBUser, password string) (*opsmngr.Scr
 func newScramSha256Creds(user *opsmngr.MongoDBUser, password string) (*opsmngr.ScramShaCreds, error) {
 	scram256Salt, err := generateSalt(sha256.New)
 	if err != nil {
-		return nil, fmt.Errorf("error generating scramSha256 salt: %s", err)
+		return nil, fmt.Errorf("error generating scramSha256 salt: %w", err)
 	}
 	scram256Creds, err := newScramShaCreds(scram256Salt, user.Username, password, scramSha256)
 	if err != nil {
-		return nil, fmt.Errorf("error generating scramSha256 creds: %s", err)
+		return nil, fmt.Errorf("error generating scramSha256 creds: %w", err)
 	}
 	return scram256Creds, nil
 }
+
+var ErrUnsupportedMechanism = errors.New("unrecognized SCRAM-SHA format")
 
 // newScramShaCreds takes a plain text password and a specified mechanism name and generates
 // the ScramShaCreds which will be embedded into a MongoDBUser.
 func newScramShaCreds(salt []byte, username, password, mechanism string) (*opsmngr.ScramShaCreds, error) {
 	if mechanism != scramSha256 && mechanism != mongoCR {
-		return nil, fmt.Errorf("unrecognized SCRAM-SHA format %s", mechanism)
+		return nil, fmt.Errorf("%w %s", ErrUnsupportedMechanism, mechanism)
 	}
 	var hashConstructor hashingFunc
 	iterations := 0

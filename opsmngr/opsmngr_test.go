@@ -17,6 +17,7 @@ package opsmngr
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -86,8 +87,11 @@ func testURLParseError(t *testing.T, err error) {
 	if err == nil {
 		t.Errorf("Expected error to be returned")
 	}
-	if err, ok := err.(*url.Error); !ok || err.Op != "parse" {
+	var urlErr *url.Error
+	if !errors.As(err, &urlErr) {
 		t.Errorf("Expected URL parse error, got %+v", err)
+	} else if urlErr.Op != "parse" {
+		t.Errorf("Expected URL parse error, got %+v", urlErr)
 	}
 }
 
@@ -305,8 +309,9 @@ func TestClient_Do_redirectLoop(t *testing.T) {
 	if err == nil {
 		t.Error("Expected error to be returned.")
 	}
-	if err, ok := err.(*url.Error); !ok {
-		t.Errorf("Expected a URL error; got %#v.", err)
+	var urlErr *url.Error
+	if !errors.As(err, &urlErr) {
+		t.Errorf("Expected URL parse error, got %+v", err)
 	}
 }
 

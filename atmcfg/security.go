@@ -41,7 +41,7 @@ func computeScramCredentials(f hashingFunc, iterationCount int, base64EncodedSal
 	// password should be encrypted in the case of SCRAM-SHA-1 and unencrypted in the case of SCRAM-SHA-256
 	storedKey, serverKey, err := generateB64EncodedSecrets(f, password, base64EncodedSalt, iterationCount)
 	if err != nil {
-		return nil, fmt.Errorf("error generating SCRAM-SHA keys: %s", err)
+		return nil, fmt.Errorf("error generating SCRAM-SHA keys: %w", err)
 	}
 
 	return &opsmngr.ScramShaCreds{IterationCount: iterationCount, Salt: base64EncodedSalt, StoredKey: storedKey, ServerKey: serverKey}, nil
@@ -50,12 +50,12 @@ func computeScramCredentials(f hashingFunc, iterationCount int, base64EncodedSal
 func generateB64EncodedSecrets(f hashingFunc, password, b64EncodedSalt string, iterationCount int) (storedKey, serverKey string, err error) {
 	salt, err := base64.StdEncoding.DecodeString(b64EncodedSalt)
 	if err != nil {
-		return "", "", fmt.Errorf("error decoding salt: %s", err)
+		return "", "", fmt.Errorf("error decoding salt: %w", err)
 	}
 
 	unencodedStoredKey, unencodedServerKey, err := generateSecrets(f, password, salt, iterationCount)
 	if err != nil {
-		return "", "", fmt.Errorf("error generating secrets: %s", err)
+		return "", "", fmt.Errorf("error generating secrets: %w", err)
 	}
 
 	storedKey = base64.StdEncoding.EncodeToString(unencodedStoredKey)
@@ -66,22 +66,22 @@ func generateB64EncodedSecrets(f hashingFunc, password, b64EncodedSalt string, i
 func generateSecrets(f hashingFunc, password string, salt []byte, iterationCount int) (storedKey, serverKey []byte, err error) {
 	saltedPassword, err := generateSaltedPassword(f, password, salt, iterationCount)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error generating salted password: %s", err)
+		return nil, nil, fmt.Errorf("error generating salted password: %w", err)
 	}
 
 	clientKey, err := generateClientOrServerKey(f, saltedPassword, clientKeyInput)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error generating client key: %s", err)
+		return nil, nil, fmt.Errorf("error generating client key: %w", err)
 	}
 
 	storedKey, err = generateStoredKey(f, clientKey)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error generating stored key: %s", err)
+		return nil, nil, fmt.Errorf("error generating stored key: %w", err)
 	}
 
 	serverKey, err = generateClientOrServerKey(f, saltedPassword, serverKeyInput)
 	if err != nil {
-		return nil, nil, fmt.Errorf("error generating server key: %s", err)
+		return nil, nil, fmt.Errorf("error generating server key: %w", err)
 	}
 
 	return storedKey, serverKey, err
@@ -90,12 +90,12 @@ func generateSecrets(f hashingFunc, password string, salt []byte, iterationCount
 func generateSaltedPassword(hashConstructor func() hash.Hash, password string, salt []byte, iterationCount int) ([]byte, error) {
 	preparedPassword, err := stringprep.SASLprep.Prepare(password)
 	if err != nil {
-		return nil, fmt.Errorf("error SASLprep'ing password: %s", err)
+		return nil, fmt.Errorf("error SASLprep'ing password: %w", err)
 	}
 
 	result, err := hmacIteration(hashConstructor, []byte(preparedPassword), salt, iterationCount)
 	if err != nil {
-		return nil, fmt.Errorf("error running hmacIteration: %s", err)
+		return nil, fmt.Errorf("error running hmacIteration: %w", err)
 	}
 	return result, nil
 }
@@ -103,7 +103,7 @@ func generateSaltedPassword(hashConstructor func() hash.Hash, password string, s
 func generateClientOrServerKey(f hashingFunc, saltedPassword []byte, input string) ([]byte, error) {
 	hmacHash := hmac.New(f, saltedPassword)
 	if _, err := hmacHash.Write([]byte(input)); err != nil {
-		return nil, fmt.Errorf("error running hmacHash: %s", err)
+		return nil, fmt.Errorf("error running hmacHash: %w", err)
 	}
 
 	return hmacHash.Sum(nil), nil
@@ -112,7 +112,7 @@ func generateClientOrServerKey(f hashingFunc, saltedPassword []byte, input strin
 func generateStoredKey(f hashingFunc, clientKey []byte) ([]byte, error) {
 	h := f()
 	if _, err := h.Write(clientKey); err != nil {
-		return nil, fmt.Errorf("error hashing: %s", err)
+		return nil, fmt.Errorf("error hashing: %w", err)
 	}
 	return h.Sum(nil), nil
 }
@@ -122,8 +122,9 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 
 	// incorrect salt size will pass validation, but the credentials will be invalid. i.e. it will not
 	// be possible to auth with the password provided to create the credentials.
-	if len(salt) != hashSize-rfc5802MandatedSaltSize {
-		return nil, fmt.Errorf("salt should have a size of %v bytes, but instead has a size of %v bytes", hashSize-rfc5802MandatedSaltSize, len(salt))
+	size := hashSize - rfc5802MandatedSaltSize
+	if len(salt) != size {
+		return nil, fmt.Errorf("salt should have a size of %v bytes, but instead has a size of %v bytes", size, len(salt))
 	}
 
 	startKey := append(salt, 0, 0, 0, 1) //nolint:gocritic // startKey is a copy of salt plus extra values
@@ -131,7 +132,7 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 
 	hmacHash := hmac.New(f, input)
 	if _, err := hmacHash.Write(startKey); err != nil {
-		return nil, fmt.Errorf("error running hmacHash: %s", err)
+		return nil, fmt.Errorf("error running hmacHash: %w", err)
 	}
 
 	intermediateDigest := hmacHash.Sum(nil)
@@ -143,7 +144,7 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 	for i := 1; i < iterationCount; i++ {
 		hmacHash.Reset()
 		if _, err := hmacHash.Write(intermediateDigest); err != nil {
-			return nil, fmt.Errorf("error running hmacHash: %s", err)
+			return nil, fmt.Errorf("error running hmacHash: %w", err)
 		}
 
 		intermediateDigest = hmacHash.Sum(nil)
