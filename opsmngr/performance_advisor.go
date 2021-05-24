@@ -120,6 +120,10 @@ func (s *PerformanceAdvisorServiceOp) GetSuggestedIndexes(ctx context.Context, g
 	}
 
 	path := fmt.Sprintf(performanceAdvisorSuggestedIndexesLogsPath, groupID, processName)
+	path, err := setQueryParams(path, opts)
+	if err != nil {
+		return nil, nil, err
+	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
