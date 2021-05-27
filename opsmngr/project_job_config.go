@@ -34,7 +34,7 @@ type ProjectJobConfigService interface {
 	Update(context.Context, string, *ProjectJob) (*ProjectJob, *atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
+// ProjectJobConfigServiceOp provides an implementation of the ProjectJobConfigService interface.
 type ProjectJobConfigServiceOp service
 
 var _ ProjectJobConfigService = &ProjectJobConfigServiceOp{}

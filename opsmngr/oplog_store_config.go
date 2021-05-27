@@ -36,7 +36,7 @@ type OplogStoreConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
+// OplogStoreConfigServiceOp provides an implementation of the OplogStoreConfigService interface.
 type OplogStoreConfigServiceOp service
 
 var _ OplogStoreConfigService = &OplogStoreConfigServiceOp{}

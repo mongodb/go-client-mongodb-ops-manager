@@ -24,7 +24,7 @@ import (
 
 const backupAdministratorS3BlockstoreBasePath = "admin/backup/snapshot/s3Configs"
 
-// S3BlockstoreService is an interface for using the S3 Blockstore Service
+// S3BlockstoreConfigService is an interface for using the S3 Blockstore Service
 // endpoints of the MongoDB Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/s3-blockstore-config/

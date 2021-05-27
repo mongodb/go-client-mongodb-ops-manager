@@ -35,7 +35,7 @@ type DaemonConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
+// DaemonConfigServiceOp provides an implementation of the DaemonConfigService interface.
 type DaemonConfigServiceOp service
 
 var _ DaemonConfigService = &DaemonConfigServiceOp{}

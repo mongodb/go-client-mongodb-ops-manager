@@ -36,7 +36,7 @@ type BlockstoreConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
+// BlockstoreConfigServiceOp provides an implementation of the BlockstoreConfigService interface.
 type BlockstoreConfigServiceOp service
 
 var _ BlockstoreConfigService = &BlockstoreConfigServiceOp{}

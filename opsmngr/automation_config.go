@@ -68,7 +68,7 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 
 // AutomationConfig represents an Ops Manager project automation config.
 //
-// See more: https://docs.opsmanager.mongodb.com/current/reference/cluster-configuration/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/
 type AutomationConfig struct {
 	AgentVersion         *map[string]interface{}   `json:"agentVersion,omitempty"`
 	AtlasProxies         *[]interface{}            `json:"atlasProxies,omitempty"`
