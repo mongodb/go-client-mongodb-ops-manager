@@ -174,16 +174,22 @@ type Args26 struct {
 
 // MongoDBUser database user.
 type MongoDBUser struct {
-	AuthenticationRestrictions []string       `json:"authenticationRestrictions"`
-	CustomData                 interface{}    `json:"customData,omitempty"`
-	Database                   string         `json:"db"`                //nolint:tagliatelle // Database is a better name
-	InitPassword               string         `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
-	Mechanisms                 *[]string      `json:"mechanisms,omitempty"`
-	Password                   string         `json:"pwd,omitempty"` //nolint:tagliatelle // Password is a better name than just pwd
-	Roles                      []*Role        `json:"roles"`
-	ScramSha256Creds           *ScramShaCreds `json:"scramSha256Creds,omitempty"`
-	ScramSha1Creds             *ScramShaCreds `json:"scramSha1Creds,omitempty"`
-	Username                   string         `json:"user"` //nolint:tagliatelle // Username is a better name than just user
+	AuthenticationRestrictions []AuthenticationRestriction `json:"authenticationRestrictions"`
+	CustomData                 interface{}                 `json:"customData,omitempty"`
+	Database                   string                      `json:"db"`                //nolint:tagliatelle // Database is a better name
+	InitPassword               string                      `json:"initPwd,omitempty"` // The cleartext password to be assigned to the user
+	Mechanisms                 *[]string                   `json:"mechanisms,omitempty"`
+	Password                   string                      `json:"pwd,omitempty"` //nolint:tagliatelle // Password is a better name than just pwd
+	Roles                      []*Role                     `json:"roles"`
+	ScramSha256Creds           *ScramShaCreds              `json:"scramSha256Creds,omitempty"`
+	ScramSha1Creds             *ScramShaCreds              `json:"scramSha1Creds,omitempty"`
+	Username                   string                      `json:"user"` //nolint:tagliatelle // Username is a better name than just user
+}
+
+// AuthenticationRestriction of a database user.
+type AuthenticationRestriction struct {
+	ClientSource  []string `json:"clientSource"`
+	ServerAddress []string `json:"serverAddress"`
 }
 
 // Role of a database user.
