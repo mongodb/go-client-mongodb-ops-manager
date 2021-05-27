@@ -32,8 +32,10 @@ import (
 )
 
 const (
-	CloudURL        = atlas.CloudURL
-	APIPublicV1Path = "api/public/v1.0/" // APIPublicV1Path specifies the v1 api path
+	// CloudURL specifies the public cloud base url.
+	CloudURL = atlas.CloudURL
+	// APIPublicV1Path specifies the v1 api path.
+	APIPublicV1Path = "api/public/v1.0/"
 	defaultBaseURL  = CloudURL + APIPublicV1Path
 	userAgent       = "go-ops-manager"
 	jsonMediaType   = "application/json"

@@ -32,7 +32,7 @@ const (
 // ServerUsageService is an interface for using the Server Usage Service
 // endpoints of the MongoDB Ops Manager API.
 //
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/s3-blockstore-config/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/
 type ServerUsageService interface {
 	GenerateDailyUsageSnapshot(context.Context) (*atlas.Response, error)
 	ListAllHostAssignment(context.Context, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
@@ -49,15 +49,14 @@ type ServerUsageServiceOp service
 
 var _ ServerUsageService = &ServerUsageServiceOp{}
 
-// type ServerUsageReportService interface { is an interface for interfacing with the ServerUsage Report Service
-// endpoints of the MongoDB Ops Manager API.
+// ServerUsageReportService interface is an interface for downloading the service usage report.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/create-one-report/
 type ServerUsageReportService interface {
 	Download(context.Context, *ServerTypeOptions, io.Writer) (*atlas.Response, error)
 }
 
-// LogsServiceOp handles communication with the Log Collection Jobs download method of the
+// ServerUsageReportServiceOp handles communication with the Log Collection Jobs download method of the
 // MongoDB Ops Manager API.
 type ServerUsageReportServiceOp struct {
 	Client atlas.GZipRequestDoer

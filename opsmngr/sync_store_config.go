@@ -24,7 +24,7 @@ import (
 
 const backupAdministratorSyncBasePath = "admin/backup/sync/mongoConfigs"
 
-// SyncService is an interface for using the Sync
+// SyncStoreConfigService is an interface for using the Sync
 // endpoints of the MongoDB Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync-store-config/

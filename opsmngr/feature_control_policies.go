@@ -36,12 +36,12 @@ type FeatureControlPoliciesService interface {
 	ListSupportedPolicies(context.Context, *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error)
 }
 
-// AgentsServiceOp provides an implementation of the AgentsService interface.
+// FeatureControlPoliciesServiceOp provides an implementation of the FeatureControlPoliciesService interface.
 type FeatureControlPoliciesServiceOp service
 
 var _ FeatureControlPoliciesService = new(FeatureControlPoliciesServiceOp)
 
-// Agent represents an Ops Manager agent.
+// FeaturePolicy represents an Ops Manager feature policy.
 type FeaturePolicy struct {
 	Created                  string                    `json:"created,omitempty"`
 	Updated                  string                    `json:"updated,omitempty"`

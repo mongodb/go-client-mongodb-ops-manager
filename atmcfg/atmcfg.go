@@ -232,6 +232,7 @@ func newScramSha256Creds(user *opsmngr.MongoDBUser, password string) (*opsmngr.S
 	return scram256Creds, nil
 }
 
+// ErrUnsupportedMechanism means the provided mechanism wasn't valid.
 var ErrUnsupportedMechanism = errors.New("unrecognized SCRAM-SHA format")
 
 // newScramShaCreds takes a plain text password and a specified mechanism name and generates

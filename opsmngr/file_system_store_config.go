@@ -24,7 +24,7 @@ import (
 
 const backupAdministratorFileSystemStoreConfigurationsBasePath = "admin/backup/snapshot/fileSystemConfigs"
 
-// FileSystemStoreService is an interface for using the File System Store Configuration
+// FileSystemStoreConfigService is an interface for using the File System Store Configuration
 // endpoints of the MongoDB Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/file-system-store-config/
@@ -36,7 +36,7 @@ type FileSystemStoreConfigService interface {
 	Delete(context.Context, string) (*atlas.Response, error)
 }
 
-// BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
+// FileSystemStoreConfigServiceOp provides an implementation of the FileSystemStoreConfigService interface.
 type FileSystemStoreConfigServiceOp service
 
 var _ FileSystemStoreConfigService = &FileSystemStoreConfigServiceOp{}

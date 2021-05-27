@@ -41,7 +41,7 @@ type BackupConfigsServiceOp service
 
 var _ BackupConfigsService = &BackupConfigsServiceOp{}
 
-// BackupConfigs represents a Backup configuration in the MongoDB Ops Manager API.
+// BackupConfig represents a Backup configuration in the MongoDB Ops Manager API.
 type BackupConfig struct {
 	GroupID            string   `json:"groupId,omitempty"`
 	ClusterID          string   `json:"clusterId,omitempty"`
