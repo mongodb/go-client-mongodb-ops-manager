@@ -25,7 +25,7 @@ import (
 // GetConfig retrieves the current automation configuration for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-the-automation-configuration
-func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*AutomationConfig, *atlas.Response, error) {
+func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*AutomationConfig, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -50,7 +50,7 @@ func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*A
 // and then saves your new configuration version.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#update-the-automation-configuration
-func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, updateRequest *AutomationConfig) (*atlas.Response, error) {
+func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, updateRequest *AutomationConfig) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}

@@ -29,11 +29,11 @@ const backupAdministratorSyncBasePath = "admin/backup/sync/mongoConfigs"
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync-store-config/
 type SyncStoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*BackupStores, *atlas.Response, error)
-	Get(context.Context, string) (*BackupStore, *atlas.Response, error)
-	Create(context.Context, *BackupStore) (*BackupStore, *atlas.Response, error)
-	Update(context.Context, string, *BackupStore) (*BackupStore, *atlas.Response, error)
-	Delete(context.Context, string) (*atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*BackupStores, *Response, error)
+	Get(context.Context, string) (*BackupStore, *Response, error)
+	Create(context.Context, *BackupStore) (*BackupStore, *Response, error)
+	Update(context.Context, string, *BackupStore) (*BackupStore, *Response, error)
+	Delete(context.Context, string) (*Response, error)
 }
 
 // SyncStoreConfigServiceOp provides an implementation of the SyncStoreConfigService interface.
@@ -44,7 +44,7 @@ var _ SyncStoreConfigService = &SyncStoreConfigServiceOp{}
 // Get retrieves a Sync.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-one-sync-store-configuration-by-id/
-func (s *SyncStoreConfigServiceOp) Get(ctx context.Context, syncID string) (*BackupStore, *atlas.Response, error) {
+func (s *SyncStoreConfigServiceOp) Get(ctx context.Context, syncID string) (*BackupStore, *Response, error) {
 	if syncID == "" {
 		return nil, nil, atlas.NewArgError("syncID", "must be set")
 	}
@@ -64,7 +64,7 @@ func (s *SyncStoreConfigServiceOp) Get(ctx context.Context, syncID string) (*Bac
 // List retrieves all the Syncs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-all-sync-store-configurations/
-func (s *SyncStoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *atlas.Response, error) {
+func (s *SyncStoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *Response, error) {
 	path, err := setQueryParams(backupAdministratorSyncBasePath, options)
 	if err != nil {
 		return nil, nil, err
@@ -83,7 +83,7 @@ func (s *SyncStoreConfigServiceOp) List(ctx context.Context, options *atlas.List
 // Create create a Sync.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/create-one-sync-store-configuration/
-func (s *SyncStoreConfigServiceOp) Create(ctx context.Context, sync *BackupStore) (*BackupStore, *atlas.Response, error) {
+func (s *SyncStoreConfigServiceOp) Create(ctx context.Context, sync *BackupStore) (*BackupStore, *Response, error) {
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, backupAdministratorSyncBasePath, sync)
 	if err != nil {
 		return nil, nil, err
@@ -98,7 +98,7 @@ func (s *SyncStoreConfigServiceOp) Create(ctx context.Context, sync *BackupStore
 // Update updates a Sync.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/update-one-sync-store-configuration/
-func (s *SyncStoreConfigServiceOp) Update(ctx context.Context, syncID string, sync *BackupStore) (*BackupStore, *atlas.Response, error) {
+func (s *SyncStoreConfigServiceOp) Update(ctx context.Context, syncID string, sync *BackupStore) (*BackupStore, *Response, error) {
 	if syncID == "" {
 		return nil, nil, atlas.NewArgError("syncID", "must be set")
 	}
@@ -118,7 +118,7 @@ func (s *SyncStoreConfigServiceOp) Update(ctx context.Context, syncID string, sy
 // Delete removes a Sync.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/delete-one-sync-store-configuration/
-func (s *SyncStoreConfigServiceOp) Delete(ctx context.Context, syncID string) (*atlas.Response, error) {
+func (s *SyncStoreConfigServiceOp) Delete(ctx context.Context, syncID string) (*Response, error) {
 	if syncID == "" {
 		return nil, atlas.NewArgError("syncID", "must be set")
 	}

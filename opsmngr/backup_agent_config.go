@@ -29,7 +29,7 @@ const (
 // GetBackupAgentConfig retrieves the current backup agent configuration for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-backup-attributes
-func (s *AutomationServiceOp) GetBackupAgentConfig(ctx context.Context, groupID string) (*AgentConfig, *atlas.Response, error) {
+func (s *AutomationServiceOp) GetBackupAgentConfig(ctx context.Context, groupID string) (*AgentConfig, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

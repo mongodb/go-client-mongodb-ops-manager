@@ -31,7 +31,7 @@ const (
 //
 // https://docs.opsmanager.mongodb.com/current/reference/api/diagnostic-archives/
 type DiagnosticsService interface {
-	Get(context.Context, string, *DiagnosticsListOpts, io.Writer) (*atlas.Response, error)
+	Get(context.Context, string, *DiagnosticsListOpts, io.Writer) (*Response, error)
 }
 
 // DiagnosticsServiceOp provides an implementation of the DiagnosticsService interface.
@@ -48,7 +48,7 @@ type DiagnosticsListOpts struct {
 // Get retrieves the project’s diagnostics archive file.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/diagnostics/get-project-diagnostic-archive/
-func (s *DiagnosticsServiceOp) Get(ctx context.Context, groupID string, opts *DiagnosticsListOpts, out io.Writer) (*atlas.Response, error) {
+func (s *DiagnosticsServiceOp) Get(ctx context.Context, groupID string, opts *DiagnosticsListOpts, out io.Writer) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}

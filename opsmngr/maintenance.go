@@ -31,11 +31,11 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows/
 type MaintenanceWindowsService interface {
-	Get(context.Context, string, string) (*MaintenanceWindow, *atlas.Response, error)
-	List(context.Context, string) (*MaintenanceWindows, *atlas.Response, error)
-	Create(context.Context, string, *MaintenanceWindow) (*MaintenanceWindow, *atlas.Response, error)
-	Update(context.Context, string, string, *MaintenanceWindow) (*MaintenanceWindow, *atlas.Response, error)
-	Delete(context.Context, string, string) (*atlas.Response, error)
+	Get(context.Context, string, string) (*MaintenanceWindow, *Response, error)
+	List(context.Context, string) (*MaintenanceWindows, *Response, error)
+	Create(context.Context, string, *MaintenanceWindow) (*MaintenanceWindow, *Response, error)
+	Update(context.Context, string, string, *MaintenanceWindow) (*MaintenanceWindow, *Response, error)
+	Delete(context.Context, string, string) (*Response, error)
 }
 
 // MaintenanceWindow represents MongoDB Maintenance Windows.
@@ -66,7 +66,7 @@ var _ MaintenanceWindowsService = &MaintenanceWindowsServiceOp{}
 // List gets all maintenance windows.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-get-all/
-func (s *MaintenanceWindowsServiceOp) List(ctx context.Context, groupID string) (*MaintenanceWindows, *atlas.Response, error) {
+func (s *MaintenanceWindowsServiceOp) List(ctx context.Context, groupID string) (*MaintenanceWindows, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -87,7 +87,7 @@ func (s *MaintenanceWindowsServiceOp) List(ctx context.Context, groupID string) 
 // Get gets a maintenance window.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-get-one/
-func (s *MaintenanceWindowsServiceOp) Get(ctx context.Context, groupID, maintenanceWindowID string) (*MaintenanceWindow, *atlas.Response, error) {
+func (s *MaintenanceWindowsServiceOp) Get(ctx context.Context, groupID, maintenanceWindowID string) (*MaintenanceWindow, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -112,7 +112,7 @@ func (s *MaintenanceWindowsServiceOp) Get(ctx context.Context, groupID, maintena
 // Create creates one maintenance window.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-create-one/
-func (s *MaintenanceWindowsServiceOp) Create(ctx context.Context, groupID string, maintenanceWindow *MaintenanceWindow) (*MaintenanceWindow, *atlas.Response, error) {
+func (s *MaintenanceWindowsServiceOp) Create(ctx context.Context, groupID string, maintenanceWindow *MaintenanceWindow) (*MaintenanceWindow, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -132,7 +132,7 @@ func (s *MaintenanceWindowsServiceOp) Create(ctx context.Context, groupID string
 // Update updates one maintenance window with an end date in the future.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-update-one/
-func (s *MaintenanceWindowsServiceOp) Update(ctx context.Context, groupID, maintenanceWindowID string, maintenanceWindow *MaintenanceWindow) (*MaintenanceWindow, *atlas.Response, error) {
+func (s *MaintenanceWindowsServiceOp) Update(ctx context.Context, groupID, maintenanceWindowID string, maintenanceWindow *MaintenanceWindow) (*MaintenanceWindow, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -158,7 +158,7 @@ func (s *MaintenanceWindowsServiceOp) Update(ctx context.Context, groupID, maint
 // Delete removes one maintenance window with an end date in the future.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-delete-one/
-func (s *MaintenanceWindowsServiceOp) Delete(ctx context.Context, groupID, maintenanceWindowID string) (*atlas.Response, error) {
+func (s *MaintenanceWindowsServiceOp) Delete(ctx context.Context, groupID, maintenanceWindowID string) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}

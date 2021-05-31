@@ -16,8 +16,6 @@ package opsmngr
 
 import (
 	"context"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -28,12 +26,12 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/nav/automation/
 type AutomationService interface {
-	GetConfig(context.Context, string) (*AutomationConfig, *atlas.Response, error)
-	UpdateConfig(context.Context, string, *AutomationConfig) (*atlas.Response, error)
-	UpdateAgentVersion(context.Context, string) (*AutomationConfigAgent, *atlas.Response, error)
-	GetBackupAgentConfig(context.Context, string) (*AgentConfig, *atlas.Response, error)
-	GetMonitoringAgentConfig(context.Context, string) (*AgentConfig, *atlas.Response, error)
-	GetStatus(context.Context, string) (*AutomationStatus, *atlas.Response, error)
+	GetConfig(context.Context, string) (*AutomationConfig, *Response, error)
+	UpdateConfig(context.Context, string, *AutomationConfig) (*Response, error)
+	UpdateAgentVersion(context.Context, string) (*AutomationConfigAgent, *Response, error)
+	GetBackupAgentConfig(context.Context, string) (*AgentConfig, *Response, error)
+	GetMonitoringAgentConfig(context.Context, string) (*AgentConfig, *Response, error)
+	GetStatus(context.Context, string) (*AutomationStatus, *Response, error)
 }
 
 // AutomationServiceOp provides an implementation of the AutomationService interface.

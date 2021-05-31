@@ -29,8 +29,8 @@ const snapshotScheduleBasePath = "groups/%s/backupConfigs/%s/snapshotSchedule"
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshot-schedule/
 type SnapshotScheduleService interface {
-	Get(context.Context, string, string) (*SnapshotSchedule, *atlas.Response, error)
-	Update(context.Context, string, string, *SnapshotSchedule) (*SnapshotSchedule, *atlas.Response, error)
+	Get(context.Context, string, string) (*SnapshotSchedule, *Response, error)
+	Update(context.Context, string, string, *SnapshotSchedule) (*SnapshotSchedule, *Response, error)
 }
 
 // SnapshotScheduleServiceOp provides an implementation of the SnapshotScheduleService interface.
@@ -57,7 +57,7 @@ type SnapshotSchedule struct {
 // Get gets the snapshot schedule for an instance.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/get-snapshot-schedule/
-func (s *SnapshotScheduleServiceOp) Get(ctx context.Context, groupID, clusterID string) (*SnapshotSchedule, *atlas.Response, error) {
+func (s *SnapshotScheduleServiceOp) Get(ctx context.Context, groupID, clusterID string) (*SnapshotSchedule, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -84,7 +84,7 @@ func (s *SnapshotScheduleServiceOp) Get(ctx context.Context, groupID, clusterID 
 // Update updates the parameters of snapshot creation and retention.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/update-one-snapshot-schedule-by-cluster-id/
-func (s *SnapshotScheduleServiceOp) Update(ctx context.Context, groupID, clusterID string, snapshot *SnapshotSchedule) (*SnapshotSchedule, *atlas.Response, error) {
+func (s *SnapshotScheduleServiceOp) Update(ctx context.Context, groupID, clusterID string, snapshot *SnapshotSchedule) (*SnapshotSchedule, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

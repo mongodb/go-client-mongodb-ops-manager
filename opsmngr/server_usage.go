@@ -34,14 +34,14 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/
 type ServerUsageService interface {
-	GenerateDailyUsageSnapshot(context.Context) (*atlas.Response, error)
-	ListAllHostAssignment(context.Context, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
-	ProjectHostAssignments(context.Context, string, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
-	OrganizationHostAssignments(context.Context, string, *ServerTypeOptions) (*HostAssignments, *atlas.Response, error)
-	GetServerTypeProject(context.Context, string) (*ServerType, *atlas.Response, error)
-	GetServerTypeOrganization(context.Context, string) (*ServerType, *atlas.Response, error)
-	UpdateProjectServerType(context.Context, string, *ServerTypeRequest) (*atlas.Response, error)
-	UpdateOrganizationServerType(context.Context, string, *ServerTypeRequest) (*atlas.Response, error)
+	GenerateDailyUsageSnapshot(context.Context) (*Response, error)
+	ListAllHostAssignment(context.Context, *ServerTypeOptions) (*HostAssignments, *Response, error)
+	ProjectHostAssignments(context.Context, string, *ServerTypeOptions) (*HostAssignments, *Response, error)
+	OrganizationHostAssignments(context.Context, string, *ServerTypeOptions) (*HostAssignments, *Response, error)
+	GetServerTypeProject(context.Context, string) (*ServerType, *Response, error)
+	GetServerTypeOrganization(context.Context, string) (*ServerType, *Response, error)
+	UpdateProjectServerType(context.Context, string, *ServerTypeRequest) (*Response, error)
+	UpdateOrganizationServerType(context.Context, string, *ServerTypeRequest) (*Response, error)
 }
 
 // ServerUsageServiceOp provides an implementation of the ServerUsageService.
@@ -53,7 +53,7 @@ var _ ServerUsageService = &ServerUsageServiceOp{}
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/create-one-report/
 type ServerUsageReportService interface {
-	Download(context.Context, *ServerTypeOptions, io.Writer) (*atlas.Response, error)
+	Download(context.Context, *ServerTypeOptions, io.Writer) (*Response, error)
 }
 
 // ServerUsageReportServiceOp handles communication with the Log Collection Jobs download method of the
@@ -115,7 +115,7 @@ type ServerTypeRequest struct {
 // GenerateDailyUsageSnapshot generates snapshot of usage for the processes Ops Manager manages..
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/generate-daily-usage-snapshot/
-func (s *ServerUsageServiceOp) GenerateDailyUsageSnapshot(ctx context.Context) (*atlas.Response, error) {
+func (s *ServerUsageServiceOp) GenerateDailyUsageSnapshot(ctx context.Context) (*Response, error) {
 	path := fmt.Sprintf("%s/%s", serverUsageBasePath, "dailyCapture")
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func (s *ServerUsageServiceOp) GenerateDailyUsageSnapshot(ctx context.Context) (
 // ListAllHostAssignment retrieves all host assignments.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/list-all-host-assignments/
-func (s *ServerUsageServiceOp) ListAllHostAssignment(ctx context.Context, options *ServerTypeOptions) (*HostAssignments, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) ListAllHostAssignment(ctx context.Context, options *ServerTypeOptions) (*HostAssignments, *Response, error) {
 	basePath := fmt.Sprintf("%s/%s", serverUsageBasePath, "assignments")
 	path, err := setQueryParams(basePath, options)
 	if err != nil {
@@ -150,7 +150,7 @@ func (s *ServerUsageServiceOp) ListAllHostAssignment(ctx context.Context, option
 // ProjectHostAssignments retrieves all host assignments in a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/list-all-host-assignments-in-one-project/
-func (s *ServerUsageServiceOp) ProjectHostAssignments(ctx context.Context, groupID string, options *ServerTypeOptions) (*HostAssignments, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) ProjectHostAssignments(ctx context.Context, groupID string, options *ServerTypeOptions) (*HostAssignments, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -175,7 +175,7 @@ func (s *ServerUsageServiceOp) ProjectHostAssignments(ctx context.Context, group
 // OrganizationHostAssignments retrieves all host assignments in a organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/list-all-host-assignments-in-one-organization/
-func (s *ServerUsageServiceOp) OrganizationHostAssignments(ctx context.Context, orgID string, options *ServerTypeOptions) (*HostAssignments, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) OrganizationHostAssignments(ctx context.Context, orgID string, options *ServerTypeOptions) (*HostAssignments, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -200,7 +200,7 @@ func (s *ServerUsageServiceOp) OrganizationHostAssignments(ctx context.Context, 
 // GetServerTypeProject retrieves one default server type for one project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/get-default-server-type-for-one-project/
-func (s *ServerUsageServiceOp) GetServerTypeProject(ctx context.Context, groupID string) (*ServerType, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) GetServerTypeProject(ctx context.Context, groupID string) (*ServerType, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -222,7 +222,7 @@ func (s *ServerUsageServiceOp) GetServerTypeProject(ctx context.Context, groupID
 // GetServerTypeOrganization retrieves one default server type for one organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/get-default-server-type-for-one-organization/
-func (s *ServerUsageServiceOp) GetServerTypeOrganization(ctx context.Context, orgID string) (*ServerType, *atlas.Response, error) {
+func (s *ServerUsageServiceOp) GetServerTypeOrganization(ctx context.Context, orgID string) (*ServerType, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -244,7 +244,7 @@ func (s *ServerUsageServiceOp) GetServerTypeOrganization(ctx context.Context, or
 // UpdateProjectServerType update the default server type for one project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-project/
-func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, groupID string, serverType *ServerTypeRequest) (*atlas.Response, error) {
+func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, groupID string, serverType *ServerTypeRequest) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -265,7 +265,7 @@ func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, grou
 // UpdateOrganizationServerType update the default server type for one organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-organization/
-func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context, groupID string, serverType *ServerTypeRequest) (*atlas.Response, error) {
+func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context, groupID string, serverType *ServerTypeRequest) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -286,7 +286,7 @@ func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context,
 // Download downloads a compressed report of server usage in a given timeframe.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/create-one-report/
-func (s *ServerUsageReportServiceOp) Download(ctx context.Context, options *ServerTypeOptions, out io.Writer) (*atlas.Response, error) {
+func (s *ServerUsageReportServiceOp) Download(ctx context.Context, options *ServerTypeOptions, out io.Writer) (*Response, error) {
 	path := fmt.Sprintf("%s/%s", serverUsageBasePath, "report")
 	path, err := setQueryParams(path, options)
 	if err != nil {

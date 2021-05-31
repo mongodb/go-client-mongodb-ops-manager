@@ -29,9 +29,9 @@ const backupAdministratorProjectJobBasePath = "admin/backup/groups"
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/backup-group-config/
 type ProjectJobConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*ProjectJobs, *atlas.Response, error)
-	Get(context.Context, string) (*ProjectJob, *atlas.Response, error)
-	Update(context.Context, string, *ProjectJob) (*ProjectJob, *atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*ProjectJobs, *Response, error)
+	Get(context.Context, string) (*ProjectJob, *Response, error)
+	Update(context.Context, string, *ProjectJob) (*ProjectJob, *Response, error)
 }
 
 // ProjectJobConfigServiceOp provides an implementation of the ProjectJobConfigService interface.
@@ -79,7 +79,7 @@ type ProjectJobs struct {
 // List retrieves the configurations of all project’s backup jobs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-all-sync-store-configurations/
-func (s *ProjectJobConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*ProjectJobs, *atlas.Response, error) {
+func (s *ProjectJobConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*ProjectJobs, *Response, error) {
 	path, err := setQueryParams(backupAdministratorProjectJobBasePath, options)
 	if err != nil {
 		return nil, nil, err
@@ -98,7 +98,7 @@ func (s *ProjectJobConfigServiceOp) List(ctx context.Context, options *atlas.Lis
 // Get retrieves the configuration of one project’s backup jobs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/groups/get-one-backup-group-configuration-by-id/
-func (s *ProjectJobConfigServiceOp) Get(ctx context.Context, projectJobID string) (*ProjectJob, *atlas.Response, error) {
+func (s *ProjectJobConfigServiceOp) Get(ctx context.Context, projectJobID string) (*ProjectJob, *Response, error) {
 	if projectJobID == "" {
 		return nil, nil, atlas.NewArgError("projectJobID", "must be set")
 	}
@@ -118,7 +118,7 @@ func (s *ProjectJobConfigServiceOp) Get(ctx context.Context, projectJobID string
 // Update updates the configuration of one project’s backup jobs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/groups/update-one-backup-group-configuration/
-func (s *ProjectJobConfigServiceOp) Update(ctx context.Context, projectJobID string, projectJob *ProjectJob) (*ProjectJob, *atlas.Response, error) {
+func (s *ProjectJobConfigServiceOp) Update(ctx context.Context, projectJobID string, projectJob *ProjectJob) (*ProjectJob, *Response, error) {
 	if projectJobID == "" {
 		return nil, nil, atlas.NewArgError("projectJobID", "must be set")
 	}

@@ -30,9 +30,9 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 type GlobalAlertsService interface {
-	Get(context.Context, string) (*GlobalAlert, *atlas.Response, error)
-	List(context.Context, *atlas.AlertsListOptions) (*GlobalAlerts, *atlas.Response, error)
-	Acknowledge(context.Context, string, *atlas.AcknowledgeRequest) (*GlobalAlert, *atlas.Response, error)
+	Get(context.Context, string) (*GlobalAlert, *Response, error)
+	List(context.Context, *atlas.AlertsListOptions) (*GlobalAlerts, *Response, error)
+	Acknowledge(context.Context, string, *atlas.AcknowledgeRequest) (*GlobalAlert, *Response, error)
 }
 
 // GlobalAlertsServiceOp provides an implementation of the GlobalAlertsService interface.
@@ -58,7 +58,7 @@ type GlobalAlerts struct {
 // Get gets a global alert.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
-func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*GlobalAlert, *atlas.Response, error) {
+func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*GlobalAlert, *Response, error) {
 	if alertID == "" {
 		return nil, nil, atlas.NewArgError("alertID", "must be set")
 	}
@@ -78,7 +78,7 @@ func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*Globa
 // List gets all global alerts.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
-func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsListOptions) (*GlobalAlerts, *atlas.Response, error) {
+func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsListOptions) (*GlobalAlerts, *Response, error) {
 	path, err := setQueryParams(globalAlertsBasePath, opts)
 	if err != nil {
 		return nil, nil, err
@@ -98,7 +98,7 @@ func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsList
 // Acknowledge acknowledges a global alert.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
-func (s *GlobalAlertsServiceOp) Acknowledge(ctx context.Context, alertID string, body *atlas.AcknowledgeRequest) (*GlobalAlert, *atlas.Response, error) {
+func (s *GlobalAlertsServiceOp) Acknowledge(ctx context.Context, alertID string, body *atlas.AcknowledgeRequest) (*GlobalAlert, *Response, error) {
 	if alertID == "" {
 		return nil, nil, atlas.NewArgError("alertID", "must be set")
 	}

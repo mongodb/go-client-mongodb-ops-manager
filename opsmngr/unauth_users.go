@@ -29,7 +29,7 @@ const (
 
 // UnauthUsersService is an interface for interfacing with unauthenticated APIs.
 type UnauthUsersService interface {
-	CreateFirstUser(context.Context, *User, *WhitelistOpts) (*CreateUserResponse, *atlas.Response, error)
+	CreateFirstUser(context.Context, *User, *WhitelistOpts) (*CreateUserResponse, *Response, error)
 }
 
 // UnauthUsersServiceOp handles communication with the unauthenticated API.
@@ -38,7 +38,7 @@ type UnauthUsersServiceOp service
 // CreateFirstUser creates the first user for a new installation.
 //
 // See more: https://docs.opsmanager.mongodb.com/master/reference/api/user-create-first/
-func (s *UnauthUsersServiceOp) CreateFirstUser(ctx context.Context, user *User, opts *WhitelistOpts) (*CreateUserResponse, *atlas.Response, error) {
+func (s *UnauthUsersServiceOp) CreateFirstUser(ctx context.Context, user *User, opts *WhitelistOpts) (*CreateUserResponse, *Response, error) {
 	// if a whitelist was not specified, do not pass the parameter
 	basePath := unauthUsersBasePath
 

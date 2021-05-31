@@ -32,12 +32,12 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
 type LogCollectionService interface {
-	List(context.Context, string, *LogListOptions) (*LogCollectionJobs, *atlas.Response, error)
-	Get(context.Context, string, string, *LogListOptions) (*LogCollectionJob, *atlas.Response, error)
-	Retry(context.Context, string, string) (*atlas.Response, error)
-	Create(context.Context, string, *LogCollectionJob) (*LogCollectionJob, *atlas.Response, error)
-	Extend(context.Context, string, string, *LogCollectionJob) (*atlas.Response, error)
-	Delete(context.Context, string, string) (*atlas.Response, error)
+	List(context.Context, string, *LogListOptions) (*LogCollectionJobs, *Response, error)
+	Get(context.Context, string, string, *LogListOptions) (*LogCollectionJob, *Response, error)
+	Retry(context.Context, string, string) (*Response, error)
+	Create(context.Context, string, *LogCollectionJob) (*LogCollectionJob, *Response, error)
+	Extend(context.Context, string, string, *LogCollectionJob) (*Response, error)
+	Delete(context.Context, string, string) (*Response, error)
 }
 
 // LogCollectionServiceOp provides an implementation of the DiagnosticsService interface.
@@ -50,7 +50,7 @@ var _ LogCollectionService = &LogCollectionServiceOp{}
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collection/
 type LogsService interface {
-	Download(context.Context, string, string, io.Writer) (*atlas.Response, error)
+	Download(context.Context, string, string, io.Writer) (*Response, error)
 }
 
 // LogsServiceOp handles communication with the Log Collection Jobs download method of the
@@ -111,7 +111,7 @@ type LogListOptions struct {
 // List gets all collection log jobs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-all/
-func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts *LogListOptions) (*LogCollectionJobs, *atlas.Response, error) {
+func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts *LogListOptions) (*LogCollectionJobs, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -136,7 +136,7 @@ func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts 
 // Get gets a log collection job.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-one/
-func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string, opts *LogListOptions) (*LogCollectionJob, *atlas.Response, error) {
+func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string, opts *LogListOptions) (*LogCollectionJob, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -167,7 +167,7 @@ func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string,
 // Create creates a log collection job.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-submit/
-func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log *LogCollectionJob) (*LogCollectionJob, *atlas.Response, error) {
+func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log *LogCollectionJob) (*LogCollectionJob, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -191,7 +191,7 @@ func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log
 // Extend extends the expiration data of a log collection job.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-update-one/
-func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID string, log *LogCollectionJob) (*atlas.Response, error) {
+func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID string, log *LogCollectionJob) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -219,7 +219,7 @@ func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID stri
 // Retry retries a single failed log collection job.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-retry/
-func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
+func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID string) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -244,7 +244,7 @@ func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID strin
 // Delete removes a log collection job.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
-func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID string) (*atlas.Response, error) {
+func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID string) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -269,7 +269,7 @@ func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID stri
 // Download allows to download a log from a collection job.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-download-job/
-func (s *LogsServiceOp) Download(ctx context.Context, groupID, jobID string, out io.Writer) (*atlas.Response, error) {
+func (s *LogsServiceOp) Download(ctx context.Context, groupID, jobID string, out io.Writer) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}

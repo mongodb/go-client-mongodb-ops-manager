@@ -31,9 +31,9 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/feature-control-policies/
 type FeatureControlPoliciesService interface {
-	List(context.Context, string, *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error)
-	Update(context.Context, string, *FeaturePolicy) (*FeaturePolicy, *atlas.Response, error)
-	ListSupportedPolicies(context.Context, *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error)
+	List(context.Context, string, *atlas.ListOptions) (*FeaturePolicy, *Response, error)
+	Update(context.Context, string, *FeaturePolicy) (*FeaturePolicy, *Response, error)
+	ListSupportedPolicies(context.Context, *atlas.ListOptions) (*FeaturePolicy, *Response, error)
 }
 
 // FeatureControlPoliciesServiceOp provides an implementation of the FeatureControlPoliciesService interface.
@@ -65,7 +65,7 @@ type Policy struct {
 // List retrieves the policies that have been set on a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/controlled-features/get-controlled-features-for-one-project/
-func (s *FeatureControlPoliciesServiceOp) List(ctx context.Context, groupID string, opts *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error) {
+func (s *FeatureControlPoliciesServiceOp) List(ctx context.Context, groupID string, opts *atlas.ListOptions) (*FeaturePolicy, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -93,7 +93,7 @@ func (s *FeatureControlPoliciesServiceOp) List(ctx context.Context, groupID stri
 // Update updates the Feature Control Policies for one Project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/controlled-features/update-controlled-features-for-one-project/
-func (s *FeatureControlPoliciesServiceOp) Update(ctx context.Context, groupID string, policy *FeaturePolicy) (*FeaturePolicy, *atlas.Response, error) {
+func (s *FeatureControlPoliciesServiceOp) Update(ctx context.Context, groupID string, policy *FeaturePolicy) (*FeaturePolicy, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -116,7 +116,7 @@ func (s *FeatureControlPoliciesServiceOp) Update(ctx context.Context, groupID st
 // ListSupportedPolicies retrieves all supported policies by Ops Manager.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/controlled-features/get-all-feature-control-policies/
-func (s *FeatureControlPoliciesServiceOp) ListSupportedPolicies(ctx context.Context, opts *atlas.ListOptions) (*FeaturePolicy, *atlas.Response, error) {
+func (s *FeatureControlPoliciesServiceOp) ListSupportedPolicies(ctx context.Context, opts *atlas.ListOptions) (*FeaturePolicy, *Response, error) {
 	path, err := setQueryParams(availablePoliciesBasePath, opts)
 	if err != nil {
 		return nil, nil, err

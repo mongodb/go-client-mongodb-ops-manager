@@ -29,11 +29,11 @@ const backupAdministratorBlockstoreBasePath = "admin/backup/snapshot/mongoConfig
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/blockstore-config/
 type BlockstoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*BackupStores, *atlas.Response, error)
-	Get(context.Context, string) (*BackupStore, *atlas.Response, error)
-	Create(context.Context, *BackupStore) (*BackupStore, *atlas.Response, error)
-	Update(context.Context, string, *BackupStore) (*BackupStore, *atlas.Response, error)
-	Delete(context.Context, string) (*atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*BackupStores, *Response, error)
+	Get(context.Context, string) (*BackupStore, *Response, error)
+	Create(context.Context, *BackupStore) (*BackupStore, *Response, error)
+	Update(context.Context, string, *BackupStore) (*BackupStore, *Response, error)
+	Delete(context.Context, string) (*Response, error)
 }
 
 // BlockstoreConfigServiceOp provides an implementation of the BlockstoreConfigService interface.
@@ -61,7 +61,7 @@ type BackupStores struct {
 // Get retrieves a blockstore.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/get-one-blockstore-configuration-by-id/
-func (s *BlockstoreConfigServiceOp) Get(ctx context.Context, blockstoreID string) (*BackupStore, *atlas.Response, error) {
+func (s *BlockstoreConfigServiceOp) Get(ctx context.Context, blockstoreID string) (*BackupStore, *Response, error) {
 	if blockstoreID == "" {
 		return nil, nil, atlas.NewArgError("blockstoreID", "must be set")
 	}
@@ -81,7 +81,7 @@ func (s *BlockstoreConfigServiceOp) Get(ctx context.Context, blockstoreID string
 // List retrieves all the blockstores.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/get-all-blockstore-configurations/
-func (s *BlockstoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *atlas.Response, error) {
+func (s *BlockstoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *Response, error) {
 	path, err := setQueryParams(backupAdministratorBlockstoreBasePath, options)
 	if err != nil {
 		return nil, nil, err
@@ -100,7 +100,7 @@ func (s *BlockstoreConfigServiceOp) List(ctx context.Context, options *atlas.Lis
 // Create creates a blockstore.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/create-one-blockstore-configuration/
-func (s *BlockstoreConfigServiceOp) Create(ctx context.Context, blockstore *BackupStore) (*BackupStore, *atlas.Response, error) {
+func (s *BlockstoreConfigServiceOp) Create(ctx context.Context, blockstore *BackupStore) (*BackupStore, *Response, error) {
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, backupAdministratorBlockstoreBasePath, blockstore)
 	if err != nil {
 		return nil, nil, err
@@ -115,7 +115,7 @@ func (s *BlockstoreConfigServiceOp) Create(ctx context.Context, blockstore *Back
 // Update updates a blockstore.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/update-one-blockstore-configuration/
-func (s *BlockstoreConfigServiceOp) Update(ctx context.Context, blockstoreID string, blockstore *BackupStore) (*BackupStore, *atlas.Response, error) {
+func (s *BlockstoreConfigServiceOp) Update(ctx context.Context, blockstoreID string, blockstore *BackupStore) (*BackupStore, *Response, error) {
 	if blockstoreID == "" {
 		return nil, nil, atlas.NewArgError("blockstoreID", "must be set")
 	}
@@ -135,7 +135,7 @@ func (s *BlockstoreConfigServiceOp) Update(ctx context.Context, blockstoreID str
 // Delete removes a blockstore.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/delete-one-blockstore-configuration/
-func (s *BlockstoreConfigServiceOp) Delete(ctx context.Context, blockstoreID string) (*atlas.Response, error) {
+func (s *BlockstoreConfigServiceOp) Delete(ctx context.Context, blockstoreID string) (*Response, error) {
 	if blockstoreID == "" {
 		return nil, atlas.NewArgError("blockstoreID", "must be set")
 	}

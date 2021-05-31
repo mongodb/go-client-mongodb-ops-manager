@@ -32,8 +32,8 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/version-manifest/
 type VersionManifestService interface {
-	Get(context.Context, string) (*VersionManifest, *atlas.Response, error)
-	Update(context.Context, *VersionManifest) (*VersionManifest, *atlas.Response, error)
+	Get(context.Context, string) (*VersionManifest, *Response, error)
+	Update(context.Context, *VersionManifest) (*VersionManifest, *Response, error)
 }
 
 // VersionManifestServiceOp provides an implementation of the VersionManifestService interface.
@@ -69,7 +69,7 @@ type Build struct {
 // Get retrieves the version manifest
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/version-manifest/view-version-manifest/
-func (s *VersionManifestServiceOp) Get(ctx context.Context, version string) (*VersionManifest, *atlas.Response, error) {
+func (s *VersionManifestServiceOp) Get(ctx context.Context, version string) (*VersionManifest, *Response, error) {
 	if version == "" {
 		return nil, nil, atlas.NewArgError("version", "must be set")
 	}
@@ -89,7 +89,7 @@ func (s *VersionManifestServiceOp) Get(ctx context.Context, version string) (*Ve
 // Update updates the version manifest
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/version-manifest/update-version-manifest/
-func (s *VersionManifestServiceOp) Update(ctx context.Context, versionManifest *VersionManifest) (*VersionManifest, *atlas.Response, error) {
+func (s *VersionManifestServiceOp) Update(ctx context.Context, versionManifest *VersionManifest) (*VersionManifest, *Response, error) {
 	if versionManifest == nil {
 		return nil, nil, atlas.NewArgError("versionManifest", "must be set")
 	}

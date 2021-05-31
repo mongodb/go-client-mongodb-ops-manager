@@ -28,10 +28,10 @@ const whitelistAPIKeysPath = "admin/whitelist"
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-api-key-whitelists/
 type GlobalAPIKeyWhitelistsService interface {
-	List(context.Context, *atlas.ListOptions) (*GlobalWhitelistAPIKeys, *atlas.Response, error)
-	Get(context.Context, string) (*GlobalWhitelistAPIKey, *atlas.Response, error)
-	Create(context.Context, *WhitelistAPIKeysReq) (*GlobalWhitelistAPIKey, *atlas.Response, error)
-	Delete(context.Context, string) (*atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*GlobalWhitelistAPIKeys, *Response, error)
+	Get(context.Context, string) (*GlobalWhitelistAPIKey, *Response, error)
+	Create(context.Context, *WhitelistAPIKeysReq) (*GlobalWhitelistAPIKey, *Response, error)
+	Delete(context.Context, string) (*Response, error)
 }
 
 // GlobalAPIKeyWhitelistsServiceOp provides an implementation of the GlobalAPIKeyWhitelistsService interface.
@@ -65,7 +65,7 @@ type WhitelistAPIKeysReq struct {
 // List all global whitelist entries.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-all-global-whitelist/
-func (s *GlobalAPIKeyWhitelistsServiceOp) List(ctx context.Context, listOptions *atlas.ListOptions) (*GlobalWhitelistAPIKeys, *atlas.Response, error) {
+func (s *GlobalAPIKeyWhitelistsServiceOp) List(ctx context.Context, listOptions *atlas.ListOptions) (*GlobalWhitelistAPIKeys, *Response, error) {
 	path, err := setQueryParams(whitelistAPIKeysPath, listOptions)
 	if err != nil {
 		return nil, nil, err
@@ -92,7 +92,7 @@ func (s *GlobalAPIKeyWhitelistsServiceOp) List(ctx context.Context, listOptions 
 // Get one global whitelist entry.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-one-global-whitelist/
-func (s *GlobalAPIKeyWhitelistsServiceOp) Get(ctx context.Context, id string) (*GlobalWhitelistAPIKey, *atlas.Response, error) {
+func (s *GlobalAPIKeyWhitelistsServiceOp) Get(ctx context.Context, id string) (*GlobalWhitelistAPIKey, *Response, error) {
 	if id == "" {
 		return nil, nil, atlas.NewArgError("id", "must be set")
 	}
@@ -116,7 +116,7 @@ func (s *GlobalAPIKeyWhitelistsServiceOp) Get(ctx context.Context, id string) (*
 // Create one global whitelist entry.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/create-one-global-whitelist/
-func (s *GlobalAPIKeyWhitelistsServiceOp) Create(ctx context.Context, createRequest *WhitelistAPIKeysReq) (*GlobalWhitelistAPIKey, *atlas.Response, error) {
+func (s *GlobalAPIKeyWhitelistsServiceOp) Create(ctx context.Context, createRequest *WhitelistAPIKeysReq) (*GlobalWhitelistAPIKey, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -138,7 +138,7 @@ func (s *GlobalAPIKeyWhitelistsServiceOp) Create(ctx context.Context, createRequ
 // Delete the global whitelist entry specified by id.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/delete-one-global-whitelist/
-func (s *GlobalAPIKeyWhitelistsServiceOp) Delete(ctx context.Context, id string) (*atlas.Response, error) {
+func (s *GlobalAPIKeyWhitelistsServiceOp) Delete(ctx context.Context, id string) (*Response, error) {
 	if id == "" {
 		return nil, atlas.NewArgError("id", "must be set")
 	}

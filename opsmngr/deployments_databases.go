@@ -29,7 +29,7 @@ const (
 // ListDatabases retrieve all databases running on the specified host.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/databases-get-all-on-host/
-func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error) {
+func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -56,7 +56,7 @@ func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostI
 // GetDatabase retrieve a single database by name.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
-func (s *DeploymentsServiceOp) GetDatabase(ctx context.Context, groupID, hostID, name string) (*atlas.ProcessDatabase, *atlas.Response, error) {
+func (s *DeploymentsServiceOp) GetDatabase(ctx context.Context, groupID, hostID, name string) (*atlas.ProcessDatabase, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

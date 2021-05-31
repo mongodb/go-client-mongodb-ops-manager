@@ -42,6 +42,11 @@ const (
 	gzipMediaType   = "application/gzip"
 )
 
+type (
+	Response                  = atlas.Response
+	RequestCompletionCallback = atlas.RequestCompletionCallback
+)
+
 // Client manages communication with Ops Manager API.
 type Client struct {
 	client    *http.Client
@@ -93,7 +98,7 @@ type Client struct {
 	ServerUsage            ServerUsageService
 	ServerUsageReport      ServerUsageReportService
 
-	onRequestCompleted atlas.RequestCompletionCallback
+	onRequestCompleted RequestCompletionCallback
 }
 
 type service struct {
@@ -296,7 +301,7 @@ func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
 // the raw response will be written to v, without attempting to decode it.
 // The provided ctx must be non-nil, if it is nil an error is returned. If it is canceled or times out,
 // ctx.Err() will be returned.
-func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atlas.Response, error) {
+func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Response, error) {
 	if ctx == nil {
 		return nil, errors.New("context must be non-nil")
 	}
@@ -334,7 +339,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*atl
 		resp.Body.Close()
 	}()
 
-	response := &atlas.Response{Response: resp}
+	response := &Response{Response: resp}
 
 	err = atlas.CheckResponse(resp)
 	if err != nil {

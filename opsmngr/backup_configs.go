@@ -31,9 +31,9 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup-configurations/
 type BackupConfigsService interface {
-	List(context.Context, string, *atlas.ListOptions) (*BackupConfigs, *atlas.Response, error)
-	Get(context.Context, string, string) (*BackupConfig, *atlas.Response, error)
-	Update(context.Context, string, string, *BackupConfig) (*BackupConfig, *atlas.Response, error)
+	List(context.Context, string, *atlas.ListOptions) (*BackupConfigs, *Response, error)
+	Get(context.Context, string, string) (*BackupConfig, *Response, error)
+	Update(context.Context, string, string, *BackupConfig) (*BackupConfig, *Response, error)
 }
 
 // BackupConfigsServiceOp provides an implementation of the BackupConfigsService interface.
@@ -68,7 +68,7 @@ type BackupConfigs struct {
 // List gets all backup configurations.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/get-all-backup-configs-for-group/
-func (s *BackupConfigsServiceOp) List(ctx context.Context, groupID string, opts *atlas.ListOptions) (*BackupConfigs, *atlas.Response, error) {
+func (s *BackupConfigsServiceOp) List(ctx context.Context, groupID string, opts *atlas.ListOptions) (*BackupConfigs, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -93,7 +93,7 @@ func (s *BackupConfigsServiceOp) List(ctx context.Context, groupID string, opts 
 // Get retrieves a single backup configuration by cluster ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/get-one-backup-config-by-cluster-id/
-func (s *BackupConfigsServiceOp) Get(ctx context.Context, groupID, clusterID string) (*BackupConfig, *atlas.Response, error) {
+func (s *BackupConfigsServiceOp) Get(ctx context.Context, groupID, clusterID string) (*BackupConfig, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -119,7 +119,7 @@ func (s *BackupConfigsServiceOp) Get(ctx context.Context, groupID, clusterID str
 // Update updates a single backup configuration.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/update-backup-config/
-func (s *BackupConfigsServiceOp) Update(ctx context.Context, groupID, clusterID string, backupConfig *BackupConfig) (*BackupConfig, *atlas.Response, error) {
+func (s *BackupConfigsServiceOp) Update(ctx context.Context, groupID, clusterID string, backupConfig *BackupConfig) (*BackupConfig, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

@@ -29,10 +29,10 @@ const backupAdministratorDaemonBasePath = "admin/backup/daemon/configs"
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/backup-daemon-config/
 type DaemonConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*Daemons, *atlas.Response, error)
-	Get(context.Context, string) (*Daemon, *atlas.Response, error)
-	Update(context.Context, string, *Daemon) (*Daemon, *atlas.Response, error)
-	Delete(context.Context, string) (*atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*Daemons, *Response, error)
+	Get(context.Context, string) (*Daemon, *Response, error)
+	Update(context.Context, string, *Daemon) (*Daemon, *Response, error)
+	Delete(context.Context, string) (*Response, error)
 }
 
 // DaemonConfigServiceOp provides an implementation of the DaemonConfigService interface.
@@ -68,7 +68,7 @@ type Daemons struct {
 // Get retrieves a Daemon.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/get-one-backup-daemon-configuration-by-host/
-func (s *DaemonConfigServiceOp) Get(ctx context.Context, daemonID string) (*Daemon, *atlas.Response, error) {
+func (s *DaemonConfigServiceOp) Get(ctx context.Context, daemonID string) (*Daemon, *Response, error) {
 	if daemonID == "" {
 		return nil, nil, atlas.NewArgError("daemonID", "must be set")
 	}
@@ -88,7 +88,7 @@ func (s *DaemonConfigServiceOp) Get(ctx context.Context, daemonID string) (*Daem
 // List retrieves all the Daemons.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/get-all-backup-daemon-configurations/
-func (s *DaemonConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*Daemons, *atlas.Response, error) {
+func (s *DaemonConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*Daemons, *Response, error) {
 	path, err := setQueryParams(backupAdministratorDaemonBasePath, options)
 	if err != nil {
 		return nil, nil, err
@@ -107,7 +107,7 @@ func (s *DaemonConfigServiceOp) List(ctx context.Context, options *atlas.ListOpt
 // Update updates a Daemon.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/update-one-backup-daemon-configuration/
-func (s *DaemonConfigServiceOp) Update(ctx context.Context, daemonID string, daemon *Daemon) (*Daemon, *atlas.Response, error) {
+func (s *DaemonConfigServiceOp) Update(ctx context.Context, daemonID string, daemon *Daemon) (*Daemon, *Response, error) {
 	if daemonID == "" {
 		return nil, nil, atlas.NewArgError("daemonID", "must be set")
 	}
@@ -127,7 +127,7 @@ func (s *DaemonConfigServiceOp) Update(ctx context.Context, daemonID string, dae
 // Delete removes a Daemon.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/delete-one-backup-daemon-configuration/
-func (s *DaemonConfigServiceOp) Delete(ctx context.Context, daemonID string) (*atlas.Response, error) {
+func (s *DaemonConfigServiceOp) Delete(ctx context.Context, daemonID string) (*Response, error) {
 	if daemonID == "" {
 		return nil, atlas.NewArgError("daemonID", "must be set")
 	}

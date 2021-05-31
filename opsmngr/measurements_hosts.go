@@ -30,7 +30,7 @@ const (
 // The Monitoring collects host measurements through the MongoDB serverStatus and dbStats commands.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-host-process-system-measurements/
-func (s *MeasurementsServiceOp) Host(ctx context.Context, projectID, hostID string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *atlas.Response, error) {
+func (s *MeasurementsServiceOp) Host(ctx context.Context, projectID, hostID string, listOptions *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("projectID", "must be set")
 	}

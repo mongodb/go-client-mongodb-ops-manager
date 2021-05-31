@@ -33,9 +33,9 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/index.html
 type PerformanceAdvisorService interface {
-	GetNamespaces(context.Context, string, string, *atlas.NamespaceOptions) (*atlas.Namespaces, *atlas.Response, error)
-	GetSlowQueries(context.Context, string, string, *atlas.SlowQueryOptions) (*atlas.SlowQueries, *atlas.Response, error)
-	GetSuggestedIndexes(context.Context, string, string, *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *atlas.Response, error)
+	GetNamespaces(context.Context, string, string, *atlas.NamespaceOptions) (*atlas.Namespaces, *Response, error)
+	GetSlowQueries(context.Context, string, string, *atlas.SlowQueryOptions) (*atlas.SlowQueries, *Response, error)
+	GetSuggestedIndexes(context.Context, string, string, *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *Response, error)
 }
 
 // PerformanceAdvisorServiceOp handles communication with the Performance Advisor related methods of the MongoDB Atlas API.
@@ -46,7 +46,7 @@ var _ PerformanceAdvisorService = &PerformanceAdvisorServiceOp{}
 // GetNamespaces retrieves the namespaces for collections experiencing slow queries for a specified host.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/pa-namespaces-get-all/
-func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID, processName string, opts *atlas.NamespaceOptions) (*atlas.Namespaces, *atlas.Response, error) {
+func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID, processName string, opts *atlas.NamespaceOptions) (*atlas.Namespaces, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -78,7 +78,7 @@ func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID
 // GetSlowQueries gets log lines for slow queries as determined by the Performance Advisor.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/get-slow-queries/
-func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupID, processName string, opts *atlas.SlowQueryOptions) (*atlas.SlowQueries, *atlas.Response, error) {
+func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupID, processName string, opts *atlas.SlowQueryOptions) (*atlas.SlowQueries, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -110,7 +110,7 @@ func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupI
 // GetSuggestedIndexes gets suggested indexes as determined by the Performance Advisor.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/get-suggested-indexes/
-func (s *PerformanceAdvisorServiceOp) GetSuggestedIndexes(ctx context.Context, groupID, processName string, opts *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *atlas.Response, error) {
+func (s *PerformanceAdvisorServiceOp) GetSuggestedIndexes(ctx context.Context, groupID, processName string, opts *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

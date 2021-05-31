@@ -29,11 +29,11 @@ const backupAdministratorOplogBasePath = "admin/backup/oplog/mongoConfigs"
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog-store-config/
 type OplogStoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*BackupStores, *atlas.Response, error)
-	Get(context.Context, string) (*BackupStore, *atlas.Response, error)
-	Create(context.Context, *BackupStore) (*BackupStore, *atlas.Response, error)
-	Update(context.Context, string, *BackupStore) (*BackupStore, *atlas.Response, error)
-	Delete(context.Context, string) (*atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*BackupStores, *Response, error)
+	Get(context.Context, string) (*BackupStore, *Response, error)
+	Create(context.Context, *BackupStore) (*BackupStore, *Response, error)
+	Update(context.Context, string, *BackupStore) (*BackupStore, *Response, error)
+	Delete(context.Context, string) (*Response, error)
 }
 
 // OplogStoreConfigServiceOp provides an implementation of the OplogStoreConfigService interface.
@@ -44,7 +44,7 @@ var _ OplogStoreConfigService = &OplogStoreConfigServiceOp{}
 // Get retrieves a Oplog.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-one-oplog-configuration-by-id/
-func (s *OplogStoreConfigServiceOp) Get(ctx context.Context, oplogID string) (*BackupStore, *atlas.Response, error) {
+func (s *OplogStoreConfigServiceOp) Get(ctx context.Context, oplogID string) (*BackupStore, *Response, error) {
 	if oplogID == "" {
 		return nil, nil, atlas.NewArgError("oplogID", "must be set")
 	}
@@ -64,7 +64,7 @@ func (s *OplogStoreConfigServiceOp) Get(ctx context.Context, oplogID string) (*B
 // List retrieves all the Oplogs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-all-oplog-configurations/
-func (s *OplogStoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *atlas.Response, error) {
+func (s *OplogStoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *Response, error) {
 	path, err := setQueryParams(backupAdministratorOplogBasePath, options)
 	if err != nil {
 		return nil, nil, err
@@ -83,7 +83,7 @@ func (s *OplogStoreConfigServiceOp) List(ctx context.Context, options *atlas.Lis
 // Create create a Oplog.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/create-one-oplog-configuration/
-func (s *OplogStoreConfigServiceOp) Create(ctx context.Context, oplog *BackupStore) (*BackupStore, *atlas.Response, error) {
+func (s *OplogStoreConfigServiceOp) Create(ctx context.Context, oplog *BackupStore) (*BackupStore, *Response, error) {
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, backupAdministratorOplogBasePath, oplog)
 	if err != nil {
 		return nil, nil, err
@@ -98,7 +98,7 @@ func (s *OplogStoreConfigServiceOp) Create(ctx context.Context, oplog *BackupSto
 // Update updates a Oplog.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/update-one-oplog-configuration/
-func (s *OplogStoreConfigServiceOp) Update(ctx context.Context, oplogID string, oplog *BackupStore) (*BackupStore, *atlas.Response, error) {
+func (s *OplogStoreConfigServiceOp) Update(ctx context.Context, oplogID string, oplog *BackupStore) (*BackupStore, *Response, error) {
 	if oplogID == "" {
 		return nil, nil, atlas.NewArgError("oplogID", "must be set")
 	}
@@ -118,7 +118,7 @@ func (s *OplogStoreConfigServiceOp) Update(ctx context.Context, oplogID string, 
 // Delete removes a Oplog.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/s3Configs/delete-one-s3-blockstore-configuration/
-func (s *OplogStoreConfigServiceOp) Delete(ctx context.Context, oplogID string) (*atlas.Response, error) {
+func (s *OplogStoreConfigServiceOp) Delete(ctx context.Context, oplogID string) (*Response, error) {
 	if oplogID == "" {
 		return nil, atlas.NewArgError("oplogID", "must be set")
 	}

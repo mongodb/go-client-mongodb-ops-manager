@@ -55,12 +55,12 @@ func setup() (client *Client, mux *http.ServeMux, teardown func()) {
 	apiHandler := http.NewServeMux()
 	apiHandler.Handle(baseURLPath+"/", http.StripPrefix(baseURLPath, mux))
 	apiHandler.HandleFunc("/", func(w http.ResponseWriter, req *http.Request) {
-		fmt.Fprintln(os.Stderr, "FAIL: Client.BaseURL path prefix is not preserved in the request URL:")
+		fmt.Fprintln(os.Stderr, "FAIL: Client.AuthURL path prefix is not preserved in the request URL:")
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, "\t"+req.URL.String())
 		fmt.Fprintln(os.Stderr)
 		fmt.Fprintln(os.Stderr, "\tDid you accidentally use an absolute endpoint URL rather than relative?")
-		http.Error(w, "Client.BaseURL path prefix is not preserved in the request URL.", http.StatusInternalServerError)
+		http.Error(w, "Client.AuthURL path prefix is not preserved in the request URL.", http.StatusInternalServerError)
 	})
 
 	// server is a test HTTP server used to provide mock API responses.
@@ -98,7 +98,7 @@ func testURLParseError(t *testing.T, err error) {
 func testClientDefaultBaseURL(t *testing.T, c *Client) {
 	t.Helper()
 	if c.BaseURL == nil || c.BaseURL.String() != defaultBaseURL {
-		t.Errorf("NewClient BaseURL = %v, expected %v", c.BaseURL, defaultBaseURL)
+		t.Errorf("NewClient AuthURL = %v, expected %v", c.BaseURL, defaultBaseURL)
 	}
 }
 
@@ -407,7 +407,7 @@ func TestSetBaseURL(t *testing.T) {
 	}
 
 	if got := c.BaseURL.String(); got != baseURL {
-		t.Errorf("New() BaseURL = %s; expected %s", got, baseURL)
+		t.Errorf("New() AuthURL = %s; expected %s", got, baseURL)
 	}
 }
 

@@ -31,10 +31,10 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/users/
 type UsersService interface {
-	Get(context.Context, string) (*User, *atlas.Response, error)
-	GetByName(context.Context, string) (*User, *atlas.Response, error)
-	Create(context.Context, *User) (*User, *atlas.Response, error)
-	Delete(context.Context, string) (*atlas.Response, error)
+	Get(context.Context, string) (*User, *Response, error)
+	GetByName(context.Context, string) (*User, *Response, error)
+	Create(context.Context, *User) (*User, *Response, error)
+	Delete(context.Context, string) (*Response, error)
 }
 
 // UsersServiceOp provides an implementation of the UsersService interface.
@@ -74,7 +74,7 @@ type UsersResponse struct {
 // Get gets a single user by ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-id/
-func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *atlas.Response, error) {
+func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *Response, error) {
 	if userID == "" {
 		return nil, nil, atlas.NewArgError("userID", "must be set")
 	}
@@ -98,7 +98,7 @@ func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *atlas.
 // GetByName gets a single user by name.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-name/
-func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User, *atlas.Response, error) {
+func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User, *Response, error) {
 	if username == "" {
 		return nil, nil, atlas.NewArgError("username", "must be set")
 	}
@@ -122,7 +122,7 @@ func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User,
 // Create creates a new IAM user.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-create/
-func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User, *atlas.Response, error) {
+func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -144,7 +144,7 @@ func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User
 // Delete deletes a user.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/users/delete-one-user/
-func (s *UsersServiceOp) Delete(ctx context.Context, userID string) (*atlas.Response, error) {
+func (s *UsersServiceOp) Delete(ctx context.Context, userID string) (*Response, error) {
 	if userID == "" {
 		return nil, atlas.NewArgError("userID", "must be set")
 	}

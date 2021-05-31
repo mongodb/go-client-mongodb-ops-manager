@@ -25,7 +25,7 @@ import (
 // UpdateAgentVersion updates the MongoDB Agent and tools to the latest versions available at the time of the request.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#update-agend-versions-example
-func (s *AutomationServiceOp) UpdateAgentVersion(ctx context.Context, groupID string) (*AutomationConfigAgent, *atlas.Response, error) {
+func (s *AutomationServiceOp) UpdateAgentVersion(ctx context.Context, groupID string) (*AutomationConfigAgent, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

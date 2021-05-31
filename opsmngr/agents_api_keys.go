@@ -45,7 +45,7 @@ type AgentAPIKeysRequest struct {
 // CreateAgentAPIKey creates a new agent API key.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/create-one-agent-api-key/
-func (s *AgentsServiceOp) CreateAgentAPIKey(ctx context.Context, projectID string, agent *AgentAPIKeysRequest) (*AgentAPIKey, *atlas.Response, error) {
+func (s *AgentsServiceOp) CreateAgentAPIKey(ctx context.Context, projectID string, agent *AgentAPIKeysRequest) (*AgentAPIKey, *Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("projectID", "must be set")
 	}
@@ -68,7 +68,7 @@ func (s *AgentsServiceOp) CreateAgentAPIKey(ctx context.Context, projectID strin
 // ListAgentAPIKeys lists agent API keys.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/get-all-agent-api-keys-for-project/
-func (s *AgentsServiceOp) ListAgentAPIKeys(ctx context.Context, projectID string) ([]*AgentAPIKey, *atlas.Response, error) {
+func (s *AgentsServiceOp) ListAgentAPIKeys(ctx context.Context, projectID string) ([]*AgentAPIKey, *Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -92,7 +92,7 @@ func (s *AgentsServiceOp) ListAgentAPIKeys(ctx context.Context, projectID string
 // DeleteAgentAPIKey removes an agent API key from a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/delete-one-agent-api-key/
-func (s *AgentsServiceOp) DeleteAgentAPIKey(ctx context.Context, projectID, agentAPIKey string) (*atlas.Response, error) {
+func (s *AgentsServiceOp) DeleteAgentAPIKey(ctx context.Context, projectID, agentAPIKey string) (*Response, error) {
 	if projectID == "" {
 		return nil, atlas.NewArgError("projectID", "must be set")
 	}

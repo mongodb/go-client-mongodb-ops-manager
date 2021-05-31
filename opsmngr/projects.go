@@ -30,15 +30,15 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/
 type ProjectsService interface {
-	List(context.Context, *atlas.ListOptions) (*Projects, *atlas.Response, error)
-	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *atlas.Response, error)
-	Get(context.Context, string) (*Project, *atlas.Response, error)
-	GetByName(context.Context, string) (*Project, *atlas.Response, error)
-	Create(context.Context, *Project) (*Project, *atlas.Response, error)
-	Delete(context.Context, string) (*atlas.Response, error)
-	RemoveUser(context.Context, string, string) (*atlas.Response, error)
-	AddTeamsToProject(context.Context, string, []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *atlas.Response, error)
-	GetTeams(context.Context, string, *atlas.ListOptions) (*atlas.TeamsAssigned, *atlas.Response, error)
+	List(context.Context, *atlas.ListOptions) (*Projects, *Response, error)
+	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *Response, error)
+	Get(context.Context, string) (*Project, *Response, error)
+	GetByName(context.Context, string) (*Project, *Response, error)
+	Create(context.Context, *Project) (*Project, *Response, error)
+	Delete(context.Context, string) (*Response, error)
+	RemoveUser(context.Context, string, string) (*Response, error)
+	AddTeamsToProject(context.Context, string, []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *Response, error)
+	GetTeams(context.Context, string, *atlas.ListOptions) (*atlas.TeamsAssigned, *Response, error)
 }
 
 // ProjectsServiceOp provides an implementation of the ProjectsService interface.
@@ -92,7 +92,7 @@ type Projects struct {
 // List gets all projects.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-groups-for-current-user/
-func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*Projects, *atlas.Response, error) {
+func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*Projects, *Response, error) {
 	path, err := setQueryParams(projectBasePath, opts)
 	if err != nil {
 		return nil, nil, err
@@ -118,7 +118,7 @@ func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (
 // ListUsers gets all users in a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
-func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) ([]*User, *atlas.Response, error) {
+func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) ([]*User, *Response, error) {
 	path := fmt.Sprintf("%s/%s/users", projectBasePath, projectID)
 
 	path, err := setQueryParams(path, opts)
@@ -147,7 +147,7 @@ func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opt
 // Get gets a single project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-one-group-by-id/
-func (s *ProjectsServiceOp) Get(ctx context.Context, groupID string) (*Project, *atlas.Response, error) {
+func (s *ProjectsServiceOp) Get(ctx context.Context, groupID string) (*Project, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -171,7 +171,7 @@ func (s *ProjectsServiceOp) Get(ctx context.Context, groupID string) (*Project, 
 // GetByName gets a single project by its name.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-one-group-by-name/
-func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*Project, *atlas.Response, error) {
+func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*Project, *Response, error) {
 	if groupName == "" {
 		return nil, nil, atlas.NewArgError("groupName", "must be set")
 	}
@@ -195,7 +195,7 @@ func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*P
 // Create creates a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/create-one-group/
-func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project) (*Project, *atlas.Response, error) {
+func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project) (*Project, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -217,7 +217,7 @@ func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project) 
 // Delete deletes a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/delete-one-group/
-func (s *ProjectsServiceOp) Delete(ctx context.Context, projectID string) (*atlas.Response, error) {
+func (s *ProjectsServiceOp) Delete(ctx context.Context, projectID string) (*Response, error) {
 	if projectID == "" {
 		return nil, atlas.NewArgError("projectID", "must be set")
 	}
@@ -237,7 +237,7 @@ func (s *ProjectsServiceOp) Delete(ctx context.Context, projectID string) (*atla
 // RemoveUser removes a user from a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/remove-one-user-from-one-group/
-func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID string) (*atlas.Response, error) {
+func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID string) (*Response, error) {
 	if projectID == "" {
 		return nil, atlas.NewArgError("projectID", "must be set")
 	}
@@ -261,7 +261,7 @@ func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID st
 // AddTeamsToProject adds teams to a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-add-team/
-func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID string, createRequest []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *atlas.Response, error) {
+func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID string, createRequest []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -285,7 +285,7 @@ func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID str
 // GetTeams gets all teams in a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-get-teams/
-func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *atlas.ListOptions) (*atlas.TeamsAssigned, *atlas.Response, error) {
+func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *atlas.ListOptions) (*atlas.TeamsAssigned, *Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("projectID", "cannot be empty")
 	}

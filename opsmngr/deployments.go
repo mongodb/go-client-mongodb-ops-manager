@@ -24,16 +24,16 @@ import (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/nav/deployments/
 type DeploymentsService interface {
-	ListHosts(context.Context, string, *HostListOptions) (*Hosts, *atlas.Response, error)
-	GetHost(context.Context, string, string) (*Host, *atlas.Response, error)
-	GetHostByHostname(context.Context, string, string, int) (*Host, *atlas.Response, error)
-	StartMonitoring(context.Context, string, *Host) (*Host, *atlas.Response, error)
-	UpdateMonitoring(context.Context, string, string, *Host) (*Host, *atlas.Response, error)
-	StopMonitoring(context.Context, string, string) (*atlas.Response, error)
-	ListPartitions(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDisksResponse, *atlas.Response, error)
-	GetPartition(context.Context, string, string, string) (*atlas.ProcessDisk, *atlas.Response, error)
-	ListDatabases(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *atlas.Response, error)
-	GetDatabase(context.Context, string, string, string) (*atlas.ProcessDatabase, *atlas.Response, error)
+	ListHosts(context.Context, string, *HostListOptions) (*Hosts, *Response, error)
+	GetHost(context.Context, string, string) (*Host, *Response, error)
+	GetHostByHostname(context.Context, string, string, int) (*Host, *Response, error)
+	StartMonitoring(context.Context, string, *Host) (*Host, *Response, error)
+	UpdateMonitoring(context.Context, string, string, *Host) (*Host, *Response, error)
+	StopMonitoring(context.Context, string, string) (*Response, error)
+	ListPartitions(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDisksResponse, *Response, error)
+	GetPartition(context.Context, string, string, string) (*atlas.ProcessDisk, *Response, error)
+	ListDatabases(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error)
+	GetDatabase(context.Context, string, string, string) (*atlas.ProcessDatabase, *Response, error)
 }
 
 // DeploymentsServiceOp provides an implementation of the DeploymentsService interface.

@@ -30,9 +30,9 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/
 type ClustersService interface {
-	List(context.Context, string, *atlas.ListOptions) (*Clusters, *atlas.Response, error)
-	Get(context.Context, string, string) (*Cluster, *atlas.Response, error)
-	ListAll(ctx context.Context) (*AllClustersProjects, *atlas.Response, error)
+	List(context.Context, string, *atlas.ListOptions) (*Clusters, *Response, error)
+	Get(context.Context, string, string) (*Cluster, *Response, error)
+	ListAll(ctx context.Context) (*AllClustersProjects, *Response, error)
 }
 
 // ClustersServiceOp provides an implementation of the ClustersService interface.
@@ -41,7 +41,7 @@ type ClustersServiceOp service
 // List all clusters for a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/#get-all-clusters
-func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) (*Clusters, *atlas.Response, error) {
+func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) (*Clusters, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -64,7 +64,7 @@ func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOption
 // Get get a single cluster by ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/#get-a-cluster
-func (s *ClustersServiceOp) Get(ctx context.Context, groupID, clusterID string) (*Cluster, *atlas.Response, error) {
+func (s *ClustersServiceOp) Get(ctx context.Context, groupID, clusterID string) (*Cluster, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -105,7 +105,7 @@ type Clusters struct {
 }
 
 // ListAll list all clusters available to the user.
-func (s *ClustersServiceOp) ListAll(ctx context.Context) (*AllClustersProjects, *atlas.Response, error) {
+func (s *ClustersServiceOp) ListAll(ctx context.Context) (*AllClustersProjects, *Response, error) {
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, "clusters", nil)
 	if err != nil {
 		return nil, nil, err
