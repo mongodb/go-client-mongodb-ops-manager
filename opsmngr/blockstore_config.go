@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const backupAdministratorBlockstoreBasePath = "admin/backup/snapshot/mongoConfigs"
+const backupAdministratorBlockstoreBasePath = "api/public/v1.0/admin/backup/snapshot/mongoConfigs"
 
 // BlockstoreConfigService is an interface for using the Blockstore Configuration
 // endpoints of the MongoDB Ops Manager API.

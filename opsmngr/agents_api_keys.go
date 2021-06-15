@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	agentAPIKeysBasePath = "groups/%s/agentapikeys"
+	agentAPIKeysBasePath = "api/public/v1.0/groups/%s/agentapikeys"
 )
 
 // AgentAPIKey defines the structure for an Agent API key.

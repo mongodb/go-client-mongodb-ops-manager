@@ -28,7 +28,7 @@ func TestAPIKeys_ListAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/admin/apiKeys", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/apiKeys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"results": [
@@ -103,7 +103,7 @@ func TestAPIKeys_Create(t *testing.T) {
 		Roles: []string{"GLOBAL_READ_ONLY"},
 	}
 
-	mux.HandleFunc("/admin/apiKeys", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/apiKeys", func(w http.ResponseWriter, r *http.Request) {
 		expected := map[string]interface{}{
 			"desc":  "test-apiKey",
 			"roles": []interface{}{"GLOBAL_READ_ONLY"},
@@ -153,7 +153,7 @@ func TestAPIKeys_GetAPIKey(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/admin/apiKeys/5c47503320eef5699e1cce8d", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/apiKeys/5c47503320eef5699e1cce8d", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{"desc":"test-desc"}`)
 	})
@@ -179,7 +179,7 @@ func TestAPIKeys_Update(t *testing.T) {
 		Roles: []string{"GLOBAL_READ_ONLY"},
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/admin/apiKeys/%s", "5c47503320eef5699e1cce8d"), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/apiKeys/%s", "5c47503320eef5699e1cce8d"), func(w http.ResponseWriter, r *http.Request) {
 		expected := map[string]interface{}{
 			"desc":  "test-apiKey",
 			"roles": []interface{}{"GLOBAL_READ_ONLY"},
@@ -231,7 +231,7 @@ func TestAPIKeys_Delete(t *testing.T) {
 	defer teardown()
 	apiKeyID := "5c47503320eef5699e1cce8d"
 
-	mux.HandleFunc(fmt.Sprintf("/admin/apiKeys/%s", apiKeyID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/apiKeys/%s", apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

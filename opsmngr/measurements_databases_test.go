@@ -31,7 +31,7 @@ func TestMeasurements_Database(t *testing.T) {
 	hostID := "1"
 	db := "xvdb"
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/hosts/%s/databases/%s/measurements", groups, hostID, db), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s/databases/%s/measurements", groups, hostID, db), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 				  "end" : "2017-08-22T20:31:14Z",

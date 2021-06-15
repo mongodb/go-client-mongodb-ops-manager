@@ -179,7 +179,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, jsonBlob)
 	})
@@ -511,7 +511,7 @@ func TestAutomation_UpdateConfig(t *testing.T) {
 		Version: 1,
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		var v map[string]interface{}
 		err := json.NewDecoder(r.Body).Decode(&v)
 		if err != nil {
@@ -531,7 +531,7 @@ func TestAutomation_MongoDBUserNoMechanism(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
   "auth" : {
@@ -572,7 +572,7 @@ func TestAutomation_MongoDBUserEmptyMechanism(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
   "auth" : {
@@ -631,7 +631,7 @@ func TestAutomation_UpdateMongoDBUserEmptyMechanism(t *testing.T) {
 			},
 		},
 	}
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		expected := map[string]interface{}{
 			"auth": map[string]interface{}{
 				"authoritativeSet":     false,

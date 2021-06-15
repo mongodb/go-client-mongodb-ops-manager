@@ -32,7 +32,7 @@ func TestAgentsServiceOp_ListAgentLinks(t *testing.T) {
 		t.Error("expected an error but got nil")
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agents", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
   			  "results" :[],
 			  "links": [
@@ -113,7 +113,7 @@ func TestAgentsServiceOp_ListAgentsByType(t *testing.T) {
 		t.Error("expected an error but got nil")
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents/%s", projectID, agentType), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agents/%s", projectID, agentType), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 						  "links" : [],
 						  "results": [
@@ -164,7 +164,7 @@ func TestAgentsServiceOp_GlobalVersions(t *testing.T) {
 
 	defer teardown()
 
-	mux.HandleFunc("/softwareComponents/versions", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/softwareComponents/versions", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
           "automationVersion": "10.14.0.6304",
 		  "automationMinimumVersion": "10.2.17.5964",
@@ -213,7 +213,7 @@ func TestAgentsServiceOp_ProjectVersions(t *testing.T) {
 		t.Error("expected an error but got nil")
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/agents/versions", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agents/versions", projectID), func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 		  "count": 0,
 		  "entries": [],

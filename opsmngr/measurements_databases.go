@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const hostDatabaseMeasurementsPath = "groups/%s/hosts/%s/databases/%s/measurements"
+const hostDatabaseMeasurementsPath = "api/public/v1.0/groups/%s/hosts/%s/databases/%s/measurements"
 
 // Database measurements provide statistics on database performance and storage.
 // The Monitoring collects database measurements through the dbStats command.

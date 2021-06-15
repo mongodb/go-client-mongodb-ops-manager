@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const backupAdministratorProjectJobBasePath = "admin/backup/groups"
+const backupAdministratorProjectJobBasePath = "api/public/v1.0/admin/backup/groups"
 
 // ProjectJobConfigService is an interface for using the Project Job
 // endpoints of the MongoDB Ops Manager API.

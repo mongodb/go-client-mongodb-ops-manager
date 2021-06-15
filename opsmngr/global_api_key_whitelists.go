@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const whitelistAPIKeysPath = "admin/whitelist"
+const whitelistAPIKeysPath = "api/public/v1.0/admin/whitelist"
 
 // GlobalAPIKeyWhitelistsService provides access to the global alerts related functions in the Ops Manager API.
 //

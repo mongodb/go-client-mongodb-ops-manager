@@ -27,7 +27,7 @@ func TestProject_GetAllProjects(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/groups", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/groups", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			"links": [{
@@ -396,7 +396,7 @@ func TestProject_Create(t *testing.T) {
 		Name:  "ProjectFoobar",
 	}
 
-	mux.HandleFunc("/groups", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/groups", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 			"activeAgentCount": 0,
 			"hostCounts": {
@@ -464,7 +464,7 @@ func TestProject_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
@@ -478,10 +478,10 @@ func TestProject_RemoveUser(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	var str = fmt.Sprintf("/groups/%s/users/%s", groupID, userID)
+	var str = fmt.Sprintf("/api/public/v1.0/groups/%s/users/%s", groupID, userID)
 	fmt.Println(str)
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/users/%s", groupID, userID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/users/%s", groupID, userID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
@@ -502,7 +502,7 @@ func TestProject_AddTeamsToProject(t *testing.T) {
 		RoleNames: []string{"GROUP_OWNER", "GROUP_READ_ONLY"},
 	}}
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/teams", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/teams", projectID), func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{
 			"links": [{
 				"href": "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",
@@ -558,7 +558,7 @@ func TestProject_GetTeams(t *testing.T) {
 
 	projectID := "5a0a1e7e0f2912c554080adc"
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/teams", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/teams", projectID), func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{
 			"links": [{
 				"href": "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",

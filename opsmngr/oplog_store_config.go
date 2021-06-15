@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const backupAdministratorOplogBasePath = "admin/backup/oplog/mongoConfigs"
+const backupAdministratorOplogBasePath = "api/public/v1.0/admin/backup/oplog/mongoConfigs"
 
 // OplogStoreConfigService is an interface for using the Oplog
 // endpoints of the MongoDB Ops Manager API.

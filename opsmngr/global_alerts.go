@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	globalAlertsBasePath = "globalAlerts"
+	globalAlertsBasePath = "api/public/v1.0/globalAlerts"
 )
 
 // GlobalAlertsService provides access to the global alerts related functions in the Ops Manager API.

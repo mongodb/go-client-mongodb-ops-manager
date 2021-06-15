@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	backupAgentConfigBasePath = "groups/%s/automationConfig/backupAgentConfig"
+	backupAgentConfigBasePath = "api/public/v1.0/groups/%s/automationConfig/backupAgentConfig"
 )
 
 // GetBackupAgentConfig retrieves the current backup agent configuration for a project.

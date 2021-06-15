@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	hostsDatabasesBasePath = "groups/%s/hosts/%s/databases"
+	hostsDatabasesBasePath = "api/public/v1.0/groups/%s/hosts/%s/databases"
 )
 
 // ListDatabases retrieve all databases running on the specified host.

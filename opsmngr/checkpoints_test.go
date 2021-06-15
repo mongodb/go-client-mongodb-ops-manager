@@ -29,7 +29,7 @@ func TestCheckpoints_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints", groupID, clusterID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/checkpoints", groupID, clusterID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -264,7 +264,7 @@ func TestCheckpoints_Get(t *testing.T) {
 	defer teardown()
 
 	checkpointID := "6b8cd61180eef547110159d9"
-	path := fmt.Sprintf("/groups/%s/clusters/%s/checkpoints/%s", groupID, clusterID, checkpointID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/checkpoints/%s", groupID, clusterID, checkpointID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)

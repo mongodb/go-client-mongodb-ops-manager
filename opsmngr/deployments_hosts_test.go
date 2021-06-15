@@ -28,7 +28,7 @@ func TestDeployments_ListHosts(t *testing.T) {
 
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/hosts", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -133,7 +133,7 @@ func TestDeployments_GetHost(t *testing.T) {
 	defer teardown()
 
 	hostID := "22"
-	path := fmt.Sprintf("/groups/%s/hosts/%s", groupID, hostID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -227,7 +227,7 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 
 	hostName := "22"
 	port := 26000
-	path := fmt.Sprintf("/groups/%s/hosts/byName/%s:%d", groupID, hostName, port)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/byName/%s:%d", groupID, hostName, port)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -322,7 +322,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 
 	hostName := "server1.example.com"
 	var port int32 = 27017
-	path := fmt.Sprintf("/groups/%s/hosts", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
@@ -394,7 +394,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 	hostID := "22"
 	hostName := "server1.example.com"
 	var port int32 = 27017
-	path := fmt.Sprintf("/groups/%s/hosts/%s", groupID, hostID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
@@ -465,7 +465,7 @@ func TestDeployments_StopMonitoring(t *testing.T) {
 	defer teardown()
 
 	hostID := "22"
-	path := fmt.Sprintf("/groups/%s/hosts/%s", groupID, hostID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

@@ -28,7 +28,7 @@ func TestWhitelistAPIKeys_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/admin/whitelist", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/whitelist", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 		  "results": [
@@ -87,7 +87,7 @@ func TestWhitelistAPIKeys_Get(t *testing.T) {
 
 	ipAddress := "5f3cf81b89034c6b3c0a528e"
 
-	mux.HandleFunc(fmt.Sprintf("/admin/whitelist/%s", ipAddress), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/whitelist/%s", ipAddress), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"id": "5f3cf81b89034c6b3c0a528e",
@@ -127,7 +127,7 @@ func TestWhitelistAPIKeys_Create(t *testing.T) {
 		Description: "test",
 	}
 
-	mux.HandleFunc("/admin/whitelist", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/whitelist", func(w http.ResponseWriter, r *http.Request) {
 		expected := map[string]interface{}{
 			"description": "test",
 			"cidrBlock":   "77.54.32.11/32",
@@ -177,7 +177,7 @@ func TestWhitelistAPIKeys_Delete(t *testing.T) {
 	defer teardown()
 
 	ipAddress := "5f3cf81b89034c6b3c0a528e"
-	mux.HandleFunc(fmt.Sprintf("/admin/whitelist/%s", ipAddress), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/whitelist/%s", ipAddress), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

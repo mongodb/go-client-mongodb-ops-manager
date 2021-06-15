@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	automationStatusBasePath = "groups/%s/automationStatus"
+	automationStatusBasePath = "api/public/v1.0/groups/%s/automationStatus"
 )
 
 // GetStatus lets you see whether each MongoDB process is up-to-date with the current automation configuration.

@@ -28,7 +28,7 @@ func TestMaintenanceWindows_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/maintenanceWindows", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -95,7 +95,7 @@ func TestMaintenanceWindows_List(t *testing.T) {
 func TestMaintenanceWindows_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	path := fmt.Sprintf("/groups/%s/maintenanceWindows/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -135,7 +135,7 @@ func TestMaintenanceWindows_Get(t *testing.T) {
 func TestMaintenanceWindows_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	path := fmt.Sprintf("/groups/%s/maintenanceWindows", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
@@ -181,7 +181,7 @@ func TestMaintenanceWindows_Create(t *testing.T) {
 func TestMaintenanceWindows_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	path := fmt.Sprintf("/groups/%s/maintenanceWindows/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
@@ -228,7 +228,7 @@ func TestMaintenanceWindows_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/maintenanceWindows/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

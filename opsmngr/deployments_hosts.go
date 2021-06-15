@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	hostsBasePath = "groups/%s/hosts"
+	hostsBasePath = "api/public/v1.0/groups/%s/hosts"
 )
 
 // Host represents a MongoDB host process in Ops Manager.

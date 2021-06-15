@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const snapshotScheduleBasePath = "groups/%s/backupConfigs/%s/snapshotSchedule"
+const snapshotScheduleBasePath = "api/public/v1.0/groups/%s/backupConfigs/%s/snapshotSchedule"
 
 // SnapshotScheduleService is an interface for using the Snapshot schedule
 // endpoints of the MongoDB Ops Manager API.

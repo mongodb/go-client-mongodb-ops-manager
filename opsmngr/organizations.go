@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	orgsBasePath = "orgs"
+	orgsBasePath = "api/public/v1.0/orgs"
 )
 
 // OrganizationsService provides access to the organization related functions in the Ops Manager API.

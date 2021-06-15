@@ -26,7 +26,7 @@ import (
 func TestDeployments_GetPartition(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	mux.HandleFunc("/groups/12345678/hosts/1/disks/xvdb", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/groups/12345678/hosts/1/disks/xvdb", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			 "links":[
@@ -62,7 +62,7 @@ func TestDeployments_GetPartition(t *testing.T) {
 func TestDeployments_ListPartitions(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	mux.HandleFunc("/groups/12345678/hosts/1/disks", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/groups/12345678/hosts/1/disks", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 		   "links":[

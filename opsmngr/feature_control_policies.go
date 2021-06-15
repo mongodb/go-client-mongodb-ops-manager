@@ -23,8 +23,8 @@ import (
 )
 
 const (
-	availablePoliciesBasePath  = "groups/availablePolicies"
-	controlledFeaturesBasePath = "groups/%s/controlledFeature"
+	availablePoliciesBasePath  = "api/public/v1.0/groups/availablePolicies"
+	controlledFeaturesBasePath = "api/public/v1.0/groups/%s/controlledFeature"
 )
 
 // FeatureControlPoliciesService provides access to the Feature Control Policies related functions in the Ops Manager API.

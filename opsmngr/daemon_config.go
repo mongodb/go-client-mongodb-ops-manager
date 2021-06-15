@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const backupAdministratorDaemonBasePath = "admin/backup/daemon/configs"
+const backupAdministratorDaemonBasePath = "api/public/v1.0/admin/backup/daemon/configs"
 
 // DaemonConfigService is an interface for using the Backup Daemon
 // endpoints of the MongoDB Ops Manager API.

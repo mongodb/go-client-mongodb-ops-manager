@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	projectBasePath = "groups"
+	projectBasePath = "api/public/v1.0/groups"
 )
 
 // ProjectsService provides access to the project related functions in the Ops Manager API.

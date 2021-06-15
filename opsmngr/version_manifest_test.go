@@ -27,7 +27,7 @@ func TestVersionManifest_Get(t *testing.T) {
 	defer teardown()
 	const version = "4.4.json"
 
-	mux.HandleFunc(fmt.Sprintf("/static/version_manifest/%s", version), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/static/version_manifest/%s", version), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `
 
@@ -91,7 +91,7 @@ func TestVersionManifest_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/versionManifest", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/versionManifest", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `
 

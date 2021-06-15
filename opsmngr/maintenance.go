@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	maintenanceWindowsBasePath = "groups/%s/maintenanceWindows"
+	maintenanceWindowsBasePath = "api/public/v1.0/groups/%s/maintenanceWindows"
 )
 
 // MaintenanceWindowsService is an interface for interfacing with the Maintenance Windows

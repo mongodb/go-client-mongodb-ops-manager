@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const backupAdministratorSyncBasePath = "admin/backup/sync/mongoConfigs"
+const backupAdministratorSyncBasePath = "api/public/v1.0/admin/backup/sync/mongoConfigs"
 
 // SyncStoreConfigService is an interface for using the Sync
 // endpoints of the MongoDB Ops Manager API.

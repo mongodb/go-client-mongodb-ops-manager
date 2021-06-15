@@ -29,7 +29,7 @@ func TestMeasurements_Host(t *testing.T) {
 
 	hostID := "hostID"
 
-	path := fmt.Sprintf("/groups/%s/hosts/%s/measurements", groupID, hostID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s/measurements", groupID, hostID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)

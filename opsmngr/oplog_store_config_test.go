@@ -26,7 +26,7 @@ func TestOplogStoreConfigServiceOp_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/admin/backup/oplog/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/backup/oplog/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 		  "results" : [ {
@@ -80,7 +80,7 @@ func TestOplogStoreConfigServiceOp_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			  "assignmentEnabled" : true,
@@ -128,7 +128,7 @@ func TestOplogStoreConfigServiceOp_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/admin/backup/oplog/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/backup/oplog/mongoConfigs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 		_, _ = fmt.Fprint(w, `{
 			  "assignmentEnabled" : true,
@@ -190,7 +190,7 @@ func TestOplogStoreConfigServiceOp_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			  "assignmentEnabled" : true,
@@ -252,7 +252,7 @@ func TestOplogStoreConfigServiceOp_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/oplog/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
