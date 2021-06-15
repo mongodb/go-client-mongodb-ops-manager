@@ -27,7 +27,7 @@ func TestDiagnostics_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/diagnostics", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/diagnostics", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)

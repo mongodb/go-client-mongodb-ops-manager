@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	logsBasePath = "groups/%s/logCollectionJobs"
+	logsBasePath = "api/public/v1.0/groups/%s/logCollectionJobs"
 )
 
 // LogCollectionService is an interface for interfacing with the Log Collection Jobs

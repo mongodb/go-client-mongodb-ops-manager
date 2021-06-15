@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	diagnosticsBasePath = "groups/%s/diagnostics"
+	diagnosticsBasePath = "api/public/v1.0/groups/%s/diagnostics"
 )
 
 // DiagnosticsService is an interface for interfacing with Diagnostic Archives in MongoDB Ops Manager APIs

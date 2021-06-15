@@ -23,7 +23,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const apiKeysPath = "admin/apiKeys"
+const apiKeysPath = "api/public/v1.0/admin/apiKeys"
 
 // GlobalAPIKeysService provides access to the global alerts related functions in the Ops Manager API.
 //

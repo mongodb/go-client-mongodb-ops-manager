@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	monitoringAgentConfigBasePath = "groups/%s/automationConfig/monitoringAgentConfig"
+	monitoringAgentConfigBasePath = "api/public/v1.0/groups/%s/automationConfig/monitoringAgentConfig"
 )
 
 // GetMonitoringAgentConfig retrieves the current monitoring agent configuration for a project.

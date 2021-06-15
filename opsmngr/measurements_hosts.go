@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	hostMeasurementsBasePath = "groups/%s/hosts/%s/measurements"
+	hostMeasurementsBasePath = "api/public/v1.0/groups/%s/hosts/%s/measurements"
 )
 
 // Host measurements provide data on the state of the MongoDB process.

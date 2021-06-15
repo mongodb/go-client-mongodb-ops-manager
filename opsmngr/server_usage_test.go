@@ -27,7 +27,7 @@ func TestServerUsageServiceOp_GenerateDailyUsageSnapshot(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/usage/dailyCapture", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/usage/dailyCapture", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 	})
 
@@ -41,7 +41,7 @@ func TestServerUsageServiceOp_UpdateProjectServerType(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/usage/groups/%s/defaultServerType", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/defaultServerType", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			   "serverType":{
@@ -61,7 +61,7 @@ func TestServerUsageServiceOp_UpdateOrganizationServerType(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/usage/organizations/%s/defaultServerType", orgID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/organizations/%s/defaultServerType", orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			   "serverType":{
@@ -81,7 +81,7 @@ func TestServerUsageReportServiceOp_Download(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/usage/report", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/usage/report", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, "testFile")
 	})
@@ -101,7 +101,7 @@ func TestServerUsageServiceOp_ListAllHostAssignment(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/usage/assignments", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/usage/assignments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 					 "totalCount": 1,
@@ -167,7 +167,7 @@ func TestServerUsageServiceOp_ProjectHostAssignments(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/usage/groups/%s/hosts", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/hosts", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 					 "totalCount": 1,
@@ -233,7 +233,7 @@ func TestServerUsageServiceOp_OrganizationHostAssignments(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/usage/organizations/%s/hosts", orgID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/organizations/%s/hosts", orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 					 "totalCount": 1,
@@ -299,7 +299,7 @@ func TestServerUsageServiceOp_GetServerTypeOrganization(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/usage/organizations/%s/defaultServerType", orgID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/organizations/%s/defaultServerType", orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 						 "name": "RAM_POOL",
@@ -326,7 +326,7 @@ func TestServerUsageServiceOp_GetServerTypeProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/usage/groups/%s/defaultServerType", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/defaultServerType", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 						 "name": "RAM_POOL",

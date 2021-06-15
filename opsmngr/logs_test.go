@@ -27,7 +27,7 @@ func TestLogs_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/logCollectionJobs", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -196,7 +196,7 @@ func TestLogs_Get(t *testing.T) {
 
 	ID := "1"
 
-	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -290,7 +290,7 @@ func TestLogs_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/logCollectionJobs", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
@@ -332,7 +332,7 @@ func TestLogs_Extend(t *testing.T) {
 
 	ID := "1"
 
-	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
@@ -354,7 +354,7 @@ func TestLogs_Retry(t *testing.T) {
 
 	ID := "1"
 
-	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s/retry", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s/retry", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
@@ -372,7 +372,7 @@ func TestLogs_Delete(t *testing.T) {
 
 	ID := "1"
 
-	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
@@ -390,7 +390,7 @@ func TestLogs_Download(t *testing.T) {
 
 	ID := "1"
 
-	path := fmt.Sprintf("/groups/%s/logCollectionJobs/%s/download", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s/download", groupID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)

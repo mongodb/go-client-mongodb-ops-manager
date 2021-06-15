@@ -31,7 +31,7 @@ func TestMeasurements_Disk(t *testing.T) {
 	hostID := "1"
 	disk := "disk"
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/hosts/%s/disks/%s/measurements", groups, hostID, disk), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s/disks/%s/measurements", groups, hostID, disk), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 				  "end" : "2017-08-22T20:31:14Z",

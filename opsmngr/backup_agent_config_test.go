@@ -26,7 +26,7 @@ func TestAutomation_GetBackupAgentConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig/backupAgentConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig/backupAgentConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 	"logPath": "/var/log/mongodb-mms-automation/backup-agent.log",

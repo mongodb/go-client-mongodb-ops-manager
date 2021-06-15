@@ -27,7 +27,7 @@ func TestClusters_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/clusters", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -75,7 +75,7 @@ func TestClusters_Get(t *testing.T) {
 	defer teardown()
 
 	clusterID := "533d7d4730040be257defe88"
-	path := fmt.Sprintf("/groups/%s/clusters/%s", groupID, clusterID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s", groupID, clusterID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -113,7 +113,7 @@ func TestClusters_ListAll(t *testing.T) {
 
 	defer teardown()
 
-	mux.HandleFunc("/clusters", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/clusters", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 				 "results": [
 				{

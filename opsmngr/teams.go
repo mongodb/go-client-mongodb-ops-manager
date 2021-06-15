@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	teamsBasePath = "orgs/%s/teams"
+	teamsBasePath = "api/public/v1.0/orgs/%s/teams"
 )
 
 // TeamsService provides access to the team related functions in the Ops Manager API.
@@ -241,7 +241,7 @@ func (s *TeamsServiceOp) UpdateTeamRoles(ctx context.Context, orgID, teamID stri
 		return nil, nil, atlas.NewArgError("updateTeamRolesRequest", "cannot be nil")
 	}
 
-	path := fmt.Sprintf("groups/%s/teams/%s", orgID, teamID)
+	path := fmt.Sprintf("api/public/v1.0/groups/%s/teams/%s", orgID, teamID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, updateTeamRolesRequest)
 	if err != nil {
@@ -370,7 +370,7 @@ func (s *TeamsServiceOp) RemoveTeamFromProject(ctx context.Context, groupID, tea
 		return nil, atlas.NewArgError("teamID", "cannot be nil")
 	}
 
-	path := fmt.Sprintf("groups/%s/teams/%s", groupID, teamID)
+	path := fmt.Sprintf("api/public/v1.0/groups/%s/teams/%s", groupID, teamID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {

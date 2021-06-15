@@ -23,8 +23,8 @@ import (
 )
 
 const (
-	agentsBasePath = "groups/%s/agents"
-	componentsPath = "softwareComponents/versions"
+	agentsBasePath = "api/public/v1.0/groups/%s/agents"
+	componentsPath = "api/public/v1.0/softwareComponents/versions"
 )
 
 // AgentsService provides access to the agent related functions in the Ops Manager API.

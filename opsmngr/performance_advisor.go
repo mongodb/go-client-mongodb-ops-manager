@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	performanceAdvisorPath                     = "groups/%s/hosts/%s/performanceAdvisor"
+	performanceAdvisorPath                     = "api/public/v1.0/groups/%s/hosts/%s/performanceAdvisor"
 	performanceAdvisorNamespacesPath           = performanceAdvisorPath + "/namespaces"
 	performanceAdvisorSlowQueryLogsPath        = performanceAdvisorPath + "/slowQueryLogs"
 	performanceAdvisorSuggestedIndexesLogsPath = performanceAdvisorPath + "/suggestedIndexes"

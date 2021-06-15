@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	checkpoints = "groups/%s/clusters/%s/checkpoints"
+	checkpoints = "api/public/v1.0/groups/%s/clusters/%s/checkpoints"
 )
 
 // CheckpointsService provides access to the backup related functions in the Ops Manager API.

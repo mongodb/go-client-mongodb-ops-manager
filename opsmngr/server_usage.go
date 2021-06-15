@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	serverUsageBasePath  = "usage"
+	serverUsageBasePath  = "api/public/v1.0/usage"
 	serverUsageGroupPath = serverUsageBasePath + "/groups/%s"
 	serverUsageOrgPath   = serverUsageBasePath + "/organizations/%s"
 )

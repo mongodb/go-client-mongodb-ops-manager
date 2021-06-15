@@ -26,7 +26,7 @@ func TestAutomation_UpdateAgentVersion(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/automationConfig/updateAgentVersions", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig/updateAgentVersions", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 		_, _ = fmt.Fprint(w,
 			`{

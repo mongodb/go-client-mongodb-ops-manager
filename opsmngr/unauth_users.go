@@ -24,7 +24,7 @@ import (
 )
 
 const (
-	unauthUsersBasePath = "unauth/users"
+	unauthUsersBasePath = "api/public/v1.0/unauth/users"
 )
 
 // UnauthUsersService is an interface for interfacing with unauthenticated APIs.

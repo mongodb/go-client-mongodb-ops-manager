@@ -29,7 +29,7 @@ func TestFileSystemStoreConfigServiceOp_List(t *testing.T) {
 	assignmentEnabled := true
 	loadFactor := int64(50)
 
-	mux.HandleFunc("/admin/backup/snapshot/fileSystemConfigs", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/backup/snapshot/fileSystemConfigs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 		  "results" : [ {
@@ -80,7 +80,7 @@ func TestFileSystemStoreConfigServiceOp_Get(t *testing.T) {
 	assignmentEnabled := true
 	loadFactor := int64(50)
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
@@ -124,7 +124,7 @@ func TestFileSystemStoreConfigServiceOp_Create(t *testing.T) {
 	assignmentEnabled := true
 	loadFactor := int64(50)
 
-	mux.HandleFunc("/admin/backup/snapshot/fileSystemConfigs", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/admin/backup/snapshot/fileSystemConfigs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
@@ -182,7 +182,7 @@ func TestFileSystemStoreConfigServiceOp_Update(t *testing.T) {
 	assignmentEnabled := true
 	loadFactor := int64(50)
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			"assignmentEnabled" : true,
@@ -241,7 +241,7 @@ func TestFileSystemStoreConfigServiceOp_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/snapshot/fileSystemConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const hostDiskMeasurementsPath = "groups/%s/hosts/%s/disks/%s/measurements"
+const hostDiskMeasurementsPath = "api/public/v1.0/groups/%s/hosts/%s/disks/%s/measurements"
 
 // Disk measurements provide data on IOPS, disk use, and disk latency on the disk partitions for hosts running MongoDB that the Automations collect.
 // You must run Ops Manager Automation to retrieve disk measurements.

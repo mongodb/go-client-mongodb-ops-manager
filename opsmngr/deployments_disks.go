@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	hostsDisksBasePath = "groups/%s/hosts/%s/disks"
+	hostsDisksBasePath = "api/public/v1.0/groups/%s/hosts/%s/disks"
 )
 
 // ListPartitions retrieves all disk partitions on the specified host.

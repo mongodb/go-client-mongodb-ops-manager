@@ -23,8 +23,8 @@ import (
 )
 
 const (
-	usersBasePath    = "users"
-	orgUsersBasePath = "orgs/%s/users"
+	usersBasePath    = "api/public/v1.0/users"
+	orgUsersBasePath = "api/public/v1.0/orgs/%s/users"
 )
 
 // UsersService provides access to the user related functions in the Ops Manager API.

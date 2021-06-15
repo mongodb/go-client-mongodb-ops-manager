@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	backupConfigsBasePath = "groups/%s/backupConfigs"
+	backupConfigsBasePath = "api/public/v1.0/groups/%s/backupConfigs"
 )
 
 // BackupConfigsService is an interface for using the Backup Configurations

@@ -26,7 +26,7 @@ func TestFeatureControlPoliciesServiceOp_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/controlledFeature", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/controlledFeature", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -94,7 +94,7 @@ func TestFeatureControlPoliciesServiceOp_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/groups/%s/controlledFeature", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/controlledFeature", groupID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
@@ -190,7 +190,7 @@ func TestFeatureControlPoliciesServiceOp_ListAll(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/groups/availablePolicies", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/groups/availablePolicies", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			  "created": "2019-08-29T15:03:24Z",

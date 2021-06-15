@@ -28,7 +28,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 
 	defer teardown()
 
-	mux.HandleFunc("/globalAlerts", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/globalAlerts", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 			  "links" : [],
 			  "results" : [ {
@@ -107,7 +107,7 @@ func TestGlobalAlerts_Get(t *testing.T) {
 	defer teardown()
 
 	alertID := "3b7d2de0a4b02fd2c98146de"
-	path := fmt.Sprintf("/globalAlerts/%s", alertID)
+	path := fmt.Sprintf("/api/public/v1.0/globalAlerts/%s", alertID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{
@@ -165,7 +165,7 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 	defer teardown()
 
 	alertID := "3b7d2de0a4b02fd2c98146de"
-	path := fmt.Sprintf("/globalAlerts/%s", alertID)
+	path := fmt.Sprintf("/api/public/v1.0/globalAlerts/%s", alertID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		_, _ = fmt.Fprint(w, `{

@@ -19,7 +19,7 @@ import (
 )
 
 const (
-	automationConfigBasePath = "groups/%s/automationConfig"
+	automationConfigBasePath = "api/public/v1.0/groups/%s/automationConfig"
 )
 
 // AutomationService provides access to the automation related functions in the Ops Manager API.

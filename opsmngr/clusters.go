@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	clustersBasePath = "groups/%s/clusters"
+	clustersBasePath = "api/public/v1.0/groups/%s/clusters"
 )
 
 // ClustersService provides access to the cluster related functions in the Ops Manager API.
@@ -106,7 +106,7 @@ type Clusters struct {
 
 // ListAll list all clusters available to the user.
 func (s *ClustersServiceOp) ListAll(ctx context.Context) (*AllClustersProjects, *Response, error) {
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, "clusters", nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, "api/public/v1.0/clusters", nil)
 	if err != nil {
 		return nil, nil, err
 	}

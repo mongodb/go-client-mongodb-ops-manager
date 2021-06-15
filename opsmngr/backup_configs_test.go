@@ -26,7 +26,7 @@ func TestBackupConfigsServiceOp_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/backupConfigs/%s", projectID, clusterID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/backupConfigs/%s", projectID, clusterID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			  "clusterId" : "1",
@@ -63,7 +63,7 @@ func TestBackupConfigsServiceOp_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/backupConfigs", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/backupConfigs", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 				"totalCount" : 1,
@@ -106,7 +106,7 @@ func TestBackupConfigsServiceOp_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/groups/%s/backupConfigs/%s", projectID, clusterID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/backupConfigs/%s", projectID, clusterID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
 		_, _ = fmt.Fprint(w, `{
 			  "clusterId" : "1",

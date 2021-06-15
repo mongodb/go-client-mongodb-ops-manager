@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const backupAdministratorFileSystemStoreConfigurationsBasePath = "admin/backup/snapshot/fileSystemConfigs"
+const backupAdministratorFileSystemStoreConfigurationsBasePath = "api/public/v1.0/admin/backup/snapshot/fileSystemConfigs"
 
 // FileSystemStoreConfigService is an interface for using the File System Store Configuration
 // endpoints of the MongoDB Ops Manager API.
