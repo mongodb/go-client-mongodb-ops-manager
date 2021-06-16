@@ -24,11 +24,11 @@ import (
 	"github.com/go-test/deep"
 )
 
+const eventID = "b3ad04e680eef540be141abe"
+
 func TestEvents_ListOrganizationEvents(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	orgID := "5b478b3afc4625789ce616a3"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s/events", orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -141,9 +141,6 @@ func TestEvents_GetOrganizationEvent(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	orgID := "5b478b3afc4625789ce616a3"
-	eventID := "b3ad04e680eef540be141abe"
-
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s/events/%s", orgID, eventID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
@@ -196,8 +193,6 @@ func TestEvents_GetOrganizationEvent(t *testing.T) {
 func TestEvents_ListProjectEvents(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "5b43d04087d9d6357de591a2"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/events", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -307,9 +302,6 @@ func TestEvents_ListProjectEvents(t *testing.T) {
 func TestEvents_GetProjectEvent(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "5b478b3afc4625789ce616a3"
-	eventID := "b3ad04e680eef540be141abe"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/events/%s", groupID, eventID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)

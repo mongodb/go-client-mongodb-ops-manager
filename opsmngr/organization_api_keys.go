@@ -65,8 +65,8 @@ type AtlasRole struct {
 	RoleName string `json:"roleName,omitempty"`
 }
 
-// ApiKeysResponse is the response from the APIKeysService.List.
-type ApiKeysResponse struct {
+// APIKeysResponse is the response from the APIKeysService.List.
+type APIKeysResponse struct {
 	Links      []*atlas.Link `json:"links,omitempty"`
 	Results    []APIKey      `json:"results,omitempty"`
 	TotalCount int           `json:"totalCount,omitempty"`
@@ -89,7 +89,7 @@ func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *
 		return nil, nil, err
 	}
 
-	root := new(ApiKeysResponse)
+	root := new(APIKeysResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

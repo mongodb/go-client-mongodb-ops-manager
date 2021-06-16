@@ -63,7 +63,7 @@ func (s *ProjectAPIKeysOp) List(ctx context.Context, groupID string, listOptions
 		return nil, nil, err
 	}
 
-	root := new(ApiKeysResponse)
+	root := new(APIKeysResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

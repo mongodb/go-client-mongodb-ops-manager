@@ -27,12 +27,13 @@ import (
 	"github.com/go-test/deep"
 )
 
+const (
+	clusterName = "Cluster0"
+	snapshotID = "6b5380e6jvn128560506942b"
+	)
 func TestContinuousSnapshots_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "6c7498dg87d9e6526801572b"
-	clusterName := "Cluster0"
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots", groupID, clusterName)
 
@@ -140,9 +141,6 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "6c7498dg87d9e6526801572b"
-	clusterName := "Cluster0"
-	snapshotID := "6b5380e6jvn128560506942b"
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", groupID, clusterName, snapshotID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -230,10 +228,6 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "6c7498dg87d9e6526801572b"
-	clusterName := "Cluster0"
-	snapshotID := "6b5380e6jvn128560506942b"
 
 	updateRequest := &ContinuousSnapshot{
 		Expires: "2018-12-01",
@@ -343,10 +337,6 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 func TestContinuousSnapshots_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "6c7498dg87d9e6526801572b"
-	clusterName := "Cluster0"
-	snapshotID := "6b5380e6jvn128560506942b"
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", groupID, clusterName, snapshotID)
 

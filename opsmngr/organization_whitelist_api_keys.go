@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const organization_whitelistAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/whitelist"
+const organizationWhitelistAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/whitelist"
 
 // WhitelistAPIKeysService is an interface for interfacing with the Whitelist API Keys
 // endpoints of the MongoDB Atlas API.
@@ -81,7 +81,7 @@ func (s *WhitelistAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID st
 		return nil, nil, atlas.NewArgError("apiKeyID", "must be set")
 	}
 
-	path := fmt.Sprintf(organization_whitelistAPIKeysPath, orgID, apiKeyID)
+	path := fmt.Sprintf(organizationWhitelistAPIKeysPath, orgID, apiKeyID)
 	path, err := setQueryParams(path, listOptions)
 	if err != nil {
 		return nil, nil, err
@@ -119,7 +119,7 @@ func (s *WhitelistAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ip
 		return nil, nil, atlas.NewArgError("ipAddress", "must be set")
 	}
 
-	path := fmt.Sprintf(organization_whitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress)
+	path := fmt.Sprintf(organizationWhitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
@@ -150,7 +150,7 @@ func (s *WhitelistAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID 
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
 
-	path := fmt.Sprintf(organization_whitelistAPIKeysPath, orgID, apiKeyID)
+	path := fmt.Sprintf(organizationWhitelistAPIKeysPath, orgID, apiKeyID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, createRequest)
 	if err != nil {
@@ -180,7 +180,7 @@ func (s *WhitelistAPIKeysServiceOp) Delete(ctx context.Context, orgID, apiKeyID,
 		return nil, atlas.NewArgError("snapshotId", "must be set")
 	}
 
-	path := fmt.Sprintf(organization_whitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress)
+	path := fmt.Sprintf(organizationWhitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)
 	if err != nil {

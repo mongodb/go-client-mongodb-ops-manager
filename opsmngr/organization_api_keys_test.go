@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	atlas "go.mongodb.org/atlas/mongodbatlas"
-
 	"github.com/go-test/deep"
 )
 
@@ -122,7 +121,7 @@ func TestOrganizationAPIKeys_ListAPIKeysMultiplePages(t *testing.T) {
 	mux.HandleFunc("/api/public/v1.0/orgs/1/apiKeys", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 
-		dr := ApiKeysResponse{
+		dr := APIKeysResponse{
 			Results: []APIKey{
 				{
 					ID:         "5c47503320eef5699e1cce8d",

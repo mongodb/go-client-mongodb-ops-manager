@@ -32,7 +32,7 @@ func TestOrganizationWhitelistAPIKeys_List(t *testing.T) {
 	orgID := "ORG-ID"
 	apiKeyID := "API-KEY-ID"
 
-	mux.HandleFunc(fmt.Sprintf("/"+organization_whitelistAPIKeysPath, orgID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/"+organizationWhitelistAPIKeysPath, orgID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"links": [
@@ -133,7 +133,7 @@ func TestOrganizationWhitelistAPIKeys_Get(t *testing.T) {
 	apiKeyID := "API-KEY-ID"
 	ipAddress := "IP-ADDRESS"
 
-	mux.HandleFunc(fmt.Sprintf("/"+organization_whitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/"+organizationWhitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"cidrBlock": "147.58.184.16/32",
@@ -186,7 +186,7 @@ func TestOrganizationWhitelistAPIKeys_Create(t *testing.T) {
 		},
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/"+organization_whitelistAPIKeysPath, orgID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/"+organizationWhitelistAPIKeysPath, orgID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		expected := []map[string]interface{}{
 			{
 				"ipAddress": "77.54.32.11",
@@ -303,7 +303,7 @@ func TestOrganizationWhitelistAPIKeys_Delete(t *testing.T) {
 	apiKeyID := "API-KEY-ID"
 	ipAddress := "IP-ADDRESS"
 
-	mux.HandleFunc(fmt.Sprintf("/"+organization_whitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/"+organizationWhitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

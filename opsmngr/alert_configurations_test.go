@@ -24,11 +24,10 @@ import (
 	"github.com/openlyinc/pointy"
 )
 
+const 	alertConfigID = "57b76ddc96e8215c017ceafb"
 func TestAlertConfiguration_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "6d2065c687d9d64ae7acdg41"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
@@ -129,9 +128,6 @@ func TestAlertConfiguration_EnableAnAlertConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "535683b3794d371327b"
-	alertConfigID := "57b76ddc96e8215c017ceafb"
-
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
 		expected := map[string]interface{}{
@@ -201,8 +197,6 @@ func TestAlertConfiguration_GetAnAlertConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "535683b3794d371327b"
-	alertConfigID := "57b76ddc96e8215c017ceafb"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -284,9 +278,6 @@ func TestAlertConfiguration_GetAnAlertConfig(t *testing.T) {
 func TestAlertConfiguration_GetOpenAlertsConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "535683b3794d371327b"
-	alertConfigID := "57b76ddc96e8215c017ceafb"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s/alerts", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -371,8 +362,6 @@ func TestAlertConfiguration_GetOpenAlertsConfig(t *testing.T) {
 func TestAlertConfiguration_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "535683b3794d371327b"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -524,9 +513,6 @@ func TestAlertConfiguration_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "6d2065c687d9d64ae7acdg41"
-	alertConfigID := "57b76ddc96e8215c017ceafb"
-
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 
@@ -624,8 +610,6 @@ func TestAlertConfiguration_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "535683b3794d371327b"
-	alertConfigID := "57b76ddc96e8215c017ceafb"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
