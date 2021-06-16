@@ -29,10 +29,10 @@ const apiKeysPath = "api/public/v1.0/admin/apiKeys"
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-api-keys/
 type GlobalAPIKeysService interface {
-	List(context.Context, *atlas.ListOptions) ([]atlas.APIKey, *Response, error)
-	Get(context.Context, string) (*atlas.APIKey, *Response, error)
-	Create(context.Context, *atlas.APIKeyInput) (*atlas.APIKey, *Response, error)
-	Update(context.Context, string, *atlas.APIKeyInput) (*atlas.APIKey, *Response, error)
+	List(context.Context, *atlas.ListOptions) ([]APIKey, *Response, error)
+	Get(context.Context, string) (*APIKey, *Response, error)
+	Create(context.Context, *APIKeyInput) (*APIKey, *Response, error)
+	Update(context.Context, string, *APIKeyInput) (*APIKey, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	// Roles(context.Context) ([]atlas.AtlasRole, *Response, error)
 }
@@ -42,17 +42,10 @@ type GlobalAPIKeysServiceOp service
 
 var _ GlobalAPIKeysService = &GlobalAPIKeysServiceOp{}
 
-// apiKeysResponse is the response from the GlobalAPIKeysService.List.
-type apiKeysResponse struct {
-	Links      []*atlas.Link  `json:"links,omitempty"`
-	Results    []atlas.APIKey `json:"results,omitempty"`
-	TotalCount int            `json:"totalCount,omitempty"`
-}
-
 // List gets all Global API Keys.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-all-global-api-keys/
-func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *atlas.ListOptions) ([]atlas.APIKey, *Response, error) {
+func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *atlas.ListOptions) ([]APIKey, *Response, error) {
 	// Add query params from listOptions
 	path, err := setQueryParams(apiKeysPath, listOptions)
 	if err != nil {
@@ -64,7 +57,7 @@ func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *atlas.Li
 		return nil, nil, err
 	}
 
-	root := new(apiKeysResponse)
+	root := new(ApiKeysResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -80,7 +73,7 @@ func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *atlas.Li
 // Get gets one API Key with ID apiKeyID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-one-global-api-key/
-func (s *GlobalAPIKeysServiceOp) Get(ctx context.Context, apiKeyID string) (*atlas.APIKey, *Response, error) {
+func (s *GlobalAPIKeysServiceOp) Get(ctx context.Context, apiKeyID string) (*APIKey, *Response, error) {
 	if apiKeyID == "" {
 		return nil, nil, atlas.NewArgError("apiKeyID", "must be set")
 	}
@@ -92,7 +85,7 @@ func (s *GlobalAPIKeysServiceOp) Get(ctx context.Context, apiKeyID string) (*atl
 		return nil, nil, err
 	}
 
-	root := new(atlas.APIKey)
+	root := new(APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -104,7 +97,7 @@ func (s *GlobalAPIKeysServiceOp) Get(ctx context.Context, apiKeyID string) (*atl
 // Create an API Key.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/create-one-global-api-key/
-func (s *GlobalAPIKeysServiceOp) Create(ctx context.Context, createRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
+func (s *GlobalAPIKeysServiceOp) Create(ctx context.Context, createRequest *APIKeyInput) (*APIKey, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -114,7 +107,7 @@ func (s *GlobalAPIKeysServiceOp) Create(ctx context.Context, createRequest *atla
 		return nil, nil, err
 	}
 
-	root := new(atlas.APIKey)
+	root := new(APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -126,7 +119,7 @@ func (s *GlobalAPIKeysServiceOp) Create(ctx context.Context, createRequest *atla
 // Update one API Key with ID apiKeyID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/update-one-global-api-key/
-func (s *GlobalAPIKeysServiceOp) Update(ctx context.Context, apiKeyID string, updateRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
+func (s *GlobalAPIKeysServiceOp) Update(ctx context.Context, apiKeyID string, updateRequest *APIKeyInput) (*APIKey, *Response, error) {
 	if updateRequest == nil {
 		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
 	}
@@ -138,7 +131,7 @@ func (s *GlobalAPIKeysServiceOp) Update(ctx context.Context, apiKeyID string, up
 		return nil, nil, err
 	}
 
-	root := new(atlas.APIKey)
+	root := new(APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

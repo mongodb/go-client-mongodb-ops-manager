@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestAPIKeys_ListAPIKeys(t *testing.T) {
@@ -65,13 +64,13 @@ func TestAPIKeys_ListAPIKeys(t *testing.T) {
 		t.Fatalf("APIKeys.List returned error: %v", err)
 	}
 
-	expected := []atlas.APIKey{
+	expected := []APIKey{
 		{
 			ID:         "5c47503320eef5699e1cce8d",
 			Desc:       "test-apikey",
 			PrivateKey: "********-****-****-db2c132ca78d",
 			PublicKey:  "ewmaqvdo",
-			Roles: []atlas.AtlasRole{
+			Roles: []AtlasRole{
 				{
 					RoleName: "GLOBAL_OWNER",
 				},
@@ -82,7 +81,7 @@ func TestAPIKeys_ListAPIKeys(t *testing.T) {
 			Desc:       "test-apikey-2",
 			PrivateKey: "********-****-****-db2c132ca78f",
 			PublicKey:  "ewmaqvde",
-			Roles: []atlas.AtlasRole{
+			Roles: []AtlasRole{
 				{
 					RoleName: "GLOBAL_READ_ONLY",
 				},
@@ -98,7 +97,7 @@ func TestAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &atlas.APIKeyInput{
+	createRequest := &APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GLOBAL_READ_ONLY"},
 	}
@@ -163,7 +162,7 @@ func TestAPIKeys_GetAPIKey(t *testing.T) {
 		t.Errorf("APIKey.Get returned error: %v", err)
 	}
 
-	expected := &atlas.APIKey{Desc: "test-desc"}
+	expected := &APIKey{Desc: "test-desc"}
 
 	if diff := deep.Equal(apiKeys, expected); diff != nil {
 		t.Errorf("Clusters.Get = %v", diff)
@@ -174,7 +173,7 @@ func TestAPIKeys_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	updateRequest := &atlas.APIKeyInput{
+	updateRequest := &APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GLOBAL_READ_ONLY"},
 	}
