@@ -29,9 +29,6 @@ func TestOrganizationWhitelistAPIKeys_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	orgID := "ORG-ID"
-	apiKeyID := "API-KEY-ID"
-
 	mux.HandleFunc(fmt.Sprintf("/"+organizationWhitelistAPIKeysPath, orgID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
@@ -80,14 +77,14 @@ func TestOrganizationWhitelistAPIKeys_List(t *testing.T) {
 		t.Fatalf("WhitelistAPIKeys.List returned error: %v", err)
 	}
 
-	expected := &WhitelistAPIKeys{
+	expected := &atlas.WhitelistAPIKeys{
 		Links: []*atlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/599c510c80eef518f3b63fe1/apiKeys/5c49e72980eef544a218f8f8/whitelist/?pretty=true&pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*WhitelistAPIKey{
+		Results: []*atlas.WhitelistAPIKey{
 			{
 				CidrBlock:       "147.58.184.16/32",
 				Count:           0,
@@ -129,10 +126,6 @@ func TestOrganizationWhitelistAPIKeys_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	orgID := "ORG-ID"
-	apiKeyID := "API-KEY-ID"
-	ipAddress := "IP-ADDRESS"
-
 	mux.HandleFunc(fmt.Sprintf("/"+organizationWhitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
@@ -154,7 +147,7 @@ func TestOrganizationWhitelistAPIKeys_Get(t *testing.T) {
 		t.Fatalf("WhitelistAPIKeys.Get returned error: %v", err)
 	}
 
-	expected := &WhitelistAPIKey{
+	expected := &atlas.WhitelistAPIKey{
 		CidrBlock: "147.58.184.16/32",
 		Count:     0,
 		Created:   "2019-01-24T16:34:57Z",
@@ -179,7 +172,7 @@ func TestOrganizationWhitelistAPIKeys_Create(t *testing.T) {
 	orgID := "ORG-ID"
 	apiKeyID := "API-KEY-ID"
 
-	createRequest := []*OrganizationWhitelistAPIKeysReq{
+	createRequest := []*atlas.WhitelistAPIKeysReq{
 		{
 			IPAddress: "77.54.32.11",
 			CidrBlock: "77.54.32.11/32",
@@ -250,14 +243,14 @@ func TestOrganizationWhitelistAPIKeys_Create(t *testing.T) {
 		t.Fatalf("WhitelistAPIKeys.Create returned error: %v", err)
 	}
 
-	expected := &WhitelistAPIKeys{
+	expected := &atlas.WhitelistAPIKeys{
 		Links: []*atlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/599c510c80eef518f3b63fe1/apiKeys/5c49e72980eef544a218f8f8/whitelist/?pretty=true&pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*WhitelistAPIKey{
+		Results: []*atlas.WhitelistAPIKey{
 			{
 				CidrBlock:       "147.58.184.16/32",
 				Count:           0,
@@ -298,10 +291,6 @@ func TestOrganizationWhitelistAPIKeys_Create(t *testing.T) {
 func TestOrganizationWhitelistAPIKeys_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	orgID := "ORG-ID"
-	apiKeyID := "API-KEY-ID"
-	ipAddress := "IP-ADDRESS"
 
 	mux.HandleFunc(fmt.Sprintf("/"+organizationWhitelistAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

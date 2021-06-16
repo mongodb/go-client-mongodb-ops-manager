@@ -65,7 +65,7 @@ type Client struct {
 	Events                 EventsService
 	OrganizationAPIKeys    APIKeysService
 	ProjectAPIKeys         ProjectAPIKeysService
-	WhitelistAPIKeys       WhitelistAPIKeysService  // we keep whitelist to support OM 4.2 and 4.4
+	WhitelistAPIKeys       WhitelistAPIKeysService // we keep whitelist to support OM 4.2 and 4.4
 	AccessListAPIKeys      AccessListAPIKeysService
 	Agents                 AgentsService
 	Checkpoints            CheckpointsService

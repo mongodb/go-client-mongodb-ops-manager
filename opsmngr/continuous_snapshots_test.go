@@ -29,8 +29,9 @@ import (
 
 const (
 	clusterName = "Cluster0"
-	snapshotID = "6b5380e6jvn128560506942b"
-	)
+	snapshotID  = "6b5380e6jvn128560506942b"
+)
+
 func TestContinuousSnapshots_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()

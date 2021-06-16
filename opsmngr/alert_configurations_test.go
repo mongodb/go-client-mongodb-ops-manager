@@ -24,7 +24,8 @@ import (
 	"github.com/openlyinc/pointy"
 )
 
-const 	alertConfigID = "57b76ddc96e8215c017ceafb"
+const alertConfigID = "57b76ddc96e8215c017ceafb"
+
 func TestAlertConfiguration_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -196,7 +197,6 @@ func TestAlertConfiguration_EnableAnAlertConfig(t *testing.T) {
 func TestAlertConfiguration_GetAnAlertConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -609,7 +609,6 @@ func TestAlertConfiguration_Update(t *testing.T) {
 func TestAlertConfiguration_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

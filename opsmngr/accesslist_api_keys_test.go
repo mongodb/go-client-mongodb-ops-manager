@@ -26,7 +26,7 @@ import (
 )
 
 const (
-	apiKeyID = "API-KEY-ID"
+	apiKeyID  = "API-KEY-ID"
 	ipAddress = "IP-ADDRESS"
 )
 
@@ -82,14 +82,14 @@ func TestAccessListAPIKeys_List(t *testing.T) {
 		t.Fatalf("AccessListAPIKeys.List returned error: %v", err)
 	}
 
-	expected := &AccessListAPIKeys{
+	expected := &atlas.AccessListAPIKeys{
 		Links: []*atlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/599c510c80eef518f3b63fe1/apiKeys/5c49e72980eef544a218f8f8/accessList/?pretty=true&pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*AccessListAPIKey{
+		Results: []*atlas.AccessListAPIKey{
 			{
 				CidrBlock:       "147.58.184.16/32",
 				Count:           0,
@@ -131,7 +131,6 @@ func TestAccessListAPIKeys_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-
 	mux.HandleFunc(fmt.Sprintf("/"+accessListAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
@@ -153,7 +152,7 @@ func TestAccessListAPIKeys_Get(t *testing.T) {
 		t.Fatalf("AccessListAPIKeys.Get returned error: %v", err)
 	}
 
-	expected := &AccessListAPIKey{
+	expected := &atlas.AccessListAPIKey{
 		CidrBlock: "147.58.184.16/32",
 		Count:     0,
 		Created:   "2019-01-24T16:34:57Z",
@@ -175,7 +174,7 @@ func TestAccessListAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := []*AccessListAPIKeysReq{
+	createRequest := []*atlas.AccessListAPIKeysReq{
 		{
 			IPAddress: "77.54.32.11",
 			CidrBlock: "77.54.32.11/32",
@@ -246,14 +245,14 @@ func TestAccessListAPIKeys_Create(t *testing.T) {
 		t.Fatalf("AccessListAPIKeys.Create returned error: %v", err)
 	}
 
-	expected := &AccessListAPIKeys{
+	expected := &atlas.AccessListAPIKeys{
 		Links: []*atlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/599c510c80eef518f3b63fe1/apiKeys/5c49e72980eef544a218f8f8/accessList/?pretty=true&pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*AccessListAPIKey{
+		Results: []*atlas.AccessListAPIKey{
 			{
 				CidrBlock:       "147.58.184.16/32",
 				Count:           0,

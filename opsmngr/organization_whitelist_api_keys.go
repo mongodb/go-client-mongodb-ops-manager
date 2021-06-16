@@ -34,9 +34,9 @@ const organizationWhitelistAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/whi
 // Atlas has deprecated the whitelist method and will disable it in June 2021.
 // Please update any dependent work to use WhitelistAPIKeysService
 type WhitelistAPIKeysService interface {
-	List(context.Context, string, string, *atlas.ListOptions) (*WhitelistAPIKeys, *Response, error)
-	Get(context.Context, string, string, string) (*WhitelistAPIKey, *Response, error)
-	Create(context.Context, string, string, []*OrganizationWhitelistAPIKeysReq) (*WhitelistAPIKeys, *Response, error)
+	List(context.Context, string, string, *atlas.ListOptions) (*atlas.WhitelistAPIKeys, *Response, error)
+	Get(context.Context, string, string, string) (*atlas.WhitelistAPIKey, *Response, error)
+	Create(context.Context, string, string, []*atlas.WhitelistAPIKeysReq) (*atlas.WhitelistAPIKeys, *Response, error)
 	Delete(context.Context, string, string, string) (*Response, error)
 }
 
@@ -46,34 +46,10 @@ type WhitelistAPIKeysServiceOp service
 
 var _ WhitelistAPIKeysService = &WhitelistAPIKeysServiceOp{}
 
-// WhitelistAPIKey represents a Whitelist API key.
-type WhitelistAPIKey struct {
-	CidrBlock       string        `json:"cidrBlock,omitempty"`       // CIDR-notated range of whitelisted IP addresses.
-	Count           int           `json:"count,omitempty"`           // Total number of requests that have originated from this IP address.
-	Created         string        `json:"created,omitempty"`         // Date this IP address was added to the whitelist.
-	IPAddress       string        `json:"ipAddress,omitempty"`       // Whitelisted IP address.
-	LastUsed        string        `json:"lastUsed,omitempty"`        // Date of the most recent request that originated from this IP address. This field only appears if at least one request has originated from this IP address, and is only updated when a whitelisted resource is accessed.
-	LastUsedAddress string        `json:"lastUsedAddress,omitempty"` // IP address from which the last call to the API was issued. This field only appears if at least one request has originated from this IP address.
-	Links           []*atlas.Link `json:"links,omitempty"`           // An array of documents, representing a link to one or more sub-resources and/or related resources such as list pagination. See Linking for more information.}
-}
-
-// WhitelistAPIKeys represents all Whitelist API keys.
-type WhitelistAPIKeys struct {
-	Results    []*WhitelistAPIKey `json:"results,omitempty"`    // Includes one WhitelistAPIKey object for each item detailed in the results array section.
-	Links      []*atlas.Link      `json:"links,omitempty"`      // One or more links to sub-resources and/or related resources.
-	TotalCount int                `json:"totalCount,omitempty"` // Count of the total number of items in the result set. It may be greater than the number of objects in the results array if the entire result set is paginated.
-}
-
-// WhitelistAPIKeysReq represents the request to the mehtod create
-type OrganizationWhitelistAPIKeysReq struct {
-	IPAddress string `json:"ipAddress,omitempty"` // IP address to be added to the whitelist for the API key.
-	CidrBlock string `json:"cidrBlock,omitempty"` // Whitelist entry in CIDR notation to be added for the API key.
-}
-
 // List gets all Whitelist API keys.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-org-whitelist-get-all/
-func (s *WhitelistAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *atlas.ListOptions) (*WhitelistAPIKeys, *Response, error) {
+func (s *WhitelistAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *atlas.ListOptions) (*atlas.WhitelistAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -92,7 +68,7 @@ func (s *WhitelistAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID st
 		return nil, nil, err
 	}
 
-	root := new(WhitelistAPIKeys)
+	root := new(atlas.WhitelistAPIKeys)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -108,7 +84,7 @@ func (s *WhitelistAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID st
 // Get gets the Whitelist API keys.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/cloud-provider-snapshot-get-one/
-func (s *WhitelistAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ipAddress string) (*WhitelistAPIKey, *Response, error) {
+func (s *WhitelistAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ipAddress string) (*atlas.WhitelistAPIKey, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -126,7 +102,7 @@ func (s *WhitelistAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ip
 		return nil, nil, err
 	}
 
-	root := new(WhitelistAPIKey)
+	root := new(atlas.WhitelistAPIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -139,7 +115,7 @@ func (s *WhitelistAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ip
 // Atlas adds those entries to the list of existing entries in the whitelist.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-org-whitelist-create/
-func (s *WhitelistAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID string, createRequest []*OrganizationWhitelistAPIKeysReq) (*WhitelistAPIKeys, *Response, error) {
+func (s *WhitelistAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID string, createRequest []*atlas.WhitelistAPIKeysReq) (*atlas.WhitelistAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -157,7 +133,7 @@ func (s *WhitelistAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID 
 		return nil, nil, err
 	}
 
-	root := new(WhitelistAPIKeys)
+	root := new(atlas.WhitelistAPIKeys)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
