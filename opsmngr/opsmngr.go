@@ -32,7 +32,7 @@ import (
 )
 
 const (
-	defaultBaseURL = "https://cloud.mongodb.com/"
+	defaultBaseURL = atlas.CloudURL
 	userAgent      = "go-ops-manager"
 	jsonMediaType  = "application/json"
 	gzipMediaType  = "application/gzip"
