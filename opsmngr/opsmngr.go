@@ -65,7 +65,7 @@ type Client struct {
 	Events                 atlas.EventsService
 	OrganizationAPIKeys    atlas.APIKeysService
 	ProjectAPIKeys         atlas.ProjectAPIKeysService
-	WhitelistAPIKeys       atlas.WhitelistAPIKeysService //nolint // we keep whitelist to support OM 4.2 and 4.4
+	WhitelistAPIKeys       atlas.WhitelistAPIKeysService //nolint:staticcheck // we keep whitelist to support OM 4.2 and 4.4
 	AccessListAPIKeys      atlas.AccessListAPIKeysService
 	Agents                 AgentsService
 	Checkpoints            CheckpointsService
@@ -123,25 +123,25 @@ func NewClient(httpClient *http.Client) *Client {
 	c.Users = &UsersServiceOp{Client: c}
 	c.Teams = &TeamsServiceOp{Client: c}
 	c.Automation = &AutomationServiceOp{Client: c}
-	c.AlertConfigurations = &atlas.AlertConfigurationsServiceOp{Client: c}
+	c.AlertConfigurations = &AlertConfigurationsServiceOp{Client: c}
 	c.UnauthUsers = &UnauthUsersServiceOp{Client: c}
-	c.ContinuousSnapshots = &atlas.ContinuousSnapshotsServiceOp{Client: c}
-	c.ContinuousRestoreJobs = &atlas.ContinuousRestoreJobsServiceOp{Client: c}
+	c.ContinuousSnapshots = &ContinuousSnapshotsServiceOp{Client: c}
+	c.ContinuousRestoreJobs = &ContinuousRestoreJobsServiceOp{Client: c}
 	c.Agents = &AgentsServiceOp{Client: c}
 	c.Checkpoints = &CheckpointsServiceOp{Client: c}
-	c.Alerts = &atlas.AlertsServiceOp{Client: c}
+	c.Alerts = &AlertsServiceOp{Client: c}
 	c.GlobalAlerts = &GlobalAlertsServiceOp{Client: c}
-	c.Events = &atlas.EventsServiceOp{Client: c}
+	c.Events = &EventsServiceOp{Client: c}
 	c.Deployments = &DeploymentsServiceOp{Client: c}
 	c.Measurements = &MeasurementsServiceOp{Client: c}
 	c.Clusters = &ClustersServiceOp{Client: c}
 	c.Logs = &LogsServiceOp{Client: c}
 	c.LogCollections = &LogCollectionServiceOp{Client: c}
 	c.Diagnostics = &DiagnosticsServiceOp{Client: c}
-	c.OrganizationAPIKeys = &atlas.APIKeysServiceOp{Client: c}
-	c.ProjectAPIKeys = &atlas.ProjectAPIKeysOp{Client: c}
-	c.WhitelistAPIKeys = &atlas.WhitelistAPIKeysServiceOp{Client: c}
-	c.AccessListAPIKeys = &atlas.AccessListAPIKeysServiceOp{Client: c}
+	c.OrganizationAPIKeys = &APIKeysServiceOp{Client: c}
+	c.ProjectAPIKeys = &ProjectAPIKeysOp{Client: c}
+	c.WhitelistAPIKeys = &WhitelistAPIKeysServiceOp{Client: c}
+	c.AccessListAPIKeys = &AccessListAPIKeysServiceOp{Client: c}
 	c.GlobalAPIKeys = &GlobalAPIKeysServiceOp{Client: c}
 	c.GlobalAPIKeysWhitelist = &GlobalAPIKeyWhitelistsServiceOp{Client: c}
 	c.MaintenanceWindows = &MaintenanceWindowsServiceOp{Client: c}

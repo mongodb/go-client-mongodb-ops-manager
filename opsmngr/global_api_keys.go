@@ -42,13 +42,6 @@ type GlobalAPIKeysServiceOp service
 
 var _ GlobalAPIKeysService = &GlobalAPIKeysServiceOp{}
 
-// apiKeysResponse is the response from the GlobalAPIKeysService.List.
-type apiKeysResponse struct {
-	Links      []*atlas.Link  `json:"links,omitempty"`
-	Results    []atlas.APIKey `json:"results,omitempty"`
-	TotalCount int            `json:"totalCount,omitempty"`
-}
-
 // List gets all Global API Keys.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-all-global-api-keys/
@@ -64,7 +57,7 @@ func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *atlas.Li
 		return nil, nil, err
 	}
 
-	root := new(apiKeysResponse)
+	root := new(APIKeysResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

@@ -6,6 +6,7 @@ require (
 	github.com/go-test/deep v1.0.7
 	github.com/google/go-querystring v1.1.0
 	github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e // indirect
+	github.com/openlyinc/pointy v1.1.2
 	github.com/stretchr/testify v1.7.0
 	github.com/xdg-go/stringprep v1.0.2
 	go.mongodb.org/atlas v0.8.1-0.20210616155245-ed77f8fb0b0b

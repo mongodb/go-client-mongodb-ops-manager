@@ -20,8 +20,15 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/go-test/deep"
 	atlas "go.mongodb.org/atlas/mongodbatlas"
+
+	"github.com/go-test/deep"
+)
+
+const (
+	apiDesc    = "test-apikeye"
+	ewmaqvdo   = "ewmaqvdo"
+	testAPIKey = "test-apikey"
 )
 
 func TestAPIKeys_ListAPIKeys(t *testing.T) {
@@ -68,9 +75,9 @@ func TestAPIKeys_ListAPIKeys(t *testing.T) {
 	expected := []atlas.APIKey{
 		{
 			ID:         "5c47503320eef5699e1cce8d",
-			Desc:       "test-apikey",
+			Desc:       testAPIKey,
 			PrivateKey: "********-****-****-db2c132ca78d",
-			PublicKey:  "ewmaqvdo",
+			PublicKey:  ewmaqvdo,
 			Roles: []atlas.AtlasRole{
 				{
 					RoleName: "GLOBAL_OWNER",
@@ -111,7 +118,7 @@ func TestAPIKeys_Create(t *testing.T) {
 
 		jsonBlob := `
 		{
-			"desc": "test-apikey",
+			"desc": "test-apikeye",
 			"id": "5c47503320eef5699e1cce8d",
 			"privateKey": "********-****-****-db2c132ca78d",
 			"publicKey": "ewmaqvdo",
@@ -140,11 +147,11 @@ func TestAPIKeys_Create(t *testing.T) {
 		t.Fatalf("APIKeys.Create returned error: %v", err)
 	}
 
-	if desc := apiKey.Desc; desc != "test-apikey" {
-		t.Errorf("expected username '%s', received '%s'", "test-apikeye", desc)
+	if desc := apiKey.Desc; desc != apiDesc {
+		t.Errorf("expected username '%s', received '%s'", apiDesc, desc)
 	}
 
-	if pk := apiKey.PublicKey; pk != "ewmaqvdo" {
+	if pk := apiKey.PublicKey; pk != ewmaqvdo {
 		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
 	}
 }
@@ -217,11 +224,11 @@ func TestAPIKeys_Update(t *testing.T) {
 		t.Fatalf("APIKeys.Create returned error: %v", err)
 	}
 
-	if desc := apiKey.Desc; desc != "test-apikey" {
-		t.Errorf("expected username '%s', received '%s'", "test-apikeye", desc)
+	if desc := apiKey.Desc; desc != testAPIKey {
+		t.Errorf("expected username '%s', received '%s'", apiDesc, desc)
 	}
 
-	if pk := apiKey.PublicKey; pk != "ewmaqvdo" {
+	if pk := apiKey.PublicKey; pk != ewmaqvdo {
 		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
 	}
 }
