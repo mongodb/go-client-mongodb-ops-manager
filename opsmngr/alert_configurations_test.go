@@ -20,10 +20,9 @@ import (
 	"net/http"
 	"testing"
 
-	atlas "go.mongodb.org/atlas/mongodbatlas"
-
 	"github.com/go-test/deep"
 	"github.com/openlyinc/pointy"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const alertConfigID = "57b76ddc96e8215c017ceafb"

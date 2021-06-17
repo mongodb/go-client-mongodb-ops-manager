@@ -27,14 +27,14 @@ const (
 )
 
 // ContinuousSnapshotsServiceOp handles communication with the Continuous Snapshots related methods of the
-// MongoDB Atlas API.
+// MongoDB Ops Manager API.
 type ContinuousSnapshotsServiceOp service
 
 var _ atlas.ContinuousSnapshotsService = &ContinuousSnapshotsServiceOp{}
 
 // List lists continuous snapshots for the given cluster
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/snapshots-get-all/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/get-all-snapshots-for-one-cluster/
 func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *atlas.ListOptions) (*atlas.ContinuousSnapshots, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
@@ -64,7 +64,7 @@ func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, cluste
 
 // Get gets the continuous snapshot for the given cluster and snapshot ID
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/snapshots-get-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/get-one-snapshot-for-one-cluster/
 func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, clusterID, snapshotID string) (*atlas.ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
@@ -91,7 +91,7 @@ func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, cluster
 
 // ChangeExpiry changes the expiry date for the given cluster and snapshot ID
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/snapshots-change-expiration/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/change-expiry-for-one-snapshot/
 func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID, clusterID, snapshotID string, updateRequest *atlas.ContinuousSnapshot) (*atlas.ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
@@ -119,7 +119,7 @@ func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID
 
 // Delete deletes the given continuous snapshot
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/snapshots-delete-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/remove-one-snapshot-from-one-cluster/
 func (s *ContinuousSnapshotsServiceOp) Delete(ctx context.Context, groupID, clusterID, snapshotID string) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupId", "must be set")

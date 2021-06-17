@@ -25,14 +25,14 @@ import (
 const organizationWhitelistAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/whitelist"
 
 // WhitelistAPIKeysServiceOp handles communication with the Whitelist API keys related methods of the
-// MongoDB Atlas API.
+// MongoDB Ops Manager API.
 type WhitelistAPIKeysServiceOp service
 
 var _ atlas.WhitelistAPIKeysService = &WhitelistAPIKeysServiceOp{} //nolint:staticcheck //we keep whitelist to support OM 4.2 and 4.4
 
 // List gets all Whitelist API keys.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-org-whitelist-get-all/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-all-org-api-key-whitelist/
 func (s *WhitelistAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *atlas.ListOptions) (*atlas.WhitelistAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -67,7 +67,7 @@ func (s *WhitelistAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID st
 
 // Get gets the Whitelist API keys.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/cloud-provider-snapshot-get-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-one-org-api-key-whitelist/
 func (s *WhitelistAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ipAddress string) (*atlas.WhitelistAPIKey, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -98,7 +98,7 @@ func (s *WhitelistAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ip
 // Create a submit a POST request containing ipAddress or cidrBlock values which are not already present in the whitelist,
 // Atlas adds those entries to the list of existing entries in the whitelist.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-org-whitelist-create/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/create-org-api-key-whitelist/
 func (s *WhitelistAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID string, createRequest []*atlas.WhitelistAPIKeysReq) (*atlas.WhitelistAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -128,7 +128,7 @@ func (s *WhitelistAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID 
 
 // Delete deletes the Whitelist API keys.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/cloud-provider-snapshot-delete-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/delete-one-org-api-key-whitelist/
 func (s *WhitelistAPIKeysServiceOp) Delete(ctx context.Context, orgID, apiKeyID, ipAddress string) (*Response, error) {
 	if orgID == "" {
 		return nil, atlas.NewArgError("groupId", "must be set")

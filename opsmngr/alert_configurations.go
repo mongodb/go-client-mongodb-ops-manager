@@ -25,14 +25,14 @@ import (
 const alertConfigurationPath = "api/public/v1.0/groups/%s/alertConfigs"
 
 // AlertConfigurationsServiceOp handles communication with the AlertConfiguration related methods
-// of the MongoDB Atlas API.
+// of the MongoDB Ops Manager API.
 type AlertConfigurationsServiceOp service
 
 var _ atlas.AlertConfigurationsService = &AlertConfigurationsServiceOp{}
 
 // Create creates an alert configuration for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-create-config/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-create-config/
 func (s *AlertConfigurationsServiceOp) Create(ctx context.Context, groupID string, createReq *atlas.AlertConfiguration) (*atlas.AlertConfiguration, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -59,7 +59,7 @@ func (s *AlertConfigurationsServiceOp) Create(ctx context.Context, groupID strin
 
 // EnableAnAlertConfig Enables/disables the alert configuration specified to {ALERT-CONFIG-ID} for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-enable-disable-config/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-enable-disable-config/
 func (s *AlertConfigurationsServiceOp) EnableAnAlertConfig(ctx context.Context, groupID, alertConfigID string, enabled *bool) (*atlas.AlertConfiguration, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -87,7 +87,7 @@ func (s *AlertConfigurationsServiceOp) EnableAnAlertConfig(ctx context.Context, 
 
 // GetAnAlertConfig gets the alert configuration specified to {ALERT-CONFIG-ID} for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-get-config/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-config/
 func (s *AlertConfigurationsServiceOp) GetAnAlertConfig(ctx context.Context, groupID, alertConfigID string) (*atlas.AlertConfiguration, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -115,7 +115,7 @@ func (s *AlertConfigurationsServiceOp) GetAnAlertConfig(ctx context.Context, gro
 
 // GetOpenAlertsConfig gets all open alerts for the alert configuration specified to {ALERT-CONFIG-ID} for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-get-open-alerts/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-open-alerts/
 func (s *AlertConfigurationsServiceOp) GetOpenAlertsConfig(ctx context.Context, groupID, alertConfigID string) ([]atlas.AlertConfiguration, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -146,7 +146,7 @@ func (s *AlertConfigurationsServiceOp) GetOpenAlertsConfig(ctx context.Context, 
 
 // List gets all alert configurations for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-get-all-configs/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-all-configs/
 func (s *AlertConfigurationsServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) ([]atlas.AlertConfiguration, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -180,7 +180,7 @@ func (s *AlertConfigurationsServiceOp) List(ctx context.Context, groupID string,
 
 // Update the alert configuration specified to {ALERT-CONFIG-ID} for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-update-config/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-update-config/
 func (s *AlertConfigurationsServiceOp) Update(ctx context.Context, groupID, alertConfigID string, updateReq *atlas.AlertConfiguration) (*atlas.AlertConfiguration, *Response, error) {
 	if updateReq == nil {
 		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
@@ -211,7 +211,7 @@ func (s *AlertConfigurationsServiceOp) Update(ctx context.Context, groupID, aler
 
 // Delete the alert configuration specified to {ALERT-CONFIG-ID} for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-delete-config/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-delete-config/
 func (s *AlertConfigurationsServiceOp) Delete(ctx context.Context, groupID, alertConfigID string) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
@@ -235,7 +235,7 @@ func (s *AlertConfigurationsServiceOp) Delete(ctx context.Context, groupID, aler
 
 // ListMatcherFields gets all field names that the matchers.fieldName parameter accepts when you create or update an Alert Configuration.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alert-configurations-get-matchers-field-names/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-matchers-field-names/
 func (s *AlertConfigurationsServiceOp) ListMatcherFields(ctx context.Context) ([]string, *Response, error) {
 	path := "alertConfigs/matchers/fieldNames"
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)

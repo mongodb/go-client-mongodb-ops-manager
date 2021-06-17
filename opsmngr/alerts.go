@@ -31,7 +31,7 @@ var _ atlas.AlertsService = &AlertsServiceOp{}
 
 // Get gets the alert specified to {ALERT-ID} for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alerts-get-alert/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-get-alert/
 func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*atlas.Alert, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -59,7 +59,7 @@ func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*at
 
 // List gets all alert for the project associated to {GROUP-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alerts-get-all-alerts/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-get-all-alerts/
 func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.AlertsListOptions) (*atlas.AlertsResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -93,7 +93,7 @@ func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions 
 
 // Acknowledge allows to acknowledge an alert.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/alerts-acknowledge-alert/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-acknowledge-alert/
 func (s *AlertsServiceOp) Acknowledge(ctx context.Context, groupID, alertID string, params *atlas.AcknowledgeRequest) (*atlas.Alert, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")

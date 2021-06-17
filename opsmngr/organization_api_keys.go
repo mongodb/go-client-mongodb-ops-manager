@@ -26,7 +26,7 @@ import (
 const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys"
 
 // APIKeysServiceOp handles communication with the APIKey related methods
-// of the MongoDB Atlas API.
+// of the MongoDB Ops Manager API.
 type APIKeysServiceOp service
 
 var _ atlas.APIKeysService = &APIKeysServiceOp{}
@@ -40,7 +40,7 @@ type APIKeysResponse struct {
 
 // List all API-KEY in the organization associated to {ORG-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-get-all/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-all-org-api-keys/
 func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *atlas.ListOptions) ([]atlas.APIKey, *Response, error) {
 	path := fmt.Sprintf(apiKeysOrgPath, orgID)
 
@@ -70,7 +70,7 @@ func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *
 
 // Get gets the APIKey specified to {API-KEY-ID} from the organization associated to {ORG-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-get-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-one-org-api-key/
 func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*atlas.APIKey, *Response, error) {
 	if apiKeyID == "" {
 		return nil, nil, atlas.NewArgError("name", "must be set")
@@ -96,7 +96,7 @@ func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*at
 
 // Create an API Key by the {ORG-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-create-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/create-one-org-api-key/
 func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
@@ -120,7 +120,7 @@ func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createReque
 
 // Update a API Key in the organization associated to {ORG-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-update-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/update-one-org-api-key/
 func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, updateRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if updateRequest == nil {
 		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
@@ -145,7 +145,7 @@ func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, u
 
 // Delete the API Key specified to {API-KEY-ID} from the organization associated to {ORG-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKey-delete-one-apiKey/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/delete-one-api-key/
 func (s *APIKeysServiceOp) Delete(ctx context.Context, orgID, apiKeyID string) (*Response, error) {
 	if apiKeyID == "" {
 		return nil, atlas.NewArgError("apiKeyID", "must be set")

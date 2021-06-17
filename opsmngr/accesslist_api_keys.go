@@ -24,14 +24,12 @@ import (
 
 const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList"
 
-// AccessListAPIKeysServiceOp handles communication with the AccessList API keys related methods of the MongoDB Atlas API.
+// AccessListAPIKeysServiceOp handles communication with the AccessList API keys related methods of the MongoDB Ops Manager API.
 type AccessListAPIKeysServiceOp service
 
 var _ atlas.AccessListAPIKeysService = &AccessListAPIKeysServiceOp{}
 
 // List gets all AccessList API keys.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/api-access-list/get-all-api-access-entries/
 func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *atlas.ListOptions) (*atlas.AccessListAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -65,8 +63,6 @@ func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID s
 }
 
 // Get retrieve information on a single API Key access list entry using the unique identifier for the API Key and desired permitted address.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/api-access-list/get-one-api-access-entry/
 func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ipAddress string) (*atlas.AccessListAPIKey, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -95,8 +91,6 @@ func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, i
 }
 
 // Create one or more new access list entries for the specified API Key.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/api-access-list/create-api-access-entries/
 func (s *AccessListAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID string, createRequest []*atlas.AccessListAPIKeysReq) (*atlas.AccessListAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -125,8 +119,6 @@ func (s *AccessListAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID
 }
 
 // Delete deletes the AccessList API keys.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/api-access-list/delete-one-api-access-entry/
 func (s *AccessListAPIKeysServiceOp) Delete(ctx context.Context, orgID, apiKeyID, ipAddress string) (*Response, error) {
 	if orgID == "" {
 		return nil, atlas.NewArgError("orgID", "must be set")

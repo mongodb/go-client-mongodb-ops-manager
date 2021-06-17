@@ -28,14 +28,14 @@ const (
 )
 
 // EventsServiceOp handles communication with the Event related methods
-// of the MongoDB Atlas API.
+// of the MongoDB Ops Manager API.
 type EventsServiceOp service
 
 var _ atlas.EventsService = &EventsServiceOp{}
 
 // ListOrganizationEvents lists all events in the organization associated to {ORG-ID}.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/events-orgs-get-all/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-all-events-for-org/
 func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID string, listOptions *atlas.EventListOptions) (*atlas.EventResponse, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -62,7 +62,7 @@ func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID stri
 	return root, resp, nil
 }
 
-// GetOrganizationEvent gets the alert specified to {EVENT-ID} from the organization associated to {ORG-ID}.
+// GetOrganizationEvent gets the event specified to {EVENT-ID} from the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-one-event-for-org/
 func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, eventID string) (*atlas.Event, *Response, error) {

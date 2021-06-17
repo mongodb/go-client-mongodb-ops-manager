@@ -20,11 +20,9 @@ import (
 	"net/http"
 	"testing"
 
-	atlas "go.mongodb.org/atlas/mongodbatlas"
-
-	"github.com/openlyinc/pointy"
-
 	"github.com/go-test/deep"
+	"github.com/openlyinc/pointy"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (

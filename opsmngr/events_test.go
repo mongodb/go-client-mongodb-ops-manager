@@ -19,9 +19,8 @@ import (
 	"net/http"
 	"testing"
 
-	atlas "go.mongodb.org/atlas/mongodbatlas"
-
 	"github.com/go-test/deep"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const eventID = "b3ad04e680eef540be141abe"

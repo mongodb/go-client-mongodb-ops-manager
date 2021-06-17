@@ -25,14 +25,14 @@ import (
 const continuousRestoreJobsPath = "api/public/v1.0/groups/%s/clusters/%s/restoreJobs"
 
 // ContinuousRestoreJobsServiceOp handles communication with the Continuous Backup Restore Jobs related methods
-// of the MongoDB Atlas API.
+// of the MongoDB Ops Manager API.
 type ContinuousRestoreJobsServiceOp service
 
 var _ atlas.ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
 
 // List lists all continuous backup jobs in Atlas
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/restore-jobs-get-all/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/get-all-restore-jobs-for-one-cluster/
 func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clusterID string, opts *atlas.ListOptions) (*atlas.ContinuousJobs, *Response, error) {
 	if clusterID == "" {
 		return nil, nil, atlas.NewArgError("clusterID", "must be set")
@@ -61,7 +61,7 @@ func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clus
 
 // Get gets a continuous backup job in Atlas
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/restore-jobs-get-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/get-one-single-restore-job-for-one-cluster/
 func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clusterID, jobID string) (*atlas.ContinuousJob, *Response, error) {
 	if clusterID == "" {
 		return nil, nil, atlas.NewArgError("clusterID", "must be set")
@@ -90,7 +90,7 @@ func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clust
 
 // Create creates a continuous backup job in Atlas
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/restore-jobs-create-one/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/create-one-restore-job-for-one-cluster/
 func (s *ContinuousRestoreJobsServiceOp) Create(ctx context.Context, groupID, clusterID string, request *atlas.ContinuousJobRequest) (*atlas.ContinuousJobs, *Response, error) {
 	if request == nil {
 		return nil, nil, atlas.NewArgError("request", "must be set")

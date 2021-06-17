@@ -20,9 +20,8 @@ import (
 	"net/http"
 	"testing"
 
-	atlas "go.mongodb.org/atlas/mongodbatlas"
-
 	"github.com/go-test/deep"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestContinuousBackupRestore_List(t *testing.T) {
