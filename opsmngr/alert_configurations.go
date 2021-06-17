@@ -22,7 +22,10 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const alertConfigurationPath = "api/public/v1.0/groups/%s/alertConfigs"
+const (
+	alertConfigurationPath = "api/public/v1.0/groups/%s/alertConfigs"
+	fieldNamesPath         = "api/public/v1.0/alertConfigs/matchers/fieldNames"
+)
 
 // AlertConfigurationsServiceOp handles communication with the AlertConfiguration related methods
 // of the MongoDB Ops Manager API.
@@ -237,8 +240,7 @@ func (s *AlertConfigurationsServiceOp) Delete(ctx context.Context, groupID, aler
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-matchers-field-names/
 func (s *AlertConfigurationsServiceOp) ListMatcherFields(ctx context.Context) ([]string, *Response, error) {
-	path := "api/public/v1.0/alertConfigs/matchers/fieldNames"
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
+	req, err := s.Client.NewRequest(ctx, http.MethodGet, fieldNamesPath, nil)
 	if err != nil {
 		return nil, nil, err
 	}
