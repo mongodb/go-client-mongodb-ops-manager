@@ -24,6 +24,25 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
+const jsonBlobOrg = `
+		{
+			"desc": "test-apikey",
+			"id": "5c47503320eef5699e1cce8d",
+			"privateKey": "********-****-****-db2c132ca78d",
+			"publicKey": "ewmaqvdo",
+			"roles": [
+				{
+					"groupId": "1",
+					"roleName": "GROUP_OWNER"
+				},
+				{
+					"orgId": "1",
+					"roleName": "ORG_MEMBER"
+				}
+			]
+		}
+		`
+
 func TestOrganizationAPIKeys_ListAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -75,13 +94,13 @@ func TestOrganizationAPIKeys_ListAPIKeys(t *testing.T) {
 		t.Fatalf("OrganizationAPIKeys.List returned error: %v", err)
 	}
 
-	expected := []APIKey{
+	expected := []atlas.APIKey{
 		{
 			ID:         "5c47503320eef5699e1cce8d",
-			Desc:       "test-apikey",
+			Desc:       testAPIKey,
 			PrivateKey: "********-****-****-db2c132ca78d",
-			PublicKey:  "ewmaqvdo",
-			Roles: []AtlasRole{
+			PublicKey:  ewmaqvdo,
+			Roles: []atlas.AtlasRole{
 				{
 					GroupID:  "1",
 					RoleName: "GROUP_OWNER",
@@ -97,7 +116,7 @@ func TestOrganizationAPIKeys_ListAPIKeys(t *testing.T) {
 			Desc:       "test-apikey-2",
 			PrivateKey: "********-****-****-db2c132ca78f",
 			PublicKey:  "ewmaqvde",
-			Roles: []AtlasRole{
+			Roles: []atlas.AtlasRole{
 				{
 					GroupID:  "1",
 					RoleName: "GROUP_OWNER",
@@ -122,13 +141,13 @@ func TestOrganizationAPIKeys_ListAPIKeysMultiplePages(t *testing.T) {
 		testMethod(t, r, http.MethodGet)
 
 		dr := APIKeysResponse{
-			Results: []APIKey{
+			Results: []atlas.APIKey{
 				{
 					ID:         "5c47503320eef5699e1cce8d",
-					Desc:       "test-apikey",
+					Desc:       testAPIKey,
 					PrivateKey: "********-****-****-db2c132ca78d",
-					PublicKey:  "ewmaqvdo",
-					Roles: []AtlasRole{
+					PublicKey:  ewmaqvdo,
+					Roles: []atlas.AtlasRole{
 						{
 							GroupID:  "1",
 							RoleName: "GROUP_OWNER",
@@ -144,7 +163,7 @@ func TestOrganizationAPIKeys_ListAPIKeysMultiplePages(t *testing.T) {
 					Desc:       "test-apikey-2",
 					PrivateKey: "********-****-****-db2c132ca78f",
 					PublicKey:  "ewmaqvde",
-					Roles: []AtlasRole{
+					Roles: []atlas.AtlasRole{
 						{
 							GroupID:  "1",
 							RoleName: "GROUP_OWNER",
@@ -238,7 +257,7 @@ func TestOrganizationAPIKeys_Create(t *testing.T) {
 
 	orgID := "1"
 
-	createRequest := &APIKeyInput{
+	createRequest := &atlas.APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GROUP_OWNER"},
 	}
@@ -248,25 +267,6 @@ func TestOrganizationAPIKeys_Create(t *testing.T) {
 			"desc":  "test-apiKey",
 			"roles": []interface{}{"GROUP_OWNER"},
 		}
-
-		jsonBlob := `
-		{
-			"desc": "test-apikey",
-			"id": "5c47503320eef5699e1cce8d",
-			"privateKey": "********-****-****-db2c132ca78d",
-			"publicKey": "ewmaqvdo",
-			"roles": [
-				{
-					"groupId": "1",
-					"roleName": "GROUP_OWNER"
-				},
-				{
-					"orgId": "1",
-					"roleName": "ORG_MEMBER"
-				}
-			]
-		}
-		`
 
 		var v map[string]interface{}
 		err := json.NewDecoder(r.Body).Decode(&v)
@@ -278,7 +278,7 @@ func TestOrganizationAPIKeys_Create(t *testing.T) {
 			t.Error(diff)
 		}
 
-		fmt.Fprint(w, jsonBlob)
+		fmt.Fprint(w, jsonBlobOrg)
 	})
 
 	apiKey, _, err := client.OrganizationAPIKeys.Create(ctx, orgID, createRequest)
@@ -286,11 +286,11 @@ func TestOrganizationAPIKeys_Create(t *testing.T) {
 		t.Errorf("OrganizationAPIKeys.Create returned error: %v", err)
 	}
 
-	if desc := apiKey.Desc; desc != "test-apikey" {
+	if desc := apiKey.Desc; desc != testAPIKey {
 		t.Errorf("expected username '%s', received '%s'", "test-apikeye", desc)
 	}
 
-	if pk := apiKey.PublicKey; pk != "ewmaqvdo" {
+	if pk := apiKey.PublicKey; pk != ewmaqvdo {
 		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
 	}
 }
@@ -309,7 +309,7 @@ func TestOrganizationAPIKeys_GetAPIKey(t *testing.T) {
 		t.Errorf("OrganizationAPIKeys.Get returned error: %v", err)
 	}
 
-	expected := &APIKey{Desc: "test-desc"}
+	expected := &atlas.APIKey{Desc: "test-desc"}
 
 	if diff := deep.Equal(apiKeys, expected); diff != nil {
 		t.Errorf("Clusters.Get = %v", diff)
@@ -322,7 +322,7 @@ func TestOrganizationAPIKeys_Update(t *testing.T) {
 
 	orgID := "1"
 
-	updateRequest := &APIKeyInput{
+	updateRequest := &atlas.APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GROUP_OWNER"},
 	}
@@ -332,25 +332,6 @@ func TestOrganizationAPIKeys_Update(t *testing.T) {
 			"desc":  "test-apiKey",
 			"roles": []interface{}{"GROUP_OWNER"},
 		}
-
-		jsonBlob := `
-		{
-			"desc": "test-apikey",
-			"id": "5c47503320eef5699e1cce8d",
-			"privateKey": "********-****-****-db2c132ca78d",
-			"publicKey": "ewmaqvdo",
-			"roles": [
-				{
-					"groupId": "1",
-					"roleName": "GROUP_OWNER"
-				},
-				{
-					"orgId": "1",
-					"roleName": "ORG_MEMBER"
-				}
-			]
-		}
-		`
 
 		var v map[string]interface{}
 		err := json.NewDecoder(r.Body).Decode(&v)
@@ -362,7 +343,7 @@ func TestOrganizationAPIKeys_Update(t *testing.T) {
 			t.Error(diff)
 		}
 
-		fmt.Fprint(w, jsonBlob)
+		fmt.Fprint(w, jsonBlobOrg)
 	})
 
 	apiKey, _, err := client.OrganizationAPIKeys.Update(ctx, orgID, "5c47503320eef5699e1cce8d", updateRequest)
@@ -370,11 +351,11 @@ func TestOrganizationAPIKeys_Update(t *testing.T) {
 		t.Fatalf("OrganizationAPIKeys.Create returned error: %v", err)
 	}
 
-	if desc := apiKey.Desc; desc != "test-apikey" {
+	if desc := apiKey.Desc; desc != testAPIKey {
 		t.Errorf("expected username '%s', received '%s'", "test-apikeye", desc)
 	}
 
-	if pk := apiKey.PublicKey; pk != "ewmaqvdo" {
+	if pk := apiKey.PublicKey; pk != ewmaqvdo {
 		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
 	}
 }
@@ -396,7 +377,8 @@ func TestOrganizationAPIKeys_Delete(t *testing.T) {
 	}
 }
 
-func checkCurrentPage(t *testing.T, resp *Response, expectedPage int) { //nolint:unparam // currently we always use expectedPage with value 2 but that may change
+func checkCurrentPage(t *testing.T, resp *Response, expectedPage int) {
+	t.Helper()
 	p, err := resp.CurrentPage()
 	if err != nil {
 		t.Fatal(err)

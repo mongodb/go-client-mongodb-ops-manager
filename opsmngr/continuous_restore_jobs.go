@@ -24,81 +24,16 @@ import (
 
 const continuousRestoreJobsPath = "api/public/v1.0/groups/%s/clusters/%s/restoreJobs"
 
-// ContinuousRestoreJobsService provides access to the restore jobs related functions in the Atlas API.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/legacy-backup/restore/restores/
-type ContinuousRestoreJobsService interface {
-	List(context.Context, string, string, *atlas.ListOptions) (*ContinuousJobs, *Response, error)
-	Get(context.Context, string, string, string) (*ContinuousJob, *Response, error)
-	Create(context.Context, string, string, *ContinuousJobRequest) (*ContinuousJobs, *Response, error)
-}
-
 // ContinuousRestoreJobsServiceOp handles communication with the Continuous Backup Restore Jobs related methods
-// of the MongoDB Atlas API
+// of the MongoDB Atlas API.
 type ContinuousRestoreJobsServiceOp service
 
-var _ ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
-
-type ContinuousJob struct {
-	BatchID           string            `json:"batchId,omitempty"`
-	ClusterID         string            `json:"clusterId,omitempty"`
-	Created           string            `json:"created"`
-	ClusterName       string            `json:"clusterName,omitempty"`
-	Delivery          *Delivery         `json:"delivery,omitempty"`
-	EncryptionEnabled bool              `json:"encryptionEnabled"`
-	GroupID           string            `json:"groupId"`
-	Hashes            []*Hash           `json:"hashes,omitempty"`
-	ID                string            `json:"id"`
-	Links             []*atlas.Link     `json:"links,omitempty"`
-	MasterKeyUUID     string            `json:"masterKeyUUID,omitempty"`
-	SnapshotID        string            `json:"snapshotId"`
-	StatusName        string            `json:"statusName"`
-	PointInTime       *bool             `json:"pointInTime,omitempty"`
-	Timestamp         SnapshotTimestamp `json:"timestamp"`
-}
-
-type ContinuousJobs struct {
-	Results    []*ContinuousJob `json:"results,omitempty"`
-	Links      []*atlas.Link    `json:"links,omitempty"`
-	TotalCount int64            `json:"totalCount,omitempty"`
-}
-
-type SnapshotTimestamp struct {
-	Date      string `json:"date"`
-	Increment int64  `json:"increment"`
-}
-
-type Delivery struct {
-	Expires           string `json:"expires,omitempty"`
-	ExpirationHours   int64  `json:"expirationHours,omitempty"`
-	MaxDownloads      int64  `json:"maxDownloads,omitempty"`
-	MethodName        string `json:"methodName"`
-	StatusName        string `json:"statusName,omitempty"`
-	URL               string `json:"url,omitempty"`
-	TargetClusterID   string `json:"targetClusterId,omitempty"`
-	TargetClusterName string `json:"targetClusterName,omitempty"`
-	TargetGroupID     string `json:"targetGroupId,omitempty"`
-}
-
-type Hash struct {
-	TypeName string `json:"typeName"`
-	FileName string `json:"fileName"`
-	Hash     string `json:"hash"`
-}
-
-type ContinuousJobRequest struct {
-	CheckPointID         string   `json:"checkPointId,omitempty"`
-	Delivery             Delivery `json:"delivery"`
-	OplogTS              string   `json:"oplogTs,omitempty"`
-	OplogInc             int64    `json:"oplogInc,omitempty"`
-	PointInTimeUTCMillis float64  `json:"pointInTimeUTCMillis,omitempty"`
-	SnapshotID           string   `json:"snapshotId,omitempty"`
-}
+var _ atlas.ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
 
 // List lists all continuous backup jobs in Atlas
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/restore-jobs-get-all/
-func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clusterID string, opts *atlas.ListOptions) (*ContinuousJobs, *Response, error) {
+func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clusterID string, opts *atlas.ListOptions) (*atlas.ContinuousJobs, *Response, error) {
 	if clusterID == "" {
 		return nil, nil, atlas.NewArgError("clusterID", "must be set")
 	}
@@ -118,7 +53,7 @@ func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clus
 		return nil, nil, err
 	}
 
-	root := new(ContinuousJobs)
+	root := new(atlas.ContinuousJobs)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -127,7 +62,7 @@ func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clus
 // Get gets a continuous backup job in Atlas
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/restore-jobs-get-one/
-func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clusterID, jobID string) (*ContinuousJob, *Response, error) {
+func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clusterID, jobID string) (*atlas.ContinuousJob, *Response, error) {
 	if clusterID == "" {
 		return nil, nil, atlas.NewArgError("clusterID", "must be set")
 	}
@@ -147,7 +82,7 @@ func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clust
 		return nil, nil, err
 	}
 
-	root := new(ContinuousJob)
+	root := new(atlas.ContinuousJob)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -156,7 +91,7 @@ func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clust
 // Create creates a continuous backup job in Atlas
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/restore-jobs-create-one/
-func (s *ContinuousRestoreJobsServiceOp) Create(ctx context.Context, groupID, clusterID string, request *ContinuousJobRequest) (*ContinuousJobs, *Response, error) {
+func (s *ContinuousRestoreJobsServiceOp) Create(ctx context.Context, groupID, clusterID string, request *atlas.ContinuousJobRequest) (*atlas.ContinuousJobs, *Response, error) {
 	if request == nil {
 		return nil, nil, atlas.NewArgError("request", "must be set")
 	}
@@ -175,7 +110,7 @@ func (s *ContinuousRestoreJobsServiceOp) Create(ctx context.Context, groupID, cl
 		return nil, nil, err
 	}
 
-	root := new(ContinuousJobs)
+	root := new(atlas.ContinuousJobs)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err

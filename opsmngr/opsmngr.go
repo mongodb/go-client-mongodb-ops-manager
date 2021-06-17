@@ -58,15 +58,15 @@ type Client struct {
 	Teams                  TeamsService
 	Automation             AutomationService
 	UnauthUsers            UnauthUsersService
-	AlertConfigurations    AlertConfigurationsService
-	Alerts                 AlertsService
-	ContinuousSnapshots    ContinuousSnapshotsService
-	ContinuousRestoreJobs  ContinuousRestoreJobsService
-	Events                 EventsService
-	OrganizationAPIKeys    APIKeysService
-	ProjectAPIKeys         ProjectAPIKeysService
-	WhitelistAPIKeys       WhitelistAPIKeysService // we keep whitelist to support OM 4.2 and 4.4
-	AccessListAPIKeys      AccessListAPIKeysService
+	AlertConfigurations    atlas.AlertConfigurationsService
+	Alerts                 atlas.AlertsService
+	ContinuousSnapshots    atlas.ContinuousSnapshotsService
+	ContinuousRestoreJobs  atlas.ContinuousRestoreJobsService
+	Events                 atlas.EventsService
+	OrganizationAPIKeys    atlas.APIKeysService
+	ProjectAPIKeys         atlas.ProjectAPIKeysService
+	WhitelistAPIKeys       atlas.WhitelistAPIKeysService //nolint:staticcheck // we keep whitelist to support OM 4.2 and 4.4
+	AccessListAPIKeys      atlas.AccessListAPIKeysService
 	Agents                 AgentsService
 	Checkpoints            CheckpointsService
 	GlobalAlerts           GlobalAlertsService

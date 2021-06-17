@@ -20,10 +20,16 @@ import (
 	"net/http"
 	"testing"
 
+	atlas "go.mongodb.org/atlas/mongodbatlas"
+
 	"github.com/go-test/deep"
 )
 
-const apiDesc = "test-apikeye"
+const (
+	apiDesc    = "test-apikeye"
+	ewmaqvdo   = "ewmaqvdo"
+	testAPIKey = "test-apikey"
+)
 
 func TestAPIKeys_ListAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()
@@ -66,13 +72,13 @@ func TestAPIKeys_ListAPIKeys(t *testing.T) {
 		t.Fatalf("APIKeys.List returned error: %v", err)
 	}
 
-	expected := []APIKey{
+	expected := []atlas.APIKey{
 		{
 			ID:         "5c47503320eef5699e1cce8d",
-			Desc:       "test-apikey",
+			Desc:       testAPIKey,
 			PrivateKey: "********-****-****-db2c132ca78d",
-			PublicKey:  "ewmaqvdo",
-			Roles: []AtlasRole{
+			PublicKey:  ewmaqvdo,
+			Roles: []atlas.AtlasRole{
 				{
 					RoleName: "GLOBAL_OWNER",
 				},
@@ -83,7 +89,7 @@ func TestAPIKeys_ListAPIKeys(t *testing.T) {
 			Desc:       "test-apikey-2",
 			PrivateKey: "********-****-****-db2c132ca78f",
 			PublicKey:  "ewmaqvde",
-			Roles: []AtlasRole{
+			Roles: []atlas.AtlasRole{
 				{
 					RoleName: "GLOBAL_READ_ONLY",
 				},
@@ -99,7 +105,7 @@ func TestAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &APIKeyInput{
+	createRequest := &atlas.APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GLOBAL_READ_ONLY"},
 	}
@@ -145,7 +151,7 @@ func TestAPIKeys_Create(t *testing.T) {
 		t.Errorf("expected username '%s', received '%s'", apiDesc, desc)
 	}
 
-	if pk := apiKey.PublicKey; pk != "ewmaqvdo" {
+	if pk := apiKey.PublicKey; pk != ewmaqvdo {
 		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
 	}
 }
@@ -164,7 +170,7 @@ func TestAPIKeys_GetAPIKey(t *testing.T) {
 		t.Errorf("APIKey.Get returned error: %v", err)
 	}
 
-	expected := &APIKey{Desc: "test-desc"}
+	expected := &atlas.APIKey{Desc: "test-desc"}
 
 	if diff := deep.Equal(apiKeys, expected); diff != nil {
 		t.Errorf("Clusters.Get = %v", diff)
@@ -175,7 +181,7 @@ func TestAPIKeys_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	updateRequest := &APIKeyInput{
+	updateRequest := &atlas.APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GLOBAL_READ_ONLY"},
 	}
@@ -218,11 +224,11 @@ func TestAPIKeys_Update(t *testing.T) {
 		t.Fatalf("APIKeys.Create returned error: %v", err)
 	}
 
-	if desc := apiKey.Desc; desc != "test-apikey" {
+	if desc := apiKey.Desc; desc != testAPIKey {
 		t.Errorf("expected username '%s', received '%s'", apiDesc, desc)
 	}
 
-	if pk := apiKey.PublicKey; pk != "ewmaqvdo" {
+	if pk := apiKey.PublicKey; pk != ewmaqvdo {
 		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
 	}
 }

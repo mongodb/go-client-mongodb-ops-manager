@@ -27,75 +27,16 @@ const (
 	eventsPathOrganization = "api/public/v1.0/orgs/%s/events"
 )
 
-// EventsService is an interface for interfacing with the Events
-// endpoints of the MongoDB Atlas API.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/events/
-type EventsService interface {
-	ListOrganizationEvents(context.Context, string, *EventListOptions) (*EventResponse, *Response, error)
-	GetOrganizationEvent(context.Context, string, string) (*Event, *Response, error)
-	ListProjectEvents(context.Context, string, *EventListOptions) (*EventResponse, *Response, error)
-	GetProjectEvent(context.Context, string, string) (*Event, *Response, error)
-}
-
 // EventsServiceOp handles communication with the Event related methods
-// of the MongoDB Atlas API
+// of the MongoDB Atlas API.
 type EventsServiceOp service
 
-var _ EventsService = &EventsServiceOp{}
-
-// Event represents an event of the MongoDB Atlas API
-type Event struct {
-	AlertID         string        `json:"alertId"`
-	AlertConfigID   string        `json:"alertConfigId"`
-	APIKeyID        string        `json:"apiKeyId,omitempty"`
-	Collection      string        `json:"collection,omitempty"`
-	Created         string        `json:"created"`
-	CurrentValue    *CurrentValue `json:"currentValue,omitempty"`
-	Database        string        `json:"database,omitempty"`
-	EventTypeName   string        `json:"eventTypeName"`
-	GroupID         string        `json:"groupId,omitempty"`
-	Hostname        string        `json:"hostname"`
-	ID              string        `json:"id"`
-	InvoiceID       string        `json:"invoiceId,omitempty"`
-	IsGlobalAdmin   bool          `json:"isGlobalAdmin,omitempty"`
-	Links           []*atlas.Link `json:"links"`
-	MetricName      string        `json:"metricName,omitempty"`
-	OpType          string        `json:"opType,omitempty"`
-	OrgID           string        `json:"orgId,omitempty"`
-	PaymentID       string        `json:"paymentId,omitempty"`
-	Port            int           `json:"Port,omitempty"`
-	PublicKey       string        `json:"publicKey,omitempty"`
-	RemoteAddress   string        `json:"remoteAddress,omitempty"`
-	ReplicaSetName  string        `json:"replicaSetName,omitempty"`
-	ShardName       string        `json:"shardName,omitempty"`
-	TargetPublicKey string        `json:"targetPublicKey,omitempty"`
-	TargetUsername  string        `json:"targetUsername,omitempty"`
-	TeamID          string        `json:"teamId,omitempty"`
-	UserID          string        `json:"userId,omitempty"`
-	Username        string        `json:"username,omitempty"`
-	WhitelistEntry  string        `json:"whitelistEntry,omitempty"`
-}
-
-// EventResponse is the response from the EventsService.List.
-type EventResponse struct {
-	Links      []*atlas.Link `json:"links,omitempty"`
-	Results    []*Event      `json:"results,omitempty"`
-	TotalCount int           `json:"totalCount,omitempty"`
-}
-
-// EventListOptions specifies the optional parameters to the Event List methods.
-type EventListOptions struct {
-	atlas.ListOptions
-	EventType []string `url:"eventType,omitempty"`
-	MinDate   string   `url:"minDate,omitempty"`
-	MaxDate   string   `url:"maxDate,omitempty"`
-}
+var _ atlas.EventsService = &EventsServiceOp{}
 
 // ListOrganizationEvents lists all events in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/events-orgs-get-all/
-func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID string, listOptions *EventListOptions) (*EventResponse, *Response, error) {
+func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID string, listOptions *atlas.EventListOptions) (*atlas.EventResponse, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -112,7 +53,7 @@ func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID stri
 		return nil, nil, err
 	}
 
-	root := new(EventResponse)
+	root := new(atlas.EventResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -124,7 +65,7 @@ func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID stri
 // GetOrganizationEvent gets the alert specified to {EVENT-ID} from the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-one-event-for-org/
-func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, eventID string) (*Event, *Response, error) {
+func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, eventID string) (*atlas.Event, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -139,7 +80,7 @@ func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, event
 		return nil, nil, err
 	}
 
-	root := new(Event)
+	root := new(atlas.Event)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -151,7 +92,7 @@ func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, event
 // ListProjectEvents lists all events in the project associated to {PROJECT-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-all-events-for-project/
-func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string, listOptions *EventListOptions) (*EventResponse, *Response, error) {
+func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string, listOptions *atlas.EventListOptions) (*atlas.EventResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -168,7 +109,7 @@ func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string,
 		return nil, nil, err
 	}
 
-	root := new(EventResponse)
+	root := new(atlas.EventResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -180,7 +121,7 @@ func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string,
 // GetProjectEvent gets the alert specified to {EVENT-ID} from the project associated to {PROJECT-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-one-event-for-project/
-func (s *EventsServiceOp) GetProjectEvent(ctx context.Context, groupID, eventID string) (*Event, *Response, error) {
+func (s *EventsServiceOp) GetProjectEvent(ctx context.Context, groupID, eventID string) (*atlas.Event, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -195,7 +136,7 @@ func (s *EventsServiceOp) GetProjectEvent(ctx context.Context, groupID, eventID 
 		return nil, nil, err
 	}
 
-	root := new(Event)
+	root := new(atlas.Event)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

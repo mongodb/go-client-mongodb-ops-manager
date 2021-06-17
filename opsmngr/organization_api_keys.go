@@ -25,57 +25,23 @@ import (
 
 const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys"
 
-// APIKeysService is an interface for interfacing with the APIKeys
-// endpoints of the MongoDB Atlas API.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys/
-type APIKeysService interface {
-	List(context.Context, string, *atlas.ListOptions) ([]APIKey, *Response, error)
-	Get(context.Context, string, string) (*APIKey, *Response, error)
-	Create(context.Context, string, *APIKeyInput) (*APIKey, *Response, error)
-	Update(context.Context, string, string, *APIKeyInput) (*APIKey, *Response, error)
-	Delete(context.Context, string, string) (*Response, error)
-}
-
 // APIKeysServiceOp handles communication with the APIKey related methods
-// of the MongoDB Atlas API
+// of the MongoDB Atlas API.
 type APIKeysServiceOp service
 
-var _ APIKeysService = &APIKeysServiceOp{}
-
-// APIKeyInput represents MongoDB API key input request for Create.
-type APIKeyInput struct {
-	Desc  string   `json:"desc,omitempty"`
-	Roles []string `json:"roles,omitempty"`
-}
-
-// APIKey represents MongoDB API Key.
-type APIKey struct {
-	ID         string      `json:"id,omitempty"`
-	Desc       string      `json:"desc,omitempty"`
-	Roles      []AtlasRole `json:"roles,omitempty"`
-	PrivateKey string      `json:"privateKey,omitempty"`
-	PublicKey  string      `json:"publicKey,omitempty"`
-}
-
-// AtlasRole represents a role name of API key
-type AtlasRole struct {
-	GroupID  string `json:"groupId,omitempty"`
-	OrgID    string `json:"orgId,omitempty"`
-	RoleName string `json:"roleName,omitempty"`
-}
+var _ atlas.APIKeysService = &APIKeysServiceOp{}
 
 // APIKeysResponse is the response from the APIKeysService.List.
 type APIKeysResponse struct {
-	Links      []*atlas.Link `json:"links,omitempty"`
-	Results    []APIKey      `json:"results,omitempty"`
-	TotalCount int           `json:"totalCount,omitempty"`
+	Links      []*atlas.Link  `json:"links,omitempty"`
+	Results    []atlas.APIKey `json:"results,omitempty"`
+	TotalCount int            `json:"totalCount,omitempty"`
 }
 
 // List all API-KEY in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-get-all/
-func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *atlas.ListOptions) ([]APIKey, *Response, error) {
+func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *atlas.ListOptions) ([]atlas.APIKey, *Response, error) {
 	path := fmt.Sprintf(apiKeysOrgPath, orgID)
 
 	// Add query params from listOptions
@@ -105,7 +71,7 @@ func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *
 // Get gets the APIKey specified to {API-KEY-ID} from the organization associated to {ORG-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-get-one/
-func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*APIKey, *Response, error) {
+func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*atlas.APIKey, *Response, error) {
 	if apiKeyID == "" {
 		return nil, nil, atlas.NewArgError("name", "must be set")
 	}
@@ -119,7 +85,7 @@ func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*AP
 		return nil, nil, err
 	}
 
-	root := new(APIKey)
+	root := new(atlas.APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -131,7 +97,7 @@ func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*AP
 // Create an API Key by the {ORG-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-create-one/
-func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createRequest *APIKeyInput) (*APIKey, *Response, error) {
+func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -143,7 +109,7 @@ func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createReque
 		return nil, nil, err
 	}
 
-	root := new(APIKey)
+	root := new(atlas.APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -155,7 +121,7 @@ func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createReque
 // Update a API Key in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/apiKeys-orgs-update-one/
-func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, updateRequest *APIKeyInput) (*APIKey, *Response, error) {
+func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, updateRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if updateRequest == nil {
 		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
 	}
@@ -168,7 +134,7 @@ func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, u
 		return nil, nil, err
 	}
 
-	root := new(APIKey)
+	root := new(atlas.APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

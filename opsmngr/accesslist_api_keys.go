@@ -24,21 +24,10 @@ import (
 
 const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList"
 
-// AccessListAPIKeysService is an interface for interfacing with the AccessList API Keys
-// endpoints of the MongoDB Atlas API.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys#organization-api-key-access-list-endpoints
-type AccessListAPIKeysService interface {
-	List(context.Context, string, string, *atlas.ListOptions) (*atlas.AccessListAPIKeys, *Response, error)
-	Get(context.Context, string, string, string) (*atlas.AccessListAPIKey, *Response, error)
-	Create(context.Context, string, string, []*atlas.AccessListAPIKeysReq) (*atlas.AccessListAPIKeys, *Response, error)
-	Delete(context.Context, string, string, string) (*Response, error)
-}
-
 // AccessListAPIKeysServiceOp handles communication with the AccessList API keys related methods of the MongoDB Atlas API.
 type AccessListAPIKeysServiceOp service
 
-var _ AccessListAPIKeysService = &AccessListAPIKeysServiceOp{}
+var _ atlas.AccessListAPIKeysService = &AccessListAPIKeysServiceOp{}
 
 // List gets all AccessList API keys.
 //

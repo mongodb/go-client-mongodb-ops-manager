@@ -24,32 +24,16 @@ import (
 
 const projectAPIKeysPath = "api/public/v1.0/groups/%s/apiKeys"
 
-// ProjectAPIKeysService is an interface for interfacing with the APIKeys
-// endpoints of the MongoDB Atlas API.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/apiKeys/#organization-api-keys-on-projects-endpoints
-type ProjectAPIKeysService interface {
-	List(context.Context, string, *atlas.ListOptions) ([]APIKey, *Response, error)
-	Create(context.Context, string, *APIKeyInput) (*APIKey, *Response, error)
-	Assign(context.Context, string, string, *AssignAPIKey) (*Response, error)
-	Unassign(context.Context, string, string) (*Response, error)
-}
-
 // ProjectAPIKeysOp handles communication with the APIKey related methods
-// of the MongoDB Atlas API
+// of the MongoDB Atlas API.
 type ProjectAPIKeysOp service
 
-var _ ProjectAPIKeysService = &ProjectAPIKeysOp{}
-
-// AssignAPIKey contains the roles to be assigned to an Organization API key into a Project
-type AssignAPIKey struct {
-	Roles []string `json:"roles"`
-}
+var _ atlas.ProjectAPIKeysService = &ProjectAPIKeysOp{}
 
 // List all API-KEY in the organization associated to {GROUP-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/projectApiKeys/get-all-apiKeys-in-one-project/
-func (s *ProjectAPIKeysOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) ([]APIKey, *Response, error) {
+func (s *ProjectAPIKeysOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) ([]atlas.APIKey, *Response, error) {
 	path := fmt.Sprintf(projectAPIKeysPath, groupID)
 
 	// Add query params from listOptions
@@ -79,7 +63,7 @@ func (s *ProjectAPIKeysOp) List(ctx context.Context, groupID string, listOptions
 // Create an API Key by the {GROUP-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/projectApiKeys/create-one-apiKey-in-one-project/
-func (s *ProjectAPIKeysOp) Create(ctx context.Context, groupID string, createRequest *APIKeyInput) (*APIKey, *Response, error) {
+func (s *ProjectAPIKeysOp) Create(ctx context.Context, groupID string, createRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -91,7 +75,7 @@ func (s *ProjectAPIKeysOp) Create(ctx context.Context, groupID string, createReq
 		return nil, nil, err
 	}
 
-	root := new(APIKey)
+	root := new(atlas.APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -103,7 +87,7 @@ func (s *ProjectAPIKeysOp) Create(ctx context.Context, groupID string, createReq
 // Assign an API-KEY related to {GROUP-ID} to a the project with {API-KEY-ID}.
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/projectApiKeys/assign-one-org-apiKey-to-one-project/
-func (s *ProjectAPIKeysOp) Assign(ctx context.Context, groupID, keyID string, assignAPIKeyRequest *AssignAPIKey) (*Response, error) {
+func (s *ProjectAPIKeysOp) Assign(ctx context.Context, groupID, keyID string, assignAPIKeyRequest *atlas.AssignAPIKey) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")
 	}

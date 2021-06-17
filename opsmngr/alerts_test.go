@@ -19,16 +19,17 @@ import (
 	"net/http"
 	"testing"
 
+	atlas "go.mongodb.org/atlas/mongodbatlas"
+
 	"github.com/go-test/deep"
 	"github.com/openlyinc/pointy"
 )
 
+const alertID = "57b76ddc96e8215c017ceafb"
+
 func TestAlert_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "535683b3794d371327b"
-	alertID := "57b76ddc96e8215c017ceafb"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts/%s", groupID, alertID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -69,21 +70,21 @@ func TestAlert_Get(t *testing.T) {
 		t.Fatalf("Alerts.Get returned error: %v", err)
 	}
 
-	expected := &Alert{
+	expected := &atlas.Alert{
 		ID:            "533dc40ae4b00835ff81eaee",
 		GroupID:       "535683b3794d371327b",
 		EventTypeName: "OUTSIDE_METRIC_THRESHOLD",
 		Created:       "2016-08-23T20:26:50Z",
 		Updated:       "2016-08-23T20:26:50Z",
 		Enabled:       pointy.Bool(true),
-		Matchers: []Matcher{
+		Matchers: []atlas.Matcher{
 			{
 				FieldName: "HOSTNAME_AND_PORT",
 				Operator:  "EQUALS",
 				Value:     "mongo.example.com:27017",
 			},
 		},
-		Notifications: []Notification{
+		Notifications: []atlas.Notification{
 			{
 				TypeName:     "SMS",
 				IntervalMin:  5,
@@ -91,7 +92,7 @@ func TestAlert_Get(t *testing.T) {
 				MobileNumber: "2343454567",
 			},
 		},
-		MetricThreshold: &MetricThreshold{
+		MetricThreshold: &atlas.MetricThreshold{
 			MetricName: "ASSERT_REGULAR",
 			Operator:   "LESS_THAN",
 			Threshold:  99.0,
@@ -108,8 +109,6 @@ func TestAlert_Get(t *testing.T) {
 func TestAlerts_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	groupID := "535683b3794d371327b"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts", groupID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -185,9 +184,9 @@ func TestAlerts_List(t *testing.T) {
 		t.Fatalf("Alerts.List returned error: %v", err)
 	}
 
-	expected := &AlertsResponse{
+	expected := &atlas.AlertsResponse{
 		Links: nil,
-		Results: []Alert{
+		Results: []atlas.Alert{
 			{
 				ID:            "533dc40ae4b00835ff81eaee",
 				GroupID:       "535683b3794d371327b",
@@ -195,14 +194,14 @@ func TestAlerts_List(t *testing.T) {
 				Created:       "2016-08-23T20:26:50Z",
 				Updated:       "2016-08-23T20:26:50Z",
 				Enabled:       pointy.Bool(true),
-				Matchers: []Matcher{
+				Matchers: []atlas.Matcher{
 					{
 						FieldName: "HOSTNAME_AND_PORT",
 						Operator:  "EQUALS",
 						Value:     "mongo.example.com:27017",
 					},
 				},
-				Notifications: []Notification{
+				Notifications: []atlas.Notification{
 					{
 						TypeName:     "SMS",
 						IntervalMin:  5,
@@ -210,7 +209,7 @@ func TestAlerts_List(t *testing.T) {
 						MobileNumber: "2343454567",
 					},
 				},
-				MetricThreshold: &MetricThreshold{
+				MetricThreshold: &atlas.MetricThreshold{
 					MetricName: "ASSERT_REGULAR",
 					Operator:   "LESS_THAN",
 					Threshold:  99.0,
@@ -225,14 +224,14 @@ func TestAlerts_List(t *testing.T) {
 				Created:       "2016-08-23T20:26:50Z",
 				Updated:       "2016-08-23T20:26:50Z",
 				Enabled:       pointy.Bool(true),
-				Matchers: []Matcher{
+				Matchers: []atlas.Matcher{
 					{
 						FieldName: "HOSTNAME_AND_PORT",
 						Operator:  "EQUALS",
 						Value:     "mongo.example.com:27017",
 					},
 				},
-				Notifications: []Notification{
+				Notifications: []atlas.Notification{
 					{
 						TypeName:     "SMS",
 						IntervalMin:  5,
@@ -240,7 +239,7 @@ func TestAlerts_List(t *testing.T) {
 						MobileNumber: "2343454567",
 					},
 				},
-				MetricThreshold: &MetricThreshold{
+				MetricThreshold: &atlas.MetricThreshold{
 					MetricName: "ASSERT_REGULAR",
 					Operator:   "LESS_THAN",
 					Threshold:  99.0,
@@ -261,11 +260,9 @@ func TestAlert_Acknowledge(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "535683b3794d371327b"
-	alertID := "533dc40ae4b00835ff81eaee"
 	acknowledgedUntil := "2026-10-01T00:00:00-0400"
 
-	params := AcknowledgeRequest{
+	params := atlas.AcknowledgeRequest{
 		AcknowledgedUntil:      &acknowledgedUntil,
 		AcknowledgementComment: "This is normal. Please ignore.",
 	}
@@ -296,7 +293,7 @@ func TestAlert_Acknowledge(t *testing.T) {
 		t.Fatalf("Alerts.Acknowledge returned error: %v", err)
 	}
 
-	expected := &Alert{
+	expected := &atlas.Alert{
 		ID:                     "533dc40ae4b00835ff81eaee",
 		GroupID:                "535683b3794d371327b",
 		EventTypeName:          "OUTSIDE_METRIC_THRESHOLD",
@@ -308,7 +305,7 @@ func TestAlert_Acknowledge(t *testing.T) {
 		Updated:                "2016-08-23T20:26:50Z",
 		LastNotified:           "2016-08-23T20:33:23Z",
 		MetricName:             "ASSERTS_REGULAR",
-		CurrentValue: &CurrentValue{
+		CurrentValue: &atlas.CurrentValue{
 			Number: pointy.Float64(0.0),
 			Units:  "RAW",
 		},

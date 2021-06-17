@@ -85,14 +85,14 @@ func TestContinuousSnapshots_List(t *testing.T) {
 		t.Fatalf("ContinuousSnapshots.List returned error: %v", err)
 	}
 
-	expected := &ContinuousSnapshots{
+	expected := &atlas.ContinuousSnapshots{
 		Links: []*atlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/6c7498dg87d9e6526801572b/clusters/Cluster0/snapshots?pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*ContinuousSnapshot{
+		Results: []*atlas.ContinuousSnapshot{
 			{
 				ClusterID: "7c2487d833e9e75286093696",
 				Complete:  true,
@@ -114,11 +114,11 @@ func TestContinuousSnapshots_List(t *testing.T) {
 						Rel:  "self",
 					},
 				},
-				Parts: []*Part{
+				Parts: []*atlas.Part{
 					{
 						ReplicaSetName: "Cluster0-shard-0",
 						TypeName:       "REPLICA_SET",
-						SnapshotPart: SnapshotPart{
+						SnapshotPart: atlas.SnapshotPart{
 							ClusterID:          "7c2487d833e9e75286093696",
 							CompressionSetting: "GZIP",
 							DataSizeBytes:      4502,
@@ -184,7 +184,7 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 		t.Fatalf("ContinuousSnapshots.Get returned error: %v", err)
 	}
 
-	expected := &ContinuousSnapshot{
+	expected := &atlas.ContinuousSnapshot{
 		ClusterID: "7c2487d833e9e75286093696",
 		Complete:  true,
 		Created: &atlas.SnapshotTimestamp{
@@ -205,11 +205,11 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 				Rel:  "self",
 			},
 		},
-		Parts: []*Part{
+		Parts: []*atlas.Part{
 			{
 				ReplicaSetName: "Cluster0-shard-0",
 				TypeName:       "REPLICA_SET",
-				SnapshotPart: SnapshotPart{
+				SnapshotPart: atlas.SnapshotPart{
 					ClusterID:          "7c2487d833e9e75286093696",
 					CompressionSetting: "GZIP",
 					DataSizeBytes:      4502,
@@ -230,7 +230,7 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	updateRequest := &ContinuousSnapshot{
+	updateRequest := &atlas.ContinuousSnapshot{
 		Expires: "2018-12-01",
 	}
 
@@ -293,7 +293,7 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 		t.Fatalf("ContinuousSnapshots.ChangeExpiry returned error: %v", err)
 	}
 
-	expected := &ContinuousSnapshot{
+	expected := &atlas.ContinuousSnapshot{
 		ClusterID: "57c2487d833e9e75286093696",
 		Complete:  true,
 		Created: &atlas.SnapshotTimestamp{
@@ -314,11 +314,11 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 				Rel:  "self",
 			},
 		},
-		Parts: []*Part{
+		Parts: []*atlas.Part{
 			{
 				ReplicaSetName: "Cluster0-shard-0",
 				TypeName:       "REPLICA_SET",
-				SnapshotPart: SnapshotPart{
+				SnapshotPart: atlas.SnapshotPart{
 					ClusterID:          "57c2487d833e9e75286093696",
 					CompressionSetting: "GZIP",
 					DataSizeBytes:      4502,

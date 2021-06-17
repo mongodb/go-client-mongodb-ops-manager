@@ -26,84 +26,16 @@ const (
 	continuousSnapshotsBasePath = "api/public/v1.0/groups/%s/clusters/%s/snapshots"
 )
 
-// ContinuousSnapshotsService is an interface for interfacing with the Continuous Snapshots
-// endpoints of the MongoDB Atlas API.
-//
-// See more: https://docs.atlas.mongodb.com/reference/api/snapshots/
-type ContinuousSnapshotsService interface {
-	List(context.Context, string, string, *atlas.ListOptions) (*ContinuousSnapshots, *Response, error)
-	Get(context.Context, string, string, string) (*ContinuousSnapshot, *Response, error)
-	ChangeExpiry(context.Context, string, string, string, *ContinuousSnapshot) (*ContinuousSnapshot, *Response, error)
-	Delete(context.Context, string, string, string) (*Response, error)
-}
-
 // ContinuousSnapshotsServiceOp handles communication with the Continuous Snapshots related methods of the
-// MongoDB Atlas API
+// MongoDB Atlas API.
 type ContinuousSnapshotsServiceOp service
 
-var _ ContinuousSnapshotsService = &ContinuousSnapshotsServiceOp{}
-
-// ContinuousSnapshot represents a cloud provider snapshot.
-type ContinuousSnapshot struct {
-	ClusterID                 string                   `json:"clusterId,omitempty"`
-	Complete                  bool                     `json:"complete,omitempty"`
-	Created                   *atlas.SnapshotTimestamp `json:"created,omitempty"`
-	DoNotDelete               *bool                    `json:"doNotDelete,omitempty"`
-	Expires                   string                   `json:"expires,omitempty"`
-	GroupID                   string                   `json:"groupId,omitempty"`
-	ID                        string                   `json:"id,omitempty"` // Unique identifier of the snapshot.
-	IsPossiblyInconsistent    *bool                    `json:"isPossiblyInconsistent,omitempty"`
-	LastOplogAppliedTimestamp *atlas.SnapshotTimestamp `json:"lastOplogAppliedTimestamp,omitempty"`
-	Links                     []*atlas.Link            `json:"links,omitempty"` // One or more links to sub-resources and/or related resources.
-	NamespaceFilterList       *NamespaceFilter         `json:"namespaceFilterList,omitempty"`
-	MissingShards             []*MissingShard          `json:"missingShards,omitempty"`
-	Parts                     []*Part                  `json:"parts,omitempty"`
-}
-
-type Part struct {
-	ReplicaSetName string `json:"replicaSetName"`
-	TypeName       string `json:"typeName"`
-	SnapshotPart
-	atlas.CheckpointPart
-}
-
-type SnapshotPart struct {
-	ClusterID          string `json:"clusterId"`
-	CompressionSetting string `json:"compressionSetting"`
-	DataSizeBytes      int64  `json:"dataSizeBytes"`
-	EncryptionEnabled  bool   `json:"encryptionEnabled"`
-	FileSizeBytes      int64  `json:"fileSizeBytes"`
-	MasterKeyUUID      string `json:"masterKeyUUID,omitempty"`
-	MongodVersion      string `json:"mongodVersion"`
-	StorageSizeBytes   int64  `json:"storageSizeBytes"`
-}
-
-type NamespaceFilter struct {
-	FilterList []string `json:"filterList"`
-	FilterType string   `json:"filterType"`
-}
-
-type MissingShard struct {
-	ID             string `json:"id"`
-	GroupID        string `json:"groupId"`
-	TypeName       string `json:"typeName"`
-	ClusterName    string `json:"clusterName,omitempty"`
-	ShardName      string `json:"shardName,omitempty"`
-	ReplicaSetName string `json:"replicaSetName"`
-	LastHeartbeat  string `json:"lastHeartbeat"`
-}
-
-// ContinuousSnapshots represents all cloud provider snapshots.
-type ContinuousSnapshots struct {
-	Results    []*ContinuousSnapshot `json:"results,omitempty"`    // Includes one ContinuousSnapshots object for each item detailed in the results array section.
-	Links      []*atlas.Link         `json:"links,omitempty"`      // One or more links to sub-resources and/or related resources.
-	TotalCount int                   `json:"totalCount,omitempty"` // Count of the total number of items in the result set. It may be greater than the number of objects in the results array if the entire result set is paginated.
-}
+var _ atlas.ContinuousSnapshotsService = &ContinuousSnapshotsServiceOp{}
 
 // List lists continuous snapshots for the given cluster
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/snapshots-get-all/
-func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *atlas.ListOptions) (*ContinuousSnapshots, *Response, error) {
+func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *atlas.ListOptions) (*atlas.ContinuousSnapshots, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -124,7 +56,7 @@ func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, cluste
 		return nil, nil, err
 	}
 
-	root := new(ContinuousSnapshots)
+	root := new(atlas.ContinuousSnapshots)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -133,7 +65,7 @@ func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, cluste
 // Get gets the continuous snapshot for the given cluster and snapshot ID
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/snapshots-get-one/
-func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, clusterID, snapshotID string) (*ContinuousSnapshot, *Response, error) {
+func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, clusterID, snapshotID string) (*atlas.ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -151,7 +83,7 @@ func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, cluster
 		return nil, nil, err
 	}
 
-	root := new(ContinuousSnapshot)
+	root := new(atlas.ContinuousSnapshot)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -160,7 +92,7 @@ func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, cluster
 // ChangeExpiry changes the expiry date for the given cluster and snapshot ID
 //
 // See more: https://docs.atlas.mongodb.com/reference/api/snapshots-change-expiration/
-func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID, clusterID, snapshotID string, updateRequest *ContinuousSnapshot) (*ContinuousSnapshot, *Response, error) {
+func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID, clusterID, snapshotID string, updateRequest *atlas.ContinuousSnapshot) (*atlas.ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -179,7 +111,7 @@ func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID
 		return nil, nil, err
 	}
 
-	root := new(ContinuousSnapshot)
+	root := new(atlas.ContinuousSnapshot)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err

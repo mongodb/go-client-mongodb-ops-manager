@@ -89,13 +89,13 @@ func TestContinuousBackupRestore_List(t *testing.T) {
 	}
 	pointInTimeValue := false
 
-	expected := &ContinuousJobs{
-		Results: []*ContinuousJob{{
+	expected := &atlas.ContinuousJobs{
+		Results: []*atlas.ContinuousJob{{
 			BatchID:     "5a66783b80eef5354c77ee13",
 			ClusterID:   "7c88887880eef52e5f4d0e2d",
 			ClusterName: "Cluster0",
 			Created:     "2018-01-22T23:48:11Z",
-			Delivery: &Delivery{
+			Delivery: &atlas.Delivery{
 				Expires:         "2018-01-22T23:49:38Z",
 				ExpirationHours: 48,
 				MaxDownloads:    2147483647,
@@ -105,7 +105,7 @@ func TestContinuousBackupRestore_List(t *testing.T) {
 			},
 			EncryptionEnabled: false,
 			GroupID:           "6b77777887d9d61443b41645",
-			Hashes: []*Hash{
+			Hashes: []*atlas.Hash{
 				{
 					TypeName: "SHA1",
 					FileName: "config-Cluster0-config-0-5a66689487d9d61443b46149-1516661094-5a66783b80eef5354c77ee16.tar.gz",
@@ -122,7 +122,7 @@ func TestContinuousBackupRestore_List(t *testing.T) {
 			PointInTime: &pointInTimeValue,
 			SnapshotID:  "5a6669d5e2bfb3461861360c",
 			StatusName:  "FINISHED",
-			Timestamp: SnapshotTimestamp{
+			Timestamp: atlas.SnapshotTimestamp{
 				Date:      "2018-01-22T22:44:54Z",
 				Increment: 1,
 			},
@@ -193,12 +193,12 @@ func TestContinuousBackupRestore_Get(t *testing.T) {
 	}
 	pointInTimeValue := false
 
-	expected := &ContinuousJob{
+	expected := &atlas.ContinuousJob{
 		BatchID:     "5a66783b80eef5354c77ee13",
 		ClusterID:   "5a66689487d9d61443b46149",
 		ClusterName: "Cluster0",
 		Created:     "2018-01-22T23:48:11Z",
-		Delivery: &Delivery{
+		Delivery: &atlas.Delivery{
 			Expires:         "2018-01-22T23:49:38Z",
 			ExpirationHours: 48,
 			MaxDownloads:    2147483647,
@@ -208,7 +208,7 @@ func TestContinuousBackupRestore_Get(t *testing.T) {
 		},
 		EncryptionEnabled: false,
 		GroupID:           "5a66666887d9d61443b41645",
-		Hashes: []*Hash{
+		Hashes: []*atlas.Hash{
 			{
 				TypeName: "SHA1",
 				FileName: "Cluster0-shard-1-1516661094-6b77893b80eef5354c77ee15.tar.gz",
@@ -225,7 +225,7 @@ func TestContinuousBackupRestore_Get(t *testing.T) {
 		PointInTime: &pointInTimeValue,
 		SnapshotID:  "5a6669d9fcc178211a0d86b9",
 		StatusName:  "FINISHED",
-		Timestamp: SnapshotTimestamp{
+		Timestamp: atlas.SnapshotTimestamp{
 			Date:      "2018-01-22T22:44:54Z",
 			Increment: 1,
 		},
@@ -295,8 +295,8 @@ func TestContinuousBackupRestore_Create(t *testing.T) {
 		)
 	})
 
-	request := &ContinuousJobRequest{
-		Delivery: Delivery{
+	request := &atlas.ContinuousJobRequest{
+		Delivery: atlas.Delivery{
 			MethodName:        "AUTOMATED_RESTORE",
 			TargetClusterName: "Cluster0",
 			TargetGroupID:     "5a66666887d9d61443b41645",
@@ -309,20 +309,20 @@ func TestContinuousBackupRestore_Create(t *testing.T) {
 		t.Fatalf("ContinuousRestoreJobs.Create returned error: %v", err)
 	}
 
-	expected := &ContinuousJobs{
+	expected := &atlas.ContinuousJobs{
 		Links: []*atlas.Link{
 			{
 				Href: "http://cloud.mongodb.com/api/atlas/v1.0/groups/5a66666887d9d61443b41645/clusters/Cluster0/restoreJobs",
 				Rel:  "self",
 			},
 		},
-		Results: []*ContinuousJob{
+		Results: []*atlas.ContinuousJob{
 			{
 				BatchID:     "5a66783b80eef5354c77ee13",
 				ClusterID:   "5a66689487d9d61443b46149",
 				ClusterName: "Cluster0",
 				Created:     "2018-09-20T15:02:00Z",
-				Delivery: &Delivery{
+				Delivery: &atlas.Delivery{
 					MethodName: "HTTP",
 					StatusName: "READY",
 				},
@@ -337,7 +337,7 @@ func TestContinuousBackupRestore_Create(t *testing.T) {
 				},
 				SnapshotID: "6b77893b80eef5354c77ee15",
 				StatusName: "FINISHED",
-				Timestamp: SnapshotTimestamp{
+				Timestamp: atlas.SnapshotTimestamp{
 					Date:      "2018-09-15T15:53:00Z",
 					Increment: 1,
 				},

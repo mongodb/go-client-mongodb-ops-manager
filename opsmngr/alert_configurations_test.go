@@ -20,6 +20,8 @@ import (
 	"net/http"
 	"testing"
 
+	atlas "go.mongodb.org/atlas/mongodbatlas"
+
 	"github.com/go-test/deep"
 	"github.com/openlyinc/pointy"
 )
@@ -79,10 +81,10 @@ func TestAlertConfiguration_Create(t *testing.T) {
 		}`)
 	})
 
-	alertReq := &AlertConfiguration{
+	alertReq := &atlas.AlertConfiguration{
 		EventTypeName: "NO_PRIMARY",
 		Enabled:       pointy.Bool(true),
-		Notifications: []Notification{
+		Notifications: []atlas.Notification{
 			{
 				TypeName:     "GROUP",
 				IntervalMin:  5,
@@ -100,14 +102,14 @@ func TestAlertConfiguration_Create(t *testing.T) {
 		return
 	}
 
-	expected := &AlertConfiguration{
+	expected := &atlas.AlertConfiguration{
 		ID:            "57b76ddc96e8215c017ceafb",
 		Created:       "2016-08-19T20:36:44Z",
 		Enabled:       pointy.Bool(true),
 		EventTypeName: "NO_PRIMARY",
 		GroupID:       "535683b3794d371327b",
-		Matchers:      []Matcher{},
-		Notifications: []Notification{
+		Matchers:      []atlas.Matcher{},
+		Notifications: []atlas.Notification{
 			{
 				DelayMin:     pointy.Int(0),
 				EmailEnabled: pointy.Bool(true),
@@ -170,14 +172,14 @@ func TestAlertConfiguration_EnableAnAlertConfig(t *testing.T) {
 		t.Fatalf("AlertConfiguration.EnableAnAlertConfig returned error: %v", err)
 	}
 
-	expected := &AlertConfiguration{
+	expected := &atlas.AlertConfiguration{
 		Created:       "2016-08-19T20:45:29Z",
 		Enabled:       pointy.Bool(false),
 		EventTypeName: "NO_PRIMARY",
 		GroupID:       "535683b3794d371327b",
 		ID:            "57b76ddc96e8215c017ceafb",
-		Matchers:      []Matcher{},
-		Notifications: []Notification{
+		Matchers:      []atlas.Matcher{},
+		Notifications: []atlas.Notification{
 			{
 				DelayMin:     pointy.Int(5),
 				EmailEnabled: pointy.Bool(false),
@@ -238,21 +240,21 @@ func TestAlertConfiguration_GetAnAlertConfig(t *testing.T) {
 		t.Fatalf("AlertConfigurations.GetAnAlertConfig returned error: %v", err)
 	}
 
-	expected := &AlertConfiguration{
+	expected := &atlas.AlertConfiguration{
 		ID:            "533dc40ae4b00835ff81eaee",
 		GroupID:       "535683b3794d371327b",
 		EventTypeName: "OUTSIDE_METRIC_THRESHOLD",
 		Created:       "2016-08-23T20:26:50Z",
 		Updated:       "2016-08-23T20:26:50Z",
 		Enabled:       pointy.Bool(true),
-		Matchers: []Matcher{
+		Matchers: []atlas.Matcher{
 			{
 				FieldName: "HOSTNAME_AND_PORT",
 				Operator:  "EQUALS",
 				Value:     "mongo.example.com:27017",
 			},
 		},
-		Notifications: []Notification{
+		Notifications: []atlas.Notification{
 			{
 				TypeName:     "SMS",
 				IntervalMin:  5,
@@ -261,7 +263,7 @@ func TestAlertConfiguration_GetAnAlertConfig(t *testing.T) {
 				Roles:        []string{"GROUP_DATA_ACCESS_ADMIN", "GROUP_DATA_ACCESS_READ_ONLY"},
 			},
 		},
-		MetricThreshold: &MetricThreshold{
+		MetricThreshold: &atlas.MetricThreshold{
 			MetricName: "ASSERT_REGULAR",
 			Operator:   "LESS_THAN",
 			Threshold:  99.0,
@@ -322,7 +324,7 @@ func TestAlertConfiguration_GetOpenAlertsConfig(t *testing.T) {
 		t.Fatalf("AlertConfigurations.GetOpenAlertsConfig returned error: %v", err)
 	}
 
-	expected := []AlertConfiguration{
+	expected := []atlas.AlertConfiguration{
 		{
 			ID:                "53569159300495c7702ee3a3",
 			GroupID:           "535683b3794d371327b",
@@ -333,7 +335,7 @@ func TestAlertConfiguration_GetOpenAlertsConfig(t *testing.T) {
 			Updated:           "2016-08-22T20:14:11.388Z",
 			LastNotified:      "2016-08-22T15:57:24.126Z",
 			MetricName:        "ASSERT_REGULAR",
-			CurrentValue: &CurrentValue{
+			CurrentValue: &atlas.CurrentValue{
 				Number: pointy.Float64(0.0),
 				Units:  "RAW",
 			},
@@ -347,7 +349,7 @@ func TestAlertConfiguration_GetOpenAlertsConfig(t *testing.T) {
 			Updated:       "2016-08-22T20:14:11.388Z",
 			LastNotified:  "2016-08-22T20:14:19.313Z",
 			MetricName:    "ASSERT_REGULAR",
-			CurrentValue: &CurrentValue{
+			CurrentValue: &atlas.CurrentValue{
 				Number: pointy.Float64(0.0),
 				Units:  "RAW",
 			},
@@ -439,7 +441,7 @@ func TestAlertConfiguration_List(t *testing.T) {
 		t.Fatalf("AlertConfigurations.List returned error: %v", err)
 	}
 
-	expected := []AlertConfiguration{
+	expected := []atlas.AlertConfiguration{
 		{
 			ID:            "533dc40ae4b00835ff81eaee",
 			GroupID:       "535683b3794d371327b",
@@ -447,14 +449,14 @@ func TestAlertConfiguration_List(t *testing.T) {
 			Created:       "2016-08-23T20:26:50Z",
 			Updated:       "2016-08-23T20:26:50Z",
 			Enabled:       pointy.Bool(true),
-			Matchers: []Matcher{
+			Matchers: []atlas.Matcher{
 				{
 					FieldName: "HOSTNAME_AND_PORT",
 					Operator:  "EQUALS",
 					Value:     "mongo.example.com:27017",
 				},
 			},
-			Notifications: []Notification{
+			Notifications: []atlas.Notification{
 				{
 					TypeName:     "SMS",
 					IntervalMin:  5,
@@ -463,7 +465,7 @@ func TestAlertConfiguration_List(t *testing.T) {
 					Roles:        []string{"GROUP_DATA_ACCESS_ADMIN", "GROUP_DATA_ACCESS_READ_ONLY"},
 				},
 			},
-			MetricThreshold: &MetricThreshold{
+			MetricThreshold: &atlas.MetricThreshold{
 				MetricName: "ASSERT_REGULAR",
 				Operator:   "LESS_THAN",
 				Threshold:  99.0,
@@ -478,14 +480,14 @@ func TestAlertConfiguration_List(t *testing.T) {
 			Created:       "2016-08-23T20:26:50Z",
 			Updated:       "2016-08-23T20:26:50Z",
 			Enabled:       pointy.Bool(true),
-			Matchers: []Matcher{
+			Matchers: []atlas.Matcher{
 				{
 					FieldName: "HOSTNAME_AND_PORT",
 					Operator:  "EQUALS",
 					Value:     "mongo.example.com:27017",
 				},
 			},
-			Notifications: []Notification{
+			Notifications: []atlas.Notification{
 				{
 					TypeName:     "SMS",
 					IntervalMin:  5,
@@ -494,7 +496,7 @@ func TestAlertConfiguration_List(t *testing.T) {
 					Roles:        []string{"GROUP_DATA_ACCESS_ADMIN", "GROUP_DATA_ACCESS_READ_ONLY"},
 				},
 			},
-			MetricThreshold: &MetricThreshold{
+			MetricThreshold: &atlas.MetricThreshold{
 				MetricName: "ASSERT_REGULAR",
 				Operator:   "LESS_THAN",
 				Threshold:  99.0,
@@ -561,10 +563,10 @@ func TestAlertConfiguration_Update(t *testing.T) {
 		}`)
 	})
 
-	alertReq := &AlertConfiguration{
+	alertReq := &atlas.AlertConfiguration{
 		EventTypeName: "NO_PRIMARY",
 		Enabled:       pointy.Bool(true),
-		Notifications: []Notification{
+		Notifications: []atlas.Notification{
 			{
 				TypeName:     "GROUP",
 				IntervalMin:  5,
@@ -582,13 +584,13 @@ func TestAlertConfiguration_Update(t *testing.T) {
 		return
 	}
 
-	expected := &AlertConfiguration{
+	expected := &atlas.AlertConfiguration{
 		Created:       "2016-08-19T20:45:29Z",
 		Enabled:       pointy.Bool(true),
 		EventTypeName: "NO_PRIMARY",
 		GroupID:       "535683b3794d371327b",
 		ID:            "57b76ddc96e8215c017ceafb",
-		Notifications: []Notification{
+		Notifications: []atlas.Notification{
 			{
 				TypeName:     "GROUP",
 				IntervalMin:  5,
