@@ -237,7 +237,7 @@ func (s *AlertConfigurationsServiceOp) Delete(ctx context.Context, groupID, aler
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-matchers-field-names/
 func (s *AlertConfigurationsServiceOp) ListMatcherFields(ctx context.Context) ([]string, *Response, error) {
-	path := "alertConfigs/matchers/fieldNames"
+	path := "api/public/v1.0/alertConfigs/matchers/fieldNames"
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
