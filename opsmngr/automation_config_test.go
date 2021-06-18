@@ -685,3 +685,36 @@ func TestAutomation_UpdateMongoDBUserEmptyMechanism(t *testing.T) {
 		t.Fatalf("Automation.UpdateConfig returned error: %v", err)
 	}
 }
+
+func TestAutomation_GetTlsConfig(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+  "tls" : {
+    	"CAFilePath" : "/etc/ssl/rootCA.pem",
+		"autoPEMKeyFilePath" : "/etc/ssl/client.pem",
+		"autoPEMKeyFilePwd" : "password",
+		"clientCertificateMode" : "OPTIONAL"
+  }}`)
+	})
+
+	config, _, err := client.Automation.GetConfig(ctx, projectID)
+	if err != nil {
+		t.Fatalf("Automation.GetConfig returned error: %v", err)
+	}
+
+	expected := &AutomationConfig{
+		TLS: &SSL{
+			CAFilePath:            "/etc/ssl/rootCA.pem",
+			AutoPEMKeyFilePath:    "/etc/ssl/client.pem",
+			AutoPEMKeyFilePwd:     "password",
+			ClientCertificateMode: "OPTIONAL",
+		},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}

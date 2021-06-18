@@ -133,6 +133,7 @@ type IndexConfig struct {
 // SSL config properties.
 type SSL struct {
 	AutoPEMKeyFilePath    string `json:"autoPEMKeyFilePath,omitempty"` //nolint:tagliatelle // correct from API
+	AutoPEMKeyFilePwd     string `json:"autoPEMKeyFilePwd,omitempty"`  //nolint:tagliatelle // correct from API
 	CAFilePath            string `json:"CAFilePath,omitempty"`         //nolint:tagliatelle // correct from API
 	ClientCertificateMode string `json:"clientCertificateMode,omitempty"`
 }
