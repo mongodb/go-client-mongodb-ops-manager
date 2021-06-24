@@ -33,7 +33,9 @@ linters-settings:
       - name: error-return
       - name: error-strings
       - name: error-naming
+      - name: errorf
       - name: exported
+      - name: indent-error-flow
       - name: if-return
       - name: increment-decrement
       - name: var-naming
@@ -47,7 +49,9 @@ linters-settings:
       - name: errorf
       - name: empty-block
       - name: superfluous-else
+      - name: struct-tag
       - name: unused-parameter
+      - name: unused-receiver
       - name: unreachable-code
       - name: redefines-builtin-id
 linters:
