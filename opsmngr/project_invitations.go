@@ -24,9 +24,9 @@ import (
 
 const projectInvitationBasePath = projectBasePath + "/%s/invites"
 
-// Invitations gets all unaccepted invitations to the specified Atlas project.
+// Invitations gets all unaccepted invitations to the specified Ops Manager project.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/project-get-invitations/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/get-all-invitations/
 func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opts *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -52,9 +52,9 @@ func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opt
 	return root, resp, nil
 }
 
-// Invitation gets details for one unaccepted invitation to the specified Atlas project.
+// Invitation gets details for one unaccepted invitation to the specified Ops Manager project.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/project-get-one-invitation/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/get-one-invitation/
 func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationID string) (*atlas.Invitation, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -81,7 +81,9 @@ func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationI
 	return root, resp, nil
 }
 
-// InviteUser invites one user to the Atlas project that you specify.
+// InviteUser invites one user to the Ops Manager project that you specify.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/create-one-invitation/
 func (s *ProjectsServiceOp) InviteUser(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if invitation.GroupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -103,9 +105,9 @@ func (s *ProjectsServiceOp) InviteUser(ctx context.Context, invitation *atlas.In
 	return root, resp, nil
 }
 
-// UpdateInvitation updates one pending invitation to the Atlas project that you specify.
+// UpdateInvitation updates one pending invitation to the Ops Manager project that you specify.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/project-update-one-invitation/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation/
 func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if invitation.GroupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -114,9 +116,9 @@ func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, invitation *at
 	return s.updateInvitation(ctx, invitation)
 }
 
-// UpdateInvitationByID updates one invitation to the Atlas project.
+// UpdateInvitationByID updates one invitation to the Ops Manager project.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/project-update-one-invitation-by-id/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation-by-id/
 func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if invitation.GroupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
@@ -131,9 +133,9 @@ func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, invitation
 	return s.updateInvitation(ctx, invitation)
 }
 
-// DeleteInvitation deletes one unaccepted invitation to the specified Atlas project. You can't delete an invitation that a user has accepted.
+// DeleteInvitation deletes one unaccepted invitation to the specified Ops Manager project. You can't delete an invitation that a user has accepted.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/project-delete-invitation/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/delete-one-invitation/
 func (s *ProjectsServiceOp) DeleteInvitation(ctx context.Context, groupID, invitationID string) (*Response, error) {
 	if groupID == "" {
 		return nil, atlas.NewArgError("groupID", "must be set")

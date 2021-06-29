@@ -35,7 +35,7 @@ func TestProjects_Invitations(t *testing.T) {
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "1",
+			   "groupId": "5c8100bcf2a30b12ff88258f",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
@@ -45,7 +45,7 @@ func TestProjects_Invitations(t *testing.T) {
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "1",
+			   "groupId": "5c8100bcf2a30b12ff88258f",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
@@ -99,7 +99,7 @@ func TestProjects_Invitation(t *testing.T) {
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "1",
+			   "groupId": "5c8100bcf2a30b12ff88258f",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
@@ -140,7 +140,7 @@ func TestProjects_InviteUser(t *testing.T) {
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "1",
+			   "groupId": "5c8100bcf2a30b12ff88258f",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
@@ -191,7 +191,7 @@ func TestProjects_UpdateInvitation(t *testing.T) {
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "1",
+			   "groupId": "5c8100bcf2a30b12ff88258f",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
@@ -242,7 +242,7 @@ func TestProjects_UpdateInvitationByID(t *testing.T) {
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "1",
+			   "groupId": "5c8100bcf2a30b12ff88258f",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
