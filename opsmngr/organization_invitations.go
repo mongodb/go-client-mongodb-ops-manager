@@ -10,7 +10,7 @@ import (
 
 const invitationBasePath = orgsBasePath + "/%s/invites"
 
-// Invitations gets all unaccepted invitations to the specified Atlas organization.
+// Invitations gets all unaccepted invitations to the specified Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/get-all-invitations/
 func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, opts *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error) {
@@ -38,7 +38,7 @@ func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, 
 	return root, resp, nil
 }
 
-// Invitation gets details for one unaccepted invitation to the specified Atlas organization.
+// Invitation gets details for one unaccepted invitation to the specified Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/get-one-invitation/
 func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitationID string) (*atlas.Invitation, *Response, error) {
@@ -67,7 +67,7 @@ func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitati
 	return root, resp, nil
 }
 
-// InviteUser invites one user to the Atlas organization that you specify.
+// InviteUser invites one user to the Ops Manager organization that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/create-one-invitation/
 func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
@@ -91,7 +91,7 @@ func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, invitation *atl
 	return root, resp, nil
 }
 
-// UpdateInvitation updates one pending invitation to the Atlas organization that you specify.
+// UpdateInvitation updates one pending invitation to the Ops Manager organization that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation/
 func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
@@ -102,7 +102,7 @@ func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, invitatio
 	return s.updateInvitation(ctx, invitation)
 }
 
-// UpdateInvitationByID updates one invitation to the Atlas organization.
+// UpdateInvitationByID updates one invitation to the Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation-by-id/
 func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
@@ -119,7 +119,7 @@ func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, invit
 	return s.updateInvitation(ctx, invitation)
 }
 
-// DeleteInvitation deletes one unaccepted invitation to the specified Atlas organization. You can't delete an invitation that a user has accepted.
+// DeleteInvitation deletes one unaccepted invitation to the specified Ops Manager organization. You can't delete an invitation that a user has accepted.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/delete-one-invitation/
 func (s *OrganizationsServiceOp) DeleteInvitation(ctx context.Context, orgID, invitationID string) (*Response, error) {
