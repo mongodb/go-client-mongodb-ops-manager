@@ -12,7 +12,7 @@ const invitationBasePath = orgsBasePath + "/%s/invites"
 
 // Invitations gets all unaccepted invitations to the specified Atlas organization.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/organization-get-invitations/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/get-all-invitations/
 func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, opts *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -40,7 +40,7 @@ func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, 
 
 // Invitation gets details for one unaccepted invitation to the specified Atlas organization.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/organization-get-one-invitation/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/get-one-invitation/
 func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitationID string) (*atlas.Invitation, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -69,7 +69,7 @@ func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitati
 
 // InviteUser invites one user to the Atlas organization that you specify.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/organization-create-one-invitation/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/create-one-invitation/
 func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if invitation.OrgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -93,7 +93,7 @@ func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, invitation *atl
 
 // UpdateInvitation updates one pending invitation to the Atlas organization that you specify.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/organization-update-one-invitation/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation/
 func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if invitation.OrgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -104,7 +104,7 @@ func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, invitatio
 
 // UpdateInvitationByID updates one invitation to the Atlas organization.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/organization-update-one-invitation-by-id/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation-by-id/
 func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if invitation.OrgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
@@ -121,7 +121,7 @@ func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, invit
 
 // DeleteInvitation deletes one unaccepted invitation to the specified Atlas organization. You can't delete an invitation that a user has accepted.
 //
-// See more: https://docs.atlas.mongodb.com/reference/api/organization-delete-invitation/
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/delete-one-invitation/
 func (s *OrganizationsServiceOp) DeleteInvitation(ctx context.Context, orgID, invitationID string) (*Response, error) {
 	if orgID == "" {
 		return nil, atlas.NewArgError("orgID", "must be set")
