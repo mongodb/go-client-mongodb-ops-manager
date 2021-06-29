@@ -42,7 +42,6 @@ type OrganizationsService interface {
 	UpdateInvitation(context.Context, *atlas.Invitation) (*atlas.Invitation, *Response, error)
 	UpdateInvitationByID(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
 	DeleteInvitation(context.Context, string, string) (*Response, error)
-
 }
 
 // OrganizationsServiceOp provides an implementation of the OrganizationsService interface.

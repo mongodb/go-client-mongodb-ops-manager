@@ -16,11 +16,11 @@ package opsmngr
 
 import (
 	"fmt"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 	"net/http"
 	"testing"
 
 	"github.com/go-test/deep"
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const invitationID = "1"

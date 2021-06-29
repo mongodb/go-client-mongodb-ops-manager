@@ -3,10 +3,10 @@ package opsmngr
 import (
 	"context"
 	"fmt"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 	"net/http"
-)
 
+	atlas "go.mongodb.org/atlas/mongodbatlas"
+)
 
 const invitationBasePath = orgsBasePath + "/%s/invites"
 
@@ -164,4 +164,3 @@ func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, invitatio
 
 	return root, resp, nil
 }
-
