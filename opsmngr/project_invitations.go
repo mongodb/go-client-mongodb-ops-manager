@@ -17,8 +17,9 @@ package opsmngr
 import (
 	"context"
 	"fmt"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 	"net/http"
+
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const projectInvitationBasePath = projectBasePath + "/%s/invites"
@@ -83,7 +84,7 @@ func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationI
 // InviteUser invites one user to the Atlas project that you specify.
 func (s *ProjectsServiceOp) InviteUser(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if invitation.GroupID == "" {
-		return nil, nil,atlas. NewArgError("groupID", "must be set")
+		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(projectInvitationBasePath, invitation.GroupID)
