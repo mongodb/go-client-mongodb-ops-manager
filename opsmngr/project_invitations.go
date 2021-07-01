@@ -84,12 +84,12 @@ func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationI
 // InviteUser invites one user to the Ops Manager project that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/create-one-invitation/
-func (s *ProjectsServiceOp) InviteUser(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	if invitation.GroupID == "" {
+func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
 
-	path := fmt.Sprintf(projectInvitationBasePath, invitation.GroupID)
+	path := fmt.Sprintf(projectInvitationBasePath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, invitation)
 	if err != nil {
