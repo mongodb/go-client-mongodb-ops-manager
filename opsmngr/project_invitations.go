@@ -108,19 +108,19 @@ func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invi
 // UpdateInvitation updates one pending invitation to the Ops Manager project that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation/
-func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	if invitation.GroupID == "" {
+func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, groupID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
 
-	return s.updateInvitation(ctx, invitation)
+	return s.updateInvitation(ctx, groupID, "", invitation)
 }
 
 // UpdateInvitationByID updates one invitation to the Ops Manager project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation-by-id/
-func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	if invitation.GroupID == "" {
+func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, groupID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
 
@@ -128,9 +128,7 @@ func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, invitation
 		return nil, nil, atlas.NewArgError("invitationID", "must be set")
 	}
 
-	invitation.ID = invitationID
-
-	return s.updateInvitation(ctx, invitation)
+	return s.updateInvitation(ctx, groupID, invitationID, invitation)
 }
 
 // DeleteInvitation deletes one unaccepted invitation to the specified Ops Manager project. You can't delete an invitation that a user has accepted.
@@ -158,10 +156,10 @@ func (s *ProjectsServiceOp) DeleteInvitation(ctx context.Context, groupID, invit
 	return resp, err
 }
 
-func (s *ProjectsServiceOp) updateInvitation(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	path := fmt.Sprintf(projectInvitationBasePath, invitation.GroupID)
+func (s *ProjectsServiceOp) updateInvitation(ctx context.Context, groupID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	path := fmt.Sprintf(projectInvitationBasePath, groupID)
 
-	if invitation.ID != "" {
+	if invitationID != "" {
 		path = fmt.Sprintf("%s/%s", path, invitation.ID)
 	}
 
