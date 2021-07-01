@@ -161,7 +161,7 @@ func TestOrganizations_InviteUser(t *testing.T) {
 		Roles:           []string{"ORG_OWNER"},
 	}
 
-	invitation, _, err := client.Organizations.InviteUser(ctx, body)
+	invitation, _, err := client.Organizations.InviteUser(ctx, orgID, body)
 	if err != nil {
 		t.Fatalf("Organizations.InviteUser returned error: %v", err)
 	}
@@ -212,7 +212,7 @@ func TestOrganizations_UpdateInvitation(t *testing.T) {
 		Roles:           []string{"ORG_OWNER"},
 	}
 
-	invitation, _, err := client.Organizations.UpdateInvitation(ctx, body)
+	invitation, _, err := client.Organizations.UpdateInvitation(ctx, orgID, body)
 	if err != nil {
 		t.Fatalf("Organizations.UpdateInvitation returned error: %v", err)
 	}
@@ -264,7 +264,7 @@ func TestOrganizations_UpdateInvitationByID(t *testing.T) {
 		Roles:           []string{"ORG_OWNER"},
 	}
 
-	invitation, _, err := client.Organizations.UpdateInvitationByID(ctx, invitationID, body)
+	invitation, _, err := client.Organizations.UpdateInvitationByID(ctx, orgID, invitationID, body)
 	if err != nil {
 		t.Fatalf("Organizations.UpdateInvitationByID returned error: %v", err)
 	}

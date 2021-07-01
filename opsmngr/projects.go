@@ -41,9 +41,9 @@ type ProjectsService interface {
 	GetTeams(context.Context, string, *atlas.ListOptions) (*atlas.TeamsAssigned, *Response, error)
 	Invitations(context.Context, string, *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error)
 	Invitation(context.Context, string, string) (*atlas.Invitation, *Response, error)
-	InviteUser(context.Context, *atlas.Invitation) (*atlas.Invitation, *Response, error)
-	UpdateInvitation(context.Context, *atlas.Invitation) (*atlas.Invitation, *Response, error)
-	UpdateInvitationByID(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
+	InviteUser(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
+	UpdateInvitation(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
+	UpdateInvitationByID(context.Context, string, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
 	DeleteInvitation(context.Context, string, string) (*Response, error)
 }
 

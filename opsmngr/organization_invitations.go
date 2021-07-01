@@ -70,12 +70,12 @@ func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitati
 // InviteUser invites one user to the Ops Manager organization that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/create-one-invitation/
-func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	if invitation.OrgID == "" {
+func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, orgID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
 
-	path := fmt.Sprintf(invitationBasePath, invitation.OrgID)
+	path := fmt.Sprintf(invitationBasePath, orgID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, invitation)
 	if err != nil {
@@ -94,19 +94,19 @@ func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, invitation *atl
 // UpdateInvitation updates one pending invitation to the Ops Manager organization that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation/
-func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	if invitation.OrgID == "" {
+func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, orgID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
 
-	return s.updateInvitation(ctx, invitation)
+	return s.updateInvitation(ctx, orgID, "", invitation)
 }
 
 // UpdateInvitationByID updates one invitation to the Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation-by-id/
-func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	if invitation.OrgID == "" {
+func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, orgID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
 
@@ -114,9 +114,7 @@ func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, invit
 		return nil, nil, atlas.NewArgError("invitationID", "must be set")
 	}
 
-	invitation.ID = invitationID
-
-	return s.updateInvitation(ctx, invitation)
+	return s.updateInvitation(ctx, orgID, invitationID, invitation)
 }
 
 // DeleteInvitation deletes one unaccepted invitation to the specified Ops Manager organization. You can't delete an invitation that a user has accepted.
@@ -144,10 +142,10 @@ func (s *OrganizationsServiceOp) DeleteInvitation(ctx context.Context, orgID, in
 	return resp, err
 }
 
-func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	path := fmt.Sprintf(invitationBasePath, invitation.OrgID)
+func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, orgID, invitatioID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	path := fmt.Sprintf(invitationBasePath, orgID)
 
-	if invitation.ID != "" {
+	if invitatioID != "" {
 		path = fmt.Sprintf("%s/%s", path, invitation.ID)
 	}
 
