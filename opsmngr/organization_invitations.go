@@ -70,12 +70,12 @@ func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitati
 // InviteUser invites one user to the Ops Manager organization that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/create-one-invitation/
-func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
-	if invitation.OrgID == "" {
+func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, orgID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
 
-	path := fmt.Sprintf(invitationBasePath, invitation.OrgID)
+	path := fmt.Sprintf(invitationBasePath, orgID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, invitation)
 	if err != nil {
