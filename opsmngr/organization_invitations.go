@@ -142,11 +142,11 @@ func (s *OrganizationsServiceOp) DeleteInvitation(ctx context.Context, orgID, in
 	return resp, err
 }
 
-func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, orgID, invitatioID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, orgID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	path := fmt.Sprintf(invitationBasePath, orgID)
 
-	if invitatioID != "" {
-		path = fmt.Sprintf("%s/%s", path, invitation.ID)
+	if invitationID != "" {
+		path = fmt.Sprintf("%s/%s", path, invitationID)
 	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, invitation)
