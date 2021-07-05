@@ -160,7 +160,7 @@ func (s *ProjectsServiceOp) updateInvitation(ctx context.Context, groupID, invit
 	path := fmt.Sprintf(projectInvitationBasePath, groupID)
 
 	if invitationID != "" {
-		path = fmt.Sprintf("%s/%s", path, invitation.ID)
+		path = fmt.Sprintf("%s/%s", path, invitationID)
 	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, invitation)
