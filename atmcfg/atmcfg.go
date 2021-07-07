@@ -20,6 +20,8 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"strconv"
+	"strings"
 	"time"
 
 	"go.mongodb.org/ops-manager/opsmngr"
@@ -90,14 +92,29 @@ func Shutdown(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, true)
 }
 
-// ShutdownProcess disables a process given its process name and port.
-func ShutdownProcess(out *opsmngr.AutomationConfig, processName string, processPortNum int) {
-	setDisableProcessByProcessNameAndPort(out, processName, processPortNum, true)
+// ShutdownProcess disables processes. Processes are provided in the format hostname:port,hostname2:port2.
+func ShutdownProcess(out *opsmngr.AutomationConfig, processes []string) error {
+	for _, hostnameAndPort := range processes {
+		hostname, port, err := splitHostnameAndPort(hostnameAndPort)
+		if err != nil {
+			return err
+		}
+		setDisableProcessByProcessNameAndPort(out, hostname, port, true)
+	}
+
+	return nil
 }
 
-// StartupProcess enable a process given its process name and port.
-func StartupProcess(out *opsmngr.AutomationConfig, processName string, processPortNum int) {
-	setDisableProcessByProcessNameAndPort(out, processName, processPortNum, false)
+// StartupProcess disables processes. Processes are provided in the format hostname:port,hostname2:port2.
+func StartupProcess(out *opsmngr.AutomationConfig, processes []string) error {
+	for _, hostnameAndPort := range processes {
+		hostname, port, err := splitHostnameAndPort(hostnameAndPort)
+		if err != nil {
+			return err
+		}
+		setDisableProcessByProcessNameAndPort(out, hostname, port, false)
+	}
+	return nil
 }
 
 // Startup enables all processes of the given cluster name.
@@ -486,4 +503,20 @@ func reclaimByShardName(out *opsmngr.AutomationConfig, name, lastCompact string)
 		reclaimByReplicaSetName(out, s.ConfigServerReplica, lastCompact)
 		// compact doesn't run on mongoses
 	}
+}
+
+func splitHostnameAndPort(hostnameAndPort string) (string, int, error) {
+	hostnameAndPortSlice := strings.Split(hostnameAndPort, ":")
+
+	if len(hostnameAndPortSlice) == 1 {
+		return "", 0, fmt.Errorf("process must be in the following format hostname:port but got %s", hostnameAndPort)
+	}
+
+	hostname := hostnameAndPortSlice[0]
+	port, err := strconv.Atoi(hostnameAndPortSlice[1])
+	if err != nil {
+		return "", 0, err
+	}
+
+	return hostname, port, nil
 }

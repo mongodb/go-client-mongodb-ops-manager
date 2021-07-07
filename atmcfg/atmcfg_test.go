@@ -65,17 +65,29 @@ func TestStartup(t *testing.T) {
 func TestShutdownProcess(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, false)
-		ShutdownProcess(config, "host0", defaultMongoPort)
+		_ = ShutdownProcess(config, []string{"host0:27017"})
 		if !config.Processes[0].Disabled {
 			t.Errorf("ShutdownProcess\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
 		}
 	})
-	t.Run("sharded cluster", func(t *testing.T) {
+	t.Run("sharded cluster - one process", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, false)
-		ShutdownProcess(config, "host2", defaultMongoPort+1)
+		_ = ShutdownProcess(config, []string{"host2:27018"})
 
 		if config.Processes[0].Disabled {
 			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+		}
+
+		if !config.Processes[1].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, true)
+		}
+	})
+	t.Run("sharded cluster - two processes", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		_ = ShutdownProcess(config, []string{"host2:27018", "host0:27017"})
+
+		if !config.Processes[0].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
 		}
 
 		if !config.Processes[1].Disabled {
@@ -87,18 +99,28 @@ func TestShutdownProcess(t *testing.T) {
 func TestStartupProcess(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, true)
-
-		StartupProcess(config, "host0", defaultMongoPort)
+		_ = StartupProcess(config, []string{"host0:27017"})
 		if config.Processes[0].Disabled {
 			t.Errorf("StartupProcess\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
 		}
 	})
-	t.Run("sharded cluster", func(t *testing.T) {
+	t.Run("sharded cluster - one process", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
-
-		StartupProcess(config, "host2", defaultMongoPort+1)
+		_ = StartupProcess(config, []string{"host2:27018"})
 		if !config.Processes[0].Disabled {
 			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+		}
+
+		if config.Processes[1].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, false)
+		}
+	})
+
+	t.Run("sharded cluster - two processes", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		_ = StartupProcess(config, []string{"host0:27017", "host2:27018"})
+		if config.Processes[0].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
 		}
 
 		if config.Processes[1].Disabled {
