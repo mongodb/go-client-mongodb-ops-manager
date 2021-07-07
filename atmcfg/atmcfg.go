@@ -27,12 +27,16 @@ import (
 )
 
 func setDisabledByClusterName(out *opsmngr.AutomationConfig, name string, disabled bool) {
+	newDeploymentAuthMechanisms(out)
+	setDisabledByReplicaSetName(out, name, disabled)
+	setDisabledByShardName(out, name, disabled)
+}
+
+func newDeploymentAuthMechanisms(out *opsmngr.AutomationConfig) {
 	// This value may not be present and is mandatory
 	if out.Auth.DeploymentAuthMechanisms == nil {
 		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
 	}
-	setDisabledByReplicaSetName(out, name, disabled)
-	setDisabledByShardName(out, name, disabled)
 }
 
 func setDisabledByReplicaSetName(out *opsmngr.AutomationConfig, name string, disabled bool) {
@@ -72,9 +76,28 @@ func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled
 	}
 }
 
+func setDisableProcessByProcessNameAndPort(out *opsmngr.AutomationConfig, processName string, processPortNum int, disabled bool) {
+	newDeploymentAuthMechanisms(out)
+	for k, p := range out.Processes {
+		if p.Hostname == processName && p.Args26.NET.Port == processPortNum {
+			out.Processes[k].Disabled = disabled
+		}
+	}
+}
+
 // Shutdown disables all processes of the given cluster name.
 func Shutdown(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, true)
+}
+
+// ShutdownProcess disables a process given its process name and port
+func ShutdownProcess(out *opsmngr.AutomationConfig, processName string, processPortNum int) {
+	setDisableProcessByProcessNameAndPort(out, processName, processPortNum, true)
+}
+
+// StartupProcess enable a process given its process name and port
+func StartupProcess(out *opsmngr.AutomationConfig, processName string, processPortNum int) {
+	setDisableProcessByProcessNameAndPort(out, processName, processPortNum, false)
 }
 
 // Startup enables all processes of the given cluster name.

@@ -43,11 +43,11 @@ func TestShutdown(t *testing.T) {
 
 func TestStartup(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
-		cloud := automationConfigWithOneReplicaSet(clusterName, true)
+		config := automationConfigWithOneReplicaSet(clusterName, true)
 
-		Startup(cloud, clusterName)
-		if cloud.Processes[0].Disabled {
-			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", cloud.Processes[0].Disabled, false)
+		Startup(config, clusterName)
+		if config.Processes[0].Disabled {
+			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
@@ -58,6 +58,51 @@ func TestStartup(t *testing.T) {
 			if config.Processes[i].Disabled {
 				t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, false)
 			}
+		}
+	})
+}
+
+func TestShutdownProcess(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, false)
+		ShutdownProcess(config, "host0", defaultMongoPort)
+		if !config.Processes[0].Disabled {
+			t.Errorf("ShutdownProcess\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		ShutdownProcess(config, "host2", defaultMongoPort+1)
+
+		if config.Processes[0].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+		}
+
+		if !config.Processes[1].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, true)
+		}
+	})
+}
+
+func TestStartupProcess(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, true)
+
+		StartupProcess(config, "host0", defaultMongoPort)
+		if config.Processes[0].Disabled {
+			t.Errorf("StartupProcess\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+		}
+	})
+	t.Run("sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		StartupProcess(config, "host2", defaultMongoPort+1)
+		if !config.Processes[0].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+		}
+
+		if config.Processes[1].Disabled {
+			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, false)
 		}
 	})
 }
