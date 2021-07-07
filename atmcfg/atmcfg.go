@@ -90,12 +90,12 @@ func Shutdown(out *opsmngr.AutomationConfig, name string) {
 	setDisabledByClusterName(out, name, true)
 }
 
-// ShutdownProcess disables a process given its process name and port
+// ShutdownProcess disables a process given its process name and port.
 func ShutdownProcess(out *opsmngr.AutomationConfig, processName string, processPortNum int) {
 	setDisableProcessByProcessNameAndPort(out, processName, processPortNum, true)
 }
 
-// StartupProcess enable a process given its process name and port
+// StartupProcess enable a process given its process name and port.
 func StartupProcess(out *opsmngr.AutomationConfig, processName string, processPortNum int) {
 	setDisableProcessByProcessNameAndPort(out, processName, processPortNum, false)
 }
