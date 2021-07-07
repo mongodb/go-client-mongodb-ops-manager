@@ -105,7 +105,7 @@ func ShutdownProcess(out *opsmngr.AutomationConfig, processes []string) error {
 	return nil
 }
 
-// StartupProcess disables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+// StartupProcess enables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
 func StartupProcess(out *opsmngr.AutomationConfig, processes []string) error {
 	for _, hostnameAndPort := range processes {
 		hostname, port, err := splitHostnameAndPort(hostnameAndPort)
