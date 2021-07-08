@@ -20,7 +20,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"strings"
 	"time"
 
 	"go.mongodb.org/ops-manager/opsmngr"
@@ -97,17 +96,6 @@ func setDisable(process *opsmngr.Process, processesMap map[string]bool, disabled
 	}
 }
 
-func setDisableProcessByProcessNameAndPort(out *opsmngr.AutomationConfig, clusterName string, processesMap map[string]bool, disabled bool) {
-	newDeploymentAuthMechanisms(out)
-	for k, p := range out.Processes {
-		key := fmt.Sprintf("%s:%d", p.Hostname, p.Args26.NET.Port)
-		if _, ok := processesMap[key]; ok && strings.Contains(out.Processes[k].Name, clusterName) {
-			out.Processes[k].Disabled = disabled
-			processesMap[key] = true
-		}
-	}
-}
-
 // Shutdown disables all processes of the given cluster name.
 func Shutdown(out *opsmngr.AutomationConfig, clusterName string) {
 	setDisabledByClusterName(out, clusterName, true)
@@ -168,7 +156,9 @@ func startupProcess(out *opsmngr.AutomationConfig, clusterName string, processes
 		processesMap[hostnameAndPort] = false
 	}
 
-	setDisableProcessByProcessNameAndPort(out, clusterName, processesMap, false)
+	newDeploymentAuthMechanisms(out)
+	setDisabledByReplicaSetNameAndProcesses(out, clusterName, processesMap, false)
+	setDisabledByShardNameAndProcesses(out, clusterName, processesMap, false)
 
 	return newProcessNotFoundError(clusterName, processesMap)
 }
