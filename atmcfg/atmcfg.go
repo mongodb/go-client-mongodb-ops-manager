@@ -85,14 +85,15 @@ func setDisabledByShardNameAndProcesses(out *opsmngr.AutomationConfig, name stri
 }
 
 func setDisable(process *opsmngr.Process, processesMap map[string]bool, disabled bool) {
-	if len(processesMap) > 0 {
-		key := fmt.Sprintf("%s:%d", process.Hostname, process.Args26.NET.Port)
-		if _, ok := processesMap[key]; ok {
-			process.Disabled = disabled
-			processesMap[key] = true
-		}
-	} else {
+	if len(processesMap) == 0 {
 		process.Disabled = disabled
+		return
+	}
+
+	key := fmt.Sprintf("%s:%d", process.Hostname, process.Args26.NET.Port)
+	if _, ok := processesMap[key]; ok {
+		process.Disabled = disabled
+		processesMap[key] = true
 	}
 }
 
