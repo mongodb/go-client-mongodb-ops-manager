@@ -199,7 +199,7 @@ func TestStartupClusterAndProcesses(t *testing.T) {
 
 		err := StartupProcessesByClusterName(config, clusterName, []string{"hostTest:21021"})
 
-		expected := errors.New(fmt.Sprintf(`process not found in "%v": %s`, clusterName, "[hostTest:21021]"))
+		expected := fmt.Sprintf(`process not found in "%v": %s`, clusterName, "[hostTest:21021]")
 		var e *ProcessNotFoundError
 
 		if !errors.As(err, &e) {
