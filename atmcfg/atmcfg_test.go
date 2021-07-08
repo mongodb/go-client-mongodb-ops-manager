@@ -15,6 +15,7 @@
 package atmcfg
 
 import (
+	"fmt"
 	"testing"
 
 	"go.mongodb.org/ops-manager/opsmngr"
@@ -62,69 +63,126 @@ func TestStartup(t *testing.T) {
 	})
 }
 
-func TestShutdownProcess(t *testing.T) {
+func TestShutdownClusterAndProcesses(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, false)
-		_ = ShutdownProcess(config, []string{"host0:27017"})
+		_ = ShutdownClusterAndProcesses(config, clusterName, []string{"host0:27017"})
 		if !config.Processes[0].Disabled {
 			t.Errorf("ShutdownProcess\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
 		}
 	})
 	t.Run("sharded cluster - one process", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, false)
-		_ = ShutdownProcess(config, []string{"host2:27018"})
+		_ = ShutdownClusterAndProcesses(config, clusterName, []string{"host2:27018"})
 
 		if config.Processes[0].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+			t.Errorf("TestShutdownClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
 		}
 
 		if !config.Processes[1].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, true)
+			t.Errorf("TestShutdownClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, true)
 		}
 	})
 	t.Run("sharded cluster - two processes", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, false)
-		_ = ShutdownProcess(config, []string{"host2:27018", "host0:27017"})
+		_ = ShutdownClusterAndProcesses(config, clusterName, []string{"host2:27018", "host0:27017"})
 
 		if !config.Processes[0].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+			t.Errorf("TestShutdownClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
 		}
 
 		if !config.Processes[1].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, true)
+			t.Errorf("TestShutdownClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, true)
+		}
+	})
+	t.Run("shutdown entire sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		_ = ShutdownClusterAndProcesses(config, clusterName, nil)
+		for i := range config.Processes {
+			if !config.Processes[i].Disabled {
+				t.Errorf("TestShutdownClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, true)
+			}
+		}
+	})
+
+	t.Run("provide a process that does not exist", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		err := ShutdownClusterAndProcesses(config, clusterName, []string{"hostTest:21021"})
+		expected := fmt.Sprintf("Process %s was not found for Cluster %s.\n", "hostTest:21021", clusterName)
+
+		if err == nil {
+			t.Errorf("TestShutdownClusterAndProcesses\n Expected an error but got nil")
+		} else if err.Error() != expected {
+			t.Errorf("TestShutdownClusterAndProcesses\n got=%#v\nwant=%#v\n", err.Error(), expected)
+		}
+
+		for i := range config.Processes {
+			if !config.Processes[i].Disabled {
+				t.Errorf("TestShutdownClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, false)
+			}
 		}
 	})
 }
 
-func TestStartupProcess(t *testing.T) {
+func TestStartupClusterAndProcesses(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, true)
-		_ = StartupProcess(config, []string{"host0:27017"})
+		_ = StartupClusterAndProcesses(config, clusterName, []string{"host0:27017"})
 		if config.Processes[0].Disabled {
-			t.Errorf("StartupProcess\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+			t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
 		}
 	})
 	t.Run("sharded cluster - one process", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
-		_ = StartupProcess(config, []string{"host2:27018"})
+		_ = StartupClusterAndProcesses(config, clusterName, []string{"host2:27018"})
 		if !config.Processes[0].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+			t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
 		}
 
 		if config.Processes[1].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, false)
+			t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, false)
 		}
 	})
 
 	t.Run("sharded cluster - two processes", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
-		_ = StartupProcess(config, []string{"host0:27017", "host2:27018"})
+		_ = StartupClusterAndProcesses(config, clusterName, []string{"host0:27017", "host2:27018"})
 		if config.Processes[0].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
+			t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, false)
 		}
 
 		if config.Processes[1].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, false)
+			t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[1].Disabled, false)
+		}
+	})
+	t.Run("startup entire sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		_ = StartupClusterAndProcesses(config, clusterName, nil)
+		for i := range config.Processes {
+			if config.Processes[i].Disabled {
+				t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, false)
+			}
+		}
+	})
+	t.Run("provide a process that does not exist", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		err := StartupClusterAndProcesses(config, clusterName, []string{"hostTest:21021"})
+		expected := fmt.Sprintf("Process %s was not found for Cluster %s.\n", "hostTest:21021", clusterName)
+
+		if err == nil {
+			t.Errorf("TestStartupClusterAndProcesses\n Expected an error but got nil")
+		} else if err.Error() != expected {
+			t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", err.Error(), expected)
+		}
+
+		for i := range config.Processes {
+			if !config.Processes[i].Disabled {
+				t.Errorf("TestStartupClusterAndProcesses\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, false)
+			}
 		}
 	})
 }

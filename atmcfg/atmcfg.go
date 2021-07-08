@@ -20,7 +20,6 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -78,43 +77,78 @@ func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled
 	}
 }
 
-func setDisableProcessByProcessNameAndPort(out *opsmngr.AutomationConfig, processName string, processPortNum int, disabled bool) {
+func setDisableProcessByProcessNameAndPort(out *opsmngr.AutomationConfig, clusterName string, processesMap map[string]bool, disabled bool) {
 	newDeploymentAuthMechanisms(out)
 	for k, p := range out.Processes {
-		if p.Hostname == processName && p.Args26.NET.Port == processPortNum {
+		key := fmt.Sprintf("%s:%d", p.Hostname, p.Args26.NET.Port)
+		if _, ok := processesMap[key]; ok && strings.Contains(out.Processes[k].Name, clusterName) {
 			out.Processes[k].Disabled = disabled
+			processesMap[key] = true
 		}
 	}
 }
 
 // Shutdown disables all processes of the given cluster name.
-func Shutdown(out *opsmngr.AutomationConfig, name string) {
-	setDisabledByClusterName(out, name, true)
+func Shutdown(out *opsmngr.AutomationConfig, clusterName string) {
+	setDisabledByClusterName(out, clusterName, true)
 }
 
-// ShutdownProcess disables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
-func ShutdownProcess(out *opsmngr.AutomationConfig, processes []string) error {
+// ShutdownClusterAndProcesses disables the entire cluster or its processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func ShutdownClusterAndProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	if len(processes) == 0 {
+		Shutdown(out, clusterName)
+		return nil
+	}
+	return shutdownProcesses(out, clusterName, processes)
+}
+
+// shutdownProcesses disables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func shutdownProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	processesMap := map[string]bool{}
 	for _, hostnameAndPort := range processes {
-		hostname, port, err := splitHostnameAndPort(hostnameAndPort)
-		if err != nil {
-			return err
+		processesMap[hostnameAndPort] = false
+	}
+
+	setDisableProcessByProcessNameAndPort(out, clusterName, processesMap, true)
+
+	return newProcessNotFoundError(clusterName, processesMap)
+}
+
+// newProcessNotFoundError returns an error if a process was not found.
+func newProcessNotFoundError(clusterName string, processesMap map[string]bool) error {
+	err := ""
+	for k, v := range processesMap {
+		if !v {
+			err += fmt.Sprintf("Process %s was not found for Cluster %s.\n", k, clusterName)
 		}
-		setDisableProcessByProcessNameAndPort(out, hostname, port, true)
+	}
+
+	if err != "" {
+		return errors.New(err)
 	}
 
 	return nil
+}
+
+// StartupClusterAndProcesses enables the entire cluster or its processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func StartupClusterAndProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	if len(processes) == 0 {
+		Startup(out, clusterName)
+		return nil
+	}
+	return startupProcess(out, clusterName, processes)
 }
 
 // StartupProcess enables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
-func StartupProcess(out *opsmngr.AutomationConfig, processes []string) error {
+func startupProcess(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	processesMap := map[string]bool{}
 	for _, hostnameAndPort := range processes {
-		hostname, port, err := splitHostnameAndPort(hostnameAndPort)
-		if err != nil {
-			return err
-		}
-		setDisableProcessByProcessNameAndPort(out, hostname, port, false)
+		processesMap[hostnameAndPort] = false
 	}
-	return nil
+
+	setDisableProcessByProcessNameAndPort(out, clusterName, processesMap, false)
+
+	return newProcessNotFoundError(clusterName, processesMap)
 }
 
 // Startup enables all processes of the given cluster name.
@@ -503,20 +537,4 @@ func reclaimByShardName(out *opsmngr.AutomationConfig, name, lastCompact string)
 		reclaimByReplicaSetName(out, s.ConfigServerReplica, lastCompact)
 		// compact doesn't run on mongoses
 	}
-}
-
-func splitHostnameAndPort(hostnameAndPort string) (hostname string, port int, err error) {
-	hostnameAndPortSlice := strings.Split(hostnameAndPort, ":")
-
-	if len(hostnameAndPortSlice) == 1 {
-		return "", 0, fmt.Errorf("process must be in the following format hostname:port but got %s", hostnameAndPort)
-	}
-
-	hostname = hostnameAndPortSlice[0]
-	port, err = strconv.Atoi(hostnameAndPortSlice[1])
-	if err != nil {
-		return
-	}
-
-	return
 }
