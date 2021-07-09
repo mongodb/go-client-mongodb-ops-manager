@@ -118,11 +118,15 @@ func shutdownProcesses(out *opsmngr.AutomationConfig, clusterName string, proces
 		processesMap[hostnameAndPort] = false
 	}
 
-	newDeploymentAuthMechanisms(out)
-	setDisabledByReplicaSetNameAndProcesses(out, clusterName, processesMap, true)
-	setDisabledByShardNameAndProcesses(out, clusterName, processesMap, true)
+	setDisableByNameAndProcesses(out, clusterName, processesMap, true)
 
 	return newProcessNotFoundError(clusterName, processesMap)
+}
+
+func setDisableByNameAndProcesses(out *opsmngr.AutomationConfig, clusterName string, processesMap map[string]bool, disabled bool) {
+	newDeploymentAuthMechanisms(out)
+	setDisabledByReplicaSetNameAndProcesses(out, clusterName, processesMap, disabled)
+	setDisabledByShardNameAndProcesses(out, clusterName, processesMap, disabled)
 }
 
 // newProcessNotFoundError returns an error if a process was not found.
@@ -163,9 +167,7 @@ func startupProcess(out *opsmngr.AutomationConfig, clusterName string, processes
 		processesMap[hostnameAndPort] = false
 	}
 
-	newDeploymentAuthMechanisms(out)
-	setDisabledByReplicaSetNameAndProcesses(out, clusterName, processesMap, false)
-	setDisabledByShardNameAndProcesses(out, clusterName, processesMap, false)
+	setDisableByNameAndProcesses(out, clusterName, processesMap, false)
 
 	return newProcessNotFoundError(clusterName, processesMap)
 }
