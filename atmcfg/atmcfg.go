@@ -27,15 +27,27 @@ import (
 )
 
 func setDisabledByClusterName(out *opsmngr.AutomationConfig, name string, disabled bool) {
-	// This value may not be present and is mandatory
-	if out.Auth.DeploymentAuthMechanisms == nil {
-		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
-	}
+	newDeploymentAuthMechanisms(out)
 	setDisabledByReplicaSetName(out, name, disabled)
 	setDisabledByShardName(out, name, disabled)
 }
 
+func newDeploymentAuthMechanisms(out *opsmngr.AutomationConfig) {
+	// This value may not be present and is mandatory
+	if out.Auth.DeploymentAuthMechanisms == nil {
+		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
+	}
+}
+
 func setDisabledByReplicaSetName(out *opsmngr.AutomationConfig, name string, disabled bool) {
+	setDisabledByReplicaSetNameAndProcesses(out, name, nil, disabled)
+}
+
+func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled bool) {
+	setDisabledByShardNameAndProcesses(out, name, nil, disabled)
+}
+
+func setDisabledByReplicaSetNameAndProcesses(out *opsmngr.AutomationConfig, name string, processesMap map[string]bool, disabled bool) {
 	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
 		return rs.ID == name
 	})
@@ -44,14 +56,14 @@ func setDisabledByReplicaSetName(out *opsmngr.AutomationConfig, name string, dis
 		for _, m := range rs.Members {
 			for k, p := range out.Processes {
 				if p.Name == m.Host {
-					out.Processes[k].Disabled = disabled
+					setDisable(out.Processes[k], processesMap, disabled)
 				}
 			}
 		}
 	}
 }
 
-func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled bool) {
+func setDisabledByShardNameAndProcesses(out *opsmngr.AutomationConfig, name string, processesMap map[string]bool, disabled bool) {
 	i, found := search.ShardingConfig(out.Sharding, func(s *opsmngr.ShardingConfig) bool {
 		return s.Name == name
 	})
@@ -59,22 +71,102 @@ func setDisabledByShardName(out *opsmngr.AutomationConfig, name string, disabled
 		s := out.Sharding[i]
 		// disable shards
 		for _, rs := range s.Shards {
-			setDisabledByReplicaSetName(out, rs.ID, disabled)
+			setDisabledByReplicaSetNameAndProcesses(out, rs.ID, processesMap, disabled)
 		}
 		// disable config rs
-		setDisabledByReplicaSetName(out, s.ConfigServerReplica, disabled)
+		setDisabledByReplicaSetNameAndProcesses(out, s.ConfigServerReplica, processesMap, disabled)
 		// disable mongos
 		for i := range out.Processes {
 			if out.Processes[i].Cluster == name {
-				out.Processes[i].Disabled = disabled
+				setDisable(out.Processes[i], processesMap, disabled)
 			}
 		}
 	}
 }
 
+func setDisable(process *opsmngr.Process, processesMap map[string]bool, disabled bool) {
+	if len(processesMap) == 0 {
+		process.Disabled = disabled
+		return
+	}
+
+	key := fmt.Sprintf("%s:%d", process.Hostname, process.Args26.NET.Port)
+	if _, ok := processesMap[key]; ok {
+		process.Disabled = disabled
+		processesMap[key] = true
+	}
+}
+
 // Shutdown disables all processes of the given cluster name.
-func Shutdown(out *opsmngr.AutomationConfig, name string) {
-	setDisabledByClusterName(out, name, true)
+func Shutdown(out *opsmngr.AutomationConfig, clusterName string) {
+	setDisabledByClusterName(out, clusterName, true)
+}
+
+// ShutdownProcessesByClusterName disables the entire cluster or its processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func ShutdownProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	if len(processes) == 0 {
+		Shutdown(out, clusterName)
+		return nil
+	}
+	return shutdownProcesses(out, clusterName, processes)
+}
+
+// shutdownProcesses disables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func shutdownProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	processesMap := map[string]bool{}
+	for _, hostnameAndPort := range processes {
+		processesMap[hostnameAndPort] = false
+	}
+
+	setDisableByNameAndProcesses(out, clusterName, processesMap, true)
+
+	return newProcessNotFoundError(clusterName, processesMap)
+}
+
+func setDisableByNameAndProcesses(out *opsmngr.AutomationConfig, clusterName string, processesMap map[string]bool, disabled bool) {
+	newDeploymentAuthMechanisms(out)
+	setDisabledByReplicaSetNameAndProcesses(out, clusterName, processesMap, disabled)
+	setDisabledByShardNameAndProcesses(out, clusterName, processesMap, disabled)
+}
+
+// newProcessNotFoundError returns an error if a process was not found.
+func newProcessNotFoundError(clusterName string, processesMap map[string]bool) error {
+	var processesNotFound []string
+	for k, v := range processesMap {
+		if !v {
+			processesNotFound = append(processesNotFound, k)
+		}
+	}
+
+	if len(processesNotFound) > 0 {
+		return fmt.Errorf("%w in %s: %v", ErrProcessNotFound, clusterName, processesNotFound)
+	}
+
+	return nil
+}
+
+// ErrProcessNotFound means the process was not found for the given cluster name.
+var ErrProcessNotFound = errors.New("process not found")
+
+// StartupProcessesByClusterName enables the entire cluster or its processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func StartupProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	if len(processes) == 0 {
+		Startup(out, clusterName)
+		return nil
+	}
+	return startupProcess(out, clusterName, processes)
+}
+
+// StartupProcess enables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func startupProcess(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	processesMap := map[string]bool{}
+	for _, hostnameAndPort := range processes {
+		processesMap[hostnameAndPort] = false
+	}
+
+	setDisableByNameAndProcesses(out, clusterName, processesMap, false)
+
+	return newProcessNotFoundError(clusterName, processesMap)
 }
 
 // Startup enables all processes of the given cluster name.

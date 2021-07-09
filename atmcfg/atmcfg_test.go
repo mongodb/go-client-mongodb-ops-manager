@@ -15,6 +15,7 @@
 package atmcfg
 
 import (
+	"errors"
 	"testing"
 
 	"go.mongodb.org/ops-manager/opsmngr"
@@ -27,7 +28,7 @@ func TestShutdown(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, false)
 		Shutdown(config, clusterName)
 		if !config.Processes[0].Disabled {
-			t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[0].Disabled, true)
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, true)
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
@@ -35,7 +36,7 @@ func TestShutdown(t *testing.T) {
 		Shutdown(config, clusterName)
 		for i := range config.Processes {
 			if !config.Processes[i].Disabled {
-				t.Errorf("TestShutdown\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, true)
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].Disabled, true)
 			}
 		}
 	})
@@ -43,11 +44,11 @@ func TestShutdown(t *testing.T) {
 
 func TestStartup(t *testing.T) {
 	t.Run("replica set", func(t *testing.T) {
-		cloud := automationConfigWithOneReplicaSet(clusterName, true)
+		config := automationConfigWithOneReplicaSet(clusterName, true)
 
-		Startup(cloud, clusterName)
-		if cloud.Processes[0].Disabled {
-			t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", cloud.Processes[0].Disabled, false)
+		Startup(config, clusterName)
+		if config.Processes[0].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, false)
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
@@ -56,7 +57,150 @@ func TestStartup(t *testing.T) {
 		Startup(config, clusterName)
 		for i := range config.Processes {
 			if config.Processes[i].Disabled {
-				t.Errorf("TestStartup\n got=%#v\nwant=%#v\n", config.Processes[i].Disabled, false)
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].Disabled, false)
+			}
+		}
+	})
+}
+
+func TestShutdownProcessesByClusterName(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, false)
+		err := ShutdownProcessesByClusterName(config, clusterName, []string{"host0:27017"})
+		if err != nil {
+			t.Fatalf("ShutdownProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		if !config.Processes[0].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, true)
+		}
+	})
+	t.Run("sharded cluster - one process", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		err := ShutdownProcessesByClusterName(config, clusterName, []string{"host2:27018"})
+		if err != nil {
+			t.Fatalf("ShutdownProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+
+		if config.Processes[0].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, false)
+		}
+
+		if !config.Processes[1].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[1].Disabled, true)
+		}
+	})
+	t.Run("sharded cluster - two processes", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, false)
+		err := ShutdownProcessesByClusterName(config, clusterName, []string{"host2:27018", "host0:27017"})
+
+		if err != nil {
+			t.Fatalf("ShutdownProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+
+		if !config.Processes[0].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, true)
+		}
+
+		if !config.Processes[1].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[1].Disabled, true)
+		}
+	})
+	t.Run("shutdown entire sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		err := ShutdownProcessesByClusterName(config, clusterName, nil)
+		if err != nil {
+			t.Fatalf("ShutdownProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+
+		for i := range config.Processes {
+			if !config.Processes[i].Disabled {
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].Disabled, true)
+			}
+		}
+	})
+
+	t.Run("provide a process that does not exist", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		err := ShutdownProcessesByClusterName(config, clusterName, []string{"hostTest:21021"})
+
+		if !errors.Is(err, ErrProcessNotFound) {
+			t.Fatalf("Got = %#v, want = %#v", err, ErrProcessNotFound)
+		}
+
+		for i := range config.Processes {
+			if !config.Processes[i].Disabled {
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].Disabled, false)
+			}
+		}
+	})
+}
+
+func TestStartupClusterAndProcesses(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, true)
+		err := StartupProcessesByClusterName(config, clusterName, []string{"host0:27017"})
+		if err != nil {
+			t.Fatalf("StartupProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		if config.Processes[0].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, false)
+		}
+	})
+	t.Run("sharded cluster - one process", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := StartupProcessesByClusterName(config, clusterName, []string{"host2:27018"})
+		if err != nil {
+			t.Fatalf("StartupProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		if !config.Processes[0].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, true)
+		}
+
+		if config.Processes[1].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[1].Disabled, false)
+		}
+	})
+
+	t.Run("sharded cluster - two processes", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := StartupProcessesByClusterName(config, clusterName, []string{"host0:27017", "host2:27018"})
+		if err != nil {
+			t.Fatalf("StartupProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		if config.Processes[0].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].Disabled, false)
+		}
+
+		if config.Processes[1].Disabled {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[1].Disabled, false)
+		}
+	})
+	t.Run("startup entire sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		err := StartupProcessesByClusterName(config, clusterName, nil)
+		if err != nil {
+			t.Fatalf("StartupProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		for i := range config.Processes {
+			if config.Processes[i].Disabled {
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].Disabled, false)
+			}
+		}
+	})
+	t.Run("provide a process that does not exist", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := StartupProcessesByClusterName(config, clusterName, []string{"hostTest:21021"})
+
+		if !errors.Is(err, ErrProcessNotFound) {
+			t.Fatalf("Got = %#v, want = %#v", err, ErrProcessNotFound)
+		}
+
+		for i := range config.Processes {
+			if !config.Processes[i].Disabled {
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].Disabled, false)
 			}
 		}
 	})
@@ -68,7 +212,7 @@ func TestRemoveByClusterName(t *testing.T) {
 
 		RemoveByClusterName(config, clusterName)
 		if len(config.Processes) != 0 {
-			t.Errorf("RemoveByClusterName\n got=%#v\nwant=0\n", len(config.Processes))
+			t.Errorf("Got = %#v, want = 0", len(config.Processes))
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
@@ -76,7 +220,7 @@ func TestRemoveByClusterName(t *testing.T) {
 
 		RemoveByClusterName(config, clusterName)
 		if len(config.Processes) != 0 {
-			t.Errorf("RemoveByClusterName\n got=%#v\nwant=0\n", len(config.Processes))
+			t.Errorf("Got = %#v, want = 0", len(config.Processes))
 		}
 	})
 }
