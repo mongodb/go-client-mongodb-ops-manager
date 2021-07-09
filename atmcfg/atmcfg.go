@@ -139,17 +139,14 @@ func newProcessNotFoundError(clusterName string, processesMap map[string]bool) e
 	}
 
 	if len(processesNotFound) > 0 {
-		return &ProcessNotFoundError{Err: fmt.Errorf(`process not found in "%v": %v`, clusterName, processesNotFound)}
+		return fmt.Errorf("%w in %v: %s", ErrProcessNotFound, clusterName, processesNotFound)
 	}
 
 	return nil
 }
 
-type ProcessNotFoundError struct {
-	Err error
-}
-
-func (e *ProcessNotFoundError) Error() string { return e.Err.Error() }
+// ErrProcessNotFound means the process was not found for the given cluster name.
+var ErrProcessNotFound = errors.New(`process not found`)
 
 // StartupProcessesByClusterName enables the entire cluster or its processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
 func StartupProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
