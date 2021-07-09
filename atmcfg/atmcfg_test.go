@@ -16,7 +16,6 @@ package atmcfg
 
 import (
 	"errors"
-	"fmt"
 	"testing"
 
 	"go.mongodb.org/ops-manager/opsmngr"
@@ -193,13 +192,10 @@ func TestStartupClusterAndProcesses(t *testing.T) {
 	})
 	t.Run("provide a process that does not exist", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
-
 		err := StartupProcessesByClusterName(config, clusterName, []string{"hostTest:21021"})
 
-		expected := fmt.Sprintf(`process not found in "%v": %s`, clusterName, "[hostTest:21021]")
-
 		if !errors.Is(err, ErrProcessNotFound) {
-			t.Fatalf("Got = %#v, want = %#v", err.Error(), expected)
+			t.Fatalf("Got = %#v, want = %#v", err, ErrProcessNotFound)
 		}
 
 		for i := range config.Processes {
