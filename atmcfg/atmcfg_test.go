@@ -17,6 +17,7 @@ package atmcfg
 import (
 	"errors"
 	"testing"
+	"time"
 
 	"go.mongodb.org/ops-manager/opsmngr"
 )
@@ -695,9 +696,10 @@ func TestReclaimFreeSpace(t *testing.T) {
 }
 
 func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
+	lastCompact := time.Now().Format(time.RFC3339)
 	t.Run("replica set", func(t *testing.T) {
 		config := automationConfigWithOneReplicaSet(clusterName, true)
-		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, []string{"host0:27017"})
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, lastCompact, []string{"host0:27017"})
 		if err != nil {
 			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
 		}
@@ -709,7 +711,7 @@ func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
 
 	t.Run("sharded cluster - two processes", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
-		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, []string{"host0:27017", "host2:27018"})
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, lastCompact, []string{"host0:27017", "host2:27018"})
 		if err != nil {
 			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
 		}
@@ -724,7 +726,7 @@ func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
 	})
 	t.Run("restart entire sharded cluster", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
-		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, nil)
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, lastCompact, nil)
 		if err != nil {
 			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
 		}
@@ -736,7 +738,7 @@ func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
 	})
 	t.Run("provide a process that does not exist", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
-		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, []string{"hostTest:21021"})
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, lastCompact, []string{"hostTest:21021"})
 		if !errors.Is(err, ErrProcessNotFound) {
 			t.Fatalf("Got = %#v, want = %#v", err, ErrProcessNotFound)
 		}

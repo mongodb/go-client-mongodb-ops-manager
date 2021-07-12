@@ -559,25 +559,30 @@ func Restart(out *opsmngr.AutomationConfig, name string) {
 
 // ReclaimFreeSpace sets all process of a cluster to reclaim free space.
 func ReclaimFreeSpace(out *opsmngr.AutomationConfig, clusterName string) {
+	ReclaimFreeSpaceWithLastCompact(out, clusterName, "")
+}
+
+func ReclaimFreeSpaceWithLastCompact(out *opsmngr.AutomationConfig, clusterName, lastCompact string) {
+	if lastCompact == "" {
+		lastCompact = time.Now().Format(time.RFC3339)
+	}
 	newDeploymentAuthMechanisms(out)
-	lastCompact := time.Now().Format(time.RFC3339)
 	reclaimByReplicaSetName(out, clusterName, lastCompact)
 	reclaimByShardName(out, clusterName, lastCompact)
 }
 
 // ReclaimFreeSpaceForProcessesByClusterName reclaims free space for a cluster. Processes are provided in the format {"hostname:port","hostname2:port2"}.
-func ReclaimFreeSpaceForProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+func ReclaimFreeSpaceForProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName, lastCompact string, processes []string) error {
 	if len(processes) == 0 {
-		ReclaimFreeSpace(out, clusterName)
+		ReclaimFreeSpaceWithLastCompact(out, clusterName, lastCompact)
 		return nil
 	}
 
-	return reclaimFreeSpaceForProcesses(out, clusterName, processes)
+	return reclaimFreeSpaceForProcesses(out, clusterName, lastCompact, processes)
 }
 
-func reclaimFreeSpaceForProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+func reclaimFreeSpaceForProcesses(out *opsmngr.AutomationConfig, clusterName, lastCompact string, processes []string) error {
 	newDeploymentAuthMechanisms(out)
-	lastCompact := time.Now().Format(time.RFC3339)
 	processesMap := newProcessMap(processes)
 	reclaimByReplicaSetNameAndProcesses(out, processesMap, clusterName, lastCompact)
 	reclaimByShardNameAndProcesses(out, processesMap, clusterName, lastCompact)
