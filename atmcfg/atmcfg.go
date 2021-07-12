@@ -113,11 +113,7 @@ func ShutdownProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName s
 
 // shutdownProcesses disables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
 func shutdownProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
-	processesMap := map[string]bool{}
-	for _, hostnameAndPort := range processes {
-		processesMap[hostnameAndPort] = false
-	}
-
+	processesMap := newProcessMap(processes)
 	setDisableByNameAndProcesses(out, clusterName, processesMap, true)
 
 	return newProcessNotFoundError(clusterName, processesMap)
@@ -159,11 +155,7 @@ func StartupProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName st
 
 // StartupProcess enables processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
 func startupProcess(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
-	processesMap := map[string]bool{}
-	for _, hostnameAndPort := range processes {
-		processesMap[hostnameAndPort] = false
-	}
-
+	processesMap := newProcessMap(processes)
 	setDisableByNameAndProcesses(out, clusterName, processesMap, false)
 
 	return newProcessNotFoundError(clusterName, processesMap)
@@ -466,49 +458,100 @@ func stringInSlice(a []string, x string) bool {
 	return false
 }
 
-func restartByReplicaSetName(out *opsmngr.AutomationConfig, name, lastRestart string) {
+func restartByReplicaSetName(out *opsmngr.AutomationConfig, clusterName, lastRestart string) {
+	restartByReplicaSetNameAndProcesses(out, nil, clusterName, lastRestart)
+}
+
+func restartByReplicaSetNameAndProcesses(out *opsmngr.AutomationConfig, processesMap map[string]bool, clusterName, lastRestart string) {
 	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
-		return rs.ID == name
+		return rs.ID == clusterName
 	})
 	if found {
 		rs := out.ReplicaSets[i]
 		for _, m := range rs.Members {
 			for k, p := range out.Processes {
 				if p.Name == m.Host {
-					out.Processes[k].LastRestart = lastRestart
+					setLastRestart(out.Processes[k], processesMap, lastRestart)
 				}
 			}
 		}
 	}
 }
 
-func restartByShardName(out *opsmngr.AutomationConfig, name, lastRestart string) {
+func setLastRestart(process *opsmngr.Process, processesMap map[string]bool, lastRestart string) {
+	if len(processesMap) == 0 {
+		process.LastRestart = lastRestart
+		return
+	}
+
+	key := fmt.Sprintf("%s:%d", process.Hostname, process.Args26.NET.Port)
+	if _, ok := processesMap[key]; ok {
+		process.LastRestart = lastRestart
+		processesMap[key] = true
+	}
+}
+
+func restartByShardName(out *opsmngr.AutomationConfig, clusterName, lastRestart string) {
+	restartByShardNameAndProcesses(out, nil, clusterName, lastRestart)
+}
+
+func restartByShardNameAndProcesses(out *opsmngr.AutomationConfig, processesMap map[string]bool, clusterName, lastRestart string) {
 	i, found := search.ShardingConfig(out.Sharding, func(s *opsmngr.ShardingConfig) bool {
-		return s.Name == name
+		return s.Name == clusterName
 	})
 	if found {
 		s := out.Sharding[i]
 		// restart shards
 		for _, rs := range s.Shards {
-			restartByReplicaSetName(out, rs.ID, lastRestart)
+			restartByReplicaSetNameAndProcesses(out, processesMap, rs.ID, lastRestart)
 		}
 		// restart config rs
-		restartByReplicaSetName(out, s.ConfigServerReplica, lastRestart)
+		restartByReplicaSetNameAndProcesses(out, processesMap, s.ConfigServerReplica, lastRestart)
 		// restart mongos
 		for i := range out.Processes {
-			if out.Processes[i].Cluster == name {
-				out.Processes[i].LastRestart = lastRestart
+			if out.Processes[i].Cluster == clusterName {
+				setLastRestart(out.Processes[i], processesMap, lastRestart)
 			}
 		}
 	}
 }
 
+// RestartProcessesByClusterName restart the entire cluster or its processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func RestartProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	if len(processes) == 0 {
+		Restart(out, clusterName)
+		return nil
+	}
+	return restartProcesses(out, clusterName, processes)
+}
+
+// restartProcesses restarts processes. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func restartProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	processesMap := newProcessMap(processes)
+	restartByNameAndProcesses(out, clusterName, processesMap)
+
+	return newProcessNotFoundError(clusterName, processesMap)
+}
+
+func restartByNameAndProcesses(out *opsmngr.AutomationConfig, clusterName string, processesMap map[string]bool) {
+	lastRestart := time.Now().Format(time.RFC3339)
+	newDeploymentAuthMechanisms(out)
+	restartByReplicaSetNameAndProcesses(out, processesMap, clusterName, lastRestart)
+	restartByShardNameAndProcesses(out, processesMap, clusterName, lastRestart)
+}
+
+func newProcessMap(processes []string) map[string]bool {
+	processesMap := map[string]bool{}
+	for _, hostnameAndPort := range processes {
+		processesMap[hostnameAndPort] = false
+	}
+
+	return processesMap
+}
+
 // Restart sets all process of a cluster to restart.
 func Restart(out *opsmngr.AutomationConfig, name string) {
-	// This value may not be present and is mandatory
-	if out.Auth.DeploymentAuthMechanisms == nil {
-		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
-	}
+	newDeploymentAuthMechanisms(out)
 	lastRestart := time.Now().Format(time.RFC3339)
 	restartByReplicaSetName(out, name, lastRestart)
 	restartByShardName(out, name, lastRestart)
