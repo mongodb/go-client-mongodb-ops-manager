@@ -684,7 +684,7 @@ func TestReclaimFreeSpace(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, false)
 		ReclaimFreeSpace(config, clusterName)
 		for i := range config.Processes {
-			if config.Processes[i].ProcessType == "mongod" && config.Processes[i].LastCompact == "" {
+			if isLastCompactEmpty(config.Processes[i], "", -1) {
 				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
 			}
 			if config.Processes[i].ProcessType == "mongos" && config.Processes[i].LastCompact != "" {
@@ -692,4 +692,67 @@ func TestReclaimFreeSpace(t *testing.T) {
 			}
 		}
 	})
+}
+
+func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, true)
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, []string{"host0:27017"})
+		if err != nil {
+			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+
+		if config.Processes[0].LastCompact == "" {
+			t.Errorf("Got = %#v", config.Processes[0].LastRestart)
+		}
+	})
+
+	t.Run("sharded cluster - two processes", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, []string{"host0:27017", "host2:27018"})
+		if err != nil {
+			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		for i := range config.Processes {
+			if isLastCompactEmpty(config.Processes[i], "host2", 27017) {
+				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
+			}
+			if isLastCompactEmpty(config.Processes[i], "host0", 27018) {
+				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
+			}
+		}
+	})
+	t.Run("restart entire sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, nil)
+		if err != nil {
+			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		for i := range config.Processes {
+			if isLastCompactEmpty(config.Processes[i], "", -1) {
+				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
+			}
+		}
+	})
+	t.Run("provide a process that does not exist", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, []string{"hostTest:21021"})
+		if !errors.Is(err, ErrProcessNotFound) {
+			t.Fatalf("Got = %#v, want = %#v", err, ErrProcessNotFound)
+		}
+
+		for i := range config.Processes {
+			if config.Processes[i].LastRestart != "" {
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].LastRestart, "")
+			}
+		}
+	})
+}
+
+func isLastCompactEmpty(process *opsmngr.Process, hostname string, portN int) bool {
+	if hostname != "" && process.Args26.NET.Port != portN && process.Hostname != hostname {
+		return false
+	}
+
+	return process.ProcessType == "mongod" && process.LastCompact == ""
 }

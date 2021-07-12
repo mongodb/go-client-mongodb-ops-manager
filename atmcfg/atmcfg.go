@@ -558,44 +558,82 @@ func Restart(out *opsmngr.AutomationConfig, name string) {
 }
 
 // ReclaimFreeSpace sets all process of a cluster to reclaim free space.
-func ReclaimFreeSpace(out *opsmngr.AutomationConfig, name string) {
-	// This value may not be present and is mandatory
-	if out.Auth.DeploymentAuthMechanisms == nil {
-		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
-	}
+func ReclaimFreeSpace(out *opsmngr.AutomationConfig, clusterName string) {
+	newDeploymentAuthMechanisms(out)
 	lastCompact := time.Now().Format(time.RFC3339)
-	reclaimByReplicaSetName(out, name, lastCompact)
-	reclaimByShardName(out, name, lastCompact)
+	reclaimByReplicaSetName(out, clusterName, lastCompact)
+	reclaimByShardName(out, clusterName, lastCompact)
 }
 
-func reclaimByReplicaSetName(out *opsmngr.AutomationConfig, name, lastCompact string) {
+// ReclaimFreeSpaceForProcessesByClusterName reclaims free space for a cluster. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+func ReclaimFreeSpaceForProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	if len(processes) == 0 {
+		ReclaimFreeSpace(out, clusterName)
+		return nil
+	}
+
+	return reclaimFreeSpaceForProcesses(out, clusterName, processes)
+}
+
+func reclaimFreeSpaceForProcesses(out *opsmngr.AutomationConfig, clusterName string, processes []string) error {
+	newDeploymentAuthMechanisms(out)
+	lastCompact := time.Now().Format(time.RFC3339)
+	processesMap := newProcessMap(processes)
+	reclaimByReplicaSetNameAndProcesses(out, processesMap, clusterName, lastCompact)
+	reclaimByShardNameAndProcesses(out, processesMap, clusterName, lastCompact)
+
+	return newProcessNotFoundError(clusterName, processesMap)
+}
+
+func reclaimByReplicaSetName(out *opsmngr.AutomationConfig, clusterName, lastCompact string) {
+	reclaimByReplicaSetNameAndProcesses(out, nil, clusterName, lastCompact)
+}
+
+func reclaimByReplicaSetNameAndProcesses(out *opsmngr.AutomationConfig, processesMap map[string]bool, clusterName, lastCompact string) {
 	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
-		return rs.ID == name
+		return rs.ID == clusterName
 	})
 	if found {
 		rs := out.ReplicaSets[i]
 		for _, m := range rs.Members {
 			for k, p := range out.Processes {
 				if p.Name == m.Host {
-					out.Processes[k].LastCompact = lastCompact
+					setLastCompact(out.Processes[k], processesMap, lastCompact)
 				}
 			}
 		}
 	}
 }
 
-func reclaimByShardName(out *opsmngr.AutomationConfig, name, lastCompact string) {
+func setLastCompact(process *opsmngr.Process, processesMap map[string]bool, lastCompact string) {
+	if len(processesMap) == 0 {
+		process.LastCompact = lastCompact
+		return
+	}
+
+	key := fmt.Sprintf("%s:%d", process.Hostname, process.Args26.NET.Port)
+	if _, ok := processesMap[key]; ok {
+		process.LastCompact = lastCompact
+		processesMap[key] = true
+	}
+}
+
+func reclaimByShardName(out *opsmngr.AutomationConfig, clusterName, lastCompact string) {
+	reclaimByShardNameAndProcesses(out, nil, clusterName, lastCompact)
+}
+
+func reclaimByShardNameAndProcesses(out *opsmngr.AutomationConfig, processesMap map[string]bool, clusterName, lastCompact string) {
 	i, found := search.ShardingConfig(out.Sharding, func(s *opsmngr.ShardingConfig) bool {
-		return s.Name == name
+		return s.Name == clusterName
 	})
 	if found {
 		s := out.Sharding[i]
 		// compact shards
 		for _, rs := range s.Shards {
-			reclaimByReplicaSetName(out, rs.ID, lastCompact)
+			reclaimByReplicaSetNameAndProcesses(out, processesMap, rs.ID, lastCompact)
 		}
 		// compact config rs
-		reclaimByReplicaSetName(out, s.ConfigServerReplica, lastCompact)
+		reclaimByReplicaSetNameAndProcesses(out, processesMap, s.ConfigServerReplica, lastCompact)
 		// compact doesn't run on mongoses
 	}
 }
