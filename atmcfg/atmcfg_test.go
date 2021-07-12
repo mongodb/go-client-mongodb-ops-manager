@@ -594,7 +594,76 @@ func TestRestart(t *testing.T) {
 		Restart(config, clusterName)
 		for i := range config.Processes {
 			if config.Processes[i].LastRestart == "" {
-				t.Errorf("TestRestart\n got=%#v", config.Processes[i].LastRestart)
+				t.Errorf("TestRestart\n Got = %#v", config.Processes[i].LastRestart)
+			}
+		}
+	})
+}
+
+func TestRestartProcessesByClusterName(t *testing.T) {
+	t.Run("replica set", func(t *testing.T) {
+		config := automationConfigWithOneReplicaSet(clusterName, true)
+		err := RestartProcessesByClusterName(config, clusterName, []string{"host0:27017"})
+		if err != nil {
+			t.Fatalf("RestartProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		if config.Processes[0].LastRestart == "" {
+			t.Errorf("Got = %#v", config.Processes[0].LastRestart)
+		}
+	})
+	t.Run("sharded cluster - one process", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := RestartProcessesByClusterName(config, clusterName, []string{"host2:27018"})
+		if err != nil {
+			t.Fatalf("RestartProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		if config.Processes[0].LastRestart != "" {
+			t.Errorf("Got = %#v, want = %#v", config.Processes[0].LastRestart, "")
+		}
+
+		if config.Processes[1].LastRestart == "" {
+			t.Errorf("Got = %#v", config.Processes[1].LastRestart)
+		}
+	})
+
+	t.Run("sharded cluster - two processes", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := RestartProcessesByClusterName(config, clusterName, []string{"host0:27017", "host2:27018"})
+		if err != nil {
+			t.Fatalf("RestartProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		if config.Processes[0].LastRestart == "" {
+			t.Errorf("Got = %#v", config.Processes[0].LastRestart)
+		}
+
+		if config.Processes[1].LastRestart == "" {
+			t.Errorf("Got = %#v", config.Processes[1].LastRestart)
+		}
+	})
+	t.Run("restart entire sharded cluster", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+
+		err := RestartProcessesByClusterName(config, clusterName, nil)
+		if err != nil {
+			t.Fatalf("RestartProcessesByClusterName() returned an unexpected error: %v", err)
+		}
+		for i := range config.Processes {
+			if config.Processes[i].LastRestart == "" {
+				t.Errorf("Got = %#v", config.Processes[i].LastRestart)
+			}
+		}
+	})
+	t.Run("provide a process that does not exist", func(t *testing.T) {
+		config := automationConfigWithOneShardedCluster(clusterName, true)
+		err := RestartProcessesByClusterName(config, clusterName, []string{"hostTest:21021"})
+
+		if !errors.Is(err, ErrProcessNotFound) {
+			t.Fatalf("Got = %#v, want = %#v", err, ErrProcessNotFound)
+		}
+
+		for i := range config.Processes {
+			if config.Processes[i].LastRestart != "" {
+				t.Errorf("Got = %#v, want = %#v", config.Processes[i].LastRestart, "")
 			}
 		}
 	})
