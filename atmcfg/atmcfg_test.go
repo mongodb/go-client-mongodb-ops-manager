@@ -685,9 +685,7 @@ func TestReclaimFreeSpace(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, false)
 		ReclaimFreeSpace(config, clusterName)
 		for i := range config.Processes {
-			if isLastCompactEmpty(config.Processes[i], "", -1) {
-				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
-			}
+			isLastCompactEmpty(t, config.Processes[i], "", -1)
 			if config.Processes[i].ProcessType == "mongos" && config.Processes[i].LastCompact != "" {
 				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
 			}
@@ -716,24 +714,18 @@ func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
 			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
 		}
 		for i := range config.Processes {
-			if isLastCompactEmpty(config.Processes[i], "host2", 27017) {
-				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
-			}
-			if isLastCompactEmpty(config.Processes[i], "host0", 27018) {
-				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
-			}
+			isLastCompactEmpty(t, config.Processes[i], "host2", 27017)
+			isLastCompactEmpty(t, config.Processes[i], "host0", 27018)
 		}
 	})
-	t.Run("restart entire sharded cluster", func(t *testing.T) {
+	t.Run("reclaim free space for entire sharded cluster", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
 		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, lastCompact, nil)
 		if err != nil {
 			t.Fatalf("ReclaimFreeSpaceForProcessesByClusterName() returned an unexpected error: %v", err)
 		}
 		for i := range config.Processes {
-			if isLastCompactEmpty(config.Processes[i], "", -1) {
-				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
-			}
+			isLastCompactEmpty(t, config.Processes[i], "", -1)
 		}
 	})
 	t.Run("provide a process that does not exist", func(t *testing.T) {
@@ -751,10 +743,13 @@ func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
 	})
 }
 
-func isLastCompactEmpty(process *opsmngr.Process, hostname string, portN int) bool {
+func isLastCompactEmpty(t *testing.T, process *opsmngr.Process, hostname string, portN int) {
+	t.Helper()
 	if hostname != "" && process.Args26.NET.Port != portN && process.Hostname != hostname {
-		return false
+		return
 	}
 
-	return process.ProcessType == "mongod" && process.LastCompact == ""
+	if process.ProcessType == "mongod" && process.LastCompact == "" {
+		t.Errorf("ReclaimFreeSpace\n got=%#v", process.LastRestart)
+	}
 }
