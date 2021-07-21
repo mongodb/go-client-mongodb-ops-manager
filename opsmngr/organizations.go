@@ -36,6 +36,12 @@ type OrganizationsService interface {
 	Projects(context.Context, string, *atlas.ListOptions) (*Projects, *Response, error)
 	Create(context.Context, *atlas.Organization) (*atlas.Organization, *Response, error)
 	Delete(context.Context, string) (*Response, error)
+	Invitations(context.Context, string, *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error)
+	Invitation(context.Context, string, string) (*atlas.Invitation, *Response, error)
+	InviteUser(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
+	UpdateInvitation(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
+	UpdateInvitationByID(context.Context, string, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
+	DeleteInvitation(context.Context, string, string) (*Response, error)
 }
 
 // OrganizationsServiceOp provides an implementation of the OrganizationsService interface.
