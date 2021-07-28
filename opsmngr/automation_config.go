@@ -219,7 +219,7 @@ type Member struct {
 	SecondaryDelaySecs *float64                `json:"secondaryDelaySecs,omitempty"` // SecondaryDelaySecs replaces SlaveDelay since 5.0+
 	Tags               *map[string]interface{} `json:"tags,omitempty"`
 	Votes              float64                 `json:"votes"`
-	Horizons           *map[string]string      `json:"horizons,omitempty"`
+	Horizons           *map[string]string      `json:"horizons,omitempty"` // Horizons are managed by Kubernetes Operator and should not be manually edited
 }
 
 // ReplicaSet configs.
