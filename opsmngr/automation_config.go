@@ -209,17 +209,17 @@ type ScramShaCreds struct {
 
 // Member configs.
 type Member struct {
-	ID                 int                     `json:"_id"` //nolint:tagliatelle // correct from API
-	ArbiterOnly        bool                    `json:"arbiterOnly"`
-	BuildIndexes       bool                    `json:"buildIndexes"`
-	Hidden             bool                    `json:"hidden"`
-	Host               string                  `json:"host"`
-	Priority           float64                 `json:"priority"`
-	SlaveDelay         *float64                `json:"slaveDelay,omitempty"`         // Deprecated: since 5.0+ use SecondaryDelaySecs instead
-	SecondaryDelaySecs *float64                `json:"secondaryDelaySecs,omitempty"` // SecondaryDelaySecs replaces SlaveDelay since 5.0+
-	Tags               *map[string]interface{} `json:"tags,omitempty"`
-	Votes              float64                 `json:"votes"`
-	Horizons           *map[string]string      `json:"horizons,omitempty"` // Horizons are managed by Kubernetes Operator and should not be manually edited
+	ID                 int                `json:"_id"` //nolint:tagliatelle // correct from API
+	ArbiterOnly        bool               `json:"arbiterOnly"`
+	BuildIndexes       bool               `json:"buildIndexes"`
+	Hidden             bool               `json:"hidden"`
+	Horizons           *map[string]string `json:"horizons,omitempty"` // Horizons are managed by Kubernetes Operator and should not be manually edited
+	Host               string             `json:"host"`
+	Priority           float64            `json:"priority"`
+	SlaveDelay         *float64           `json:"slaveDelay,omitempty"`         // Deprecated: since 5.0+ use SecondaryDelaySecs instead
+	SecondaryDelaySecs *float64           `json:"secondaryDelaySecs,omitempty"` // SecondaryDelaySecs replaces SlaveDelay since 5.0+
+	Tags               *map[string]string `json:"tags,omitempty"`
+	Votes              float64            `json:"votes"`
 }
 
 // ReplicaSet configs.
@@ -323,6 +323,21 @@ type LogRotate struct {
 	TimeThresholdHrs int     `json:"timeThresholdHrs,omitempty"`
 }
 
+type DefaultReadConcern struct {
+	Level string `json:"level"`
+}
+
+type DefaultWriteConcern struct {
+	W        interface{} `json:"w,omitempty"` // W can be string or number
+	J        *bool       `json:"j,omitempty"`
+	Wtimeout int         `json:"wtimeout"`
+}
+
+type DefaultRWConcern struct {
+	DefaultReadConcern  *DefaultReadConcern  `json:"defaultReadConcern,omitempty"`
+	DefaultWriteConcern *DefaultWriteConcern `json:"defaultWriteConcern,omitempty"`
+}
+
 // Process represents a single process in a deployment.
 type Process struct {
 	Alias                                      string             `json:"alias,omitempty"`
@@ -346,6 +361,7 @@ type Process struct {
 	CPUAffinity                                []int              `json:"cpuAffinity,omitempty"`
 	Cluster                                    string             `json:"cluster,omitempty"`
 	CredentialsVersion                         *int               `json:"credentialsVersion,omitempty"`
+	DefaultRWConcern                           *DefaultRWConcern  `json:"defaultRWConcern,omitempty"` //nolint:tagliatelle // correct from API
 	Disabled                                   bool               `json:"disabled"`
 	FeatureCompatibilityVersion                string             `json:"featureCompatibilityVersion,omitempty"`
 	FullVersion                                interface{}        `json:"fullVersion,omitempty"`
