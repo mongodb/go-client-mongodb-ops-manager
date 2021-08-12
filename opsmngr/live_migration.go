@@ -85,7 +85,7 @@ func (s *LiveMigrationServiceOp) Create(ctx context.Context, orgID string, linkT
 	return root, resp, err
 }
 
-// Delete removes a log collection job.
+// Delete removes the connection between the source Ops Manager organization and the target MongoDB Atlas organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
 func (s *LiveMigrationServiceOp) Delete(ctx context.Context, orgID string) (*Response, error) {
