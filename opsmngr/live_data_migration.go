@@ -24,25 +24,30 @@ import (
 
 const liveMigrationBasePath = "api/public/v1.0/orgs/%s/liveExport/migrationLink"
 
-// LiveMigrationService is an interface for interfacing with the Live Migration
+// LiveDataMigrationService is an interface for interfacing with the Live Migration
 // endpoints of the MongoDB Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/
-type LiveMigrationService interface {
-	Create(context.Context, string, *atlas.LinkToken) (*atlas.LiveMigration, *Response, error)
-	Delete(context.Context, string) (*Response, error)
-	Get(context.Context, string) (*atlas.LiveMigration, *Response, error)
+type LiveDataMigrationService interface {
+	ConnectOrganizations(context.Context, string, *atlas.LinkToken) (*ConnectionStatus, *Response, error)
+	DeleteConnection(context.Context, string) (*Response, error)
+	ConnectionStatus(context.Context, string) (*ConnectionStatus, *Response, error)
 }
 
-// LiveMigrationOp provides an implementation of the LiveMigrationService interface.
-type LiveMigrationServiceOp service
+// ConnectionStatus represents the response of LiveDataMigrationService.ConnectOrganizations and LiveDataMigrationService.ConnectionStatus
+type ConnectionStatus struct {
+	Status string `json:"status,omitempty"` // Status represents the state of the connection that exists between this organization and the target cluster in the MongoDB Atlas organization.
+}
 
-var _ LiveMigrationService = &LiveMigrationServiceOp{}
+// LiveDataMigrationServiceOp provides an implementation of the LiveDataMigrationService interface.
+type LiveDataMigrationServiceOp service
 
-// Get returns the status of the connection between the specified source Ops Manager organization and the target MongoDB Atlas organization.
+var _ LiveDataMigrationService = &LiveDataMigrationServiceOp{}
+
+// ConnectionStatus returns the status of the connection between the specified source Ops Manager organization and the target MongoDB Atlas organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/return-the-status-of-the-organization-link/
-func (s *LiveMigrationServiceOp) Get(ctx context.Context, orgID string) (*atlas.LiveMigration, *Response, error) {
+func (s *LiveDataMigrationServiceOp) ConnectionStatus(ctx context.Context, orgID string) (*ConnectionStatus, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -55,16 +60,16 @@ func (s *LiveMigrationServiceOp) Get(ctx context.Context, orgID string) (*atlas.
 		return nil, nil, err
 	}
 
-	root := new(atlas.LiveMigration)
+	root := new(ConnectionStatus)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
 }
 
-// Create connects the source Ops Manager organization with a target MongoDB Atlas organization.
+// ConnectOrganizations connects the source Ops Manager organization with a target MongoDB Atlas organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/link-the-organization-with-atlas/
-func (s *LiveMigrationServiceOp) Create(ctx context.Context, orgID string, linkToken *atlas.LinkToken) (*atlas.LiveMigration, *Response, error) {
+func (s *LiveDataMigrationServiceOp) ConnectOrganizations(ctx context.Context, orgID string, linkToken *atlas.LinkToken) (*ConnectionStatus, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -79,16 +84,16 @@ func (s *LiveMigrationServiceOp) Create(ctx context.Context, orgID string, linkT
 		return nil, nil, err
 	}
 
-	root := new(atlas.LiveMigration)
+	root := new(ConnectionStatus)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
 }
 
-// Delete removes the connection between the source Ops Manager organization and the target MongoDB Atlas organization.
+// DeleteConnection removes the connection between the source Ops Manager organization and the target MongoDB Atlas organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
-func (s *LiveMigrationServiceOp) Delete(ctx context.Context, orgID string) (*Response, error) {
+func (s *LiveDataMigrationServiceOp) DeleteConnection(ctx context.Context, orgID string) (*Response, error) {
 	if orgID == "" {
 		return nil, atlas.NewArgError("orgID", "must be set")
 	}

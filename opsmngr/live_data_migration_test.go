@@ -23,7 +23,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-func TestLiveMigration_Create(t *testing.T) {
+func TestLiveMigration_ConnectOrganizations(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -35,19 +35,19 @@ func TestLiveMigration_Create(t *testing.T) {
 	})
 
 	linkToken := &atlas.LinkToken{LinkToken: "test"}
-	response, _, err := client.LiveMigration.Create(ctx, orgID, linkToken)
+	response, _, err := client.LiveMigration.ConnectOrganizations(ctx, orgID, linkToken)
 	if err != nil {
-		t.Fatalf("LiveMigration.Create returned error: %v", err)
+		t.Fatalf("LiveMigration.ConnectOrganizations returned error: %v", err)
 	}
 
-	expected := &atlas.LiveMigration{Status: "SYNCED"}
+	expected := &ConnectionStatus{Status: "SYNCED"}
 
 	if diff := deep.Equal(response, expected); diff != nil {
 		t.Error(diff)
 	}
 }
 
-func TestLiveMigration_Get(t *testing.T) {
+func TestLiveMigration_ConnectionStatus(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -60,19 +60,19 @@ func TestLiveMigration_Get(t *testing.T) {
 			}`)
 	})
 
-	response, _, err := client.LiveMigration.Get(ctx, orgID)
+	response, _, err := client.LiveMigration.ConnectionStatus(ctx, orgID)
 	if err != nil {
-		t.Fatalf("LiveMigration.Get returned error: %v", err)
+		t.Fatalf("LiveMigration.ConnectionStatus returned error: %v", err)
 	}
 
-	expected := &atlas.LiveMigration{Status: "SYNCED"}
+	expected := &ConnectionStatus{Status: "SYNCED"}
 
 	if diff := deep.Equal(response, expected); diff != nil {
 		t.Error(diff)
 	}
 }
 
-func TestLiveMigration_Delete(t *testing.T) {
+func TestLiveMigration_DeleteConnection(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -82,8 +82,8 @@ func TestLiveMigration_Delete(t *testing.T) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.LiveMigration.Delete(ctx, orgID)
+	_, err := client.LiveMigration.DeleteConnection(ctx, orgID)
 	if err != nil {
-		t.Fatalf("LiveMigration.Delete returned error: %v", err)
+		t.Fatalf("LiveMigration.DeleteConnection returned error: %v", err)
 	}
 }
