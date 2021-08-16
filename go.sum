@@ -22,8 +22,8 @@ github.com/stretchr/testify v1.7.0 h1:nwc3DEeHmmLAfoZucVR881uASk0Mfjw8xYJ99tb5Cc
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/xdg-go/stringprep v1.0.2 h1:6iq84/ryjjeRmMJwxutI51F2GIPlP5BfTvXHeYjyhBc=
 github.com/xdg-go/stringprep v1.0.2/go.mod h1:8F9zXuvzgwmyT5DUm4GUfZGDdT3W+LCvS6+da4O5kxM=
-go.mongodb.org/atlas v0.9.1-0.20210707095538-d4a51579e8e0 h1:bcBUWQgNiq2WYnM+R7vUKIGvZKuKIc3b0Pcn/t1nYw8=
-go.mongodb.org/atlas v0.9.1-0.20210707095538-d4a51579e8e0/go.mod h1:MMWDsc2akjTDSG4tVQrxv/82p3QbBnqeELbtTl45sbg=
+go.mongodb.org/atlas v0.11.1-0.20210811161401-47f8a8c02572 h1:V/9fqSuNtNOecclmodf3TSbAfYFSS4MOJOA8pO7iDP8=
+go.mongodb.org/atlas v0.11.1-0.20210811161401-47f8a8c02572/go.mod h1:MMWDsc2akjTDSG4tVQrxv/82p3QbBnqeELbtTl45sbg=
 golang.org/x/text v0.3.5 h1:i6eZZ+zk0SOf0xgBpEpPD18qWcJda6q1sxt3S0kzyUQ=
 golang.org/x/text v0.3.5/go.mod h1:5Zoc/QRtKVWzQhOtBMvqHzDpF6irO9z98xDceosuGiQ=
 golang.org/x/tools v0.0.0-20180917221912-90fa682c2a6e/go.mod h1:n7NCudcB/nEzxVGmLbDWY5pfWTLqBcC2KZ6jyYvM4mQ=

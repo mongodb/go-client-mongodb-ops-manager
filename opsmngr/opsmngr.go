@@ -93,6 +93,7 @@ type Client struct {
 	FeatureControlPolicies FeatureControlPoliciesService
 	ServerUsage            ServerUsageService
 	ServerUsageReport      ServerUsageReportService
+	LiveMigration          LiveDataMigrationService
 
 	onRequestCompleted RequestCompletionCallback
 }
@@ -159,6 +160,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.FeatureControlPolicies = &FeatureControlPoliciesServiceOp{Client: c}
 	c.ServerUsage = &ServerUsageServiceOp{Client: c}
 	c.ServerUsageReport = &ServerUsageReportServiceOp{Client: c}
+	c.LiveMigration = &LiveDataMigrationServiceOp{Client: c}
 
 	return c
 }
