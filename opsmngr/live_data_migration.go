@@ -34,7 +34,7 @@ type LiveDataMigrationService interface {
 	ConnectionStatus(context.Context, string) (*ConnectionStatus, *Response, error)
 }
 
-// ConnectionStatus represents the response of LiveDataMigrationService.ConnectOrganizations and LiveDataMigrationService.ConnectionStatus
+// ConnectionStatus represents the response of LiveDataMigrationService.ConnectOrganizations and LiveDataMigrationService.ConnectionStatus.
 type ConnectionStatus struct {
 	Status string `json:"status,omitempty"` // Status represents the state of the connection that exists between this organization and the target cluster in the MongoDB Atlas organization.
 }
