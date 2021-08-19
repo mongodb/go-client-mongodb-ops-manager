@@ -495,8 +495,6 @@ func TestProject_AddTeamsToProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	projectID := "5a0a1e7e0f2912c554080adc"
-
 	createRequest := []*mongodbatlas.ProjectTeam{{
 		TeamID:    "{TEAM-ID}",
 		RoleNames: []string{"GROUP_OWNER", "GROUP_READ_ONLY"},
@@ -555,8 +553,6 @@ func TestProject_AddTeamsToProject(t *testing.T) {
 func TestProject_GetTeams(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	projectID := "5a0a1e7e0f2912c554080adc"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/teams", projectID), func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{

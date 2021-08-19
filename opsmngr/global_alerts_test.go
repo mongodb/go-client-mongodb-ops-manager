@@ -106,7 +106,6 @@ func TestGlobalAlerts_Get(t *testing.T) {
 
 	defer teardown()
 
-	alertID := "3b7d2de0a4b02fd2c98146de"
 	path := fmt.Sprintf("/api/public/v1.0/globalAlerts/%s", alertID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -117,7 +116,7 @@ func TestGlobalAlerts_Get(t *testing.T) {
 					  "created" : "2016-10-09T06:16:36Z",
 					  "eventTypeName" : "OPLOG_BEHIND",
 					  "groupId" : "1",
-					  "id" : "3b7d2de0a4b02fd2c98146de",
+					  "id" : "57b76ddc96e8215c017ceafb",
 					  "links" : [],
 					  "lastNotified" : "2016-10-10T20:42:32Z",
 					  "replicaSetName" : "shardedCluster-shard-0",
@@ -135,7 +134,7 @@ func TestGlobalAlerts_Get(t *testing.T) {
 
 	expected := &GlobalAlert{
 		Alert: atlas.Alert{
-			ID:              "3b7d2de0a4b02fd2c98146de",
+			ID:              alertID,
 			GroupID:         "1",
 			AlertConfigID:   "5730f5e1e4b030a9634a3f69",
 			EventTypeName:   "OPLOG_BEHIND",
@@ -164,7 +163,6 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 
 	defer teardown()
 
-	alertID := "3b7d2de0a4b02fd2c98146de"
 	path := fmt.Sprintf("/api/public/v1.0/globalAlerts/%s", alertID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
@@ -175,7 +173,7 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 					  "created" : "2016-10-09T06:16:36Z",
 					  "eventTypeName" : "OPLOG_BEHIND",
 					  "groupId" : "1",
-					  "id" : "3b7d2de0a4b02fd2c98146de",
+					  "id" : "57b76ddc96e8215c017ceafb",
 					  "links" : [],
 					  "lastNotified" : "2016-10-10T20:42:32Z",
 					  "replicaSetName" : "shardedCluster-shard-0",
@@ -200,7 +198,7 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 
 	expected := &GlobalAlert{
 		Alert: atlas.Alert{
-			ID:                    "3b7d2de0a4b02fd2c98146de",
+			ID:                    alertID,
 			GroupID:               "1",
 			AlertConfigID:         "5730f5e1e4b030a9634a3f69",
 			EventTypeName:         "OPLOG_BEHIND",

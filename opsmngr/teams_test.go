@@ -77,6 +77,8 @@ func TestTeams_List(t *testing.T) {
 	}
 }
 
+const teamName = "myNewTeam"
+
 func TestTeams_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -102,7 +104,7 @@ func TestTeams_Get(t *testing.T) {
 
 	expected := &mongodbatlas.Team{
 		ID:   "1",
-		Name: "myNewTeam",
+		Name: teamName,
 	}
 
 	if diff := deep.Equal(team, expected); diff != nil {
@@ -113,7 +115,6 @@ func TestTeams_Get(t *testing.T) {
 func TestTeams_GetOneTeamByName(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	teamName := "myNewTeam"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s/teams/byName/%s", orgID, teamName), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)

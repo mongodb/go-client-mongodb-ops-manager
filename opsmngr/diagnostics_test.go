@@ -28,10 +28,10 @@ func TestDiagnostics_Get(t *testing.T) {
 	defer teardown()
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/diagnostics", groupID)
-
+	const expected = "test"
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, "test")
+		_, _ = fmt.Fprint(w, expected)
 	})
 
 	buf := new(bytes.Buffer)
@@ -40,7 +40,7 @@ func TestDiagnostics_Get(t *testing.T) {
 		t.Fatalf("Diagnostics.Get returned error: %v", err)
 	}
 
-	if buf.String() != "test" {
+	if buf.String() != expected {
 		t.Fatalf("Diagnostics.Get returned error: %v", err)
 	}
 }

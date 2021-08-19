@@ -21,6 +21,8 @@ import (
 	"go.mongodb.org/ops-manager/search"
 )
 
+const otherRS = "other_rs"
+
 func TestProcesses(t *testing.T) {
 	processes := fixture.Processes
 	t.Run("value exists", func(t *testing.T) {
@@ -34,9 +36,8 @@ func TestProcesses(t *testing.T) {
 	})
 
 	t.Run("value does not exists", func(t *testing.T) {
-		want := "other_rs"
 		i, e := search.Processes(processes, func(p *opsmngr.Process) bool {
-			return p.Name == want
+			return p.Name == otherRS
 		})
 		if e {
 			t.Errorf("Processes() found at: %d", i)
@@ -57,9 +58,8 @@ func TestMembers(t *testing.T) {
 	})
 
 	t.Run("value does not exists", func(t *testing.T) {
-		want := "other_rs_!"
 		i, e := search.Members(members, func(p opsmngr.Member) bool {
-			return p.Host == want
+			return p.Host == otherRS
 		})
 		if e {
 			t.Errorf("Members() found at: %d", i)
@@ -79,9 +79,8 @@ func TestReplicaSets(t *testing.T) {
 	})
 
 	t.Run("value does not exists", func(t *testing.T) {
-		want := "other_rs"
 		i, e := search.ReplicaSets(rs, func(p *opsmngr.ReplicaSet) bool {
-			return p.ID == want
+			return p.ID == otherRS
 		})
 		if e {
 			t.Errorf("ReplicaSets() found at: %d", i)

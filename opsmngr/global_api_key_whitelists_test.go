@@ -24,6 +24,8 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
+const accessListID = "5f3cf81b89034c6b3c0a528e"
+
 func TestWhitelistAPIKeys_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -65,7 +67,7 @@ func TestWhitelistAPIKeys_List(t *testing.T) {
 		},
 		Results: []*GlobalWhitelistAPIKey{
 			{
-				ID:          "5f3cf81b89034c6b3c0a528e",
+				ID:          accessListID,
 				CidrBlock:   "172.20.0.1",
 				Created:     "2020-08-19T13:17:01Z",
 				Description: "test",
@@ -85,9 +87,7 @@ func TestWhitelistAPIKeys_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	ipAddress := "5f3cf81b89034c6b3c0a528e"
-
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/whitelist/%s", ipAddress), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/whitelist/%s", accessListID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"id": "5f3cf81b89034c6b3c0a528e",
@@ -99,13 +99,13 @@ func TestWhitelistAPIKeys_Get(t *testing.T) {
 		}`)
 	})
 
-	whitelistAPIKey, _, err := client.GlobalAPIKeysWhitelist.Get(ctx, ipAddress)
+	whitelistAPIKey, _, err := client.GlobalAPIKeysWhitelist.Get(ctx, accessListID)
 	if err != nil {
 		t.Fatalf("GlobalWhitelistAPIKeys.Get returned error: %v", err)
 	}
 
 	expected := &GlobalWhitelistAPIKey{
-		ID:          "5f3cf81b89034c6b3c0a528e",
+		ID:          accessListID,
 		CidrBlock:   "172.20.0.1",
 		Created:     "2020-08-19T13:17:01Z",
 		Description: "test",
@@ -159,7 +159,7 @@ func TestWhitelistAPIKeys_Create(t *testing.T) {
 	}
 
 	expected := &GlobalWhitelistAPIKey{
-		ID:          "5f3cf81b89034c6b3c0a528e",
+		ID:          accessListID,
 		CidrBlock:   "172.20.0.1",
 		Created:     "2020-08-19T13:17:01Z",
 		Description: "test",
@@ -176,12 +176,11 @@ func TestWhitelistAPIKeys_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	ipAddress := "5f3cf81b89034c6b3c0a528e"
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/whitelist/%s", ipAddress), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/whitelist/%s", accessListID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.GlobalAPIKeysWhitelist.Delete(ctx, ipAddress)
+	_, err := client.GlobalAPIKeysWhitelist.Delete(ctx, accessListID)
 	if err != nil {
 		t.Fatalf("GlobalWhitelistAPIKeys.Delete returned error: %v", err)
 	}
