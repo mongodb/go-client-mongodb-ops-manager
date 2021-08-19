@@ -31,6 +31,8 @@ const (
 	testAPIKey = "test-apikey"
 )
 
+const globalAPIKeyID = "5c47503320eef5699e1cce8d"
+
 func TestAPIKeys_ListAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -74,7 +76,7 @@ func TestAPIKeys_ListAPIKeys(t *testing.T) {
 
 	expected := []atlas.APIKey{
 		{
-			ID:         "5c47503320eef5699e1cce8d",
+			ID:         globalAPIKeyID,
 			Desc:       testAPIKey,
 			PrivateKey: "********-****-****-db2c132ca78d",
 			PublicKey:  ewmaqvdo,
@@ -165,7 +167,7 @@ func TestAPIKeys_GetAPIKey(t *testing.T) {
 		fmt.Fprint(w, `{"desc":"test-desc"}`)
 	})
 
-	apiKeys, _, err := client.GlobalAPIKeys.Get(ctx, "5c47503320eef5699e1cce8d")
+	apiKeys, _, err := client.GlobalAPIKeys.Get(ctx, globalAPIKeyID)
 	if err != nil {
 		t.Errorf("APIKey.Get returned error: %v", err)
 	}
@@ -186,7 +188,7 @@ func TestAPIKeys_Update(t *testing.T) {
 		Roles: []string{"GLOBAL_READ_ONLY"},
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/apiKeys/%s", "5c47503320eef5699e1cce8d"), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/apiKeys/%s", globalAPIKeyID), func(w http.ResponseWriter, r *http.Request) {
 		expected := map[string]interface{}{
 			"desc":  "test-apiKey",
 			"roles": []interface{}{"GLOBAL_READ_ONLY"},
@@ -219,7 +221,7 @@ func TestAPIKeys_Update(t *testing.T) {
 		fmt.Fprint(w, jsonBlob)
 	})
 
-	apiKey, _, err := client.GlobalAPIKeys.Update(ctx, "5c47503320eef5699e1cce8d", updateRequest)
+	apiKey, _, err := client.GlobalAPIKeys.Update(ctx, globalAPIKeyID, updateRequest)
 	if err != nil {
 		t.Fatalf("APIKeys.Create returned error: %v", err)
 	}
@@ -236,7 +238,6 @@ func TestAPIKeys_Update(t *testing.T) {
 func TestAPIKeys_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	apiKeyID := "5c47503320eef5699e1cce8d"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/apiKeys/%s", apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

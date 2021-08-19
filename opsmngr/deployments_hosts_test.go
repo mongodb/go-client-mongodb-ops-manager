@@ -315,12 +315,13 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 	}
 }
 
+const hostname = "server1.example.com"
+
 func TestDeployments_StartMonitoring(t *testing.T) {
 	client, mux, teardown := setup()
 
 	defer teardown()
 
-	hostName := "server1.example.com"
 	var port int32 = 27017
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts", groupID)
 
@@ -348,7 +349,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 	})
 
 	host := &Host{
-		Hostname: hostName,
+		Hostname: hostname,
 		Port:     port,
 	}
 
@@ -370,7 +371,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 		HasStartupWarnings: false,
 		Hidden:             false,
 		HostEnabled:        true,
-		Hostname:           hostName,
+		Hostname:           hostname,
 		ID:                 "22",
 		JournalingEnabled:  false,
 		Links:              []*atlas.Link{},
@@ -392,7 +393,6 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 	defer teardown()
 
 	hostID := "22"
-	hostName := "server1.example.com"
 	var port int32 = 27017
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s", groupID, hostID)
 
@@ -421,7 +421,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 	})
 
 	host := &Host{
-		Hostname: hostName,
+		Hostname: hostname,
 		Port:     port,
 	}
 
@@ -443,7 +443,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 		HasStartupWarnings: false,
 		Hidden:             false,
 		HostEnabled:        true,
-		Hostname:           hostName,
+		Hostname:           hostname,
 		ID:                 "22",
 		JournalingEnabled:  false,
 		Links:              []*atlas.Link{},

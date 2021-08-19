@@ -118,14 +118,11 @@ func TestProjectAPIKeys_Assign(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "5953c5f380eef53887615f9a"
-	keyID := "5d1d12c087d9d63e6d682438"
-
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", groupID, keyID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", groupID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
 	})
 
-	_, err := client.ProjectAPIKeys.Assign(ctx, groupID, keyID, &atlas.AssignAPIKey{})
+	_, err := client.ProjectAPIKeys.Assign(ctx, groupID, apiKeyID, &atlas.AssignAPIKey{})
 	if err != nil {
 		t.Errorf("ProjectAPIKeys.Assign returned error: %v", err)
 	}
@@ -135,14 +132,11 @@ func TestProjectAPIKeys_Unassign(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	groupID := "5953c5f380eef53887615f9a"
-	keyID := "5d1d12c087d9d63e6d682438"
-
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", groupID, keyID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", groupID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.ProjectAPIKeys.Unassign(ctx, groupID, keyID)
+	_, err := client.ProjectAPIKeys.Unassign(ctx, groupID, apiKeyID)
 	if err != nil {
 		t.Fatalf("ProjectAPIKeys.Unassign returned error: %v", err)
 	}
@@ -151,8 +145,6 @@ func TestProjectAPIKeys_Unassign(t *testing.T) {
 func TestProjectAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	orgID := "1"
 
 	createRequest := &atlas.APIKeyInput{
 		Desc:  "test-apiKey",

@@ -176,8 +176,9 @@ func TestNewGZipRequest_badURL(t *testing.T) {
 	testURLParseError(t, err)
 }
 
+const ua = "testing/0.0.1"
+
 func TestNewRequest_withCustomUserAgent(t *testing.T) {
-	ua := "testing/0.0.1"
 	c, err := New(nil, SetUserAgent(ua))
 
 	if err != nil {
@@ -232,6 +233,8 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 	}
 }
 
+const testResponse = `{"A":"a"}`
+
 func TestClient_Do(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
@@ -244,7 +247,7 @@ func TestClient_Do(t *testing.T) {
 		if m := http.MethodGet; m != r.Method {
 			t.Errorf("Request method = %v, expected %v", r.Method, m)
 		}
-		_, _ = fmt.Fprint(w, `{"A":"a"}`)
+		_, _ = fmt.Fprint(w, testResponse)
 	})
 
 	req, _ := client.NewRequest(ctx, http.MethodGet, ".", nil)
@@ -324,13 +327,12 @@ func TestClient_withRaw(t *testing.T) {
 	}
 
 	client.withRaw = true
-	expected := `{"A":"a"}`
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if m := http.MethodGet; m != r.Method {
 			t.Errorf("Request method = %v, expected %v", r.Method, m)
 		}
-		_, _ = fmt.Fprint(w, expected)
+		_, _ = fmt.Fprint(w, testResponse)
 	})
 
 	body := new(foo)
@@ -340,8 +342,8 @@ func TestClient_withRaw(t *testing.T) {
 		t.Fatalf("Do(): %v", err)
 	}
 
-	if string(resp.Raw) != expected {
-		t.Errorf("expected response to be %v, Response = %v", expected, string(resp.Raw))
+	if string(resp.Raw) != testResponse {
+		t.Errorf("expected response to be %v, Response = %v", testResponse, string(resp.Raw))
 	}
 }
 
@@ -385,7 +387,6 @@ func TestClient_OnRequestCompleted(t *testing.T) {
 }
 
 func TestSetUserAgent(t *testing.T) {
-	ua := "testing/0.0.1"
 	c, err := New(nil, SetUserAgent(ua))
 
 	if err != nil {
