@@ -36,8 +36,8 @@ lint: ## Run linter
 .PHONY: check
 check: test lint ## Run tests and linters
 
-.PHONY: addcopy
-addcopy:
+.PHONY: addlicense
+addlicense:
 	find . -name '*.go' | while read -r file; do addlicense -c "MongoDB Inc" "$$file"; done
 
 .PHONY: list

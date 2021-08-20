@@ -753,3 +753,52 @@ func isLastCompactEmpty(t *testing.T, process *opsmngr.Process, hostname string,
 		t.Errorf("ReclaimFreeSpace\n got=%#v", process.LastRestart)
 	}
 }
+
+func TestIsGoalState(t *testing.T) {
+	tests := []struct {
+		name string
+		s    *opsmngr.AutomationStatus
+		want bool
+	}{
+		{
+			name: "reached goal",
+			s: &opsmngr.AutomationStatus{
+				Processes: []opsmngr.ProcessStatus{
+					{
+						LastGoalVersionAchieved: 0,
+						Name:                    "test",
+						Hostname:                "test",
+					},
+				},
+				GoalVersion: 0,
+			},
+			want: true,
+		},
+		{
+			name: "pending goal",
+			s: &opsmngr.AutomationStatus{
+				Processes: []opsmngr.ProcessStatus{
+					{
+						LastGoalVersionAchieved: 0,
+						Name:                    "test",
+						Hostname:                "test",
+					},
+				},
+				GoalVersion: 1,
+			},
+			want: false,
+		},
+		{
+			name: "empty",
+			s:    &opsmngr.AutomationStatus{},
+			want: true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := IsGoalState(tt.s); got != tt.want {
+				t.Errorf("IsGoalState() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
