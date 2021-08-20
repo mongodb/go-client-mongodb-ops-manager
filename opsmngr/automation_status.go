@@ -57,8 +57,12 @@ type AutomationStatus struct {
 }
 
 type ProcessStatus struct {
-	Plan                    []string `json:"plan"`
+	ErrorCode               *int     `json:"errorCode,omitempty"`
+	ErrorCodeDescription    *string  `json:"errorCodeDescription,omitempty"`
+	ErrorCodeHumanReadable  *string  `json:"errorCodeHumanReadable,omitempty"`
+	ErrorString             *string  `json:"errorString,omitempty"`
+	Hostname                string   `json:"hostname"`
 	LastGoalVersionAchieved int      `json:"lastGoalVersionAchieved"`
 	Name                    string   `json:"name"`
-	Hostname                string   `json:"hostname"`
+	Plan                    []string `json:"plan"`
 }

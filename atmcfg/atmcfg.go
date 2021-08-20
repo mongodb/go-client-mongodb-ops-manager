@@ -642,3 +642,12 @@ func reclaimByShardNameAndProcesses(out *opsmngr.AutomationConfig, processesMap 
 		// compact doesn't run on mongoses
 	}
 }
+
+func IsGoalState(s *opsmngr.AutomationStatus) bool {
+	for _, p := range s.Processes {
+		if p.LastGoalVersionAchieved != s.GoalVersion {
+			return false
+		}
+	}
+	return true
+}
