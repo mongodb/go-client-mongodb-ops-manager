@@ -24,7 +24,7 @@ import (
 
 const (
 	versionManifestBasePath   = "api/public/v1.0/versionManifest"
-	versionManifestStaticPath = "api/public/v1.0/static/version_manifest/%s"
+	versionManifestStaticPath = "static/version_manifest/%s"
 )
 
 // VersionManifestService is an interface for using the Version Manifest
