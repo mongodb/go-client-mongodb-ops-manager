@@ -41,6 +41,7 @@ const (
 type (
 	Response                  = atlas.Response
 	RequestCompletionCallback = atlas.RequestCompletionCallback
+	ServiceVersion            = atlas.ServiceVersion
 )
 
 // Client manages communication with Ops Manager API.
@@ -94,6 +95,7 @@ type Client struct {
 	ServerUsage            ServerUsageService
 	ServerUsageReport      ServerUsageReportService
 	LiveMigration          LiveDataMigrationService
+	ServiceVersion         ServiceVersionService
 
 	onRequestCompleted RequestCompletionCallback
 }
@@ -161,6 +163,7 @@ func NewClient(httpClient *http.Client) *Client {
 	c.ServerUsage = &ServerUsageServiceOp{Client: c}
 	c.ServerUsageReport = &ServerUsageReportServiceOp{Client: c}
 	c.LiveMigration = &LiveDataMigrationServiceOp{Client: c}
+	c.ServiceVersion = &ServiceVersionServiceOp{Client: c}
 
 	return c
 }
