@@ -40,6 +40,7 @@ const (
 	// baseURLPath is a non-empty Client.BaseURL path to use during tests,
 	// to ensure relative URLs are used for all endpoints.
 	baseURLPath = "/api-v1"
+	requestPath = "foo"
 )
 
 // setup sets up a test HTTP server along with a opsmngr.Client that is
@@ -138,8 +139,6 @@ type testRequestBody struct {
 func TestNewRequest_withUserData(t *testing.T) {
 	c := NewClient(nil)
 
-	requestPath := "foo"
-
 	inURL, outURL := requestPath, defaultBaseURL+requestPath
 	inBody, outBody := &testRequestBody{TestName: "l", TestUserData: "u"},
 		`{"testName":"l","testCounter":0,`+
@@ -230,6 +229,62 @@ func TestNewRequest_errorForNoTrailingSlash(t *testing.T) {
 		} else if !test.wantError && err != nil {
 			t.Fatalf("NewRequest returned unexpected error: %v.", err)
 		}
+	}
+}
+
+func TestNewPlainRequest_emptyBody(t *testing.T) {
+	c := NewClient(nil)
+	req, err := c.NewPlainRequest(ctx, http.MethodGet, ".")
+	if err != nil {
+		t.Fatalf("NewPlainRequest returned unexpected error: %v", err)
+	}
+	if req.Body != nil {
+		t.Fatalf("constructed request contains a non-nil Body")
+	}
+}
+
+func TestNewPlainRequest_withCustomUserAgent(t *testing.T) {
+	c, err := New(nil, SetUserAgent(ua))
+
+	if err != nil {
+		t.Fatalf("New() unexpected error: %v", err)
+	}
+
+	req, _ := c.NewPlainRequest(ctx, http.MethodGet, "/foo")
+
+	expected := fmt.Sprintf("%s %s", ua, userAgent)
+	if got := req.Header.Get("User-Agent"); got != expected {
+		t.Errorf("NewPlainRequest() UserAgent = %s; expected %s", got, expected)
+	}
+}
+
+func TestNewPlainRequest_badURL(t *testing.T) {
+	c := NewClient(nil)
+	_, err := c.NewPlainRequest(ctx, http.MethodGet, ":")
+	testURLParseError(t, err)
+}
+
+func TestNewPlainRequest(t *testing.T) {
+	c := NewClient(nil)
+
+	inURL, outURL := requestPath, defaultBaseURL+requestPath
+	req, _ := c.NewPlainRequest(ctx, http.MethodGet, inURL)
+
+	// test relative URL was expanded
+	if req.URL.String() != outURL {
+		t.Errorf("NewPlainRequest(%v) URL = %v, expected %v", inURL, req.URL, outURL)
+	}
+
+	// test accept content type is correct
+	accept := req.Header.Get("Accept")
+	if plainMediaType != accept {
+		t.Errorf("NewPlainRequest() Accept = %v, expected %v", accept, gzipMediaType)
+	}
+
+	// test default user-agent is attached to the request
+	uA := req.Header.Get("User-Agent")
+	if c.UserAgent != uA {
+		t.Errorf("NewPlainRequest() User-Agent = %v, expected %v", uA, c.UserAgent)
 	}
 }
 

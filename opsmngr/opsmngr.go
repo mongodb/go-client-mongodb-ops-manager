@@ -312,6 +312,9 @@ func (c *Client) NewPlainRequest(ctx context.Context, method, urlStr string) (*h
 		return nil, err
 	}
 	req.Header.Add("Accept", plainMediaType)
+	if c.UserAgent != "" {
+		req.Header.Set("User-Agent", c.UserAgent)
+	}
 
 	return req, nil
 }
