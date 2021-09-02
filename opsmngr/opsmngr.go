@@ -36,6 +36,7 @@ const (
 	userAgent      = "go-ops-manager"
 	jsonMediaType  = "application/json"
 	gzipMediaType  = "application/gzip"
+	plainMediaType = "text/plain"
 )
 
 type (
@@ -289,6 +290,29 @@ func (c *Client) NewGZipRequest(ctx context.Context, method, urlStr string) (*ht
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
 	}
+	return req, nil
+}
+
+// NewPlainRequest creates an API request that accepts plain text.
+// A relative URL can be provided in urlStr, which will be resolved to the
+// BaseURL of the Client. Relative URLS should always be specified without a preceding slash.
+func (c *Client) NewPlainRequest(ctx context.Context, method, urlStr string) (*http.Request, error) {
+	if !strings.HasSuffix(c.BaseURL.Path, "/") {
+		return nil, fmt.Errorf("base URL must have a trailing slash, but %q does not", c.BaseURL)
+	}
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return nil, err
+	}
+
+	u := c.BaseURL.ResolveReference(rel)
+
+	req, err := http.NewRequestWithContext(ctx, method, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Accept", plainMediaType)
+
 	return req, nil
 }
 

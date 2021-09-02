@@ -17,6 +17,8 @@ package opsmngr
 import (
 	"context"
 	"net/http"
+
+	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const versionPath = "api/private/unauth/version"
@@ -26,11 +28,13 @@ type ServiceVersionService interface {
 	Get(context.Context) (*ServiceVersion, *Response, error)
 }
 
-type ServiceVersionServiceOp service
+type ServiceVersionServiceOp struct {
+	Client atlas.PlainRequestDoer
+}
 
 // Get gets a compressed (.gz) log file that contains a range of log messages for a particular host.
 func (s *ServiceVersionServiceOp) Get(ctx context.Context) (*ServiceVersion, *Response, error) {
-	req, err := s.Client.NewRequest(ctx, http.MethodGet, versionPath, nil)
+	req, err := s.Client.NewPlainRequest(ctx, http.MethodGet, versionPath)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -40,7 +44,7 @@ func (s *ServiceVersionServiceOp) Get(ctx context.Context) (*ServiceVersion, *Re
 		return nil, nil, err
 	}
 
-	version := resp.GetServiceVersion()
+	version := resp.ServiceVersion()
 
 	return version, resp, nil
 }
