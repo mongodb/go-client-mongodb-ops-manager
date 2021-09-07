@@ -91,7 +91,7 @@ type AutomationConfig struct {
 	ReplicaSets          []*ReplicaSet             `json:"replicaSets"`
 	Roles                []*map[string]interface{} `json:"roles"`
 	Sharding             []*ShardingConfig         `json:"sharding"`
-	SSL                  *SSL                      `json:"ssl,omitempty"`
+	SSL                  *SSL                      `json:"ssl,omitempty"` // Deprecated: prefer TLS
 	TLS                  *SSL                      `json:"tls,omitempty"`
 	UIBaseURL            *string                   `json:"uiBaseUrl,omitempty"`
 	Version              int                       `json:"version,omitempty"`
@@ -121,6 +121,8 @@ type Shard struct {
 }
 
 // IndexConfig represents a new index requests for a given database and collection.
+//
+// See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#indexes
 type IndexConfig struct {
 	DBName         string                  `json:"dbName"`              // DBName of the database that is indexed
 	CollectionName string                  `json:"collectionName"`      // CollectionName that is indexed
@@ -131,6 +133,8 @@ type IndexConfig struct {
 }
 
 // SSL config properties.
+//
+// See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#tls
 type SSL struct {
 	AutoPEMKeyFilePath    string `json:"autoPEMKeyFilePath,omitempty"` //nolint:tagliatelle // correct from API
 	AutoPEMKeyFilePwd     string `json:"autoPEMKeyFilePwd,omitempty"`  //nolint:tagliatelle // correct from API
@@ -139,6 +143,8 @@ type SSL struct {
 }
 
 // Auth authentication config.
+//
+// See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#authentication
 type Auth struct {
 	AuthoritativeSet         bool           `json:"authoritativeSet"`             // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of UsersWanted
 	AutoAuthMechanism        string         `json:"autoAuthMechanism"`            // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
