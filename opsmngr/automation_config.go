@@ -91,7 +91,7 @@ type AutomationConfig struct {
 	ReplicaSets          []*ReplicaSet             `json:"replicaSets"`
 	Roles                []*map[string]interface{} `json:"roles"`
 	Sharding             []*ShardingConfig         `json:"sharding"`
-	SSL                  *SSL                      `json:"ssl,omitempty"`
+	SSL                  *SSL                      `json:"ssl,omitempty"` // Deprecated: prefer TLS
 	TLS                  *SSL                      `json:"tls,omitempty"`
 	UIBaseURL            *string                   `json:"uiBaseUrl,omitempty"`
 	Version              int                       `json:"version,omitempty"`
@@ -121,6 +121,8 @@ type Shard struct {
 }
 
 // IndexConfig represents a new index requests for a given database and collection.
+//
+// See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#indexes
 type IndexConfig struct {
 	DBName         string                  `json:"dbName"`              // DBName of the database that is indexed
 	CollectionName string                  `json:"collectionName"`      // CollectionName that is indexed
@@ -131,6 +133,8 @@ type IndexConfig struct {
 }
 
 // SSL config properties.
+//
+// See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#tls
 type SSL struct {
 	AutoPEMKeyFilePath    string `json:"autoPEMKeyFilePath,omitempty"` //nolint:tagliatelle // correct from API
 	AutoPEMKeyFilePwd     string `json:"autoPEMKeyFilePwd,omitempty"`  //nolint:tagliatelle // correct from API
@@ -139,6 +143,8 @@ type SSL struct {
 }
 
 // Auth authentication config.
+//
+// See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#authentication
 type Auth struct {
 	AuthoritativeSet         bool           `json:"authoritativeSet"`             // AuthoritativeSet indicates if the MongoDBUsers should be synced with the current list of UsersWanted
 	AutoAuthMechanism        string         `json:"autoAuthMechanism"`            // AutoAuthMechanism is the currently active agent authentication mechanism. This is a read only field
@@ -149,12 +155,13 @@ type Auth struct {
 	AutoPwd                  string         `json:"autoPwd,omitempty"`                  // AutoPwd is a required field when going from `Disabled=false` to `Disabled=true`
 	AutoUser                 string         `json:"autoUser,omitempty"`                 // AutoUser is the MongoDB Automation Agent user, when x509 is enabled, it should be set to the subject of the AA's certificate
 	DeploymentAuthMechanisms []string       `json:"deploymentAuthMechanisms,omitempty"` // DeploymentAuthMechanisms is a list of possible auth mechanisms that can be used within deployments
-	Disabled                 bool           `json:"disabled"`
-	Key                      string         `json:"key,omitempty"`            // Key is the contents of the Keyfile, the automation agent will ensure this a Keyfile with these contents exists at the `Keyfile` path
-	Keyfile                  string         `json:"keyfile,omitempty"`        // Keyfile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
-	KeyfileWindows           string         `json:"keyfileWindows,omitempty"` // KeyfileWindows is required if `Disabled=false` even if the value is not used
-	UsersDeleted             []*MongoDBUser `json:"usersDeleted"`
-	UsersWanted              []*MongoDBUser `json:"usersWanted"` // UsersWanted is a list which contains the desired users at the project level.
+	Disabled                 bool           `json:"disabled"`                           // Disabled indicates if auth is disabled
+	Key                      string         `json:"key,omitempty"`                      // Key is the contents of the Keyfile, the automation agent will ensure this a Keyfile with these contents exists at the `Keyfile` path
+	Keyfile                  string         `json:"keyfile,omitempty"`                  // Keyfile is the path to a keyfile with read & write permissions. It is a required field if `Disabled=false`
+	KeyfileWindows           string         `json:"keyfileWindows,omitempty"`           // KeyfileWindows is required if `Disabled=false` even if the value is not used.
+	NewAutoPwd               string         `json:"newAutoPwd,omitempty"`               // NewAutoPwd is a new password that the Automation uses when connecting to an instance.
+	UsersDeleted             []*MongoDBUser `json:"usersDeleted"`                       // UsersDeleted are objects that define the authenticated users to be deleted from specified databases or from all databases
+	UsersWanted              []*MongoDBUser `json:"usersWanted"`                        // UsersWanted is a list which contains the desired users at the project level.
 }
 
 // Args26 part of the internal Process struct.
