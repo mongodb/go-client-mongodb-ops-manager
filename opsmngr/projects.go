@@ -211,7 +211,6 @@ func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project, 
 		return nil, nil, err
 	}
 
-
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, createRequest)
 	if err != nil {
 		return nil, nil, err
