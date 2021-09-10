@@ -423,7 +423,81 @@ func TestProject_Create(t *testing.T) {
 		}`)
 	})
 
-	project, _, err := client.Projects.Create(ctx, createRequest)
+	opts := &mongodbatlas.CreateProjectOptions{ProjectOwnerID: "1"}
+	project, _, err := client.Projects.Create(ctx, createRequest, opts)
+	if err != nil {
+		t.Fatalf("Projects.Create returned error: %v", err)
+	}
+
+	expected := &Project{
+		ActiveAgentCount: 0,
+		HostCounts: &HostCount{
+			Arbiter:   0,
+			Config:    0,
+			Master:    0,
+			Mongos:    0,
+			Primary:   0,
+			Secondary: 0,
+			Slave:     0,
+		},
+		ID:              "56a10a80e4b0fd3b9a9bb0c2",
+		LastActiveAgent: "2016-03-09T18:19:37Z",
+		Links: []*mongodbatlas.Link{
+			{
+				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
+				Rel:  "self",
+			},
+		},
+		Name:             "ProjectFoobar",
+		OrgID:            orgID,
+		PublicAPIEnabled: true,
+		ReplicaSetCount:  0,
+		ShardCount:       0,
+		Tags:             []*string{},
+	}
+
+	if diff := deep.Equal(project, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestProject_Create_without_opts(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	createRequest := &Project{
+		OrgID: orgID,
+		Name:  "ProjectFoobar",
+	}
+
+	mux.HandleFunc("/api/public/v1.0/groups", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = fmt.Fprint(w, `{
+			"activeAgentCount": 0,
+			"hostCounts": {
+				"arbiter": 0,
+				"config": 0,
+				"master": 0,
+				"mongos": 0,
+				"primary": 0,
+				"secondary": 0,
+				"slave": 0
+			},
+			"id": "56a10a80e4b0fd3b9a9bb0c2",
+			"lastActiveAgent": "2016-03-09T18:19:37Z",
+			"links": [{
+				"href": "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
+				"rel": "self"
+			}],
+			"name": "ProjectFoobar",
+			"orgId": "5a0a1e7e0f2912c554081adc",
+			"publicApiEnabled": true,
+			"replicaSetCount": 0,
+			"shardCount": 0,
+			"tags": []
+		}`)
+	})
+
+	project, _, err := client.Projects.Create(ctx, createRequest, nil)
 	if err != nil {
 		t.Fatalf("Projects.Create returned error: %v", err)
 	}

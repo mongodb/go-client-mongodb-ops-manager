@@ -34,7 +34,7 @@ type ProjectsService interface {
 	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *Response, error)
 	Get(context.Context, string) (*Project, *Response, error)
 	GetByName(context.Context, string) (*Project, *Response, error)
-	Create(context.Context, *Project) (*Project, *Response, error)
+	Create(context.Context, *Project, *atlas.CreateProjectOptions) (*Project, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	RemoveUser(context.Context, string, string) (*Response, error)
 	AddTeamsToProject(context.Context, string, []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *Response, error)
@@ -201,12 +201,17 @@ func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*P
 // Create creates a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/create-one-group/
-func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project) (*Project, *Response, error) {
+func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project, opts *atlas.CreateProjectOptions) (*Project, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
 
-	req, err := s.Client.NewRequest(ctx, http.MethodPost, projectBasePath, createRequest)
+	path, err := setQueryParams(projectBasePath, opts)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, createRequest)
 	if err != nil {
 		return nil, nil, err
 	}
