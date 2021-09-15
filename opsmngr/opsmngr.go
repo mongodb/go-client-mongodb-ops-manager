@@ -231,26 +231,7 @@ func SetUserAgent(ua string) ClientOpt {
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
 func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body interface{}) (*http.Request, error) {
-	if !strings.HasSuffix(c.BaseURL.Path, "/") {
-		return nil, fmt.Errorf("base URL must have a trailing slash, but %q does not", c.BaseURL)
-	}
-	u, err := c.BaseURL.Parse(urlStr)
-	if err != nil {
-		return nil, err
-	}
-
-	var buf io.ReadWriter
-	if body != nil {
-		buf = &bytes.Buffer{}
-		enc := json.NewEncoder(buf)
-		enc.SetEscapeHTML(false)
-		err = enc.Encode(body)
-		if err != nil {
-			return nil, err
-		}
-	}
-
-	req, err := http.NewRequestWithContext(ctx, method, u.String(), buf)
+	req, err := c.newRequest(ctx, urlStr, method, body)
 	if err != nil {
 		return nil, err
 	}
@@ -271,25 +252,12 @@ func (c *Client) NewRequest(ctx context.Context, method, urlStr string, body int
 // specified, the value pointed to by body is JSON encoded and included as the
 // request body.
 func (c *Client) NewGZipRequest(ctx context.Context, method, urlStr string) (*http.Request, error) {
-	if !strings.HasSuffix(c.BaseURL.Path, "/") {
-		return nil, fmt.Errorf("base URL must have a trailing slash, but %q does not", c.BaseURL)
-	}
-	rel, err := url.Parse(urlStr)
+	req, err := c.newRequest(ctx, urlStr, method, nil)
 	if err != nil {
 		return nil, err
 	}
-
-	u := c.BaseURL.ResolveReference(rel)
-
-	req, err := http.NewRequestWithContext(ctx, method, u.String(), nil)
-	if err != nil {
-		return nil, err
-	}
-
 	req.Header.Add("Accept", gzipMediaType)
-	if c.UserAgent != "" {
-		req.Header.Set("User-Agent", c.UserAgent)
-	}
+
 	return req, nil
 }
 
@@ -297,6 +265,16 @@ func (c *Client) NewGZipRequest(ctx context.Context, method, urlStr string) (*ht
 // A relative URL can be provided in urlStr, which will be resolved to the
 // BaseURL of the Client. Relative URLS should always be specified without a preceding slash.
 func (c *Client) NewPlainRequest(ctx context.Context, method, urlStr string) (*http.Request, error) {
+	req, err := c.newRequest(ctx, urlStr, method, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add("Accept", plainMediaType)
+
+	return req, nil
+}
+
+func (c *Client) newRequest(ctx context.Context, urlStr, method string, body interface{}) (*http.Request, error) {
 	if !strings.HasSuffix(c.BaseURL.Path, "/") {
 		return nil, fmt.Errorf("base URL must have a trailing slash, but %q does not", c.BaseURL)
 	}
@@ -307,16 +285,29 @@ func (c *Client) NewPlainRequest(ctx context.Context, method, urlStr string) (*h
 
 	u := c.BaseURL.ResolveReference(rel)
 
-	req, err := http.NewRequestWithContext(ctx, method, u.String(), nil)
+	var buf io.Reader
+	if body != nil {
+		if buf, err = newEncodedBody(body); err != nil {
+			return nil, err
+		}
+	}
+	req, err := http.NewRequestWithContext(ctx, method, u.String(), buf)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Accept", plainMediaType)
 	if c.UserAgent != "" {
 		req.Header.Set("User-Agent", c.UserAgent)
 	}
-
 	return req, nil
+}
+
+// newEncodedBody returns an ReadWriter object containing the body of the http request.
+func newEncodedBody(body interface{}) (io.Reader, error) {
+	buf := &bytes.Buffer{}
+	enc := json.NewEncoder(buf)
+	enc.SetEscapeHTML(false)
+	err := enc.Encode(body)
+	return buf, err
 }
 
 // OnRequestCompleted sets the DO API request completion callback.
