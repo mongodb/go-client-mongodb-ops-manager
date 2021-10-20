@@ -70,7 +70,10 @@ const jsonBlob = `{
   }, {
     "args2_6" : {
       "net" : {
-        "port" : 27010
+        "port" : 27010,
+		"tls" : {
+			"FIPSMode": true
+		}
       },
       "replication" : {
         "replSetName" : "myReplicaSet"
@@ -251,6 +254,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 				Args26: Args26{
 					NET: Net{
 						Port: 27010,
+						TLS:  &TLS{FIPSMode: true},
 					},
 					Storage: &Storage{
 						DBPath: "/data/rs2",
