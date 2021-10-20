@@ -249,7 +249,7 @@ type TLS struct {
 	ClusterPassword            string `json:"clusterPassword,omitempty"`
 	CRLFile                    string `json:"CRLFile,omitempty"` //nolint:tagliatelle // correct from API
 	DisabledProtocols          string `json:"disabledProtocols,omitempty"`
-	FIPSMode                   bool   `json:"FIPSMode"` //nolint:tagliatelle // correct from API
+	FIPSMode                   *bool  `json:"FIPSMode"` //nolint:tagliatelle // correct from API
 	Mode                       string `json:"mode,omitempty"`
 	PEMKeyFile                 string `json:"PEMKeyFile,omitempty"` //nolint:tagliatelle // correct from API
 }
