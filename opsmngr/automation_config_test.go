@@ -70,7 +70,10 @@ const jsonBlob = `{
   }, {
     "args2_6" : {
       "net" : {
-        "port" : 27010
+        "port" : 27010,
+		"tls" : {
+			"FIPSMode": true
+		}
       },
       "replication" : {
         "replSetName" : "myReplicaSet"
@@ -190,6 +193,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 	}
 
 	slaveDelay := float64(0)
+	fipsMode := true
 	expected := &AutomationConfig{
 		Auth: Auth{
 			AutoAuthMechanism: "MONGODB-CR",
@@ -251,6 +255,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 				Args26: Args26{
 					NET: Net{
 						Port: 27010,
+						TLS:  &TLS{FIPSMode: &fipsMode},
 					},
 					Storage: &Storage{
 						DBPath: "/data/rs2",
