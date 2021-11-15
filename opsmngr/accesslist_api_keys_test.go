@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	apiKeyID  = "API-KEY-ID"
+	apiKeyID  = "API-KEY-ID" //nolint:gosec // ID and not an actual key
 	ipAddress = "IP-ADDRESS"
 )
 

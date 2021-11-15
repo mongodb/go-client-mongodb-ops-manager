@@ -23,7 +23,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const apiKeysPath = "api/public/v1.0/admin/apiKeys"
+const apiKeysPath = "api/public/v1.0/admin/apiKeys" //nolint:gosec // This is a path
 
 // GlobalAPIKeysService provides access to the global alerts related functions in the Ops Manager API.
 //

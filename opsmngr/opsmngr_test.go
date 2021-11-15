@@ -19,7 +19,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
@@ -151,7 +151,7 @@ func TestNewRequest_withUserData(t *testing.T) {
 	}
 
 	// test body was JSON encoded
-	body, _ := ioutil.ReadAll(req.Body)
+	body, _ := io.ReadAll(req.Body)
 	if string(body) != outBody {
 		t.Errorf("NewRequest(%v)Body = %v, expected %v", inBody, string(body), outBody)
 	}

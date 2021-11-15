@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList"
+const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList" //nolint:gosec // This is a path
 
 // AccessListAPIKeysServiceOp handles communication with the AccessList API keys related methods of the MongoDB Ops Manager API.
 type AccessListAPIKeysServiceOp service

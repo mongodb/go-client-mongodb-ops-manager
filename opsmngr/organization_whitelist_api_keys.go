@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const organizationWhitelistAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/whitelist"
+const organizationWhitelistAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/whitelist" //nolint:gosec // This is a path
 
 // WhitelistAPIKeysServiceOp handles communication with the Whitelist API keys related methods of the
 // MongoDB Ops Manager API.
