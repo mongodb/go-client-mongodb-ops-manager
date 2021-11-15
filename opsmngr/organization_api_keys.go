@@ -23,7 +23,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys"
+const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys" //nolint:gosec // This is a path
 
 // APIKeysServiceOp handles communication with the APIKey related methods
 // of the MongoDB Ops Manager API.

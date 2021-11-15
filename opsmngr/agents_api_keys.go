@@ -23,7 +23,7 @@ import (
 )
 
 const (
-	agentAPIKeysBasePath = "api/public/v1.0/groups/%s/agentapikeys"
+	agentAPIKeysBasePath = "api/public/v1.0/groups/%s/agentapikeys" //nolint:gosec // This is a path
 )
 
 // AgentAPIKey defines the structure for an Agent API key.

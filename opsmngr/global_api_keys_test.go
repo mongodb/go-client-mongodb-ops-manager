@@ -26,12 +26,11 @@ import (
 )
 
 const (
-	apiDesc    = "test-apikeye"
-	ewmaqvdo   = "ewmaqvdo"
-	testAPIKey = "test-apikey"
+	apiDesc        = "test-apikeye"
+	ewmaqvdo       = "ewmaqvdo"
+	testAPIKey     = "test-apikey"
+	globalAPIKeyID = "5c47503320eef5699e1cce8d" //nolint:gosec // ID and not an actual key
 )
-
-const globalAPIKeyID = "5c47503320eef5699e1cce8d"
 
 func TestAPIKeys_ListAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()

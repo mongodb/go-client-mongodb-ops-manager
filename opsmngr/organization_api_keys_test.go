@@ -255,8 +255,6 @@ func TestOrganizationAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	orgID := "1"
-
 	createRequest := &atlas.APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GROUP_OWNER"},
@@ -320,8 +318,6 @@ func TestOrganizationAPIKeys_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	orgID := "1"
-
 	updateRequest := &atlas.APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GROUP_OWNER"},
@@ -363,9 +359,6 @@ func TestOrganizationAPIKeys_Update(t *testing.T) {
 func TestOrganizationAPIKeys_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-
-	orgID := "1"
-	apiKeyID := "5c47503320eef5699e1cce8d"
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s/apiKeys/%s", orgID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)

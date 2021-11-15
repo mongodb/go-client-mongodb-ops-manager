@@ -168,9 +168,6 @@ func TestOrganizationWhitelistAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	orgID := "ORG-ID"
-	apiKeyID := "API-KEY-ID"
-
 	createRequest := []*atlas.WhitelistAPIKeysReq{
 		{
 			IPAddress: "77.54.32.11",

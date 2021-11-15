@@ -22,7 +22,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const projectAPIKeysPath = "api/public/v1.0/groups/%s/apiKeys"
+const projectAPIKeysPath = "api/public/v1.0/groups/%s/apiKeys" //nolint:gosec // This is a path
 
 // ProjectAPIKeysOp handles communication with the APIKey related methods
 // of the MongoDB Ops Manager API.

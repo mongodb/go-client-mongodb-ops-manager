@@ -21,7 +21,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -352,7 +351,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		// won't reuse it anyway.
 		const maxBodySlurpSize = 2 << 10
 		if resp.ContentLength == -1 || resp.ContentLength <= maxBodySlurpSize {
-			_, _ = io.CopyN(ioutil.Discard, resp.Body, maxBodySlurpSize)
+			_, _ = io.CopyN(io.Discard, resp.Body, maxBodySlurpSize)
 		}
 
 		resp.Body.Close()
@@ -375,7 +374,7 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 		}
 
 		response.Raw = raw.Bytes()
-		body = ioutil.NopCloser(raw)
+		body = io.NopCloser(raw)
 	}
 
 	if v != nil {
