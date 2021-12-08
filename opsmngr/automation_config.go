@@ -236,6 +236,11 @@ type ReplicaSet struct {
 	Members                            []Member                `json:"members"`
 	Settings                           *map[string]interface{} `json:"settings,omitempty"`
 	WriteConcernMajorityJournalDefault string                  `json:"writeConcernMajorityJournalDefault,omitempty"`
+	Force                              Force                   `json:"force,omitempty"`
+}
+
+type Force struct {
+	CurrentVersion int `json:"currentVersion,omitempty"`
 }
 
 // TLS defines TLS parameters for Net.
