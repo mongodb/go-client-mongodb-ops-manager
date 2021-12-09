@@ -363,7 +363,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 					},
 				},
 				Settings: &map[string]interface{}{},
-				Force:    Force{CurrentVersion: -1},
+				Force:    &Force{CurrentVersion: -1},
 			},
 		},
 		Version: 1,
