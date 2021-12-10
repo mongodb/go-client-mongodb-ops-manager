@@ -173,7 +173,10 @@ const jsonBlob = `{
       "votes" : 1
     } ],
     "protocolVersion" : "1",
-    "settings" : { }
+    "settings" : { },
+	"force": { 
+		"currentVersion": -1
+	}
   } ],
   "version" : 1
 }`
@@ -360,6 +363,7 @@ func TestAutomation_GetConfig(t *testing.T) {
 					},
 				},
 				Settings: &map[string]interface{}{},
+				Force:    &Force{CurrentVersion: -1},
 			},
 		},
 		Version: 1,
