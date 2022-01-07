@@ -83,7 +83,7 @@ type Project struct {
 	LastActiveAgent           string              `json:"lastActiveAgent,omitempty"`
 	Tags                      []*string           `json:"tags,omitempty"`
 	PublicAPIEnabled          bool                `json:"publicApiEnabled,omitempty"`
-	WithDefaultAlertsSettings bool                `json:"withDefaultAlertsSettings,omitempty"`
+	WithDefaultAlertsSettings *bool               `json:"withDefaultAlertsSettings,omitempty"`
 	ReplicaSetCount           int                 `json:"replicaSetCount,omitempty"`
 	ShardCount                int                 `json:"shardCount,omitempty"`
 	ActiveAgentCount          int                 `json:"activeAgentCount,omitempty"`
