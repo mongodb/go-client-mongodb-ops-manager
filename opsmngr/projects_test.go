@@ -392,8 +392,9 @@ func TestProject_Create(t *testing.T) {
 	defer teardown()
 
 	createRequest := &Project{
-		OrgID: orgID,
-		Name:  "ProjectFoobar",
+		OrgID:                     orgID,
+		Name:                      "ProjectFoobar",
+		WithDefaultAlertsSettings: false,
 	}
 
 	mux.HandleFunc("/api/public/v1.0/groups", func(w http.ResponseWriter, r *http.Request) {
