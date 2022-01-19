@@ -73,19 +73,20 @@ type LDAPGroupMapping struct {
 
 // Project represents the structure of a project.
 type Project struct {
-	ActiveAgentCount  int                 `json:"activeAgentCount,omitempty"`
-	AgentAPIKey       string              `json:"agentApiKey,omitempty"`
-	HostCounts        *HostCount          `json:"hostCounts,omitempty"`
-	ID                string              `json:"id,omitempty"`
-	LastActiveAgent   string              `json:"lastActiveAgent,omitempty"`
-	LDAPGroupMappings []*LDAPGroupMapping `json:"ldapGroupMappings,omitempty"`
-	Links             []*atlas.Link       `json:"links,omitempty"`
-	Name              string              `json:"name,omitempty"`
-	OrgID             string              `json:"orgId,omitempty"`
-	PublicAPIEnabled  bool                `json:"publicApiEnabled,omitempty"`
-	ReplicaSetCount   int                 `json:"replicaSetCount,omitempty"`
-	ShardCount        int                 `json:"shardCount,omitempty"`
-	Tags              []*string           `json:"tags,omitempty"`
+	HostCounts                *HostCount          `json:"hostCounts,omitempty"`
+	LDAPGroupMappings         []*LDAPGroupMapping `json:"ldapGroupMappings,omitempty"`
+	Links                     []*atlas.Link       `json:"links,omitempty"`
+	Name                      string              `json:"name,omitempty"`
+	OrgID                     string              `json:"orgId,omitempty"`
+	ID                        string              `json:"id,omitempty"`
+	AgentAPIKey               string              `json:"agentApiKey,omitempty"`
+	LastActiveAgent           string              `json:"lastActiveAgent,omitempty"`
+	Tags                      []*string           `json:"tags,omitempty"`
+	PublicAPIEnabled          bool                `json:"publicApiEnabled,omitempty"`
+	WithDefaultAlertsSettings *bool               `json:"withDefaultAlertsSettings,omitempty"`
+	ReplicaSetCount           int                 `json:"replicaSetCount,omitempty"`
+	ShardCount                int                 `json:"shardCount,omitempty"`
+	ActiveAgentCount          int                 `json:"activeAgentCount,omitempty"`
 }
 
 // Projects represents a array of project.
