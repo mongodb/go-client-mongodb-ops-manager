@@ -105,11 +105,11 @@ func TestAgentsServiceOp_ListAgentsByType(t *testing.T) {
 
 	const agentType = "MONITORING"
 
-	if _, _, err := client.Agents.ListAgentsByType(ctx, "", agentType); err == nil {
+	if _, _, err := client.Agents.ListAgentsByType(ctx, "", agentType, nil); err == nil {
 		t.Error("expected an error but got nil")
 	}
 
-	if _, _, err := client.Agents.ListAgentsByType(ctx, projectID, ""); err == nil {
+	if _, _, err := client.Agents.ListAgentsByType(ctx, projectID, "", nil); err == nil {
 		t.Error("expected an error but got nil")
 	}
 
@@ -132,7 +132,7 @@ func TestAgentsServiceOp_ListAgentsByType(t *testing.T) {
 						}`)
 	})
 
-	agent, _, err := client.Agents.ListAgentsByType(ctx, projectID, agentType)
+	agent, _, err := client.Agents.ListAgentsByType(ctx, projectID, agentType, nil)
 	if err != nil {
 		t.Fatalf("Agents.ListAgentsByType returned error: %v", err)
 	}
