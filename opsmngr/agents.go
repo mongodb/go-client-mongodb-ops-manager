@@ -32,7 +32,7 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents/
 type AgentsService interface {
 	ListAgentLinks(context.Context, string) (*Agents, *Response, error)
-	ListAgentsByType(context.Context, string, string) (*Agents, *Response, error)
+	ListAgentsByType(context.Context, string, string, *atlas.ListOptions) (*Agents, *Response, error)
 	CreateAgentAPIKey(context.Context, string, *AgentAPIKeysRequest) (*AgentAPIKey, *Response, error)
 	ListAgentAPIKeys(context.Context, string) ([]*AgentAPIKey, *Response, error)
 	DeleteAgentAPIKey(context.Context, string, string) (*Response, error)
@@ -133,7 +133,7 @@ func (s *AgentsServiceOp) ListAgentLinks(ctx context.Context, groupID string) (*
 // ListAgentsByType gets agents of a specified type (i.e. Monitoring, Backup, or Automation) for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-by-type/
-func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentType string) (*Agents, *Response, error) {
+func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentType string, listOptions *atlas.ListOptions) (*Agents, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -141,8 +141,10 @@ func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentTy
 		return nil, nil, atlas.NewArgError("agentType", "must be set")
 	}
 	basePath := fmt.Sprintf(agentsBasePath, groupID)
-	path := fmt.Sprintf("%s/%s", basePath, agentType)
-
+	path, err := setQueryParams(fmt.Sprintf("%s/%s", basePath, agentType), listOptions)
+	if err != nil {
+		return nil, nil, err
+	}
 	req, err := s.Client.NewRequest(ctx, http.MethodGet, path, nil)
 	if err != nil {
 		return nil, nil, err
