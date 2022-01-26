@@ -50,7 +50,7 @@ type Client struct {
 	BaseURL   *url.URL
 	UserAgent string
 
-	// copy raw atlas server response to the Response struct
+	// copy raw server response to the Response struct
 	withRaw bool
 
 	Organizations          OrganizationsService

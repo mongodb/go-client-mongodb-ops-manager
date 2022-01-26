@@ -357,8 +357,8 @@ type Process struct {
 	AuthSchemaVersion                          int                `json:"authSchemaVersion,omitempty"`
 	BackupPITRestoreType                       string             `json:"backupPitRestoreType,omitempty"`
 	BackupRestoreCertificateValidationHostname string             `json:"backupRestoreCertificateValidationHostname,omitempty"`
-	BackupRestoreCheckpointTimestamp           string             `json:"backupRestoreCheckpointTimestamp,omitempty"`
-	BackupRestoreDesiredTime                   string             `json:"backupRestoreDesiredTime,omitempty"`
+	BackupRestoreCheckpointTimestamp           interface{}        `json:"backupRestoreCheckpointTimestamp,omitempty"`
+	BackupRestoreDesiredTime                   interface{}        `json:"backupRestoreDesiredTime,omitempty"`
 	BackupRestoreFilterList                    interface{}        `json:"backupRestoreFilterList,omitempty"`
 	BackupRestoreJobID                         string             `json:"backupRestoreJobId,omitempty"`
 	BackupRestoreURL                           string             `json:"backupRestoreUrl,omitempty"`
