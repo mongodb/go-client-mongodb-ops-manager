@@ -354,6 +354,7 @@ type DefaultRWConcern struct {
 type Process struct {
 	Alias                                      string             `json:"alias,omitempty"`
 	Args26                                     Args26             `json:"args2_6"` //nolint:tagliatelle // correct from API
+	AuditLogRotate                             *LogRotate         `json:"auditLogRotate,omitempty"`
 	AuthSchemaVersion                          int                `json:"authSchemaVersion,omitempty"`
 	BackupPITRestoreType                       string             `json:"backupPitRestoreType,omitempty"`
 	BackupRestoreCertificateValidationHostname string             `json:"backupRestoreCertificateValidationHostname,omitempty"`
