@@ -46,7 +46,10 @@ func TestVersionManifest_Get(t *testing.T) {
 				  "architecture": "amd64",
 				  "gitVersion": "1c1c76aeca21c5983dc178920f5052c298db616c",
 				  "platform": "osx",
-				  "url": "/osx/mongodb-osx-x86_64-2.6.0.tgz"
+				  "url": "/osx/mongodb-osx-x86_64-2.6.0.tgz",
+                  "modules": [
+					"enterprise"
+					]
 				}
 			  ],
 			  "name": "2.6.0"
@@ -59,6 +62,7 @@ func TestVersionManifest_Get(t *testing.T) {
 		t.Fatalf("VersionManifest.Get returned error: %v", err)
 	}
 
+	enterprise := "enterprise"
 	expected := &VersionManifest{
 		Updated: 1599868800044,
 		Versions: []*Version{
@@ -76,6 +80,7 @@ func TestVersionManifest_Get(t *testing.T) {
 						GitVersion:   "1c1c76aeca21c5983dc178920f5052c298db616c",
 						Platform:     "osx",
 						URL:          "/osx/mongodb-osx-x86_64-2.6.0.tgz",
+						Modules:      []*string{&enterprise},
 					},
 				},
 			},

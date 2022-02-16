@@ -64,6 +64,7 @@ type Build struct {
 	WinVCRedistURL     string    `json:"winVCRedistUrl,omitempty"`     //nolint:tagliatelle // correct from API
 	WinVCRedistVersion string    `json:"winVCRedistVersion,omitempty"` //nolint:tagliatelle // correct from API
 	Flavor             string    `json:"flavor,omitempty"`
+	Modules            []*string `json:"modules,omitempty"`
 }
 
 // Get retrieves the version manifest
