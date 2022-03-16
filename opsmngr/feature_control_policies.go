@@ -46,7 +46,7 @@ type FeaturePolicy struct {
 	Created                  string                    `json:"created,omitempty"`
 	Updated                  string                    `json:"updated,omitempty"`
 	ExternalManagementSystem *ExternalManagementSystem `json:"externalManagementSystem,omitempty"`
-	Policies                 []*Policy                 `json:"policies,omitempty"`
+	Policies                 []*Policy                 `json:"policies"`
 }
 
 // ExternalManagementSystem contains parameters for the external system that manages this Ops Manager Project.
