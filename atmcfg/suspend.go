@@ -63,35 +63,39 @@ func setManualModeByReplicaSetNameAndProcesses(out *opsmngr.AutomationConfig, na
 	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
 		return rs.ID == name
 	})
-	if found {
-		rs := out.ReplicaSets[i]
-		for _, m := range rs.Members {
-			for k, p := range out.Processes {
-				if p.Name == m.Host {
-					setManualMode(out.Processes[k], processesMap, manualMode)
-				}
+	if !found {
+		return
+	}
+	rs := out.ReplicaSets[i]
+	for _, m := range rs.Members {
+		for k, p := range out.Processes {
+			if p.Name == m.Host {
+				setManualMode(out.Processes[k], processesMap, manualMode)
 			}
 		}
 	}
+
 }
 
 func setManualModeByShardNameAndProcesses(out *opsmngr.AutomationConfig, name string, processesMap map[string]bool, manualMode bool) {
 	i, found := search.ShardingConfig(out.Sharding, func(s *opsmngr.ShardingConfig) bool {
 		return s.Name == name
 	})
-	if found {
-		s := out.Sharding[i]
-		// manual mode per shards
-		for _, rs := range s.Shards {
-			setManualModeByReplicaSetNameAndProcesses(out, rs.ID, processesMap, manualMode)
-		}
-		// manual mode config rs
-		setManualModeByReplicaSetNameAndProcesses(out, s.ConfigServerReplica, processesMap, manualMode)
-		// manual mode mongos
-		for j := range out.Processes {
-			if out.Processes[j].Cluster == name {
-				setManualMode(out.Processes[j], processesMap, manualMode)
-			}
+	if !found {
+		return
+	}
+
+	s := out.Sharding[i]
+	// manual mode per shards
+	for _, rs := range s.Shards {
+		setManualModeByReplicaSetNameAndProcesses(out, rs.ID, processesMap, manualMode)
+	}
+	// manual mode config rs
+	setManualModeByReplicaSetNameAndProcesses(out, s.ConfigServerReplica, processesMap, manualMode)
+	// manual mode mongos
+	for j := range out.Processes {
+		if out.Processes[j].Cluster == name {
+			setManualMode(out.Processes[j], processesMap, manualMode)
 		}
 	}
 }
