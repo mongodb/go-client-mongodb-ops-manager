@@ -22,25 +22,6 @@ import (
 
 const clusterName = "cluster_1"
 
-func TestRemoveByClusterName(t *testing.T) {
-	t.Run("replica set", func(t *testing.T) {
-		config := automationConfigWithOneReplicaSet(clusterName, false)
-
-		RemoveByClusterName(config, clusterName)
-		if len(config.Processes) != 0 {
-			t.Errorf("Got = %#v, want = 0", len(config.Processes))
-		}
-	})
-	t.Run("sharded cluster", func(t *testing.T) {
-		config := automationConfigWithOneShardedCluster(clusterName, false)
-
-		RemoveByClusterName(config, clusterName)
-		if len(config.Processes) != 0 {
-			t.Errorf("Got = %#v, want = 0", len(config.Processes))
-		}
-	})
-}
-
 func TestIsGoalState(t *testing.T) {
 	tests := []struct {
 		name string
