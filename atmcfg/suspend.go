@@ -74,7 +74,6 @@ func setManualModeByReplicaSetNameAndProcesses(out *opsmngr.AutomationConfig, na
 			}
 		}
 	}
-
 }
 
 func setManualModeByShardNameAndProcesses(out *opsmngr.AutomationConfig, name string, processesMap map[string]bool, manualMode bool) {
