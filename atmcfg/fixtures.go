@@ -47,6 +47,7 @@ func automationConfigWithOneReplicaSet(name string, disabled bool) *opsmngr.Auto
 				AuthSchemaVersion:           authSchemaVersion,
 				Name:                        name + "_0",
 				Disabled:                    disabled,
+				ManualMode:                  disabled,
 				FeatureCompatibilityVersion: "4.2",
 				Hostname:                    "host0",
 				LogRotate: &opsmngr.LogRotate{
@@ -103,6 +104,7 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 				AuthSchemaVersion:           authSchemaVersion,
 				Name:                        name + "_shard_0_0",
 				Disabled:                    disabled,
+				ManualMode:                  disabled,
 				FeatureCompatibilityVersion: "4.2",
 				Hostname:                    "host0",
 				LogRotate: &opsmngr.LogRotate{
@@ -134,6 +136,7 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 				AuthSchemaVersion:           authSchemaVersion,
 				Name:                        name + "_configRS_0",
 				Disabled:                    disabled,
+				ManualMode:                  disabled,
 				FeatureCompatibilityVersion: "4.2",
 				Hostname:                    "host2",
 				LogRotate: &opsmngr.LogRotate{
@@ -160,6 +163,7 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 				Cluster:                     name,
 				Name:                        name + "_mongos_0",
 				Disabled:                    disabled,
+				ManualMode:                  disabled,
 				FeatureCompatibilityVersion: "4.2",
 				Hostname:                    "host1",
 				LogRotate: &opsmngr.LogRotate{

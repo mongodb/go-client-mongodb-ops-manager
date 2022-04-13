@@ -98,56 +98,6 @@ func setDisableByNameAndProcesses(out *opsmngr.AutomationConfig, clusterName str
 	setDisabledByShardNameAndProcesses(out, clusterName, processesMap, disabled)
 }
 
-// RemoveByClusterName removes a cluster and its associated processes from the config.
-// This won't shutdown any running process.
-func RemoveByClusterName(out *opsmngr.AutomationConfig, name string) {
-	// This value may not be present and is mandatory
-	if out.Auth.DeploymentAuthMechanisms == nil {
-		out.Auth.DeploymentAuthMechanisms = make([]string, 0)
-	}
-	removeByReplicaSetName(out, name)
-	removeByShardName(out, name)
-}
-
-func removeByReplicaSetName(out *opsmngr.AutomationConfig, name string) {
-	i, found := search.ReplicaSets(out.ReplicaSets, func(rs *opsmngr.ReplicaSet) bool {
-		return rs.ID == name
-	})
-	if found {
-		rs := out.ReplicaSets[i]
-		out.ReplicaSets = append(out.ReplicaSets[:i], out.ReplicaSets[i+1:]...)
-		for _, m := range rs.Members {
-			for k, p := range out.Processes {
-				if p.Name == m.Host {
-					out.Processes = append(out.Processes[:k], out.Processes[k+1:]...)
-				}
-			}
-		}
-	}
-}
-
-func removeByShardName(out *opsmngr.AutomationConfig, name string) {
-	i, found := search.ShardingConfig(out.Sharding, func(rs *opsmngr.ShardingConfig) bool {
-		return rs.Name == name
-	})
-	if found {
-		s := out.Sharding[i]
-		out.Sharding = append(out.Sharding[:i], out.Sharding[i+1:]...)
-		// remove shards
-		for _, rs := range s.Shards {
-			removeByReplicaSetName(out, rs.ID)
-		}
-		// remove config rs
-		removeByReplicaSetName(out, s.ConfigServerReplica)
-		// remove mongos
-		for j := range out.Processes {
-			if out.Processes[j].Cluster == name {
-				out.Processes = append(out.Processes[:j], out.Processes[j+1:]...)
-			}
-		}
-	}
-}
-
 func stringInSlice(a []string, x string) bool {
 	for _, b := range a {
 		if b == x {
