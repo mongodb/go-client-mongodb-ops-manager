@@ -9,7 +9,7 @@ require (
 	github.com/openlyinc/pointy v1.1.2
 	github.com/stretchr/testify v1.7.1
 	github.com/xdg-go/stringprep v1.0.3
-	go.mongodb.org/atlas v0.15.0
+	go.mongodb.org/atlas v0.16.0
 	gopkg.in/check.v1 v1.0.0-20200227125254-8fa46927fb4f // indirect
 	gopkg.in/yaml.v3 v3.0.0-20200615113413-eeeca48fe776 // indirect
 )
