@@ -432,6 +432,8 @@ func TestClient_OnRequestCompleted(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
+	const expected = `{"A":"a"}`
+
 	type foo struct {
 		A string
 	}
@@ -440,7 +442,7 @@ func TestClient_OnRequestCompleted(t *testing.T) {
 		if m := http.MethodGet; m != r.Method {
 			t.Errorf("Request method = %v, expected %v", r.Method, m)
 		}
-		_, _ = fmt.Fprint(w, `{"A":"a"}`)
+		_, _ = fmt.Fprint(w, expected)
 	})
 
 	req, _ := client.NewRequest(ctx, http.MethodGet, ".", nil)
@@ -462,7 +464,46 @@ func TestClient_OnRequestCompleted(t *testing.T) {
 	if diff := deep.Equal(req, completedReq); diff != nil {
 		t.Error(diff)
 	}
-	if expected := `{"A":"a"}`; !strings.Contains(completedResp, expected) {
+	if !strings.Contains(completedResp, expected) {
+		t.Errorf("expected response to contain %v, Response = %v", expected, completedResp)
+	}
+}
+
+func TestClient_OnAfterRequestCompleted(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	const expected = `{"A":"a"}`
+
+	type foo struct {
+		A string
+	}
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if m := http.MethodGet; m != r.Method {
+			t.Errorf("Request method = %v, expected %v", r.Method, m)
+		}
+		_, _ = fmt.Fprint(w, expected)
+	})
+
+	req, _ := client.NewRequest(ctx, http.MethodGet, ".", nil)
+	body := new(foo)
+	var completedReq *http.Request
+	var completedResp string
+	client.OnAfterRequestCompleted(func(resp *Response) {
+		completedReq = req
+		completedResp = string(resp.Raw)
+	})
+	client.withRaw = true
+	_, err := client.Do(context.Background(), req, body)
+	client.withRaw = false
+	if err != nil {
+		t.Fatalf("Do(): %v", err)
+	}
+	if diff := deep.Equal(req, completedReq); diff != nil {
+		t.Error(diff)
+	}
+	if !strings.Contains(completedResp, expected) {
 		t.Errorf("expected response to contain %v, Response = %v", expected, completedResp)
 	}
 }
