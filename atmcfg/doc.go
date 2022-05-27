@@ -13,7 +13,7 @@
 // limitations under the License.
 
 /*
-Package atmcfg provides a a set of helper methods to help you update the automation config.
+Package atmcfg provides a set of helper methods to help you update the automation config.
 
 Usage
 
