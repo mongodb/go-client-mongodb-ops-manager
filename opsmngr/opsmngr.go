@@ -39,9 +39,10 @@ const (
 )
 
 type (
-	Response                  = atlas.Response
-	RequestCompletionCallback = atlas.RequestCompletionCallback
-	ServiceVersion            = atlas.ServiceVersion
+	Response                       = atlas.Response
+	RequestCompletionCallback      = atlas.RequestCompletionCallback
+	AfterRequestCompletionCallback = atlas.AfterRequestCompletionCallback
+	ServiceVersion                 = atlas.ServiceVersion
 )
 
 // Client manages communication with Ops Manager API.
@@ -97,7 +98,8 @@ type Client struct {
 	LiveMigration          LiveDataMigrationService
 	ServiceVersion         atlas.ServiceVersionService
 
-	onRequestCompleted RequestCompletionCallback
+	onRequestCompleted      RequestCompletionCallback
+	onAfterRequestCompleted AfterRequestCompletionCallback
 }
 
 type service struct {
@@ -314,6 +316,11 @@ func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
 	c.onRequestCompleted = rc
 }
 
+// OnRequestCompleted sets the DO API request completion callback.
+func (c *Client) OnAfterRequestCompleted(rc atlas.AfterRequestCompletionCallback) {
+	c.onAfterRequestCompleted = rc
+}
+
 // Do sends an API request and returns the API response. The API response is JSON decoded and stored in the value
 // pointed to by v, or returned as an error if an API error has occurred. If v implements the io.Writer interface,
 // the raw response will be written to v, without attempting to decode it.
@@ -346,10 +353,11 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 
 	response := &Response{Response: resp}
 
-	err = atlas.CheckResponse(resp)
-	if err != nil {
-		return response, err
-	}
+	defer func() {
+		if c.onAfterRequestCompleted != nil {
+			c.onAfterRequestCompleted(response)
+		}
+	}()
 
 	body := resp.Body
 
@@ -362,6 +370,11 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 
 		response.Raw = raw.Bytes()
 		body = io.NopCloser(raw)
+	}
+
+	err = response.CheckResponse(body)
+	if err != nil {
+		return response, err
 	}
 
 	if v != nil {
