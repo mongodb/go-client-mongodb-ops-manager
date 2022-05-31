@@ -39,10 +39,10 @@ const (
 )
 
 type (
-	Response                       = atlas.Response
-	RequestCompletionCallback      = atlas.RequestCompletionCallback
-	AfterRequestCompletionCallback = atlas.AfterRequestCompletionCallback
-	ServiceVersion                 = atlas.ServiceVersion
+	Response                  = atlas.Response
+	RequestCompletionCallback = atlas.RequestCompletionCallback
+	ResponseProcessedCallback = atlas.ResponseProcessedCallback
+	ServiceVersion            = atlas.ServiceVersion
 )
 
 // Client manages communication with Ops Manager API.
@@ -98,8 +98,8 @@ type Client struct {
 	LiveMigration          LiveDataMigrationService
 	ServiceVersion         atlas.ServiceVersionService
 
-	onRequestCompleted      RequestCompletionCallback
-	onAfterRequestCompleted AfterRequestCompletionCallback
+	onRequestCompleted  RequestCompletionCallback
+	onResponseProcessed ResponseProcessedCallback
 }
 
 type service struct {
@@ -317,8 +317,8 @@ func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
 }
 
 // OnRequestCompleted sets the DO API request completion callback.
-func (c *Client) OnAfterRequestCompleted(rc atlas.AfterRequestCompletionCallback) {
-	c.onAfterRequestCompleted = rc
+func (c *Client) OnResponseProcessed(rc atlas.ResponseProcessedCallback) {
+	c.onResponseProcessed = rc
 }
 
 // Do sends an API request and returns the API response. The API response is JSON decoded and stored in the value
@@ -354,8 +354,8 @@ func (c *Client) Do(ctx context.Context, req *http.Request, v interface{}) (*Res
 	response := &Response{Response: resp}
 
 	defer func() {
-		if c.onAfterRequestCompleted != nil {
-			c.onAfterRequestCompleted(response)
+		if c.onResponseProcessed != nil {
+			c.onResponseProcessed(response)
 		}
 	}()
 

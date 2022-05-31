@@ -469,7 +469,7 @@ func TestClient_OnRequestCompleted(t *testing.T) {
 	}
 }
 
-func TestClient_OnAfterRequestCompleted(t *testing.T) {
+func TestClient_OnResponseProcessed(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
@@ -490,7 +490,7 @@ func TestClient_OnAfterRequestCompleted(t *testing.T) {
 	body := new(foo)
 	var completedReq *http.Request
 	var completedResp string
-	client.OnAfterRequestCompleted(func(resp *Response) {
+	client.OnResponseProcessed(func(resp *Response) {
 		completedReq = req
 		completedResp = string(resp.Raw)
 	})
