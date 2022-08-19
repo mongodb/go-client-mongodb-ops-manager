@@ -71,6 +71,7 @@ type ServerTypeOptions struct {
 	StartDate  string `url:"startDate,omitempty"`
 	EndDate    string `url:"endDate,omitempty"`
 	FileFormat string `url:"fileFormat,omitempty"`
+	Redact     *bool  `url:"redact,omitempty"`
 }
 
 // HostAssignments represents a paginated collection of HostAssignment.
