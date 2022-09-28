@@ -128,18 +128,14 @@ func hmacIteration(f hashingFunc, input, salt []byte, iterationCount int) ([]byt
 	}
 
 	startKey := append(salt, 0, 0, 0, 1) //nolint:gocritic // startKey is a copy of salt plus extra values
-	result := make([]byte, hashSize)
-
 	hmacHash := hmac.New(f, input)
 	if _, err := hmacHash.Write(startKey); err != nil {
 		return nil, fmt.Errorf("error running hmacHash: %w", err)
 	}
 
+	result := make([]byte, hashSize)
 	intermediateDigest := hmacHash.Sum(nil)
-
-	for i := 0; i < len(intermediateDigest); i++ {
-		result[i] = intermediateDigest[i]
-	}
+	copy(result, intermediateDigest)
 
 	for i := 1; i < iterationCount; i++ {
 		hmacHash.Reset()

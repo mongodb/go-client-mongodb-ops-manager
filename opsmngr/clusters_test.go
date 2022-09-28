@@ -74,7 +74,6 @@ func TestClusters_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	clusterID := "533d7d4730040be257defe88"
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s", groupID, clusterID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
