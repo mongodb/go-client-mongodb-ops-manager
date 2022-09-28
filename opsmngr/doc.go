@@ -15,7 +15,7 @@
 /*
 Package opsmngr provides a client for using the MongoDB Ops Manager and Cloud Manager API.
 
-Usage
+Usage:
 
 	import "go.mongodb.org/ops-manager/opsmngr"
 
@@ -33,7 +33,7 @@ pass cancellation signals and deadlines to various services of the client for
 handling a request. In case there is no context available, then context.Background()
 can be used as a starting point.
 
-Authentication
+# Authentication
 
 The ops-manager library does not directly handle authentication. Instead, when
 creating a new client, pass an http.Client that can handle Digest Access authentication for
