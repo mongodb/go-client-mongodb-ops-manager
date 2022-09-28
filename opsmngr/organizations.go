@@ -33,7 +33,7 @@ type OrganizationsService interface {
 	List(context.Context, *atlas.OrganizationsListOptions) (*atlas.Organizations, *Response, error)
 	ListUsers(context.Context, string, *atlas.ListOptions) (*UsersResponse, *Response, error)
 	Get(context.Context, string) (*atlas.Organization, *Response, error)
-	Projects(context.Context, string, *atlas.ListOptions) (*Projects, *Response, error)
+	Projects(context.Context, string, *atlas.ProjectsListOptions) (*Projects, *Response, error)
 	Create(context.Context, *atlas.Organization) (*atlas.Organization, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	Invitations(context.Context, string, *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error)
@@ -131,7 +131,7 @@ func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*atlas.
 // Projects gets all projects for the given organization ID.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-projects/
-func (s *OrganizationsServiceOp) Projects(ctx context.Context, orgID string, opts *atlas.ListOptions) (*Projects, *Response, error) {
+func (s *OrganizationsServiceOp) Projects(ctx context.Context, orgID string, opts *atlas.ProjectsListOptions) (*Projects, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
