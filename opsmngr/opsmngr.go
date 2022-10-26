@@ -45,13 +45,13 @@ type (
 	ServiceVersion            = atlas.ServiceVersion
 )
 
-type HttpClient interface {
+type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
 }
 
 // Client manages communication with Ops Manager API.
 type Client struct {
-	client    HttpClient
+	client    HTTPClient
 	BaseURL   *url.URL
 	UserAgent string
 
@@ -113,7 +113,7 @@ type service struct {
 // provided, a http.DefaultClient will be used. To use API methods which require
 // authentication, provide an http.Client that will perform the authentication
 // for you (such as that provided by the https://github.com/mongodb-forks/digest).
-func NewClient(httpClient HttpClient) *Client {
+func NewClient(httpClient HTTPClient) *Client {
 	if httpClient == nil {
 		httpClient = http.DefaultClient
 	}
@@ -188,7 +188,7 @@ func Options(opts ...ClientOpt) ClientOpt {
 }
 
 // New returns a new Ops Manager API client instance.
-func New(httpClient HttpClient, opts ...ClientOpt) (*Client, error) {
+func New(httpClient HTTPClient, opts ...ClientOpt) (*Client, error) {
 	c := NewClient(httpClient)
 	for _, opt := range opts {
 		if err := opt(c); err != nil {
