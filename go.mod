@@ -3,7 +3,7 @@ module go.mongodb.org/ops-manager
 go 1.17
 
 require (
-	github.com/go-test/deep v1.0.8
+	github.com/go-test/deep v1.1.0
 	github.com/google/go-querystring v1.1.0
 	github.com/openlyinc/pointy v1.2.0
 	github.com/stretchr/testify v1.8.1
