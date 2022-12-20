@@ -8,7 +8,7 @@ require (
 	github.com/openlyinc/pointy v1.2.0
 	github.com/stretchr/testify v1.8.1
 	github.com/xdg-go/stringprep v1.0.4
-	go.mongodb.org/atlas v0.19.0
+	go.mongodb.org/atlas v0.20.0
 )
 
 require (
