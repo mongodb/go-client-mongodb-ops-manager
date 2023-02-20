@@ -20,6 +20,7 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
+	"github.com/openlyinc/pointy"
 )
 
 func TestSnapshotScheduleServiceOp_Get(t *testing.T) {
@@ -50,12 +51,12 @@ func TestSnapshotScheduleServiceOp_Get(t *testing.T) {
 	expected := &SnapshotSchedule{
 		ClusterID:                      clusterID,
 		GroupID:                        groupID,
-		MonthlySnapshotRetentionMonths: 13,
+		MonthlySnapshotRetentionMonths: pointy.Int(13),
 		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
 		SnapshotRetentionDays:          2,
-		WeeklySnapshotRetentionWeeks:   4,
-		DailySnapshotRetentionDays:     7,
+		WeeklySnapshotRetentionWeeks:   pointy.Int(4),
+		DailySnapshotRetentionDays:     pointy.Int(7),
 	}
 	if diff := deep.Equal(snapshot, expected); diff != nil {
 		t.Error(diff)
@@ -85,12 +86,12 @@ func TestSnapshotScheduleServiceOp_Update(t *testing.T) {
 	snapshotSchedule := &SnapshotSchedule{
 		ClusterID:                      clusterID,
 		GroupID:                        groupID,
-		MonthlySnapshotRetentionMonths: 13,
+		MonthlySnapshotRetentionMonths: pointy.Int(13),
 		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
 		SnapshotRetentionDays:          2,
-		WeeklySnapshotRetentionWeeks:   4,
-		DailySnapshotRetentionDays:     7,
+		WeeklySnapshotRetentionWeeks:   pointy.Int(4),
+		DailySnapshotRetentionDays:     pointy.Int(7),
 	}
 
 	snapshot, _, err := client.SnapshotSchedule.Update(ctx, snapshotSchedule.GroupID, snapshotSchedule.ClusterID, snapshotSchedule)
@@ -101,12 +102,12 @@ func TestSnapshotScheduleServiceOp_Update(t *testing.T) {
 	expected := &SnapshotSchedule{
 		ClusterID:                      clusterID,
 		GroupID:                        groupID,
-		MonthlySnapshotRetentionMonths: 13,
+		MonthlySnapshotRetentionMonths: pointy.Int(13),
 		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
 		SnapshotRetentionDays:          2,
-		WeeklySnapshotRetentionWeeks:   4,
-		DailySnapshotRetentionDays:     7,
+		WeeklySnapshotRetentionWeeks:   pointy.Int(4),
+		DailySnapshotRetentionDays:     pointy.Int(7),
 	}
 	if diff := deep.Equal(snapshot, expected); diff != nil {
 		t.Error(diff)
