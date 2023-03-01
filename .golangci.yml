@@ -147,7 +147,6 @@ linters:
 #    - wsl # Whitespace Linter - Forces you to use empty lines! [fast: true, auto-fix: false]
 
 run:
-  go: '1.17'
   tests: true
   skip-dirs:
     - internal/mocks
