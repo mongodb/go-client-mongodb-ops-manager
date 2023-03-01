@@ -29,7 +29,7 @@ const backupAdministratorProjectJobBasePath = "api/public/v1.0/admin/backup/grou
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/backup-group-config/
 type ProjectJobConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*ProjectJobs, *Response, error)
+	List(context.Context, *ListOptions) (*ProjectJobs, *Response, error)
 	Get(context.Context, string) (*ProjectJob, *Response, error)
 	Update(context.Context, string, *ProjectJob) (*ProjectJob, *Response, error)
 }
@@ -79,7 +79,7 @@ type ProjectJobs struct {
 // List retrieves the configurations of all project’s backup jobs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-all-sync-store-configurations/
-func (s *ProjectJobConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*ProjectJobs, *Response, error) {
+func (s *ProjectJobConfigServiceOp) List(ctx context.Context, options *ListOptions) (*ProjectJobs, *Response, error) {
 	path, err := setQueryParams(backupAdministratorProjectJobBasePath, options)
 	if err != nil {
 		return nil, nil, err

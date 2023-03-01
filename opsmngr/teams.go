@@ -30,7 +30,7 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/
 type TeamsService interface {
-	List(context.Context, string, *atlas.ListOptions) ([]atlas.Team, *Response, error)
+	List(context.Context, string, *ListOptions) ([]atlas.Team, *Response, error)
 	Get(context.Context, string, string) (*atlas.Team, *Response, error)
 	GetOneTeamByName(context.Context, string, string) (*atlas.Team, *Response, error)
 	GetTeamUsersAssigned(context.Context, string, string) ([]*User, *Response, error)
@@ -51,7 +51,7 @@ var _ TeamsService = &TeamsServiceOp{}
 // List gets all teams.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-get-all/
-func (s *TeamsServiceOp) List(ctx context.Context, orgID string, listOptions *atlas.ListOptions) ([]atlas.Team, *Response, error) {
+func (s *TeamsServiceOp) List(ctx context.Context, orgID string, listOptions *ListOptions) ([]atlas.Team, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}

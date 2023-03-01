@@ -104,7 +104,7 @@ type LogCollectionJobs struct {
 // LogListOptions specifies the optional parameters to List methods that
 // support pagination.
 type LogListOptions struct {
-	atlas.ListOptions
+	ListOptions
 	Verbose bool `url:"verbose,omitempty"`
 }
 

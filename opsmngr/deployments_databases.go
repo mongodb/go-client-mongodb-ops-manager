@@ -29,7 +29,7 @@ const (
 // ListDatabases retrieve all databases running on the specified host.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/databases-get-all-on-host/
-func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error) {
+func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

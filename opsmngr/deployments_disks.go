@@ -29,7 +29,7 @@ const (
 // ListPartitions retrieves all disk partitions on the specified host.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disks-get-all/
-func (s *DeploymentsServiceOp) ListPartitions(ctx context.Context, groupID, hostID string, opts *atlas.ListOptions) (*atlas.ProcessDisksResponse, *Response, error) {
+func (s *DeploymentsServiceOp) ListPartitions(ctx context.Context, groupID, hostID string, opts *ListOptions) (*atlas.ProcessDisksResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

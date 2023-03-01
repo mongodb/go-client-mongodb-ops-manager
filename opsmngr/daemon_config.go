@@ -29,7 +29,7 @@ const backupAdministratorDaemonBasePath = "api/public/v1.0/admin/backup/daemon/c
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/backup-daemon-config/
 type DaemonConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*Daemons, *Response, error)
+	List(context.Context, *ListOptions) (*Daemons, *Response, error)
 	Get(context.Context, string) (*Daemon, *Response, error)
 	Update(context.Context, string, *Daemon) (*Daemon, *Response, error)
 	Delete(context.Context, string) (*Response, error)
@@ -88,7 +88,7 @@ func (s *DaemonConfigServiceOp) Get(ctx context.Context, daemonID string) (*Daem
 // List retrieves all the Daemons.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/get-all-backup-daemon-configurations/
-func (s *DaemonConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*Daemons, *Response, error) {
+func (s *DaemonConfigServiceOp) List(ctx context.Context, options *ListOptions) (*Daemons, *Response, error) {
 	path, err := setQueryParams(backupAdministratorDaemonBasePath, options)
 	if err != nil {
 		return nil, nil, err

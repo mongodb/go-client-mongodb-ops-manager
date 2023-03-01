@@ -29,7 +29,7 @@ const backupAdministratorBlockstoreBasePath = "api/public/v1.0/admin/backup/snap
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/blockstore-config/
 type BlockstoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*BackupStores, *Response, error)
+	List(context.Context, *ListOptions) (*BackupStores, *Response, error)
 	Get(context.Context, string) (*BackupStore, *Response, error)
 	Create(context.Context, *BackupStore) (*BackupStore, *Response, error)
 	Update(context.Context, string, *BackupStore) (*BackupStore, *Response, error)
@@ -81,7 +81,7 @@ func (s *BlockstoreConfigServiceOp) Get(ctx context.Context, blockstoreID string
 // List retrieves all the blockstores.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/get-all-blockstore-configurations/
-func (s *BlockstoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *Response, error) {
+func (s *BlockstoreConfigServiceOp) List(ctx context.Context, options *ListOptions) (*BackupStores, *Response, error) {
 	path, err := setQueryParams(backupAdministratorBlockstoreBasePath, options)
 	if err != nil {
 		return nil, nil, err

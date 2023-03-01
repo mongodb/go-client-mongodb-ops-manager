@@ -31,7 +31,7 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup-configurations/
 type BackupConfigsService interface {
-	List(context.Context, string, *atlas.ListOptions) (*BackupConfigs, *Response, error)
+	List(context.Context, string, *ListOptions) (*BackupConfigs, *Response, error)
 	Get(context.Context, string, string) (*BackupConfig, *Response, error)
 	Update(context.Context, string, string, *BackupConfig) (*BackupConfig, *Response, error)
 }
@@ -68,7 +68,7 @@ type BackupConfigs struct {
 // List gets all backup configurations.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/get-all-backup-configs-for-group/
-func (s *BackupConfigsServiceOp) List(ctx context.Context, groupID string, opts *atlas.ListOptions) (*BackupConfigs, *Response, error) {
+func (s *BackupConfigsServiceOp) List(ctx context.Context, groupID string, opts *ListOptions) (*BackupConfigs, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

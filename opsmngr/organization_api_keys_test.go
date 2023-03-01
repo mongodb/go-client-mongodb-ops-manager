@@ -242,7 +242,7 @@ func TestOrganizationAPIKeys_RetrievePageByNumber(t *testing.T) {
 		fmt.Fprint(w, jBlob)
 	})
 
-	opt := &atlas.ListOptions{PageNum: 2}
+	opt := &ListOptions{PageNum: 2}
 	_, resp, err := client.OrganizationAPIKeys.List(ctx, "1", opt)
 	if err != nil {
 		t.Fatal(err)

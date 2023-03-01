@@ -33,7 +33,7 @@ var _ atlas.ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
 // List lists all continuous backup jobs in Atlas
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/get-all-restore-jobs-for-one-cluster/
-func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clusterID string, opts *atlas.ListOptions) (*atlas.ContinuousJobs, *Response, error) {
+func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clusterID string, opts *ListOptions) (*atlas.ContinuousJobs, *Response, error) {
 	if clusterID == "" {
 		return nil, nil, atlas.NewArgError("clusterID", "must be set")
 	}

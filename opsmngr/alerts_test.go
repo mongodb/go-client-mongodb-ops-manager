@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"github.com/openlyinc/pointy"
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -75,7 +74,7 @@ func TestAlert_Get(t *testing.T) {
 		EventTypeName: "OUTSIDE_METRIC_THRESHOLD",
 		Created:       "2016-08-23T20:26:50Z",
 		Updated:       "2016-08-23T20:26:50Z",
-		Enabled:       pointy.Bool(true),
+		Enabled:       pointer(true),
 		Matchers: []atlas.Matcher{
 			{
 				FieldName: "HOSTNAME_AND_PORT",
@@ -87,7 +86,7 @@ func TestAlert_Get(t *testing.T) {
 			{
 				TypeName:     "SMS",
 				IntervalMin:  5,
-				DelayMin:     pointy.Int(0),
+				DelayMin:     pointer(0),
 				MobileNumber: "2343454567",
 			},
 		},
@@ -192,7 +191,7 @@ func TestAlerts_List(t *testing.T) {
 				EventTypeName: "OUTSIDE_METRIC_THRESHOLD",
 				Created:       "2016-08-23T20:26:50Z",
 				Updated:       "2016-08-23T20:26:50Z",
-				Enabled:       pointy.Bool(true),
+				Enabled:       pointer(true),
 				Matchers: []atlas.Matcher{
 					{
 						FieldName: "HOSTNAME_AND_PORT",
@@ -204,7 +203,7 @@ func TestAlerts_List(t *testing.T) {
 					{
 						TypeName:     "SMS",
 						IntervalMin:  5,
-						DelayMin:     pointy.Int(0),
+						DelayMin:     pointer(0),
 						MobileNumber: "2343454567",
 					},
 				},
@@ -222,7 +221,7 @@ func TestAlerts_List(t *testing.T) {
 				EventTypeName: "OUTSIDE_METRIC_THRESHOLD",
 				Created:       "2016-08-23T20:26:50Z",
 				Updated:       "2016-08-23T20:26:50Z",
-				Enabled:       pointy.Bool(true),
+				Enabled:       pointer(true),
 				Matchers: []atlas.Matcher{
 					{
 						FieldName: "HOSTNAME_AND_PORT",
@@ -234,7 +233,7 @@ func TestAlerts_List(t *testing.T) {
 					{
 						TypeName:     "SMS",
 						IntervalMin:  5,
-						DelayMin:     pointy.Int(0),
+						DelayMin:     pointer(0),
 						MobileNumber: "2343454567",
 					},
 				},
@@ -305,7 +304,7 @@ func TestAlert_Acknowledge(t *testing.T) {
 		LastNotified:           "2016-08-23T20:33:23Z",
 		MetricName:             "ASSERTS_REGULAR",
 		CurrentValue: &atlas.CurrentValue{
-			Number: pointy.Float64(0.0),
+			Number: pointer(0.0),
 			Units:  "RAW",
 		},
 	}

@@ -29,7 +29,7 @@ const backupAdministratorSyncBasePath = "api/public/v1.0/admin/backup/sync/mongo
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync-store-config/
 type SyncStoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*BackupStores, *Response, error)
+	List(context.Context, *ListOptions) (*BackupStores, *Response, error)
 	Get(context.Context, string) (*BackupStore, *Response, error)
 	Create(context.Context, *BackupStore) (*BackupStore, *Response, error)
 	Update(context.Context, string, *BackupStore) (*BackupStore, *Response, error)
@@ -64,7 +64,7 @@ func (s *SyncStoreConfigServiceOp) Get(ctx context.Context, syncID string) (*Bac
 // List retrieves all the Syncs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-all-sync-store-configurations/
-func (s *SyncStoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *Response, error) {
+func (s *SyncStoreConfigServiceOp) List(ctx context.Context, options *ListOptions) (*BackupStores, *Response, error) {
 	path, err := setQueryParams(backupAdministratorSyncBasePath, options)
 	if err != nil {
 		return nil, nil, err

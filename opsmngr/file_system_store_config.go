@@ -29,7 +29,7 @@ const backupAdministratorFileSystemStoreConfigurationsBasePath = "api/public/v1.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/file-system-store-config/
 type FileSystemStoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*FileSystemStoreConfigurations, *Response, error)
+	List(context.Context, *ListOptions) (*FileSystemStoreConfigurations, *Response, error)
 	Get(context.Context, string) (*FileSystemStoreConfiguration, *Response, error)
 	Create(context.Context, *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *Response, error)
 	Update(context.Context, string, *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *Response, error)
@@ -79,7 +79,7 @@ func (s *FileSystemStoreConfigServiceOp) Get(ctx context.Context, fileSystemID s
 // List retrieves the configurations of all file system stores.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/get-all-file-system-store-configurations/
-func (s *FileSystemStoreConfigServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*FileSystemStoreConfigurations, *Response, error) {
+func (s *FileSystemStoreConfigServiceOp) List(ctx context.Context, opts *ListOptions) (*FileSystemStoreConfigurations, *Response, error) {
 	path, err := setQueryParams(backupAdministratorFileSystemStoreConfigurationsBasePath, opts)
 	if err != nil {
 		return nil, nil, err

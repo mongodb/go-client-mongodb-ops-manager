@@ -43,6 +43,7 @@ type (
 	RequestCompletionCallback = atlas.RequestCompletionCallback
 	ResponseProcessedCallback = atlas.ResponseProcessedCallback
 	ServiceVersion            = atlas.ServiceVersion
+	ListOptions               = atlas.ListOptions
 )
 
 type HTTPClient interface {
@@ -420,4 +421,8 @@ func setQueryParams(s string, opt interface{}) (string, error) {
 
 	origURL.RawQuery = origValues.Encode()
 	return origURL.String(), nil
+}
+
+func pointer[T any](x T) *T {
+	return &x
 }

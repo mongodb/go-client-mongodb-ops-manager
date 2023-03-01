@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"github.com/openlyinc/pointy"
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
@@ -98,7 +97,7 @@ func TestContinuousSnapshots_List(t *testing.T) {
 					Date:      "2017-12-26T16:32:16Z",
 					Increment: 1,
 				},
-				DoNotDelete: pointy.Bool(false),
+				DoNotDelete: pointer(false),
 				Expires:     "2018-12-25T16:32:16Z",
 				GroupID:     "6c7498dg87d9e6526801572b",
 				ID:          "5a4279d4fcc178500596745a",
@@ -189,7 +188,7 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 			Date:      "2017-12-26T16:32:16Z",
 			Increment: 1,
 		},
-		DoNotDelete: pointy.Bool(false),
+		DoNotDelete: pointer(false),
 		Expires:     "2018-12-25T16:32:16Z",
 		GroupID:     "6c7498dg87d9e6526801572b",
 		ID:          "6b5380e6jvn128560506942b",
@@ -298,7 +297,7 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 			Date:      "2017-12-26T16:32:16Z",
 			Increment: 1,
 		},
-		DoNotDelete: pointy.Bool(false),
+		DoNotDelete: pointer(false),
 		Expires:     "2018-12-01T00:00:00Z",
 		GroupID:     "6c7498dg87d9e6526801572b",
 		ID:          "6b5380e6jvn128560506942b",

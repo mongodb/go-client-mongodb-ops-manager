@@ -30,7 +30,7 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/
 type CheckpointsService interface {
-	List(context.Context, string, string, *atlas.ListOptions) (*atlas.Checkpoints, *Response, error)
+	List(context.Context, string, string, *ListOptions) (*atlas.Checkpoints, *Response, error)
 	Get(context.Context, string, string, string) (*atlas.Checkpoint, *Response, error)
 }
 
@@ -42,7 +42,7 @@ var _ CheckpointsService = &CheckpointsServiceOp{}
 // List lists checkpoints.
 //
 // See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-all-checkpoints
-func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *atlas.ListOptions) (*atlas.Checkpoints, *Response, error) {
+func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *ListOptions) (*atlas.Checkpoints, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}

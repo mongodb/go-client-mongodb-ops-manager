@@ -71,7 +71,7 @@ type Hosts struct {
 }
 
 type HostListOptions struct {
-	atlas.ListOptions
+	ListOptions
 	ClusterID string `url:"clusterId,omitempty"`
 }
 

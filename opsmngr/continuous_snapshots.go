@@ -35,7 +35,7 @@ var _ atlas.ContinuousSnapshotsService = &ContinuousSnapshotsServiceOp{}
 // List lists continuous snapshots for the given cluster
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/get-all-snapshots-for-one-cluster/
-func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *atlas.ListOptions) (*atlas.ContinuousSnapshots, *Response, error) {
+func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *ListOptions) (*atlas.ContinuousSnapshots, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}

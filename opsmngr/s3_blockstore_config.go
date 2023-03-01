@@ -29,7 +29,7 @@ const backupAdministratorS3BlockstoreBasePath = "api/public/v1.0/admin/backup/sn
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/s3-blockstore-config/
 type S3BlockstoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*S3Blockstores, *Response, error)
+	List(context.Context, *ListOptions) (*S3Blockstores, *Response, error)
 	Get(context.Context, string) (*S3Blockstore, *Response, error)
 	Create(context.Context, *S3Blockstore) (*S3Blockstore, *Response, error)
 	Update(context.Context, string, *S3Blockstore) (*S3Blockstore, *Response, error)
@@ -86,7 +86,7 @@ func (s *S3BlockstoreConfigServiceOp) Get(ctx context.Context, s3BlockstoreID st
 // List retrieves all the S3Blockstore.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/s3Configs/get-all-s3-blockstore-configurations/
-func (s *S3BlockstoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*S3Blockstores, *Response, error) {
+func (s *S3BlockstoreConfigServiceOp) List(ctx context.Context, options *ListOptions) (*S3Blockstores, *Response, error) {
 	path, err := setQueryParams(backupAdministratorS3BlockstoreBasePath, options)
 	if err != nil {
 		return nil, nil, err

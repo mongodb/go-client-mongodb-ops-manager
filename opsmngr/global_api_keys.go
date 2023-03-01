@@ -29,7 +29,7 @@ const apiKeysPath = "api/public/v1.0/admin/apiKeys" //nolint:gosec // This is a 
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-api-keys/
 type GlobalAPIKeysService interface {
-	List(context.Context, *atlas.ListOptions) ([]atlas.APIKey, *Response, error)
+	List(context.Context, *ListOptions) ([]atlas.APIKey, *Response, error)
 	Get(context.Context, string) (*atlas.APIKey, *Response, error)
 	Create(context.Context, *atlas.APIKeyInput) (*atlas.APIKey, *Response, error)
 	Update(context.Context, string, *atlas.APIKeyInput) (*atlas.APIKey, *Response, error)
@@ -45,7 +45,7 @@ var _ GlobalAPIKeysService = &GlobalAPIKeysServiceOp{}
 // List gets all Global API Keys.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-all-global-api-keys/
-func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *atlas.ListOptions) ([]atlas.APIKey, *Response, error) {
+func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *ListOptions) ([]atlas.APIKey, *Response, error) {
 	// Add query params from listOptions
 	path, err := setQueryParams(apiKeysPath, listOptions)
 	if err != nil {

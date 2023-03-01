@@ -30,7 +30,7 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/
 type ClustersService interface {
-	List(context.Context, string, *atlas.ListOptions) (*Clusters, *Response, error)
+	List(context.Context, string, *ListOptions) (*Clusters, *Response, error)
 	Get(context.Context, string, string) (*Cluster, *Response, error)
 	ListAll(ctx context.Context) (*AllClustersProjects, *Response, error)
 }
@@ -41,7 +41,7 @@ type ClustersServiceOp service
 // List all clusters for a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/#get-all-clusters
-func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) (*Clusters, *Response, error) {
+func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOptions *ListOptions) (*Clusters, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}

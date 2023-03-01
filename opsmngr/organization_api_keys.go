@@ -41,7 +41,7 @@ type APIKeysResponse struct {
 // List all API-KEY in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-all-org-api-keys/
-func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *atlas.ListOptions) ([]atlas.APIKey, *Response, error) {
+func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *ListOptions) ([]atlas.APIKey, *Response, error) {
 	path := fmt.Sprintf(apiKeysOrgPath, orgID)
 
 	// Add query params from listOptions

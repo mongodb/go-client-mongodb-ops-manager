@@ -26,15 +26,21 @@ const (
 	orgsBasePath = "api/public/v1.0/orgs"
 )
 
+type (
+	Organization             = atlas.Organization
+	Organizations            = atlas.Organizations
+	OrganizationsListOptions = atlas.OrganizationsListOptions
+)
+
 // OrganizationsService provides access to the organization related functions in the Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/
 type OrganizationsService interface {
-	List(context.Context, *atlas.OrganizationsListOptions) (*atlas.Organizations, *Response, error)
-	ListUsers(context.Context, string, *atlas.ListOptions) (*UsersResponse, *Response, error)
-	Get(context.Context, string) (*atlas.Organization, *Response, error)
-	Projects(context.Context, string, *atlas.ProjectsListOptions) (*Projects, *Response, error)
-	Create(context.Context, *atlas.Organization) (*atlas.Organization, *Response, error)
+	List(context.Context, *OrganizationsListOptions) (*Organizations, *Response, error)
+	ListUsers(context.Context, string, *ListOptions) (*UsersResponse, *Response, error)
+	Get(context.Context, string) (*Organization, *Response, error)
+	Projects(context.Context, string, *ProjectsListOptions) (*Projects, *Response, error)
+	Create(context.Context, *Organization) (*Organization, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	Invitations(context.Context, string, *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error)
 	Invitation(context.Context, string, string) (*atlas.Invitation, *Response, error)
@@ -78,7 +84,7 @@ func (s *OrganizationsServiceOp) List(ctx context.Context, opts *atlas.Organizat
 // ListUsers gets all users in an organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-users/
-func (s *OrganizationsServiceOp) ListUsers(ctx context.Context, orgID string, opts *atlas.ListOptions) (*UsersResponse, *Response, error) {
+func (s *OrganizationsServiceOp) ListUsers(ctx context.Context, orgID string, opts *ListOptions) (*UsersResponse, *Response, error) {
 	path := fmt.Sprintf(orgUsersBasePath, orgID)
 
 	path, err := setQueryParams(path, opts)

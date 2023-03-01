@@ -150,7 +150,7 @@ func (s *AlertConfigurationsServiceOp) GetOpenAlertsConfig(ctx context.Context, 
 // List gets all alert configurations for the project associated to {GROUP-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-all-configs/
-func (s *AlertConfigurationsServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) ([]atlas.AlertConfiguration, *Response, error) {
+func (s *AlertConfigurationsServiceOp) List(ctx context.Context, groupID string, listOptions *ListOptions) ([]atlas.AlertConfiguration, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

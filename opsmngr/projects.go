@@ -26,19 +26,23 @@ const (
 	projectBasePath = "api/public/v1.0/groups"
 )
 
+type (
+	ProjectsListOptions = atlas.ProjectsListOptions
+)
+
 // ProjectsService provides access to the project related functions in the Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/
 type ProjectsService interface {
-	List(context.Context, *atlas.ListOptions) (*Projects, *Response, error)
-	ListUsers(context.Context, string, *atlas.ListOptions) ([]*User, *Response, error)
+	List(context.Context, *ListOptions) (*Projects, *Response, error)
+	ListUsers(context.Context, string, *ListOptions) ([]*User, *Response, error)
 	Get(context.Context, string) (*Project, *Response, error)
 	GetByName(context.Context, string) (*Project, *Response, error)
 	Create(context.Context, *Project, *atlas.CreateProjectOptions) (*Project, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	RemoveUser(context.Context, string, string) (*Response, error)
 	AddTeamsToProject(context.Context, string, []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *Response, error)
-	GetTeams(context.Context, string, *atlas.ListOptions) (*atlas.TeamsAssigned, *Response, error)
+	GetTeams(context.Context, string, *ListOptions) (*atlas.TeamsAssigned, *Response, error)
 	Invitations(context.Context, string, *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error)
 	Invitation(context.Context, string, string) (*atlas.Invitation, *Response, error)
 	InviteUser(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
@@ -99,7 +103,7 @@ type Projects struct {
 // List gets all projects.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-groups-for-current-user/
-func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (*Projects, *Response, error) {
+func (s *ProjectsServiceOp) List(ctx context.Context, opts *ListOptions) (*Projects, *Response, error) {
 	path, err := setQueryParams(projectBasePath, opts)
 	if err != nil {
 		return nil, nil, err
@@ -125,7 +129,7 @@ func (s *ProjectsServiceOp) List(ctx context.Context, opts *atlas.ListOptions) (
 // ListUsers gets all users in a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-all-users-in-one-group/
-func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *atlas.ListOptions) ([]*User, *Response, error) {
+func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opts *ListOptions) ([]*User, *Response, error) {
 	path := fmt.Sprintf("%s/%s/users", projectBasePath, projectID)
 
 	path, err := setQueryParams(path, opts)
@@ -297,7 +301,7 @@ func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID str
 // GetTeams gets all teams in a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-get-teams/
-func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *atlas.ListOptions) (*atlas.TeamsAssigned, *Response, error) {
+func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *ListOptions) (*atlas.TeamsAssigned, *Response, error) {
 	if projectID == "" {
 		return nil, nil, atlas.NewArgError("projectID", "cannot be empty")
 	}

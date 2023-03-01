@@ -30,9 +30,9 @@ type DeploymentsService interface {
 	StartMonitoring(context.Context, string, *Host) (*Host, *Response, error)
 	UpdateMonitoring(context.Context, string, string, *Host) (*Host, *Response, error)
 	StopMonitoring(context.Context, string, string) (*Response, error)
-	ListPartitions(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDisksResponse, *Response, error)
+	ListPartitions(context.Context, string, string, *ListOptions) (*atlas.ProcessDisksResponse, *Response, error)
 	GetPartition(context.Context, string, string, string) (*atlas.ProcessDisk, *Response, error)
-	ListDatabases(context.Context, string, string, *atlas.ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error)
+	ListDatabases(context.Context, string, string, *ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error)
 	GetDatabase(context.Context, string, string, string) (*atlas.ProcessDatabase, *Response, error)
 }
 

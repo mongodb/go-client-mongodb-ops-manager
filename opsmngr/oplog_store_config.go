@@ -29,7 +29,7 @@ const backupAdministratorOplogBasePath = "api/public/v1.0/admin/backup/oplog/mon
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog-store-config/
 type OplogStoreConfigService interface {
-	List(context.Context, *atlas.ListOptions) (*BackupStores, *Response, error)
+	List(context.Context, *ListOptions) (*BackupStores, *Response, error)
 	Get(context.Context, string) (*BackupStore, *Response, error)
 	Create(context.Context, *BackupStore) (*BackupStore, *Response, error)
 	Update(context.Context, string, *BackupStore) (*BackupStore, *Response, error)
@@ -64,7 +64,7 @@ func (s *OplogStoreConfigServiceOp) Get(ctx context.Context, oplogID string) (*B
 // List retrieves all the Oplogs.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-all-oplog-configurations/
-func (s *OplogStoreConfigServiceOp) List(ctx context.Context, options *atlas.ListOptions) (*BackupStores, *Response, error) {
+func (s *OplogStoreConfigServiceOp) List(ctx context.Context, options *ListOptions) (*BackupStores, *Response, error) {
 	path, err := setQueryParams(backupAdministratorOplogBasePath, options)
 	if err != nil {
 		return nil, nil, err

@@ -33,7 +33,7 @@ var _ atlas.ProjectAPIKeysService = &ProjectAPIKeysOp{}
 // List all API-KEY in the organization associated to {GROUP-ID}.
 //
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/api-keys/project/get-all-apiKeys-in-one-project/
-func (s *ProjectAPIKeysOp) List(ctx context.Context, groupID string, listOptions *atlas.ListOptions) ([]atlas.APIKey, *Response, error) {
+func (s *ProjectAPIKeysOp) List(ctx context.Context, groupID string, listOptions *ListOptions) ([]atlas.APIKey, *Response, error) {
 	path := fmt.Sprintf(projectAPIKeysPath, groupID)
 
 	// Add query params from listOptions

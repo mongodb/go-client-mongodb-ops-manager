@@ -67,7 +67,7 @@ var _ ServerUsageReportService = &ServerUsageReportServiceOp{}
 // ServerTypeOptions specifies the optional parameters to List methods that
 // support pagination.
 type ServerTypeOptions struct {
-	atlas.ListOptions
+	ListOptions
 	StartDate  string `url:"startDate,omitempty"`
 	EndDate    string `url:"endDate,omitempty"`
 	FileFormat string `url:"fileFormat,omitempty"`

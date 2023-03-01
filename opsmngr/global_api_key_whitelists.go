@@ -28,7 +28,7 @@ const whitelistAPIKeysPath = "api/public/v1.0/admin/whitelist" //nolint:gosec //
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-api-key-whitelists/
 type GlobalAPIKeyWhitelistsService interface {
-	List(context.Context, *atlas.ListOptions) (*GlobalWhitelistAPIKeys, *Response, error)
+	List(context.Context, *ListOptions) (*GlobalWhitelistAPIKeys, *Response, error)
 	Get(context.Context, string) (*GlobalWhitelistAPIKey, *Response, error)
 	Create(context.Context, *WhitelistAPIKeysReq) (*GlobalWhitelistAPIKey, *Response, error)
 	Delete(context.Context, string) (*Response, error)
@@ -65,7 +65,7 @@ type WhitelistAPIKeysReq struct {
 // List all global whitelist entries.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-all-global-whitelist/
-func (s *GlobalAPIKeyWhitelistsServiceOp) List(ctx context.Context, listOptions *atlas.ListOptions) (*GlobalWhitelistAPIKeys, *Response, error) {
+func (s *GlobalAPIKeyWhitelistsServiceOp) List(ctx context.Context, listOptions *ListOptions) (*GlobalWhitelistAPIKeys, *Response, error) {
 	path, err := setQueryParams(whitelistAPIKeysPath, listOptions)
 	if err != nil {
 		return nil, nil, err

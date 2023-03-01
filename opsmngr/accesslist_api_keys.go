@@ -30,7 +30,7 @@ type AccessListAPIKeysServiceOp service
 var _ atlas.AccessListAPIKeysService = &AccessListAPIKeysServiceOp{}
 
 // List gets all AccessList API keys.
-func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *atlas.ListOptions) (*atlas.AccessListAPIKeys, *Response, error) {
+func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *ListOptions) (*atlas.AccessListAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
