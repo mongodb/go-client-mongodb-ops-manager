@@ -27,6 +27,8 @@ import (
 // The MongoDB Agent waits until you ask the primary node to become the secondary with the rs.stepDown() method, and then starts init sync on this node.
 //
 // Warning: Use this method with caution. During initial sync, Automation removes the entire contents of the node’s dbPath directory.
+//
+// See also: https://www.mongodb.com/docs/manual/core/replica-set-sync/#replica-set-initial-sync
 func StartInitialSync(out *opsmngr.AutomationConfig, clusterName string) {
 	StartInitialSyncAt(out, clusterName, "")
 }
@@ -34,6 +36,8 @@ func StartInitialSync(out *opsmngr.AutomationConfig, clusterName string) {
 // StartInitialSyncAt specify the type to start the initial sync at,
 //
 // // Warning: Use this method with caution. During initial sync, Automation removes the entire contents of the node’s dbPath directory.
+//
+// See also: https://www.mongodb.com/docs/manual/core/replica-set-sync/#replica-set-initial-sync
 func StartInitialSyncAt(out *opsmngr.AutomationConfig, clusterName, lastResync string) {
 	if lastResync == "" {
 		lastResync = time.Now().Format(time.RFC3339)
@@ -44,6 +48,8 @@ func StartInitialSyncAt(out *opsmngr.AutomationConfig, clusterName, lastResync s
 }
 
 // StartInitialSyncAtForProcessesByClusterName trigger initial sync for a cluster. Processes are provided in the format {"hostname:port","hostname2:port2"}.
+//
+// See also: https://www.mongodb.com/docs/manual/core/replica-set-sync/#replica-set-initial-sync
 func StartInitialSyncAtForProcessesByClusterName(out *opsmngr.AutomationConfig, clusterName, lastResync string, processes []string) error {
 	if len(processes) == 0 {
 		StartInitialSyncAt(out, clusterName, lastResync)
