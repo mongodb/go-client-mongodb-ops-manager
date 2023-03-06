@@ -82,14 +82,14 @@ func TestContinuousSnapshots_List(t *testing.T) {
 		t.Fatalf("ContinuousSnapshots.List returned error: %v", err)
 	}
 
-	expected := &atlas.ContinuousSnapshots{
+	expected := &ContinuousSnapshots{
 		Links: []*atlas.Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/6c7498dg87d9e6526801572b/clusters/Cluster0/snapshots?pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*atlas.ContinuousSnapshot{
+		Results: []*ContinuousSnapshot{
 			{
 				ClusterID: "7c2487d833e9e75286093696",
 				Complete:  true,
@@ -181,7 +181,7 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 		t.Fatalf("ContinuousSnapshots.Get returned error: %v", err)
 	}
 
-	expected := &atlas.ContinuousSnapshot{
+	expected := &ContinuousSnapshot{
 		ClusterID: "7c2487d833e9e75286093696",
 		Complete:  true,
 		Created: &atlas.SnapshotTimestamp{

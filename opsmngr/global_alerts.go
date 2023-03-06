@@ -31,8 +31,8 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 type GlobalAlertsService interface {
 	Get(context.Context, string) (*GlobalAlert, *Response, error)
-	List(context.Context, *atlas.AlertsListOptions) (*GlobalAlerts, *Response, error)
-	Acknowledge(context.Context, string, *atlas.AcknowledgeRequest) (*GlobalAlert, *Response, error)
+	List(context.Context, *AlertsListOptions) (*GlobalAlerts, *Response, error)
+	Acknowledge(context.Context, string, *AcknowledgeRequest) (*GlobalAlert, *Response, error)
 }
 
 // GlobalAlertsServiceOp provides an implementation of the GlobalAlertsService interface.
@@ -40,7 +40,7 @@ type GlobalAlertsServiceOp service
 
 // GlobalAlert configuration struct.
 type GlobalAlert struct {
-	atlas.Alert
+	Alert
 	SourceTypeName string        `json:"sourceTypeName,omitempty"`
 	Tags           []string      `json:"tags,omitempty"`
 	Links          []*atlas.Link `json:"links,omitempty"`
@@ -78,7 +78,7 @@ func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*Globa
 // List gets all global alerts.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
-func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsListOptions) (*GlobalAlerts, *Response, error) {
+func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *AlertsListOptions) (*GlobalAlerts, *Response, error) {
 	path, err := setQueryParams(globalAlertsBasePath, opts)
 	if err != nil {
 		return nil, nil, err
@@ -98,7 +98,7 @@ func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *atlas.AlertsList
 // Acknowledge acknowledges a global alert.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
-func (s *GlobalAlertsServiceOp) Acknowledge(ctx context.Context, alertID string, body *atlas.AcknowledgeRequest) (*GlobalAlert, *Response, error) {
+func (s *GlobalAlertsServiceOp) Acknowledge(ctx context.Context, alertID string, body *AcknowledgeRequest) (*GlobalAlert, *Response, error) {
 	if alertID == "" {
 		return nil, nil, atlas.NewArgError("alertID", "must be set")
 	}

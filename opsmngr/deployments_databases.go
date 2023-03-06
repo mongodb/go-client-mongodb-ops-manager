@@ -26,10 +26,15 @@ const (
 	hostsDatabasesBasePath = "api/public/v1.0/groups/%s/hosts/%s/databases"
 )
 
+type (
+	ProcessDatabasesResponse = atlas.ProcessDatabasesResponse
+	ProcessDatabase          = atlas.ProcessDatabase
+)
+
 // ListDatabases retrieve all databases running on the specified host.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/databases-get-all-on-host/
-func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error) {
+func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *ListOptions) (*ProcessDatabasesResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -47,7 +52,7 @@ func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostI
 		return nil, nil, err
 	}
 
-	root := new(atlas.ProcessDatabasesResponse)
+	root := new(ProcessDatabasesResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -56,7 +61,7 @@ func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostI
 // GetDatabase retrieve a single database by name.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
-func (s *DeploymentsServiceOp) GetDatabase(ctx context.Context, groupID, hostID, name string) (*atlas.ProcessDatabase, *Response, error) {
+func (s *DeploymentsServiceOp) GetDatabase(ctx context.Context, groupID, hostID, name string) (*ProcessDatabase, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -74,7 +79,7 @@ func (s *DeploymentsServiceOp) GetDatabase(ctx context.Context, groupID, hostID,
 		return nil, nil, err
 	}
 
-	root := new(atlas.ProcessDatabase)
+	root := new(ProcessDatabase)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err

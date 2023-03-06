@@ -33,10 +33,16 @@ type EventsServiceOp service
 
 var _ atlas.EventsService = &EventsServiceOp{}
 
+type (
+	EventListOptions = atlas.EventListOptions
+	EventResponse    = atlas.EventResponse
+	Event            = atlas.Event
+)
+
 // ListOrganizationEvents lists all events in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-all-events-for-org/
-func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID string, listOptions *atlas.EventListOptions) (*atlas.EventResponse, *Response, error) {
+func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID string, listOptions *EventListOptions) (*EventResponse, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -53,7 +59,7 @@ func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID stri
 		return nil, nil, err
 	}
 
-	root := new(atlas.EventResponse)
+	root := new(EventResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -65,7 +71,7 @@ func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID stri
 // GetOrganizationEvent gets the event specified to {EVENT-ID} from the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-one-event-for-org/
-func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, eventID string) (*atlas.Event, *Response, error) {
+func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, eventID string) (*Event, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -80,7 +86,7 @@ func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, event
 		return nil, nil, err
 	}
 
-	root := new(atlas.Event)
+	root := new(Event)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -92,7 +98,7 @@ func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, event
 // ListProjectEvents lists all events in the project associated to {PROJECT-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-all-events-for-project/
-func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string, listOptions *atlas.EventListOptions) (*atlas.EventResponse, *Response, error) {
+func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string, listOptions *atlas.EventListOptions) (*EventResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -109,7 +115,7 @@ func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string,
 		return nil, nil, err
 	}
 
-	root := new(atlas.EventResponse)
+	root := new(EventResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -121,7 +127,7 @@ func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string,
 // GetProjectEvent gets the alert specified to {EVENT-ID} from the project associated to {PROJECT-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-one-event-for-project/
-func (s *EventsServiceOp) GetProjectEvent(ctx context.Context, groupID, eventID string) (*atlas.Event, *Response, error) {
+func (s *EventsServiceOp) GetProjectEvent(ctx context.Context, groupID, eventID string) (*Event, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -136,7 +142,7 @@ func (s *EventsServiceOp) GetProjectEvent(ctx context.Context, groupID, eventID 
 		return nil, nil, err
 	}
 
-	root := new(atlas.Event)
+	root := new(Event)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

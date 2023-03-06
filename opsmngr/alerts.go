@@ -29,10 +29,17 @@ type AlertsServiceOp service
 
 var _ atlas.AlertsService = &AlertsServiceOp{}
 
+type (
+	Alert              = atlas.Alert
+	AlertsResponse     = atlas.AlertsResponse
+	AlertsListOptions  = atlas.AlertsListOptions
+	AcknowledgeRequest = atlas.AcknowledgeRequest
+)
+
 // Get gets the alert specified to {ALERT-ID} for the project associated to {GROUP-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-get-alert/
-func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*atlas.Alert, *Response, error) {
+func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*Alert, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -48,7 +55,7 @@ func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*at
 		return nil, nil, err
 	}
 
-	root := new(atlas.Alert)
+	root := new(Alert)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -60,7 +67,7 @@ func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*at
 // List gets all alert for the project associated to {GROUP-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-get-all-alerts/
-func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions *atlas.AlertsListOptions) (*atlas.AlertsResponse, *Response, error) {
+func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions *AlertsListOptions) (*AlertsResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}
@@ -78,7 +85,7 @@ func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions 
 		return nil, nil, err
 	}
 
-	root := new(atlas.AlertsResponse)
+	root := new(AlertsResponse)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -94,7 +101,7 @@ func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions 
 // Acknowledge allows to acknowledge an alert.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-acknowledge-alert/
-func (s *AlertsServiceOp) Acknowledge(ctx context.Context, groupID, alertID string, params *atlas.AcknowledgeRequest) (*atlas.Alert, *Response, error) {
+func (s *AlertsServiceOp) Acknowledge(ctx context.Context, groupID, alertID string, params *AcknowledgeRequest) (*Alert, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

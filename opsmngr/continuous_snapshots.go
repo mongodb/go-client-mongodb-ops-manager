@@ -32,10 +32,15 @@ type ContinuousSnapshotsServiceOp service
 
 var _ atlas.ContinuousSnapshotsService = &ContinuousSnapshotsServiceOp{}
 
+type (
+	ContinuousSnapshots = atlas.ContinuousSnapshots
+	ContinuousSnapshot  = atlas.ContinuousSnapshot
+)
+
 // List lists continuous snapshots for the given cluster
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/get-all-snapshots-for-one-cluster/
-func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *ListOptions) (*atlas.ContinuousSnapshots, *Response, error) {
+func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *ListOptions) (*ContinuousSnapshots, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -56,7 +61,7 @@ func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, cluste
 		return nil, nil, err
 	}
 
-	root := new(atlas.ContinuousSnapshots)
+	root := new(ContinuousSnapshots)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -65,7 +70,7 @@ func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, cluste
 // Get gets the continuous snapshot for the given cluster and snapshot ID
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/get-one-snapshot-for-one-cluster/
-func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, clusterID, snapshotID string) (*atlas.ContinuousSnapshot, *Response, error) {
+func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, clusterID, snapshotID string) (*ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -83,7 +88,7 @@ func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, cluster
 		return nil, nil, err
 	}
 
-	root := new(atlas.ContinuousSnapshot)
+	root := new(ContinuousSnapshot)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -92,7 +97,7 @@ func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, cluster
 // ChangeExpiry changes the expiry date for the given cluster and snapshot ID
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/change-expiry-for-one-snapshot/
-func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID, clusterID, snapshotID string, updateRequest *atlas.ContinuousSnapshot) (*atlas.ContinuousSnapshot, *Response, error) {
+func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID, clusterID, snapshotID string, updateRequest *ContinuousSnapshot) (*ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupId", "must be set")
 	}
@@ -111,7 +116,7 @@ func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID
 		return nil, nil, err
 	}
 
-	root := new(atlas.ContinuousSnapshot)
+	root := new(ContinuousSnapshot)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
