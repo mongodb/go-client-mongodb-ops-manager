@@ -22,6 +22,11 @@ import (
 	"go.mongodb.org/ops-manager/opsmngr"
 )
 
+const (
+	mongod = "mongod"
+	mongos = "mongos"
+)
+
 func TestReclaimFreeSpace(t *testing.T) {
 	const clusterName = "reclaimTest"
 	t.Run("replica set", func(t *testing.T) {
@@ -38,7 +43,7 @@ func TestReclaimFreeSpace(t *testing.T) {
 		ReclaimFreeSpace(config, clusterName)
 		for i := range config.Processes {
 			isLastCompactEmpty(t, config.Processes[i], "", -1)
-			if config.Processes[i].ProcessType == "mongos" && config.Processes[i].LastCompact != "" {
+			if config.Processes[i].ProcessType == mongos && config.Processes[i].LastCompact != "" {
 				t.Errorf("ReclaimFreeSpace\n got=%#v", config.Processes[i].LastRestart)
 			}
 		}
@@ -58,7 +63,6 @@ func TestReclaimFreeSpaceForProcessesByClusterName(t *testing.T) {
 			t.Errorf("Got = %#v", config.Processes[0].LastRestart)
 		}
 	})
-
 	t.Run("sharded cluster - two processes", func(t *testing.T) {
 		config := automationConfigWithOneShardedCluster(clusterName, true)
 		err := ReclaimFreeSpaceForProcessesByClusterName(config, clusterName, lastCompact, []string{"host0:27017", "host2:27018"})
@@ -101,7 +105,7 @@ func isLastCompactEmpty(t *testing.T, process *opsmngr.Process, hostname string,
 		return
 	}
 
-	if process.ProcessType == "mongod" && process.LastCompact == "" {
-		t.Errorf("ReclaimFreeSpace\n got=%#v", process.LastRestart)
+	if process.ProcessType == mongod && process.LastCompact == "" {
+		t.Errorf("ReclaimFreeSpace\n got=%#v", process.LastCompact)
 	}
 }
