@@ -35,7 +35,7 @@ func StartInitialSync(out *opsmngr.AutomationConfig, clusterName string) {
 
 // StartInitialSyncAt specify the type to start the initial sync at,
 //
-// // Warning: Use this method with caution. During initial sync, Automation removes the entire contents of the node’s dbPath directory.
+// Warning: Use this method with caution. During initial sync, Automation removes the entire contents of the node’s dbPath directory.
 //
 // See also: https://www.mongodb.com/docs/manual/core/replica-set-sync/#replica-set-initial-sync
 func StartInitialSyncAt(out *opsmngr.AutomationConfig, clusterName, lastResync string) {
