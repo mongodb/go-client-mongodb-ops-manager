@@ -65,7 +65,6 @@ linters:
   disable-all: true
   enable:
     - bodyclose # checks whether HTTP response body is closed successfully [fast: false, auto-fix: false]
-
     - depguard # Go linter that checks if package imports are in a list of acceptable packages [fast: false, auto-fix: false]
     - dogsled # Checks assignments with too many blank identifiers (e.g. x, _, _, _, := f()) [fast: true, auto-fix: false]
     - errcheck # Errcheck is a program for checking for unchecked errors in go programs. These unchecked errors can be critical bugs in some cases [fast: false, auto-fix: false]
@@ -100,7 +99,6 @@ linters:
     - unconvert # Remove unnecessary type conversions [fast: false, auto-fix: false]
     - unparam # Reports unused function parameters [fast: false, auto-fix: false]
     - unused # Checks Go code for unused constants, variables, functions and types [fast: false, auto-fix: false]
-
     - whitespace # Tool for detection of leading and trailing whitespace [fast: true, auto-fix: true]
 
     # don't enable:
