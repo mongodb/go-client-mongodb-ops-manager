@@ -366,7 +366,7 @@ func TestClient_Do_httpError(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		http.Error(w, "Bad Request", 400)
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 	})
 
 	req, _ := client.NewRequest(ctx, http.MethodGet, ".", nil)
