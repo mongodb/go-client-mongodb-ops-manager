@@ -110,7 +110,7 @@ type ShardingConfig struct {
 	ManagedSharding     bool                      `json:"managedSharding"`
 	Name                string                    `json:"name"`
 	Shards              []*Shard                  `json:"shards"`
-	Tags                []string                  `json:"tags"`
+	Tags                []*map[string]interface{} `json:"tags"`
 }
 
 // Shard details.
