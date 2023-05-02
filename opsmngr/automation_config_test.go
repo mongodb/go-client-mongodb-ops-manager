@@ -727,3 +727,124 @@ func TestAutomation_GetTlsConfig(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestAutomation_Sharding(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+  "sharding": [
+    {
+      "collections": [
+        {
+          "_id": "EncounterDB.ipsum",
+          "dropped": false,
+          "key": [
+            [
+              "subjectReference.resourceId",
+              1
+            ]
+          ],
+          "presplitHashedZones": false,
+          "unique": false
+        }
+      ],
+      "configServerReplica": "lorem",
+      "draining": [],
+      "managedSharding": true,
+      "name": "lorem",
+      "shards": [
+        {
+          "_id": "lorem01_0",
+          "rs": "lorem01_0",
+          "tags": [
+            "RECENT"
+          ]
+        }
+      ],
+      "tags": [
+        {
+          "max": [
+            {
+              "field": "encounterPeriod.start",
+              "fieldType": "date",
+              "value": "1593561600000"
+            }
+          ],
+          "min": [
+            {
+              "field": "encounterPeriod.start",
+              "fieldType": "minKey",
+              "value": "1"
+            }
+          ],
+          "ns": "EncounterDB.ipsum2",
+          "tag": "PREVIOUS"
+        }
+      ]
+    }
+  ]}`)
+	})
+
+	config, _, err := client.Automation.GetConfig(ctx, projectID)
+	if err != nil {
+		t.Fatalf("Automation.GetConfig returned error: %v", err)
+	}
+
+	expected := &AutomationConfig{
+		Sharding: []*ShardingConfig{
+			{
+				Collections: []*map[string]interface{}{
+					{
+						"_id":     "EncounterDB.ipsum",
+						"dropped": false,
+						"key": []interface{}{
+							[]interface{}{
+								"subjectReference.resourceId",
+								float64(1),
+							},
+						},
+						"presplitHashedZones": false,
+						"unique":              false,
+					},
+				},
+				ConfigServerReplica: "lorem",
+				Draining:            []string{},
+				ManagedSharding:     true,
+				Name:                "lorem",
+				Shards: []*Shard{
+					{
+						ID:   "lorem01_0",
+						RS:   "lorem01_0",
+						Tags: []string{"RECENT"},
+					},
+				},
+				Tags: []*map[string]interface{}{
+					{
+						"max": []interface{}{
+							map[string]interface{}{
+								"field":     "encounterPeriod.start",
+								"fieldType": "date",
+								"value":     "1593561600000",
+							},
+						},
+						"min": []interface{}{
+							map[string]interface{}{
+								"field":     "encounterPeriod.start",
+								"fieldType": "minKey",
+								"value":     "1",
+							},
+						},
+						"ns":  "EncounterDB.ipsum2",
+						"tag": "PREVIOUS",
+					},
+				},
+			},
+		},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
