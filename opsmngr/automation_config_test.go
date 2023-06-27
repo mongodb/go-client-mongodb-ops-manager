@@ -812,7 +812,7 @@ func TestAutomation_Sharding(t *testing.T) {
 				},
 				ConfigServerReplica: "lorem",
 				Draining:            []string{},
-				ManagedSharding:     true,
+				ManagedSharding:     pointer(true),
 				Name:                "lorem",
 				Shards: []*Shard{
 					{

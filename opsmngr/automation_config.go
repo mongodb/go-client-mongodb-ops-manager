@@ -22,6 +22,11 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
+type (
+	IndexOptions     = atlas.IndexOptions
+	CollationOptions = atlas.CollationOptions
+)
+
 // GetConfig retrieves the current automation configuration for a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-the-automation-configuration
@@ -107,7 +112,7 @@ type ShardingConfig struct {
 	Collections         []*map[string]interface{} `json:"collections"`
 	ConfigServerReplica string                    `json:"configServerReplica"`
 	Draining            []string                  `json:"draining"`
-	ManagedSharding     bool                      `json:"managedSharding"`
+	ManagedSharding     *bool                     `json:"managedSharding,omitempty"`
 	Name                string                    `json:"name"`
 	Shards              []*Shard                  `json:"shards"`
 	Tags                []*map[string]interface{} `json:"tags"`
@@ -124,12 +129,12 @@ type Shard struct {
 //
 // See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#indexes
 type IndexConfig struct {
-	DBName         string                  `json:"dbName"`              // DBName of the database that is indexed
-	CollectionName string                  `json:"collectionName"`      // CollectionName that is indexed
-	RSName         string                  `json:"rsName"`              // RSName that the index is built on
-	Key            [][]string              `json:"key"`                 // Key array of keys to index and their type, sorting of keys is important for an index
-	Options        *atlas.IndexOptions     `json:"options,omitempty"`   // Options MongoDB index options
-	Collation      *atlas.CollationOptions `json:"collation,omitempty"` // Collation Mongo collation index options
+	DBName         string            `json:"dbName"`              // DBName of the database that is indexed
+	CollectionName string            `json:"collectionName"`      // CollectionName that is indexed
+	RSName         string            `json:"rsName"`              // RSName that the index is built on
+	Key            [][]string        `json:"key"`                 // Key array of keys to index and their type, sorting of keys is important for an index
+	Options        *IndexOptions     `json:"options,omitempty"`   // Options MongoDB index options
+	Collation      *CollationOptions `json:"collation,omitempty"` // Collation Mongo collation index options
 }
 
 // SSL config properties.
