@@ -26,7 +26,7 @@ func TestRemoveByClusterName(t *testing.T) {
 		}
 	})
 	t.Run("sharded cluster", func(t *testing.T) {
-		config := automationConfigWithOneShardedCluster(clusterName, false)
+		config := automationConfigWithThreeShardsCluster(clusterName, false)
 
 		RemoveByClusterName(config, clusterName)
 		if len(config.Processes) != 0 {
