@@ -221,6 +221,276 @@ func automationConfigWithOneShardedCluster(name string, disabled bool) *opsmngr.
 	}
 }
 
+func automationConfigWithThreeShardsCluster(name string, disabled bool) *opsmngr.AutomationConfig {
+	configRSPort := defaultMongoPort + 1
+	mongosPort := configRSPort + 1
+	slaveDelay := float64(0)
+	return &opsmngr.AutomationConfig{
+		Processes: []*opsmngr.Process{
+			// mongod processes
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: defaultMongoPort,
+					},
+					Replication: &opsmngr.Replication{
+						ReplSetName: name,
+					},
+					Sharding: nil,
+					Storage: &opsmngr.Storage{
+						DBPath: "/data/db/",
+					},
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongodb.log",
+					},
+				},
+				AuthSchemaVersion:           authSchemaVersion,
+				Name:                        name + "_shard_0_0",
+				Disabled:                    disabled,
+				ManualMode:                  disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host0",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  defaultSizeThresholdMB,
+					TimeThresholdHrs: defaultTimeThresholdHrs,
+				},
+				ProcessType: "mongod",
+				Version:     "4.2.2",
+			},
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: defaultMongoPort,
+					},
+					Replication: &opsmngr.Replication{
+						ReplSetName: name,
+					},
+					Sharding: nil,
+					Storage: &opsmngr.Storage{
+						DBPath: "/data/db/",
+					},
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongodb.log",
+					},
+				},
+				AuthSchemaVersion:           authSchemaVersion,
+				Name:                        name + "_shard_1_0",
+				Disabled:                    disabled,
+				ManualMode:                  disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host4",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  defaultSizeThresholdMB,
+					TimeThresholdHrs: defaultTimeThresholdHrs,
+				},
+				ProcessType: "mongod",
+				Version:     "4.2.2",
+			},
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: defaultMongoPort,
+					},
+					Replication: &opsmngr.Replication{
+						ReplSetName: name,
+					},
+					Sharding: nil,
+					Storage: &opsmngr.Storage{
+						DBPath: "/data/db/",
+					},
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongodb.log",
+					},
+				},
+				AuthSchemaVersion:           authSchemaVersion,
+				Name:                        name + "_shard_2_0",
+				Disabled:                    disabled,
+				ManualMode:                  disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host5",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  defaultSizeThresholdMB,
+					TimeThresholdHrs: defaultTimeThresholdHrs,
+				},
+				ProcessType: "mongod",
+				Version:     "4.2.2",
+			},
+			// configRS processes
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: configRSPort,
+					},
+					Replication: &opsmngr.Replication{
+						ReplSetName: name + "_configRS",
+					},
+					Sharding: &opsmngr.Sharding{
+						ClusterRole: "configsvr",
+					},
+					Storage: &opsmngr.Storage{
+						DBPath: "/data/db/",
+					},
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongodb.log",
+					},
+				},
+				AuthSchemaVersion:           authSchemaVersion,
+				Name:                        name + "_configRS_0",
+				Disabled:                    disabled,
+				ManualMode:                  disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host2",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  defaultSizeThresholdMB,
+					TimeThresholdHrs: defaultTimeThresholdHrs,
+				},
+				ProcessType: "mongod",
+				Version:     "4.2.2",
+			},
+			// mongos processes
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: mongosPort,
+					},
+					Replication: nil,
+					Sharding:    nil,
+					Storage:     nil,
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongos.log",
+					},
+				},
+				AuthSchemaVersion:           authSchemaVersion,
+				Cluster:                     name,
+				Name:                        name + "_mongos_0",
+				Disabled:                    disabled,
+				ManualMode:                  disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host1",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  defaultSizeThresholdMB,
+					TimeThresholdHrs: defaultTimeThresholdHrs,
+				},
+				ProcessType: "mongos",
+				Version:     "4.2.2",
+			},
+			{
+				Args26: opsmngr.Args26{
+					NET: opsmngr.Net{
+						Port: mongosPort,
+					},
+					Replication: nil,
+					Sharding:    nil,
+					Storage:     nil,
+					SystemLog: opsmngr.SystemLog{
+						Destination: "file",
+						Path:        "/data/db/mongos.log",
+					},
+				},
+				AuthSchemaVersion:           authSchemaVersion,
+				Cluster:                     name,
+				Name:                        name + "_mongos_1",
+				Disabled:                    disabled,
+				ManualMode:                  disabled,
+				FeatureCompatibilityVersion: "4.2",
+				Hostname:                    "host3",
+				LogRotate: &opsmngr.LogRotate{
+					SizeThresholdMB:  defaultSizeThresholdMB,
+					TimeThresholdHrs: defaultTimeThresholdHrs,
+				},
+				ProcessType: "mongos",
+				Version:     "4.2.2",
+			},
+		},
+		ReplicaSets: []*opsmngr.ReplicaSet{
+			{
+				ID:              name + "_shard_0",
+				ProtocolVersion: "1",
+				Members: []opsmngr.Member{
+					{
+						ArbiterOnly:  false,
+						BuildIndexes: true,
+						Hidden:       false,
+						Host:         name + "_shard_0_0",
+						Priority:     1,
+						SlaveDelay:   &slaveDelay,
+						Votes:        1,
+					},
+				},
+			},
+			{
+				ID:              name + "_shard_1",
+				ProtocolVersion: "1",
+				Members: []opsmngr.Member{
+					{
+						ArbiterOnly:  false,
+						BuildIndexes: true,
+						Hidden:       false,
+						Host:         name + "_shard_1_0",
+						Priority:     1,
+						SlaveDelay:   &slaveDelay,
+						Votes:        1,
+					},
+				},
+			},
+			{
+				ID:              name + "_shard_2",
+				ProtocolVersion: "1",
+				Members: []opsmngr.Member{
+					{
+						ArbiterOnly:  false,
+						BuildIndexes: true,
+						Hidden:       false,
+						Host:         name + "_shard_2_0",
+						Priority:     1,
+						SlaveDelay:   &slaveDelay,
+						Votes:        1,
+					},
+				},
+			},
+			{
+				ID:              name + "_configRS",
+				ProtocolVersion: "1",
+				Members: []opsmngr.Member{
+					{
+						ArbiterOnly:  false,
+						BuildIndexes: true,
+						Hidden:       false,
+						Host:         name + "_configRS_0",
+						Priority:     1,
+						SlaveDelay:   &slaveDelay,
+						Votes:        1,
+					},
+				},
+			},
+		},
+		Sharding: []*opsmngr.ShardingConfig{
+			{
+				Name:                name,
+				ConfigServerReplica: name + "_configRS",
+				Shards: []*opsmngr.Shard{
+					{
+						ID: name + "_shard_0",
+						RS: name + "_shard_0",
+					},
+					{
+						ID: name + "_shard_1",
+						RS: name + "_shard_1",
+					}, {
+						ID: name + "_shard_2",
+						RS: name + "_shard_2",
+					},
+				},
+			},
+		},
+	}
+}
+
 func automationConfigWithoutMongoDBUsers() *opsmngr.AutomationConfig {
 	return &opsmngr.AutomationConfig{
 		Auth: opsmngr.Auth{

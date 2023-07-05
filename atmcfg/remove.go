@@ -38,11 +38,13 @@ func removeByReplicaSetName(out *opsmngr.AutomationConfig, name string) {
 		rs := out.ReplicaSets[i]
 		out.ReplicaSets = append(out.ReplicaSets[:i], out.ReplicaSets[i+1:]...)
 		for _, m := range rs.Members {
-			for k, p := range out.Processes {
-				if p.Name == m.Host {
-					out.Processes = append(out.Processes[:k], out.Processes[k+1:]...)
+			processes := []*opsmngr.Process{}
+			for _, p := range out.Processes {
+				if p.Name != m.Host {
+					processes = append(processes, p)
 				}
 			}
+			out.Processes = processes
 		}
 	}
 }
@@ -61,10 +63,12 @@ func removeByShardName(out *opsmngr.AutomationConfig, name string) {
 		// remove config rs
 		removeByReplicaSetName(out, s.ConfigServerReplica)
 		// remove mongos
-		for j := range out.Processes {
-			if out.Processes[j].Cluster == name {
-				out.Processes = append(out.Processes[:j], out.Processes[j+1:]...)
+		processes := []*opsmngr.Process{}
+		for _, p := range out.Processes {
+			if p.Cluster != name {
+				processes = append(processes, p)
 			}
 		}
+		out.Processes = processes
 	}
 }
