@@ -7,7 +7,7 @@ require (
 	github.com/google/go-querystring v1.1.0
 	github.com/stretchr/testify v1.8.4
 	github.com/xdg-go/stringprep v1.0.4
-	go.mongodb.org/atlas v0.30.0
+	go.mongodb.org/atlas v0.31.0
 )
 
 require (
