@@ -70,31 +70,32 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/
 type AutomationConfig struct {
-	AgentVersion         *map[string]interface{}   `json:"agentVersion,omitempty"`
-	AtlasProxies         *[]interface{}            `json:"atlasProxies,omitempty"`
-	Filebeat             *map[string]interface{}   `json:"filebeat,omitempty"`
-	Auth                 Auth                      `json:"auth"`
-	BackupVersions       []*ConfigVersion          `json:"backupVersions"`
-	Balancer             *map[string]interface{}   `json:"balancer"`
-	CPSModules           []*map[string]interface{} `json:"cpsModules"`
-	IndexConfigs         []*IndexConfig            `json:"indexConfigs"`
-	Kerberos             *map[string]interface{}   `json:"kerberos,omitempty"`
-	LDAP                 *map[string]interface{}   `json:"ldap,omitempty"`
-	MongoDBToolsVersion  *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
-	MongoDBVersions      []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
-	MongoSQLDs           []*map[string]interface{} `json:"mongosqlds"` //nolint:tagliatelle // correct from API
-	MonitoringVersions   []*ConfigVersion          `json:"monitoringVersions,omitempty"`
-	OnlineArchiveModules []*map[string]interface{} `json:"onlineArchiveModules"`
-	Mongots              []*map[string]interface{} `json:"mongots"`
-	Options              *map[string]interface{}   `json:"options"`
-	Processes            []*Process                `json:"processes"`
-	ReplicaSets          []*ReplicaSet             `json:"replicaSets"`
-	Roles                []*map[string]interface{} `json:"roles"`
-	Sharding             []*ShardingConfig         `json:"sharding"`
-	SSL                  *SSL                      `json:"ssl,omitempty"` // Deprecated: prefer TLS
-	TLS                  *SSL                      `json:"tls,omitempty"`
-	UIBaseURL            *string                   `json:"uiBaseUrl,omitempty"`
-	Version              int                       `json:"version,omitempty"`
+	AgentVersion              *map[string]interface{}   `json:"agentVersion,omitempty"`
+	AtlasProxies              *[]interface{}            `json:"atlasProxies,omitempty"`
+	Filebeat                  *map[string]interface{}   `json:"filebeat,omitempty"`
+	Auth                      Auth                      `json:"auth"`
+	BackupVersions            []*ConfigVersion          `json:"backupVersions"`
+	Balancer                  *map[string]interface{}   `json:"balancer"`
+	ClusterWideConfigurations *map[string]interface{}   `json:"clusterWideConfigurations,omitempty"`
+	CPSModules                []*map[string]interface{} `json:"cpsModules"`
+	IndexConfigs              []*IndexConfig            `json:"indexConfigs"`
+	Kerberos                  *map[string]interface{}   `json:"kerberos,omitempty"`
+	LDAP                      *map[string]interface{}   `json:"ldap,omitempty"`
+	MongoDBToolsVersion       *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
+	MongoDBVersions           []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
+	MongoSQLDs                []*map[string]interface{} `json:"mongosqlds"` //nolint:tagliatelle // correct from API
+	MonitoringVersions        []*ConfigVersion          `json:"monitoringVersions,omitempty"`
+	OnlineArchiveModules      []*map[string]interface{} `json:"onlineArchiveModules"`
+	Mongots                   []*map[string]interface{} `json:"mongots"`
+	Options                   *map[string]interface{}   `json:"options"`
+	Processes                 []*Process                `json:"processes"`
+	ReplicaSets               []*ReplicaSet             `json:"replicaSets"`
+	Roles                     []*map[string]interface{} `json:"roles"`
+	Sharding                  []*ShardingConfig         `json:"sharding"`
+	SSL                       *SSL                      `json:"ssl,omitempty"` // Deprecated: prefer TLS
+	TLS                       *SSL                      `json:"tls,omitempty"`
+	UIBaseURL                 *string                   `json:"uiBaseUrl,omitempty"`
+	Version                   int                       `json:"version,omitempty"`
 }
 
 type ConfigVersion struct {
@@ -229,7 +230,7 @@ type Member struct {
 	Votes              float64            `json:"votes"`
 }
 
-// ReplicaSet configs.
+// ReplicaSet configuration.
 type ReplicaSet struct {
 	ID                                 string                  `json:"_id"` //nolint:tagliatelle // correct from API
 	ProtocolVersion                    string                  `json:"protocolVersion,omitempty"`
@@ -331,8 +332,11 @@ type AuditLog struct {
 
 // LogRotate part of the internal Process struct.
 type LogRotate struct {
-	SizeThresholdMB  float64 `json:"sizeThresholdMB,omitempty"` //nolint:tagliatelle // Bytes vs bits
-	TimeThresholdHrs int     `json:"timeThresholdHrs,omitempty"`
+	NumTotal           *int     `json:"numTotal,omitempty"`
+	NumUncompressed    *int     `json:"numUncompressed,omitempty"`
+	PercentOfDiskspace *float64 `json:"percentOfDiskspace,omitempty"`
+	SizeThresholdMB    float64  `json:"sizeThresholdMB,omitempty"` //nolint:tagliatelle // Bytes vs bits
+	TimeThresholdHrs   int      `json:"timeThresholdHrs,omitempty"`
 }
 
 type DefaultReadConcern struct {
