@@ -72,7 +72,7 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 type AutomationConfig struct {
 	AgentVersion              *map[string]interface{}   `json:"agentVersion,omitempty"`
 	AtlasProxies              *[]interface{}            `json:"atlasProxies,omitempty"`
-	AtlasUISes                []*map[string]interface{} `json:"atlasUISes"`
+	AtlasUISes                []*map[string]interface{} `json:"atlasUISes"` //nolint:tagliatelle
 	Filebeat                  *map[string]interface{}   `json:"filebeat,omitempty"`
 	Auth                      Auth                      `json:"auth"`
 	BackupVersions            []*ConfigVersion          `json:"backupVersions"`
