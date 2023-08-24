@@ -72,15 +72,18 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 type AutomationConfig struct {
 	AgentVersion              *map[string]interface{}   `json:"agentVersion,omitempty"`
 	AtlasProxies              *[]interface{}            `json:"atlasProxies,omitempty"`
+	AtlasUISes                []*map[string]interface{} `json:"atlasUISes"` //nolint:tagliatelle // correct from API
 	Filebeat                  *map[string]interface{}   `json:"filebeat,omitempty"`
 	Auth                      Auth                      `json:"auth"`
 	BackupVersions            []*ConfigVersion          `json:"backupVersions"`
 	Balancer                  *map[string]interface{}   `json:"balancer"`
 	ClusterWideConfigurations *map[string]interface{}   `json:"clusterWideConfigurations,omitempty"`
 	CPSModules                []*map[string]interface{} `json:"cpsModules"`
+	DBCheckModules            []*map[string]interface{} `json:"dbCheckModules"`
 	IndexConfigs              []*IndexConfig            `json:"indexConfigs"`
 	Kerberos                  *map[string]interface{}   `json:"kerberos,omitempty"`
 	LDAP                      *map[string]interface{}   `json:"ldap,omitempty"`
+	MaintainedEnvoys          []*map[string]interface{} `json:"maintainedEnvoys"`
 	MongoDBToolsVersion       *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
 	MongoDBVersions           []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
 	MongoSQLDs                []*map[string]interface{} `json:"mongosqlds"` //nolint:tagliatelle // correct from API
@@ -332,6 +335,7 @@ type AuditLog struct {
 
 // LogRotate part of the internal Process struct.
 type LogRotate struct {
+	MaxUncompressed    *int     `json:"maxUncompressed,omitempty"`
 	NumTotal           *int     `json:"numTotal,omitempty"`
 	NumUncompressed    *int     `json:"numUncompressed,omitempty"`
 	PercentOfDiskspace *float64 `json:"percentOfDiskspace,omitempty"`
