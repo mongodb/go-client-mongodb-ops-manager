@@ -72,18 +72,18 @@ func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, 
 type AutomationConfig struct {
 	AgentVersion              *map[string]interface{}   `json:"agentVersion,omitempty"`
 	AtlasProxies              *[]interface{}            `json:"atlasProxies,omitempty"`
-	AtlasUISes                []*map[string]interface{} `json:"atlasUISes"` //nolint:tagliatelle // correct from API
+	AtlasUISes                []*map[string]interface{} `json:"atlasUISes,omitempty"` //nolint:tagliatelle // correct from API
 	Filebeat                  *map[string]interface{}   `json:"filebeat,omitempty"`
 	Auth                      Auth                      `json:"auth"`
 	BackupVersions            []*ConfigVersion          `json:"backupVersions"`
 	Balancer                  *map[string]interface{}   `json:"balancer"`
 	ClusterWideConfigurations *map[string]interface{}   `json:"clusterWideConfigurations,omitempty"`
 	CPSModules                []*map[string]interface{} `json:"cpsModules"`
-	DBCheckModules            []*map[string]interface{} `json:"dbCheckModules"`
+	DBCheckModules            []*map[string]interface{} `json:"dbCheckModules,omitempty"`
 	IndexConfigs              []*IndexConfig            `json:"indexConfigs"`
 	Kerberos                  *map[string]interface{}   `json:"kerberos,omitempty"`
 	LDAP                      *map[string]interface{}   `json:"ldap,omitempty"`
-	MaintainedEnvoys          []*map[string]interface{} `json:"maintainedEnvoys"`
+	MaintainedEnvoys          []*map[string]interface{} `json:"maintainedEnvoys,omitempty"`
 	MongoDBToolsVersion       *map[string]interface{}   `json:"mongoDbToolsVersion,omitempty"`
 	MongoDBVersions           []*map[string]interface{} `json:"mongoDbVersions,omitempty"`
 	MongoSQLDs                []*map[string]interface{} `json:"mongosqlds"` //nolint:tagliatelle // correct from API
