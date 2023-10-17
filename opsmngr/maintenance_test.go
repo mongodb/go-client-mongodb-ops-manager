@@ -22,13 +22,13 @@ import (
 	"github.com/go-test/deep"
 )
 
-const ID = "5628faffd4c606594adaa3b2"
+const ID = "5628faffd4c606594adaa3b2" //nolint:gosec // not a credential
 
 func TestMaintenanceWindows_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows", projectID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -57,7 +57,7 @@ func TestMaintenanceWindows_List(t *testing.T) {
 			}`)
 	})
 
-	maintenanceWindows, _, err := client.MaintenanceWindows.List(ctx, groupID)
+	maintenanceWindows, _, err := client.MaintenanceWindows.List(ctx, projectID)
 	if err != nil {
 		t.Fatalf("MaintenanceWindows.List returned error: %v", err)
 	}
@@ -95,7 +95,7 @@ func TestMaintenanceWindows_List(t *testing.T) {
 func TestMaintenanceWindows_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", projectID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -111,7 +111,7 @@ func TestMaintenanceWindows_Get(t *testing.T) {
 			}`)
 	})
 
-	maintenanceWindow, _, err := client.MaintenanceWindows.Get(ctx, groupID, ID)
+	maintenanceWindow, _, err := client.MaintenanceWindows.Get(ctx, projectID, ID)
 	if err != nil {
 		t.Fatalf("MaintenanceWindows.Get returned error: %v", err)
 	}
@@ -135,7 +135,7 @@ func TestMaintenanceWindows_Get(t *testing.T) {
 func TestMaintenanceWindows_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows", projectID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
@@ -157,7 +157,7 @@ func TestMaintenanceWindows_Create(t *testing.T) {
 		AlertTypeNames: []string{"BACKUP"},
 		Description:    "new description",
 	}
-	maintenanceWindow, _, err := client.MaintenanceWindows.Create(ctx, groupID, maintenance)
+	maintenanceWindow, _, err := client.MaintenanceWindows.Create(ctx, projectID, maintenance)
 	if err != nil {
 		t.Fatalf("MaintenanceWindows.Create returned error: %v", err)
 	}
@@ -181,7 +181,7 @@ func TestMaintenanceWindows_Create(t *testing.T) {
 func TestMaintenanceWindows_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", projectID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
@@ -203,7 +203,7 @@ func TestMaintenanceWindows_Update(t *testing.T) {
 		AlertTypeNames: []string{"BACKUP"},
 		Description:    "new description",
 	}
-	maintenanceWindow, _, err := client.MaintenanceWindows.Update(ctx, groupID, ID, maintenance)
+	maintenanceWindow, _, err := client.MaintenanceWindows.Update(ctx, projectID, ID, maintenance)
 	if err != nil {
 		t.Fatalf("MaintenanceWindows.Update returned error: %v", err)
 	}
@@ -228,13 +228,13 @@ func TestMaintenanceWindows_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", groupID, ID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", projectID, ID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.MaintenanceWindows.Delete(ctx, groupID, ID)
+	_, err := client.MaintenanceWindows.Delete(ctx, projectID, ID)
 	if err != nil {
 		t.Fatalf("MaintenanceWindows.Delete returned error: %v", err)
 	}

@@ -30,7 +30,7 @@ func TestContinuousBackupRestore_List(t *testing.T) {
 
 	mux.HandleFunc("/api/public/v1.0/groups/6b77777887d9d61443b41645/clusters/Cluster0/restoreJobs", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		fmt.Fprint(w, `
+		_, _ = fmt.Fprint(w, `
 					{
 					  "links": [
 						{

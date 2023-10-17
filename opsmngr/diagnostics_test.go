@@ -21,13 +21,11 @@ import (
 	"testing"
 )
 
-const groupID = "5c8100bcf2a30b12ff88258f"
-
 func TestDiagnostics_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/diagnostics", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/diagnostics", projectID)
 	const expected = "test"
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -35,7 +33,7 @@ func TestDiagnostics_Get(t *testing.T) {
 	})
 
 	buf := new(bytes.Buffer)
-	_, err := client.Diagnostics.Get(ctx, groupID, nil, buf)
+	_, err := client.Diagnostics.Get(ctx, projectID, nil, buf)
 	if err != nil {
 		t.Fatalf("Diagnostics.Get returned error: %v", err)
 	}

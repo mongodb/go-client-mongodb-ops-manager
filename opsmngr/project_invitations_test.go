@@ -27,15 +27,15 @@ func TestProjects_Invitations(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `[
+		_, _ = fmt.Fprintf(w, `[
                {
                "createdAt": "2021-02-18T21:05:40Z",
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "5c8100bcf2a30b12ff88258f",
+			   "groupId": "%[1]s",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
@@ -45,16 +45,18 @@ func TestProjects_Invitations(t *testing.T) {
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "5c8100bcf2a30b12ff88258f",
+			   "groupId": "%[1]s",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
 			   ],
 			   "teamIds": ["2"],
-			   "username": "wyatt.smith@example.com"}]`)
+			   "username": "wyatt.smith@example.com"}]`,
+			projectID,
+		)
 	})
 
-	invitation, _, err := client.Projects.Invitations(ctx, groupID, nil)
+	invitation, _, err := client.Projects.Invitations(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("Projects.Invitations returned error: %v", err)
 	}
@@ -62,7 +64,7 @@ func TestProjects_Invitations(t *testing.T) {
 	expected := []*atlas.Invitation{
 		{
 			ID:              "5a0a1e7e0f2912c554080adc",
-			GroupID:         groupID,
+			GroupID:         projectID,
 			GroupName:       "jww-12-16",
 			CreatedAt:       "2021-02-18T21:05:40Z",
 			ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -72,7 +74,7 @@ func TestProjects_Invitations(t *testing.T) {
 		},
 		{
 			ID:              "5a0a1e7e0f2912c554080adc",
-			GroupID:         groupID,
+			GroupID:         projectID,
 			GroupName:       "jww-12-16",
 			CreatedAt:       "2021-02-18T21:05:40Z",
 			ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -92,30 +94,30 @@ func TestProjects_Invitation(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites/%s", groupID, invitationID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites/%s", projectID, invitationID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 			   "createdAt": "2021-02-18T21:05:40Z",
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "5c8100bcf2a30b12ff88258f",
+			   "groupId": "%[1]s",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
 			   ],
 			   "username": "wyatt.smith@example.com"
-		}`)
+		}`, projectID)
 	})
 
-	invitation, _, err := client.Projects.Invitation(ctx, groupID, invitationID)
+	invitation, _, err := client.Projects.Invitation(ctx, projectID, invitationID)
 	if err != nil {
 		t.Fatalf("Projects.Invitation returned error: %v", err)
 	}
 
 	expected := &atlas.Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
-		GroupID:         groupID,
+		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
 		ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -133,24 +135,24 @@ func TestProjects_InviteUser(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 			   "createdAt": "2021-02-18T21:05:40Z",
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "5c8100bcf2a30b12ff88258f",
+			   "groupId": "%[1]s",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
 			   ],
 			   "username": "wyatt.smith@example.com"
-		}`)
+		}`, projectID)
 	})
 
 	body := &atlas.Invitation{
-		GroupID:         groupID,
+		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
 		ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -159,14 +161,14 @@ func TestProjects_InviteUser(t *testing.T) {
 		Roles:           []string{"ORG_OWNER"},
 	}
 
-	invitation, _, err := client.Projects.InviteUser(ctx, groupID, body)
+	invitation, _, err := client.Projects.InviteUser(ctx, projectID, body)
 	if err != nil {
 		t.Fatalf("Projects.InviteUser returned error: %v", err)
 	}
 
 	expected := &atlas.Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
-		GroupID:         groupID,
+		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
 		ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -184,24 +186,24 @@ func TestProjects_UpdateInvitation(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 			   "createdAt": "2021-02-18T21:05:40Z",
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "5c8100bcf2a30b12ff88258f",
+			   "groupId": "%[1]s",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
 			   ],
 			   "username": "wyatt.smith@example.com"
-		}`)
+		}`, projectID)
 	})
 
 	body := &atlas.Invitation{
-		GroupID:         groupID,
+		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
 		ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -210,14 +212,14 @@ func TestProjects_UpdateInvitation(t *testing.T) {
 		Roles:           []string{"ORG_OWNER"},
 	}
 
-	invitation, _, err := client.Projects.UpdateInvitation(ctx, groupID, body)
+	invitation, _, err := client.Projects.UpdateInvitation(ctx, projectID, body)
 	if err != nil {
 		t.Fatalf("Projects.UpdateInvitation returned error: %v", err)
 	}
 
 	expected := &atlas.Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
-		GroupID:         groupID,
+		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
 		ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -235,25 +237,25 @@ func TestProjects_UpdateInvitationByID(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites/%s", groupID, invitationID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites/%s", projectID, invitationID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 			   "createdAt": "2021-02-18T21:05:40Z",
 			   "expiresAt": "2021-03-20T21:05:40Z",
 			   "id": "5a0a1e7e0f2912c554080adc",
 			   "inviterUsername": "admin@example.com",
-			   "groupId": "5c8100bcf2a30b12ff88258f",
+			   "groupId": "%[1]s",
 			   "groupName": "jww-12-16",
 			   "roles": [
 				   "ORG_OWNER"
 			   ],
 			   "username": "wyatt.smith@example.com"
-		}`)
+		}`, projectID)
 	})
 
 	body := &atlas.Invitation{
 		ID:              invitationID,
-		GroupID:         groupID,
+		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
 		ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -262,14 +264,14 @@ func TestProjects_UpdateInvitationByID(t *testing.T) {
 		Roles:           []string{"ORG_OWNER"},
 	}
 
-	invitation, _, err := client.Projects.UpdateInvitationByID(ctx, groupID, invitationID, body)
+	invitation, _, err := client.Projects.UpdateInvitationByID(ctx, projectID, invitationID, body)
 	if err != nil {
 		t.Fatalf("Projects.UpdateInvitationByID returned error: %v", err)
 	}
 
 	expected := &atlas.Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
-		GroupID:         groupID,
+		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
 		ExpiresAt:       "2021-03-20T21:05:40Z",
@@ -287,11 +289,11 @@ func TestProjects_DeleteInvitation(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites/%s", groupID, invitationID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/invites/%s", projectID, invitationID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Projects.DeleteInvitation(ctx, groupID, invitationID)
+	_, err := client.Projects.DeleteInvitation(ctx, projectID, invitationID)
 	if err != nil {
 		t.Fatalf("Projects.DeleteInvitation returned error: %v", err)
 	}

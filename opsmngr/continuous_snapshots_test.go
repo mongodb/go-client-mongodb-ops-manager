@@ -26,18 +26,18 @@ import (
 
 const (
 	clusterName = "Cluster0"
-	snapshotID  = "6b5380e6jvn128560506942b"
+	snapshotID  = "6b5380e6jvn128560506942b" //nolint:gosec // not a credential
 )
 
 func TestContinuousSnapshots_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots", groupID, clusterName)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots", projectID, clusterName)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprint(w, `{
 				"links": [{
 				   "href": "https://cloud.mongodb.com/api/atlas/v1.0/groups/6c7498dg87d9e6526801572b/clusters/Cluster0/snapshots?pageNum=1&itemsPerPage=100",
 				   "rel": "self"
@@ -77,7 +77,7 @@ func TestContinuousSnapshots_List(t *testing.T) {
 			}`)
 	})
 
-	snapshots, _, err := client.ContinuousSnapshots.List(ctx, groupID, clusterName, nil)
+	snapshots, _, err := client.ContinuousSnapshots.List(ctx, projectID, clusterName, nil)
 	if err != nil {
 		t.Fatalf("ContinuousSnapshots.List returned error: %v", err)
 	}
@@ -139,11 +139,11 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", groupID, clusterName, snapshotID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", projectID, clusterName, snapshotID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprint(w, `{
 			"clusterId": "7c2487d833e9e75286093696",
 			"complete": true,
 			"created": {
@@ -176,7 +176,7 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 		}`)
 	})
 
-	cloudProviderSnapshot, _, err := client.ContinuousSnapshots.Get(ctx, groupID, clusterName, snapshotID)
+	cloudProviderSnapshot, _, err := client.ContinuousSnapshots.Get(ctx, projectID, clusterName, snapshotID)
 	if err != nil {
 		t.Fatalf("ContinuousSnapshots.Get returned error: %v", err)
 	}
@@ -231,7 +231,7 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 		Expires: "2018-12-01",
 	}
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", groupID, clusterName, snapshotID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", projectID, clusterName, snapshotID)
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
 		expected := map[string]interface{}{
@@ -248,7 +248,7 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 			t.Error(diff)
 		}
 
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprint(w, `{
 		  "clusterId": "57c2487d833e9e75286093696",
 		  "complete": true,
 		  "created": {
@@ -285,7 +285,7 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 		}`)
 	})
 
-	cloudProviderSnapshot, _, err := client.ContinuousSnapshots.ChangeExpiry(ctx, groupID, clusterName, snapshotID, updateRequest)
+	cloudProviderSnapshot, _, err := client.ContinuousSnapshots.ChangeExpiry(ctx, projectID, clusterName, snapshotID, updateRequest)
 	if err != nil {
 		t.Fatalf("ContinuousSnapshots.ChangeExpiry returned error: %v", err)
 	}
@@ -336,13 +336,13 @@ func TestContinuousSnapshots_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", groupID, clusterName, snapshotID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", projectID, clusterName, snapshotID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.ContinuousSnapshots.Delete(ctx, groupID, clusterName, snapshotID)
+	_, err := client.ContinuousSnapshots.Delete(ctx, projectID, clusterName, snapshotID)
 	if err != nil {
 		t.Fatalf("ContinuousSnapshots.Delete returned error: %v", err)
 	}

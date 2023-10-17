@@ -27,25 +27,25 @@ func TestClusters_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters", projectID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 		  "totalCount": 1,
 		  "results": [ {
 			"id" : "533d7d4730040be257defe88",
 			"typeName": "SHARDED_REPLICA_SET",
 			"clusterName": "Animals",
-			"groupId": "5c8100bcf2a30b12ff88258f",
+			"groupId": "%[1]s",
 			"lastHeartbeat": "2014-04-03T15:26:58Z",
 			"links": []
 		  } ],
 		  "links" : []
-		}`)
+		}`, projectID)
 	})
 
-	clusters, _, err := client.Clusters.List(ctx, groupID, nil)
+	clusters, _, err := client.Clusters.List(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("Clusters.List returned error: %v", err)
 	}
@@ -54,7 +54,7 @@ func TestClusters_List(t *testing.T) {
 		Results: []*Cluster{
 			{
 				ID:            "533d7d4730040be257defe88",
-				GroupID:       groupID,
+				GroupID:       projectID,
 				TypeName:      "SHARDED_REPLICA_SET",
 				ClusterName:   "Animals",
 				LastHeartbeat: "2014-04-03T15:26:58Z",
@@ -74,28 +74,28 @@ func TestClusters_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s", groupID, clusterID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s", projectID, clusterID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 			"id": "533d7d4730040be257defe88",
 			"typeName": "SHARDED_REPLICA_SET",
 			"clusterName": "Animals",
-			"groupId": "5c8100bcf2a30b12ff88258f",
+			"groupId": "%[1]s",
 			"lastHeartbeat": "2014-04-03T15:26:58Z",
 			"links" : []
-		  }`)
+		  }`, projectID)
 	})
 
-	cluster, _, err := client.Clusters.Get(ctx, groupID, clusterID)
+	cluster, _, err := client.Clusters.Get(ctx, projectID, clusterID)
 	if err != nil {
 		t.Fatalf("Clusters.Get returned error: %v", err)
 	}
 
 	expected := &Cluster{
 		ID:            "533d7d4730040be257defe88",
-		GroupID:       groupID,
+		GroupID:       projectID,
 		TypeName:      "SHARDED_REPLICA_SET",
 		ClusterName:   "Animals",
 		LastHeartbeat: "2014-04-03T15:26:58Z",
@@ -113,13 +113,13 @@ func TestClusters_ListAll(t *testing.T) {
 	defer teardown()
 
 	mux.HandleFunc("/api/public/v1.0/clusters", func(w http.ResponseWriter, r *http.Request) {
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 				 "results": [
 				{
 				  "groupName": "AtlasGroup1",
 				  "orgName": "TestAtlasOrg1",
 				  "planType": "Atlas",
-				  "groupId": "5e5fbc29e76c9a4be2ed3d39",
+				  "groupId": "%[1]s",
 				  "clusters": [
 					{
 					  "backupEnabled": true,
@@ -158,7 +158,7 @@ func TestClusters_ListAll(t *testing.T) {
 				  "groupName": "CloudGroup1",
 				  "orgName": "TestCloudOrg1",
 				  "planType": "Cloud Manager",
-				  "groupId": "5e5fbc29e76c9a4be2ed3d38",
+				  "groupId": "%[1]s",
 				  "clusters": [
 					{
 					  "backupEnabled": true,
@@ -216,7 +216,7 @@ func TestClusters_ListAll(t *testing.T) {
 			  ],
 			  "links": [],
 			  "totalCount": 2
-		}`)
+		}`, projectID)
 	})
 
 	clusters, _, err := client.Clusters.ListAll(ctx)
@@ -231,7 +231,7 @@ func TestClusters_ListAll(t *testing.T) {
 				GroupName: "AtlasGroup1",
 				OrgName:   "TestAtlasOrg1",
 				PlanType:  "Atlas",
-				GroupID:   "5e5fbc29e76c9a4be2ed3d39",
+				GroupID:   projectID,
 				OrgID:     "5e5fbc29e76c9a4be2ed3d36",
 				Clusters: []AllClustersCluster{
 					{
@@ -266,7 +266,7 @@ func TestClusters_ListAll(t *testing.T) {
 				GroupName: "CloudGroup1",
 				OrgName:   "TestCloudOrg1",
 				PlanType:  "Cloud Manager",
-				GroupID:   "5e5fbc29e76c9a4be2ed3d38",
+				GroupID:   projectID,
 				OrgID:     "5e5fbc29e76c9a4be2ed3d34",
 				Tags:      []string{"some tag 1", "some tag 2"},
 				Clusters: []AllClustersCluster{

@@ -163,7 +163,7 @@ func TestProjects_ListUsers(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/%s/%s/users", projectBasePath, groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/%s/%s/users", projectBasePath, projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 			"links": [{
@@ -208,7 +208,7 @@ func TestProjects_ListUsers(t *testing.T) {
 		},`)
 	})
 
-	orgs, _, err := client.Projects.ListUsers(ctx, groupID, nil)
+	orgs, _, err := client.Projects.ListUsers(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("Projects.ListUsers returned error: %v", err)
 	}
@@ -251,7 +251,7 @@ func TestProject_GetOneProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/%s/%s", projectBasePath, groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/%s/%s", projectBasePath, projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 		"activeAgentCount": 0,
@@ -279,7 +279,7 @@ func TestProject_GetOneProject(t *testing.T) {
 	  }`)
 	})
 
-	projectResponse, _, err := client.Projects.Get(ctx, groupID)
+	projectResponse, _, err := client.Projects.Get(ctx, projectID)
 	if err != nil {
 		t.Fatalf("Projects.Get returned error: %v", err)
 	}
@@ -539,11 +539,11 @@ func TestProject_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Projects.Delete(ctx, groupID)
+	_, err := client.Projects.Delete(ctx, projectID)
 	if err != nil {
 		t.Fatalf("Projects.Delete returned error: %v", err)
 	}
@@ -553,14 +553,14 @@ func TestProject_RemoveUser(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	var str = fmt.Sprintf("/api/public/v1.0/groups/%s/users/%s", groupID, userID)
+	var str = fmt.Sprintf("/api/public/v1.0/groups/%s/users/%s", projectID, userID)
 	fmt.Println(str)
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/users/%s", groupID, userID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/users/%s", projectID, userID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Projects.RemoveUser(ctx, groupID, userID)
+	_, err := client.Projects.RemoveUser(ctx, projectID, userID)
 	if err != nil {
 		t.Fatalf("Projects.RemoveUser returned error: %v", err)
 	}

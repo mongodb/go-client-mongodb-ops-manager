@@ -23,17 +23,17 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const clusterID = "6b8cd61180eef547110159d9"
+const clusterID = "6b8cd61180eef547110159d9" //nolint:gosec // not a credential
 
 func TestCheckpoints_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/checkpoints", groupID, clusterID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/checkpoints", projectID, clusterID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 		  "links":[
 			{
 			  "href":"https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
@@ -44,7 +44,7 @@ func TestCheckpoints_List(t *testing.T) {
 			{
 			  "clusterId":"6b8cd61180eef547110159d9",
 			  "completed":"2018-02-08T23:20:25Z",
-			  "groupId":"5c8100bcf2a30b12ff88258f",
+			  "groupId":"%[1]s",
 			  "id":"5a7cdb3980eef53de5bffdcf",
 			  "links":[
 				{
@@ -90,7 +90,7 @@ func TestCheckpoints_List(t *testing.T) {
 			{
 			  "clusterId":"6b8cd61180eef547110159d9",
 			  "completed":"2018-02-09T14:50:33Z",
-			  "groupId":"5c8100bcf2a30b12ff88258f",
+			  "groupId":"%[1]s",
 			  "id":"5a7db53987d9d64fe298ff46",
 			  "links":[
 				{
@@ -136,10 +136,11 @@ func TestCheckpoints_List(t *testing.T) {
 		  ],
 		  "totalCount":2
 		}`,
+			projectID,
 		)
 	})
 
-	snapshots, _, err := client.Checkpoints.List(ctx, groupID, clusterID, nil)
+	snapshots, _, err := client.Checkpoints.List(ctx, projectID, clusterID, nil)
 	if err != nil {
 		t.Fatalf("Checkpoints.List returned error: %v", err)
 	}
@@ -149,7 +150,7 @@ func TestCheckpoints_List(t *testing.T) {
 			{
 				ClusterID: clusterID,
 				Completed: "2018-02-08T23:20:25Z",
-				GroupID:   groupID,
+				GroupID:   projectID,
 				ID:        "5a7cdb3980eef53de5bffdcf",
 				Links: []*atlas.Link{
 					{
@@ -198,7 +199,7 @@ func TestCheckpoints_List(t *testing.T) {
 			{
 				ClusterID: clusterID,
 				Completed: "2018-02-09T14:50:33Z",
-				GroupID:   groupID,
+				GroupID:   projectID,
 				ID:        "5a7db53987d9d64fe298ff46",
 				Links: []*atlas.Link{
 					{
@@ -263,15 +264,15 @@ func TestCheckpoints_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	checkpointID := "6b8cd61180eef547110159d9"
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/checkpoints/%s", groupID, clusterID, checkpointID)
+	const checkpointID = "6b8cd61180eef547110159d9" //nolint:gosec // not a credential
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/checkpoints/%s", projectID, clusterID, checkpointID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 		  "clusterId":"6b8cd61180eef547110159d9",
 		  "completed":"2018-02-08T23:20:25Z",
-		  "groupId":"5c8100bcf2a30b12ff88258f",
+		  "groupId":"%[1]s",
 		  "id":"5a7cdb3980eef53de5bffdcf",
 		  "links":[
 			{
@@ -313,10 +314,10 @@ func TestCheckpoints_Get(t *testing.T) {
 		  "restorable":true,
 		  "started":"2018-02-08T23:20:25Z",
 		  "timestamp":"2018-02-08T23:19:37Z"
-		}`)
+		}`, projectID)
 	})
 
-	checkpoint, _, err := client.Checkpoints.Get(ctx, groupID, clusterID, checkpointID)
+	checkpoint, _, err := client.Checkpoints.Get(ctx, projectID, clusterID, checkpointID)
 	if err != nil {
 		t.Fatalf("Checkpoints.Get returned error: %v", err)
 	}
@@ -324,7 +325,7 @@ func TestCheckpoints_Get(t *testing.T) {
 	expected := &atlas.Checkpoint{
 		ClusterID: clusterID,
 		Completed: "2018-02-08T23:20:25Z",
-		GroupID:   groupID,
+		GroupID:   projectID,
 		ID:        "5a7cdb3980eef53de5bffdcf",
 		Links: []*atlas.Link{
 			{

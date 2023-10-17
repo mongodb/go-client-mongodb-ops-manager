@@ -24,7 +24,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const accessListID = "5f3cf81b89034c6b3c0a528e"
+const accessListID = "5f3cf81b89034c6b3c0a528e" //nolint:gosec // not a credential
 
 func TestWhitelistAPIKeys_List(t *testing.T) {
 	client, mux, teardown := setup()

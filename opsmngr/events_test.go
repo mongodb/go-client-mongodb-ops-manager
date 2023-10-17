@@ -23,7 +23,7 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const eventID = "b3ad04e680eef540be141abe"
+const eventID = "b3ad04e680eef540be141abe" //nolint:gosec // not a credential
 
 func TestEvents_ListOrganizationEvents(t *testing.T) {
 	client, mux, teardown := setup()
@@ -193,7 +193,7 @@ func TestEvents_ListProjectEvents(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/events", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/events", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 						"links": [
@@ -242,7 +242,7 @@ func TestEvents_ListProjectEvents(t *testing.T) {
 					}`)
 	})
 
-	cluster, _, err := client.Events.ListProjectEvents(ctx, groupID, nil)
+	cluster, _, err := client.Events.ListProjectEvents(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("Events.ListOrganizationEvents returned error: %v", err)
 	}
@@ -302,7 +302,7 @@ func TestEvents_GetProjectEvent(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/events/%s", groupID, eventID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/events/%s", projectID, eventID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 								"created": "2018-07-12T16:30:05Z",
@@ -323,7 +323,7 @@ func TestEvents_GetProjectEvent(t *testing.T) {
 					}`)
 	})
 
-	cluster, _, err := client.Events.GetProjectEvent(ctx, groupID, eventID)
+	cluster, _, err := client.Events.GetProjectEvent(ctx, projectID, eventID)
 	if err != nil {
 		t.Fatalf("Events.GetOrganizationEvent returned error: %v", err)
 	}
