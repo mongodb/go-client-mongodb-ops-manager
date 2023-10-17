@@ -40,10 +40,16 @@ const (
 
 type (
 	Response                  = atlas.Response
+	ErrorResponse             = atlas.ErrorResponse
 	RequestCompletionCallback = atlas.RequestCompletionCallback
 	ResponseProcessedCallback = atlas.ResponseProcessedCallback
 	ServiceVersion            = atlas.ServiceVersion
 	ListOptions               = atlas.ListOptions
+	Link                      = atlas.Link
+	APIKey                    = atlas.APIKey
+	APIKeyInput               = atlas.APIKeyInput
+	AccessListAPIKeys         = atlas.AccessListAPIKeys
+	AccessListAPIKeysReq      = atlas.AccessListAPIKeysReq
 )
 
 type HTTPClient interface {
