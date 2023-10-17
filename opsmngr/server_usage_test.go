@@ -41,7 +41,7 @@ func TestServerUsageServiceOp_UpdateProjectServerType(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/defaultServerType", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/defaultServerType", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 		_, _ = fmt.Fprint(w, `{
 			   "serverType":{
@@ -50,7 +50,7 @@ func TestServerUsageServiceOp_UpdateProjectServerType(t *testing.T) {
 			   }
 		}`)
 	})
-	_, err := client.ServerUsage.UpdateProjectServerType(ctx, groupID, nil)
+	_, err := client.ServerUsage.UpdateProjectServerType(ctx, projectID, nil)
 
 	if err != nil {
 		t.Fatalf("ServerUsage.UpdateProjectServerType returned error: %v", err)
@@ -103,28 +103,28 @@ func TestServerUsageServiceOp_ListAllHostAssignment(t *testing.T) {
 
 	mux.HandleFunc("/api/public/v1.0/usage/assignments", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `{
-					 "totalCount": 1,
-					 "results": [{
-					   "hostname": "virtual.host.lqhfcxlgzqtimcxf.internal.mongodb-2",
-					   "processes": [{
-						 "cluster": "sdivabux",
-						 "groupName": "test",
-						 "orgName": "5a0a1e7e0f2912c554081adc",
-						 "groupId": "5c8100bcf2a30b12ff88258f",
-						 "hasConflictingServerType": true,
-						 "name": "replicaSecondary-0-proc1-run51839",
-						 "processType": 8
-					   }
-					 ],
-					   "serverType": {
-						 "name": "RAM_POOL",
-						 "label": "RAM Pool"
-					   },
-					   "isChargeable": true,
-					   "memSizeMB": 178
-					 }]
-}`)
+		_, _ = fmt.Fprintf(w, `{
+		 "totalCount": 1,
+		 "results": [{
+		   "hostname": "virtual.host.lqhfcxlgzqtimcxf.internal.mongodb-2",
+		   "processes": [{
+			 "cluster": "sdivabux",
+			 "groupName": "test",
+			 "orgName": "5a0a1e7e0f2912c554081adc",
+			 "groupId": "%[1]s",
+			 "hasConflictingServerType": true,
+			 "name": "replicaSecondary-0-proc1-run51839",
+			 "processType": 8
+		   }
+		 ],
+		   "serverType": {
+			 "name": "RAM_POOL",
+			 "label": "RAM Pool"
+		   },
+		   "isChargeable": true,
+		   "memSizeMB": 178
+		 }]
+}`, projectID)
 	})
 
 	hostAssignments, _, err := client.ServerUsage.ListAllHostAssignment(ctx, nil)
@@ -142,7 +142,7 @@ func TestServerUsageServiceOp_ListAllHostAssignment(t *testing.T) {
 						Cluster:                  "sdivabux",
 						GroupName:                "test",
 						OrgName:                  orgID,
-						GroupID:                  groupID,
+						GroupID:                  projectID,
 						Name:                     "replicaSecondary-0-proc1-run51839",
 						HasConflictingServerType: true,
 						ProcessType:              8,
@@ -167,33 +167,33 @@ func TestServerUsageServiceOp_ProjectHostAssignments(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/hosts", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/hosts", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `{
-					 "totalCount": 1,
-					 "results": [{
-					   "hostname": "virtual.host.lqhfcxlgzqtimcxf.internal.mongodb-2",
-					   "processes": [{
-						 "cluster": "sdivabux",
-						 "groupName": "test",
-						 "orgName": "5a0a1e7e0f2912c554081adc",
-						 "groupId": "5c8100bcf2a30b12ff88258f",
-						 "hasConflictingServerType": true,
-						 "name": "replicaSecondary-0-proc1-run51839",
-						 "processType": 8
-					   }
-					 ],
-					   "serverType": {
-						 "name": "RAM_POOL",
-						 "label": "RAM Pool"
-					   },
-					   "isChargeable": true,
-					   "memSizeMB": 178
-					 }]
-}`)
+		_, _ = fmt.Fprintf(w, `{
+			 "totalCount": 1,
+			 "results": [{
+			   "hostname": "virtual.host.lqhfcxlgzqtimcxf.internal.mongodb-2",
+			   "processes": [{
+				 "cluster": "sdivabux",
+				 "groupName": "test",
+				 "orgName": "5a0a1e7e0f2912c554081adc",
+				 "groupId": "%[1]s",
+				 "hasConflictingServerType": true,
+				 "name": "replicaSecondary-0-proc1-run51839",
+				 "processType": 8
+			   }
+			 ],
+			   "serverType": {
+				 "name": "RAM_POOL",
+				 "label": "RAM Pool"
+			   },
+			   "isChargeable": true,
+			   "memSizeMB": 178
+			 }]
+			}`, projectID)
 	})
 
-	hostAssignments, _, err := client.ServerUsage.ProjectHostAssignments(ctx, groupID, nil)
+	hostAssignments, _, err := client.ServerUsage.ProjectHostAssignments(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("ServerUsage.ProjectHostAssignments returned error: %v", err)
 	}
@@ -208,7 +208,7 @@ func TestServerUsageServiceOp_ProjectHostAssignments(t *testing.T) {
 						Cluster:                  "sdivabux",
 						GroupName:                "test",
 						OrgName:                  orgID,
-						GroupID:                  groupID,
+						GroupID:                  projectID,
 						Name:                     "replicaSecondary-0-proc1-run51839",
 						HasConflictingServerType: true,
 						ProcessType:              8,
@@ -235,28 +235,28 @@ func TestServerUsageServiceOp_OrganizationHostAssignments(t *testing.T) {
 
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/organizations/%s/hosts", orgID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `{
-					 "totalCount": 1,
-					 "results": [{
-					   "hostname": "virtual.host.lqhfcxlgzqtimcxf.internal.mongodb-2",
-					   "processes": [{
-						 "cluster": "sdivabux",
-						 "groupName": "test",
-						 "orgName": "5a0a1e7e0f2912c554081adc",
-						 "groupId": "5c8100bcf2a30b12ff88258f",
-						 "hasConflictingServerType": true,
-						 "name": "replicaSecondary-0-proc1-run51839",
-						 "processType": 8
-					   }
-					 ],
-					   "serverType": {
-						 "name": "RAM_POOL",
-						 "label": "RAM Pool"
-					   },
-					   "isChargeable": true,
-					   "memSizeMB": 178
-					 }]
-}`)
+		_, _ = fmt.Fprintf(w, `{
+		 "totalCount": 1,
+		 "results": [{
+		   "hostname": "virtual.host.lqhfcxlgzqtimcxf.internal.mongodb-2",
+		   "processes": [{
+			 "cluster": "sdivabux",
+			 "groupName": "test",
+			 "orgName": "5a0a1e7e0f2912c554081adc",
+			 "groupId": "%[1]s",
+			 "hasConflictingServerType": true,
+			 "name": "replicaSecondary-0-proc1-run51839",
+			 "processType": 8
+		   }
+		 ],
+		   "serverType": {
+			 "name": "RAM_POOL",
+			 "label": "RAM Pool"
+		   },
+		   "isChargeable": true,
+		   "memSizeMB": 178
+		 }]
+	}`, projectID)
 	})
 
 	hostAssignments, _, err := client.ServerUsage.OrganizationHostAssignments(ctx, orgID, nil)
@@ -274,7 +274,7 @@ func TestServerUsageServiceOp_OrganizationHostAssignments(t *testing.T) {
 						Cluster:                  "sdivabux",
 						GroupName:                "test",
 						OrgName:                  orgID,
-						GroupID:                  groupID,
+						GroupID:                  projectID,
 						Name:                     "replicaSecondary-0-proc1-run51839",
 						HasConflictingServerType: true,
 						ProcessType:              8,
@@ -326,7 +326,7 @@ func TestServerUsageServiceOp_GetServerTypeProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/defaultServerType", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/usage/groups/%s/defaultServerType", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		_, _ = fmt.Fprint(w, `{
 						 "name": "RAM_POOL",
@@ -334,7 +334,7 @@ func TestServerUsageServiceOp_GetServerTypeProject(t *testing.T) {
 }`)
 	})
 
-	serverType, _, err := client.ServerUsage.GetServerTypeProject(ctx, groupID)
+	serverType, _, err := client.ServerUsage.GetServerTypeProject(ctx, projectID)
 	if err != nil {
 		t.Fatalf("ServerUsage.GetServerTypeProject returned error: %v", err)
 	}

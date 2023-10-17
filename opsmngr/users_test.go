@@ -23,7 +23,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-const userID = "56a10a80e4b0fd3b9a9bb0c2"
+const userID = "56a10a80e4b0fd3b9a9bb0c2" //nolint:gosec // not a credential
 const userName = "someone@example.com"
 
 func TestUsers_Get(t *testing.T) {

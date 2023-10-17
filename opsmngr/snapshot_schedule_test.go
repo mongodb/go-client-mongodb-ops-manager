@@ -26,21 +26,21 @@ func TestSnapshotScheduleServiceOp_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/backupConfigs/%s/snapshotSchedule", groupID, clusterID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/backupConfigs/%s/snapshotSchedule", projectID, clusterID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 			  "clusterId" : "6b8cd61180eef547110159d9",
 			  "dailySnapshotRetentionDays" : 7,
-			  "groupId" : "5c8100bcf2a30b12ff88258f",
+			  "groupId" : "%[1]s",
 			  "monthlySnapshotRetentionMonths" : 13,
 			  "pointInTimeWindowHours": 24,
 			  "snapshotIntervalHours" : 6,
 			  "snapshotRetentionDays" : 2,
 			  "weeklySnapshotRetentionWeeks" : 4
-}`)
+}`, projectID)
 	})
 
-	snapshot, _, err := client.SnapshotSchedule.Get(ctx, groupID, clusterID)
+	snapshot, _, err := client.SnapshotSchedule.Get(ctx, projectID, clusterID)
 	if err != nil {
 		t.Fatalf("SnapshotSchedule.Get returned error: %v", err)
 	}
@@ -49,7 +49,7 @@ func TestSnapshotScheduleServiceOp_Get(t *testing.T) {
 
 	expected := &SnapshotSchedule{
 		ClusterID:                      clusterID,
-		GroupID:                        groupID,
+		GroupID:                        projectID,
 		MonthlySnapshotRetentionMonths: pointer(13),
 		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
@@ -66,25 +66,25 @@ func TestSnapshotScheduleServiceOp_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/backupConfigs/%s/snapshotSchedule", groupID, clusterID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/backupConfigs/%s/snapshotSchedule", projectID, clusterID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
-		_, _ = fmt.Fprint(w, `{
+		_, _ = fmt.Fprintf(w, `{
 			  "clusterId" : "6b8cd61180eef547110159d9",
 			  "dailySnapshotRetentionDays" : 7,
-			  "groupId" : "5c8100bcf2a30b12ff88258f",
+			  "groupId" : "%[1]s",
 			  "monthlySnapshotRetentionMonths" : 13,
 			  "pointInTimeWindowHours": 24,
 			  "snapshotIntervalHours" : 6,
 			  "snapshotRetentionDays" : 2,
 			  "weeklySnapshotRetentionWeeks" : 4
-}`)
+}`, projectID)
 	})
 
 	pointInTimeWindowHours := 24
 
 	snapshotSchedule := &SnapshotSchedule{
 		ClusterID:                      clusterID,
-		GroupID:                        groupID,
+		GroupID:                        projectID,
 		MonthlySnapshotRetentionMonths: pointer(13),
 		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,
@@ -100,7 +100,7 @@ func TestSnapshotScheduleServiceOp_Update(t *testing.T) {
 
 	expected := &SnapshotSchedule{
 		ClusterID:                      clusterID,
-		GroupID:                        groupID,
+		GroupID:                        projectID,
 		MonthlySnapshotRetentionMonths: pointer(13),
 		PointInTimeWindowHours:         &pointInTimeWindowHours,
 		SnapshotIntervalHours:          6,

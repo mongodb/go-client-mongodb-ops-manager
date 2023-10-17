@@ -23,7 +23,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-const orgID = "5a0a1e7e0f2912c554081adc"
+const orgID = "5a0a1e7e0f2912c554081adc" //nolint:gosec // not a credential
 
 func TestOrganizations_GetAllOrganizations(t *testing.T) {
 	client, mux, teardown := setup()

@@ -26,7 +26,7 @@ func TestFeatureControlPoliciesServiceOp_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/controlledFeature", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/controlledFeature", projectID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
@@ -52,7 +52,7 @@ func TestFeatureControlPoliciesServiceOp_List(t *testing.T) {
 			}`)
 	})
 
-	logs, _, err := client.FeatureControlPolicies.List(ctx, groupID, nil)
+	logs, _, err := client.FeatureControlPolicies.List(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("FeatureControlPolicies.List returned error: %v", err)
 	}
@@ -94,7 +94,7 @@ func TestFeatureControlPoliciesServiceOp_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	path := fmt.Sprintf("/api/public/v1.0/groups/%s/controlledFeature", groupID)
+	path := fmt.Sprintf("/api/public/v1.0/groups/%s/controlledFeature", projectID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
@@ -148,7 +148,7 @@ func TestFeatureControlPoliciesServiceOp_Update(t *testing.T) {
 		},
 	}
 
-	logs, _, err := client.FeatureControlPolicies.Update(ctx, groupID, policy)
+	logs, _, err := client.FeatureControlPolicies.Update(ctx, projectID, policy)
 	if err != nil {
 		t.Fatalf("FeatureControlPolicies.Update returned error: %v", err)
 	}

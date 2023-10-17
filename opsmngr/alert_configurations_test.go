@@ -24,13 +24,13 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const alertConfigID = "57b76ddc96e8215c017ceafb"
+const alertConfigID = "57b76ddc96e8215c017ceafb" //nolint:gosec // not a credential
 
 func TestAlertConfiguration_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 
 		expected := map[string]interface{}{
@@ -94,7 +94,7 @@ func TestAlertConfiguration_Create(t *testing.T) {
 		},
 	}
 
-	alertConfiguration, _, err := client.AlertConfigurations.Create(ctx, groupID, alertReq)
+	alertConfiguration, _, err := client.AlertConfigurations.Create(ctx, projectID, alertReq)
 	if err != nil {
 		t.Fatalf("AlertConfiguration.Create returned error: %v", err)
 		return
@@ -129,7 +129,7 @@ func TestAlertConfiguration_EnableAnAlertConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", projectID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
 		expected := map[string]interface{}{
 			"enabled": true,
@@ -165,7 +165,7 @@ func TestAlertConfiguration_EnableAnAlertConfig(t *testing.T) {
 		}`)
 	})
 
-	alertConfiguration, _, err := client.AlertConfigurations.EnableAnAlertConfig(ctx, groupID, alertConfigID, pointer(true))
+	alertConfiguration, _, err := client.AlertConfigurations.EnableAnAlertConfig(ctx, projectID, alertConfigID, pointer(true))
 	if err != nil {
 		t.Fatalf("AlertConfiguration.EnableAnAlertConfig returned error: %v", err)
 	}
@@ -198,7 +198,7 @@ func TestAlertConfiguration_GetAnAlertConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", projectID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"id": "533dc40ae4b00835ff81eaee",
@@ -233,7 +233,7 @@ func TestAlertConfiguration_GetAnAlertConfig(t *testing.T) {
 		}`)
 	})
 
-	alertConfiguration, _, err := client.AlertConfigurations.GetAnAlertConfig(ctx, groupID, alertConfigID)
+	alertConfiguration, _, err := client.AlertConfigurations.GetAnAlertConfig(ctx, projectID, alertConfigID)
 	if err != nil {
 		t.Fatalf("AlertConfigurations.GetAnAlertConfig returned error: %v", err)
 	}
@@ -279,7 +279,7 @@ func TestAlertConfiguration_GetOpenAlertsConfig(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s/alerts", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s/alerts", projectID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"totalCount": 2,
@@ -317,7 +317,7 @@ func TestAlertConfiguration_GetOpenAlertsConfig(t *testing.T) {
 		}`)
 	})
 
-	alertConfigurations, _, err := client.AlertConfigurations.GetOpenAlertsConfig(ctx, groupID, alertConfigID)
+	alertConfigurations, _, err := client.AlertConfigurations.GetOpenAlertsConfig(ctx, projectID, alertConfigID)
 	if err != nil {
 		t.Fatalf("AlertConfigurations.GetOpenAlertsConfig returned error: %v", err)
 	}
@@ -363,7 +363,7 @@ func TestAlertConfiguration_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
 		fmt.Fprint(w, `{
 			"results": [
@@ -434,7 +434,7 @@ func TestAlertConfiguration_List(t *testing.T) {
 		}`)
 	})
 
-	alertConfigurations, _, err := client.AlertConfigurations.List(ctx, groupID, nil)
+	alertConfigurations, _, err := client.AlertConfigurations.List(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("AlertConfigurations.List returned error: %v", err)
 	}
@@ -513,7 +513,7 @@ func TestAlertConfiguration_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", projectID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 
 		expected := map[string]interface{}{
@@ -576,7 +576,7 @@ func TestAlertConfiguration_Update(t *testing.T) {
 		},
 	}
 
-	alertConfiguration, _, err := client.AlertConfigurations.Update(ctx, groupID, alertConfigID, alertReq)
+	alertConfiguration, _, err := client.AlertConfigurations.Update(ctx, projectID, alertConfigID, alertReq)
 	if err != nil {
 		t.Fatalf("AlertConfiguration.Update returned error: %v", err)
 		return
@@ -610,11 +610,11 @@ func TestAlertConfiguration_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", groupID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", projectID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.AlertConfigurations.Delete(ctx, groupID, alertConfigID)
+	_, err := client.AlertConfigurations.Delete(ctx, projectID, alertConfigID)
 	if err != nil {
 		t.Fatalf("AlertConfigurations.Delete returned error: %v", err)
 	}
@@ -626,8 +626,7 @@ func TestAlertConfiguration_ListMatcherFields(t *testing.T) {
 
 	mux.HandleFunc("/api/public/v1.0/alertConfigs/matchers/fieldNames", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-
-		fmt.Fprint(w, `
+		_, _ = fmt.Fprint(w, `
 				[
 					"TYPE_NAME",
 					"HOSTNAME",

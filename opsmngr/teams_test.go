@@ -24,7 +24,7 @@ import (
 	"go.mongodb.org/atlas/mongodbatlas"
 )
 
-const teamID = "6b720e1087d9d66b272f1c86"
+const teamID = "6b720e1087d9d66b272f1c86" //nolint:gosec // not a credential
 
 func TestTeams_List(t *testing.T) {
 	client, mux, teardown := setup()
@@ -436,7 +436,7 @@ func TestTeams_AddUsersToTeam(t *testing.T) {
 			t.Error(diff)
 		}
 
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprint(w, `{
 			"links": [
 				{
 					"href": "https://cloud.mongodb.com/api/public/v1.0/orgs/{ORG-ID}/teams/{TEAM-ID}/users?pretty=true",
@@ -511,9 +511,6 @@ func TestTeams_RemoveUserToTeam(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	userID := "1"
-	teamID := "6b720e1087d9d66b272f1c86"
-
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s/teams/%s/users/%s", orgID, teamID, userID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
@@ -542,11 +539,11 @@ func TestTeams_RemoveTeamFromProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/teams/%s", groupID, teamID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/teams/%s", projectID, teamID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
-	_, err := client.Teams.RemoveTeamFromProject(ctx, groupID, teamID)
+	_, err := client.Teams.RemoveTeamFromProject(ctx, projectID, teamID)
 	if err != nil {
 		t.Fatalf("Teams.RemoveTeamFromProject returned error: %v", err)
 	}

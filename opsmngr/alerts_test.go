@@ -23,15 +23,15 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-const alertID = "57b76ddc96e8215c017ceafb"
+const alertID = "57b76ddc96e8215c017ceafb" //nolint:gosec // not a credential
 
 func TestAlert_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts/%s", groupID, alertID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts/%s", projectID, alertID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprint(w, `{
 			"id": "533dc40ae4b00835ff81eaee",
 			"groupId": "535683b3794d371327b",
 			"eventTypeName": "OUTSIDE_METRIC_THRESHOLD",
@@ -63,7 +63,7 @@ func TestAlert_Get(t *testing.T) {
 		}`)
 	})
 
-	alert, _, err := client.Alerts.Get(ctx, groupID, alertID)
+	alert, _, err := client.Alerts.Get(ctx, projectID, alertID)
 	if err != nil {
 		t.Fatalf("Alerts.Get returned error: %v", err)
 	}
@@ -108,9 +108,9 @@ func TestAlerts_List(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts", groupID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts", projectID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodGet)
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprint(w, `{
 			"results": [
 				{
 					"id": "533dc40ae4b00835ff81eaee",
@@ -177,7 +177,7 @@ func TestAlerts_List(t *testing.T) {
 		}`)
 	})
 
-	alerts, _, err := client.Alerts.List(ctx, groupID, nil)
+	alerts, _, err := client.Alerts.List(ctx, projectID, nil)
 	if err != nil {
 		t.Fatalf("Alerts.List returned error: %v", err)
 	}
@@ -265,9 +265,9 @@ func TestAlert_Acknowledge(t *testing.T) {
 		AcknowledgementComment: "This is normal. Please ignore.",
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts/%s", groupID, alertID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alerts/%s", projectID, alertID), func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
-		fmt.Fprint(w, `{
+		_, _ = fmt.Fprint(w, `{
 			"id": "533dc40ae4b00835ff81eaee",
 			"groupId": "535683b3794d371327b",
 			"eventTypeName": "OUTSIDE_METRIC_THRESHOLD",
@@ -286,7 +286,7 @@ func TestAlert_Acknowledge(t *testing.T) {
 		}`)
 	})
 
-	alert, _, err := client.Alerts.Acknowledge(ctx, groupID, alertID, &params)
+	alert, _, err := client.Alerts.Acknowledge(ctx, projectID, alertID, &params)
 	if err != nil {
 		t.Fatalf("Alerts.Acknowledge returned error: %v", err)
 	}
