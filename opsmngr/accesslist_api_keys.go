@@ -22,6 +22,12 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
+type (
+	AccessListAPIKey     = atlas.AccessListAPIKey
+	AccessListAPIKeys    = atlas.AccessListAPIKeys
+	AccessListAPIKeysReq = atlas.AccessListAPIKeysReq
+)
+
 const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList" //nolint:gosec // This is a path
 
 // AccessListAPIKeysServiceOp handles communication with the AccessList API keys related methods of the MongoDB Ops Manager API.
@@ -30,7 +36,7 @@ type AccessListAPIKeysServiceOp service
 var _ atlas.AccessListAPIKeysService = &AccessListAPIKeysServiceOp{}
 
 // List gets all AccessList API keys.
-func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *ListOptions) (*atlas.AccessListAPIKeys, *Response, error) {
+func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *ListOptions) (*AccessListAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -49,7 +55,7 @@ func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID s
 		return nil, nil, err
 	}
 
-	root := new(atlas.AccessListAPIKeys)
+	root := new(AccessListAPIKeys)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -63,7 +69,7 @@ func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID s
 }
 
 // Get retrieve information on a single API Key access list entry using the unique identifier for the API Key and desired permitted address.
-func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ipAddress string) (*atlas.AccessListAPIKey, *Response, error) {
+func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ipAddress string) (*AccessListAPIKey, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -81,7 +87,7 @@ func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, i
 		return nil, nil, err
 	}
 
-	root := new(atlas.AccessListAPIKey)
+	root := new(AccessListAPIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -91,7 +97,7 @@ func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, i
 }
 
 // Create one or more new access list entries for the specified API Key.
-func (s *AccessListAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID string, createRequest []*atlas.AccessListAPIKeysReq) (*atlas.AccessListAPIKeys, *Response, error) {
+func (s *AccessListAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID string, createRequest []*AccessListAPIKeysReq) (*AccessListAPIKeys, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
@@ -109,7 +115,7 @@ func (s *AccessListAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID
 		return nil, nil, err
 	}
 
-	root := new(atlas.AccessListAPIKeys)
+	root := new(AccessListAPIKeys)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

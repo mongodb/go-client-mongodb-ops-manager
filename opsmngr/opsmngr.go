@@ -48,8 +48,6 @@ type (
 	Link                      = atlas.Link
 	APIKey                    = atlas.APIKey
 	APIKeyInput               = atlas.APIKeyInput
-	AccessListAPIKeys         = atlas.AccessListAPIKeys
-	AccessListAPIKeysReq      = atlas.AccessListAPIKeysReq
 )
 
 type HTTPClient interface {

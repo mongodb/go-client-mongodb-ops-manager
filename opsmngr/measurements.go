@@ -20,13 +20,20 @@ import (
 	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
+type (
+	ProcessMeasurements           = atlas.ProcessMeasurements
+	ProcessDiskMeasurements       = atlas.ProcessDiskMeasurements
+	ProcessDatabaseMeasurements   = atlas.ProcessDatabaseMeasurements
+	ProcessMeasurementListOptions = atlas.ProcessMeasurementListOptions
+)
+
 // MeasurementsService provides access to the measurement related functions in the Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measurements/
 type MeasurementsService interface {
-	Host(context.Context, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessMeasurements, *Response, error)
-	Disk(context.Context, string, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDiskMeasurements, *Response, error)
-	Database(context.Context, string, string, string, *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDatabaseMeasurements, *Response, error)
+	Host(context.Context, string, string, *ProcessMeasurementListOptions) (*ProcessMeasurements, *Response, error)
+	Disk(context.Context, string, string, string, *ProcessMeasurementListOptions) (*ProcessDiskMeasurements, *Response, error)
+	Database(context.Context, string, string, string, *ProcessMeasurementListOptions) (*ProcessDatabaseMeasurements, *Response, error)
 }
 
 // MeasurementsServiceOp provides an implementation of the MeasurementsService interface.
