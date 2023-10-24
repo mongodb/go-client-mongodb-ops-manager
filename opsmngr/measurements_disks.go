@@ -28,7 +28,7 @@ const hostDiskMeasurementsPath = "api/public/v1.0/groups/%s/hosts/%s/disks/%s/me
 // You must run Ops Manager Automation to retrieve disk measurements.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-disk-measurements/
-func (s *MeasurementsServiceOp) Disk(ctx context.Context, groupID, hostID, diskName string, opts *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDiskMeasurements, *Response, error) {
+func (s *MeasurementsServiceOp) Disk(ctx context.Context, groupID, hostID, diskName string, opts *ProcessMeasurementListOptions) (*ProcessDiskMeasurements, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

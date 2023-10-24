@@ -28,7 +28,7 @@ const hostDatabaseMeasurementsPath = "api/public/v1.0/groups/%s/hosts/%s/databas
 // The Monitoring collects database measurements through the dbStats command.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-database-measurements/
-func (s *MeasurementsServiceOp) Database(ctx context.Context, groupID, hostID, databaseName string, opts *atlas.ProcessMeasurementListOptions) (*atlas.ProcessDatabaseMeasurements, *Response, error) {
+func (s *MeasurementsServiceOp) Database(ctx context.Context, groupID, hostID, databaseName string, opts *ProcessMeasurementListOptions) (*ProcessDatabaseMeasurements, *Response, error) {
 	if groupID == "" {
 		return nil, nil, atlas.NewArgError("groupID", "must be set")
 	}

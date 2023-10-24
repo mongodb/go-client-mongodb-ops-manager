@@ -41,7 +41,7 @@ type APIKeysResponse struct {
 // List all API-KEY in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-all-org-api-keys/
-func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *ListOptions) ([]atlas.APIKey, *Response, error) {
+func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *ListOptions) ([]APIKey, *Response, error) {
 	path := fmt.Sprintf(apiKeysOrgPath, orgID)
 
 	// Add query params from listOptions
@@ -71,7 +71,7 @@ func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *
 // Get gets the APIKey specified to {API-KEY-ID} from the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-one-org-api-key/
-func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*atlas.APIKey, *Response, error) {
+func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*APIKey, *Response, error) {
 	if apiKeyID == "" {
 		return nil, nil, atlas.NewArgError("name", "must be set")
 	}
@@ -97,7 +97,7 @@ func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*at
 // Create an API Key by the {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/create-one-org-api-key/
-func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
+func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createRequest *APIKeyInput) (*APIKey, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
 	}
@@ -121,7 +121,7 @@ func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createReque
 // Update a API Key in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/update-one-org-api-key/
-func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, updateRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
+func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, updateRequest *APIKeyInput) (*APIKey, *Response, error) {
 	if updateRequest == nil {
 		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
 	}
