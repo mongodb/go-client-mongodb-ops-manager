@@ -48,6 +48,10 @@ type (
 	Link                      = atlas.Link
 	APIKey                    = atlas.APIKey
 	APIKeyInput               = atlas.APIKeyInput
+	Part                      = atlas.Part
+	Checkpoint                = atlas.Checkpoint
+	Checkpoints               = atlas.Checkpoints
+	SnapshotTimestamp         = atlas.SnapshotTimestamp
 )
 
 type HTTPClient interface {
