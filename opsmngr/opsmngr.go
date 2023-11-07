@@ -52,6 +52,8 @@ type (
 	Checkpoint                = atlas.Checkpoint
 	Checkpoints               = atlas.Checkpoints
 	SnapshotTimestamp         = atlas.SnapshotTimestamp
+	IndexOptions              = atlas.IndexOptions
+	CollationOptions          = atlas.CollationOptions
 )
 
 type HTTPClient interface {

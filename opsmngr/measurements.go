@@ -25,6 +25,7 @@ type (
 	ProcessDiskMeasurements       = atlas.ProcessDiskMeasurements
 	ProcessDatabaseMeasurements   = atlas.ProcessDatabaseMeasurements
 	ProcessMeasurementListOptions = atlas.ProcessMeasurementListOptions
+	Measurements                  = atlas.Measurements
 )
 
 // MeasurementsService provides access to the measurement related functions in the Ops Manager API.
