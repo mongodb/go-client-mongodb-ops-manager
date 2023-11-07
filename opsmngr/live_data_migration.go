@@ -24,12 +24,14 @@ import (
 
 const liveMigrationBasePath = "api/public/v1.0/orgs/%s/liveExport/migrationLink"
 
+type LinkToken = atlas.LinkToken
+
 // LiveDataMigrationService is an interface for interfacing with the Live Migration
 // endpoints of the MongoDB Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/
 type LiveDataMigrationService interface {
-	ConnectOrganizations(context.Context, string, *atlas.LinkToken) (*ConnectionStatus, *Response, error)
+	ConnectOrganizations(context.Context, string, *LinkToken) (*ConnectionStatus, *Response, error)
 	DeleteConnection(context.Context, string) (*Response, error)
 	ConnectionStatus(context.Context, string) (*ConnectionStatus, *Response, error)
 }
@@ -69,7 +71,7 @@ func (s *LiveDataMigrationServiceOp) ConnectionStatus(ctx context.Context, orgID
 // ConnectOrganizations connects the source Ops Manager organization with a target MongoDB Atlas organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/link-the-organization-with-atlas/
-func (s *LiveDataMigrationServiceOp) ConnectOrganizations(ctx context.Context, orgID string, linkToken *atlas.LinkToken) (*ConnectionStatus, *Response, error) {
+func (s *LiveDataMigrationServiceOp) ConnectOrganizations(ctx context.Context, orgID string, linkToken *LinkToken) (*ConnectionStatus, *Response, error) {
 	if orgID == "" {
 		return nil, nil, atlas.NewArgError("orgID", "must be set")
 	}
