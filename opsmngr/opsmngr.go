@@ -48,12 +48,22 @@ type (
 	Link                      = atlas.Link
 	APIKey                    = atlas.APIKey
 	APIKeyInput               = atlas.APIKeyInput
+	AssignAPIKey              = atlas.AssignAPIKey
 	Part                      = atlas.Part
 	Checkpoint                = atlas.Checkpoint
 	Checkpoints               = atlas.Checkpoints
 	SnapshotTimestamp         = atlas.SnapshotTimestamp
 	IndexOptions              = atlas.IndexOptions
 	CollationOptions          = atlas.CollationOptions
+	Team                      = atlas.Team
+	TeamsAssigment            = atlas.TeamsAssigned
+	TeamUpdateRoles           = atlas.TeamUpdateRoles
+	CreateProjectOptions      = atlas.CreateProjectOptions
+	ProjectTeam               = atlas.ProjectTeam
+	TeamRoles                 = atlas.TeamRoles
+	Invitation                = atlas.Invitation
+	NamespaceOptions          = atlas.NamespaceOptions
+	Namespaces                = atlas.Namespaces
 )
 
 type HTTPClient interface {
