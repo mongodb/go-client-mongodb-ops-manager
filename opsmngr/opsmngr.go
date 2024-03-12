@@ -56,14 +56,19 @@ type (
 	IndexOptions              = atlas.IndexOptions
 	CollationOptions          = atlas.CollationOptions
 	Team                      = atlas.Team
-	TeamsAssigment            = atlas.TeamsAssigned
+	TeamsAssigned             = atlas.TeamsAssigned
 	TeamUpdateRoles           = atlas.TeamUpdateRoles
 	CreateProjectOptions      = atlas.CreateProjectOptions
 	ProjectTeam               = atlas.ProjectTeam
 	TeamRoles                 = atlas.TeamRoles
 	Invitation                = atlas.Invitation
+	InvitationOptions         = atlas.InvitationOptions
 	NamespaceOptions          = atlas.NamespaceOptions
 	Namespaces                = atlas.Namespaces
+	SlowQueryOptions          = atlas.SlowQueryOptions
+	SlowQueries               = atlas.SlowQueries
+	SuggestedIndexOptions     = atlas.SuggestedIndexOptions
+	SuggestedIndexes          = atlas.SuggestedIndexes
 )
 
 type HTTPClient interface {
