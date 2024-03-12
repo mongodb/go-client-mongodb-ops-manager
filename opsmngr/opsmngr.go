@@ -69,6 +69,10 @@ type (
 	SlowQueries               = atlas.SlowQueries
 	SuggestedIndexOptions     = atlas.SuggestedIndexOptions
 	SuggestedIndexes          = atlas.SuggestedIndexes
+	Notification              = atlas.Notification
+	CurrentValue              = atlas.CurrentValue
+	MetricThreshold           = atlas.MetricThreshold
+	Matcher                   = atlas.Matcher
 )
 
 type HTTPClient interface {
