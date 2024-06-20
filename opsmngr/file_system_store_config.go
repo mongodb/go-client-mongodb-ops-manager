@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const backupAdministratorFileSystemStoreConfigurationsBasePath = "api/public/v1.0/admin/backup/snapshot/fileSystemConfigs"
@@ -51,7 +49,7 @@ type FileSystemStoreConfiguration struct {
 
 // FileSystemStoreConfigurations represents a paginated collection of FileSystemStoreConfiguration.
 type FileSystemStoreConfigurations struct {
-	Links      []*atlas.Link                   `json:"links"`
+	Links      []*Link                         `json:"links"`
 	Results    []*FileSystemStoreConfiguration `json:"results"`
 	TotalCount int                             `json:"totalCount"`
 }
@@ -61,7 +59,7 @@ type FileSystemStoreConfigurations struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/get-one-file-system-store-configuration-by-id/
 func (s *FileSystemStoreConfigServiceOp) Get(ctx context.Context, fileSystemID string) (*FileSystemStoreConfiguration, *Response, error) {
 	if fileSystemID == "" {
-		return nil, nil, atlas.NewArgError("fileSystemID", "must be set")
+		return nil, nil, NewArgError("fileSystemID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorFileSystemStoreConfigurationsBasePath, fileSystemID)
@@ -115,7 +113,7 @@ func (s *FileSystemStoreConfigServiceOp) Create(ctx context.Context, fileSystem 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/update-one-file-system-store-configuration/
 func (s *FileSystemStoreConfigServiceOp) Update(ctx context.Context, fileSystemID string, fileSystem *FileSystemStoreConfiguration) (*FileSystemStoreConfiguration, *Response, error) {
 	if fileSystemID == "" {
-		return nil, nil, atlas.NewArgError("fileSystemID", "must be set")
+		return nil, nil, NewArgError("fileSystemID", "must be set")
 	}
 	path := fmt.Sprintf("%s/%s", backupAdministratorFileSystemStoreConfigurationsBasePath, fileSystemID)
 	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, fileSystem)
@@ -134,7 +132,7 @@ func (s *FileSystemStoreConfigServiceOp) Update(ctx context.Context, fileSystemI
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/fileSystemConfigs/delete-one-file-system-store-configuration/
 func (s *FileSystemStoreConfigServiceOp) Delete(ctx context.Context, fileSystemID string) (*Response, error) {
 	if fileSystemID == "" {
-		return nil, atlas.NewArgError("fileSystemID", "must be set")
+		return nil, NewArgError("fileSystemID", "must be set")
 	}
 	path := fmt.Sprintf("%s/%s", backupAdministratorFileSystemStoreConfigurationsBasePath, fileSystemID)
 	req, err := s.Client.NewRequest(ctx, http.MethodDelete, path, nil)

@@ -115,7 +115,7 @@ func (s *OrganizationsServiceOp) ListUsers(ctx context.Context, orgID string, op
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-one/
 func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*atlas.Organization, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", orgsBasePath, orgID)
@@ -139,7 +139,7 @@ func (s *OrganizationsServiceOp) Get(ctx context.Context, orgID string) (*atlas.
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-get-all-projects/
 func (s *OrganizationsServiceOp) Projects(ctx context.Context, orgID string, opts *atlas.ProjectsListOptions) (*Projects, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 	basePath := fmt.Sprintf("%s/%s/groups", orgsBasePath, orgID)
 
@@ -167,7 +167,7 @@ func (s *OrganizationsServiceOp) Projects(ctx context.Context, orgID string, opt
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-create-one/
 func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *atlas.Organization) (*atlas.Organization, *Response, error) {
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, orgsBasePath, createRequest)
@@ -189,7 +189,7 @@ func (s *OrganizationsServiceOp) Create(ctx context.Context, createRequest *atla
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-delete-one/
 func (s *OrganizationsServiceOp) Delete(ctx context.Context, orgID string) (*Response, error) {
 	if orgID == "" {
-		return nil, atlas.NewArgError("orgID", "must be set")
+		return nil, NewArgError("orgID", "must be set")
 	}
 
 	basePath := fmt.Sprintf("%s/%s", orgsBasePath, orgID)

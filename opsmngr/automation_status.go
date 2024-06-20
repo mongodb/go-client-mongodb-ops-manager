@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -33,7 +31,7 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-status/
 func (s *AutomationServiceOp) GetStatus(ctx context.Context, groupID string) (*AutomationStatus, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	basePath := fmt.Sprintf(automationStatusBasePath, groupID)
 

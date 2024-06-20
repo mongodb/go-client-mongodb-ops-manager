@@ -38,10 +38,10 @@ var _ atlas.AccessListAPIKeysService = &AccessListAPIKeysServiceOp{}
 // List gets all AccessList API keys.
 func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID string, listOptions *ListOptions) (*AccessListAPIKeys, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 	if apiKeyID == "" {
-		return nil, nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, nil, NewArgError("apiKeyID", "must be set")
 	}
 
 	path := fmt.Sprintf(accessListAPIKeysPath, orgID, apiKeyID)
@@ -71,13 +71,13 @@ func (s *AccessListAPIKeysServiceOp) List(ctx context.Context, orgID, apiKeyID s
 // Get retrieve information on a single API Key access list entry using the unique identifier for the API Key and desired permitted address.
 func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, ipAddress string) (*AccessListAPIKey, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 	if apiKeyID == "" {
-		return nil, nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, nil, NewArgError("apiKeyID", "must be set")
 	}
 	if ipAddress == "" {
-		return nil, nil, atlas.NewArgError("ipAddress", "must be set")
+		return nil, nil, NewArgError("ipAddress", "must be set")
 	}
 
 	path := fmt.Sprintf(accessListAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress)
@@ -99,13 +99,13 @@ func (s *AccessListAPIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID, i
 // Create one or more new access list entries for the specified API Key.
 func (s *AccessListAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID string, createRequest []*AccessListAPIKeysReq) (*AccessListAPIKeys, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 	if apiKeyID == "" {
-		return nil, nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, nil, NewArgError("apiKeyID", "must be set")
 	}
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	path := fmt.Sprintf(accessListAPIKeysPath, orgID, apiKeyID)
@@ -127,13 +127,13 @@ func (s *AccessListAPIKeysServiceOp) Create(ctx context.Context, orgID, apiKeyID
 // Delete deletes the AccessList API keys.
 func (s *AccessListAPIKeysServiceOp) Delete(ctx context.Context, orgID, apiKeyID, ipAddress string) (*Response, error) {
 	if orgID == "" {
-		return nil, atlas.NewArgError("orgID", "must be set")
+		return nil, NewArgError("orgID", "must be set")
 	}
 	if apiKeyID == "" {
-		return nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, NewArgError("apiKeyID", "must be set")
 	}
 	if ipAddress == "" {
-		return nil, atlas.NewArgError("ipAddress", "must be set")
+		return nil, NewArgError("ipAddress", "must be set")
 	}
 
 	path := fmt.Sprintf(accessListAPIKeysPath+"/%s", orgID, apiKeyID, ipAddress)

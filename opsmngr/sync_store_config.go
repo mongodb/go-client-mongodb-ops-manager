@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const backupAdministratorSyncBasePath = "api/public/v1.0/admin/backup/sync/mongoConfigs"
@@ -46,7 +44,7 @@ var _ SyncStoreConfigService = &SyncStoreConfigServiceOp{}
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/get-one-sync-store-configuration-by-id/
 func (s *SyncStoreConfigServiceOp) Get(ctx context.Context, syncID string) (*BackupStore, *Response, error) {
 	if syncID == "" {
-		return nil, nil, atlas.NewArgError("syncID", "must be set")
+		return nil, nil, NewArgError("syncID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorSyncBasePath, syncID)
@@ -100,7 +98,7 @@ func (s *SyncStoreConfigServiceOp) Create(ctx context.Context, sync *BackupStore
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/update-one-sync-store-configuration/
 func (s *SyncStoreConfigServiceOp) Update(ctx context.Context, syncID string, sync *BackupStore) (*BackupStore, *Response, error) {
 	if syncID == "" {
-		return nil, nil, atlas.NewArgError("syncID", "must be set")
+		return nil, nil, NewArgError("syncID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorSyncBasePath, syncID)
@@ -120,7 +118,7 @@ func (s *SyncStoreConfigServiceOp) Update(ctx context.Context, syncID string, sy
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/sync/mongoConfigs/delete-one-sync-store-configuration/
 func (s *SyncStoreConfigServiceOp) Delete(ctx context.Context, syncID string) (*Response, error) {
 	if syncID == "" {
-		return nil, atlas.NewArgError("syncID", "must be set")
+		return nil, NewArgError("syncID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorSyncBasePath, syncID)

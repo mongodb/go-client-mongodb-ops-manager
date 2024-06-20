@@ -75,7 +75,7 @@ func (s *GlobalAPIKeysServiceOp) List(ctx context.Context, listOptions *ListOpti
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/get-one-global-api-key/
 func (s *GlobalAPIKeysServiceOp) Get(ctx context.Context, apiKeyID string) (*atlas.APIKey, *Response, error) {
 	if apiKeyID == "" {
-		return nil, nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, nil, NewArgError("apiKeyID", "must be set")
 	}
 	escapedEntry := url.PathEscape(apiKeyID)
 	path := fmt.Sprintf("%s/%s", apiKeysPath, escapedEntry)
@@ -99,7 +99,7 @@ func (s *GlobalAPIKeysServiceOp) Get(ctx context.Context, apiKeyID string) (*atl
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/create-one-global-api-key/
 func (s *GlobalAPIKeysServiceOp) Create(ctx context.Context, createRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, apiKeysPath, createRequest)
@@ -121,7 +121,7 @@ func (s *GlobalAPIKeysServiceOp) Create(ctx context.Context, createRequest *atla
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/update-one-global-api-key/
 func (s *GlobalAPIKeysServiceOp) Update(ctx context.Context, apiKeyID string, updateRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if updateRequest == nil {
-		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
+		return nil, nil, NewArgError("updateRequest", "cannot be nil")
 	}
 	escapedEntry := url.PathEscape(apiKeyID)
 	path := fmt.Sprintf("%s/%s", apiKeysPath, escapedEntry)
@@ -145,7 +145,7 @@ func (s *GlobalAPIKeysServiceOp) Update(ctx context.Context, apiKeyID string, up
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/global/delete-one-global-api-key/
 func (s *GlobalAPIKeysServiceOp) Delete(ctx context.Context, apiKeyID string) (*Response, error) {
 	if apiKeyID == "" {
-		return nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, NewArgError("apiKeyID", "must be set")
 	}
 	escapedEntry := url.PathEscape(apiKeyID)
 	path := fmt.Sprintf("%s/%s", apiKeysPath, escapedEntry)

@@ -96,7 +96,7 @@ type ChildJob struct {
 
 // LogCollectionJobs represents a array of LogCollectionJobs.
 type LogCollectionJobs struct {
-	Links      []*atlas.Link       `json:"links"`
+	Links      []*Link             `json:"links"`
 	Results    []*LogCollectionJob `json:"results"`
 	TotalCount int                 `json:"totalCount"`
 }
@@ -113,7 +113,7 @@ type LogListOptions struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-all/
 func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts *LogListOptions) (*LogCollectionJobs, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(logsBasePath, groupID)
@@ -138,11 +138,11 @@ func (s *LogCollectionServiceOp) List(ctx context.Context, groupID string, opts 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-get-one/
 func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string, opts *LogListOptions) (*LogCollectionJob, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if jobID == "" {
-		return nil, nil, atlas.NewArgError("jobID", "must be set")
+		return nil, nil, NewArgError("jobID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(logsBasePath, groupID)
@@ -169,11 +169,11 @@ func (s *LogCollectionServiceOp) Get(ctx context.Context, groupID, jobID string,
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-submit/
 func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log *LogCollectionJob) (*LogCollectionJob, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if log == nil {
-		return nil, nil, atlas.NewArgError("log", "must be set")
+		return nil, nil, NewArgError("log", "must be set")
 	}
 
 	path := fmt.Sprintf(logsBasePath, groupID)
@@ -193,15 +193,15 @@ func (s *LogCollectionServiceOp) Create(ctx context.Context, groupID string, log
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-update-one/
 func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID string, log *LogCollectionJob) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	if jobID == "" {
-		return nil, atlas.NewArgError("jobID", "must be set")
+		return nil, NewArgError("jobID", "must be set")
 	}
 
 	if log == nil {
-		return nil, atlas.NewArgError("log", "must be set")
+		return nil, NewArgError("log", "must be set")
 	}
 
 	basePath := fmt.Sprintf(logsBasePath, groupID)
@@ -221,11 +221,11 @@ func (s *LogCollectionServiceOp) Extend(ctx context.Context, groupID, jobID stri
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-retry/
 func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	if jobID == "" {
-		return nil, atlas.NewArgError("jobID", "must be set")
+		return nil, NewArgError("jobID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(logsBasePath, groupID)
@@ -246,11 +246,11 @@ func (s *LogCollectionServiceOp) Retry(ctx context.Context, groupID, jobID strin
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
 func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	if jobID == "" {
-		return nil, atlas.NewArgError("jobID", "must be set")
+		return nil, NewArgError("jobID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(logsBasePath, groupID)
@@ -271,11 +271,11 @@ func (s *LogCollectionServiceOp) Delete(ctx context.Context, groupID, jobID stri
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-download-job/
 func (s *LogsServiceOp) Download(ctx context.Context, groupID, jobID string, out io.Writer) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	if jobID == "" {
-		return nil, atlas.NewArgError("jobID", "must be set")
+		return nil, NewArgError("jobID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(logsBasePath, groupID)

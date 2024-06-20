@@ -65,7 +65,7 @@ func (s *ProjectAPIKeysOp) List(ctx context.Context, groupID string, listOptions
 // See more https://docs.cloudmanager.mongodb.com/reference/api/api-keys/project/create-one-apiKey-in-one-project/
 func (s *ProjectAPIKeysOp) Create(ctx context.Context, groupID string, createRequest *atlas.APIKeyInput) (*atlas.APIKey, *Response, error) {
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	path := fmt.Sprintf(projectAPIKeysPath, groupID)
@@ -89,11 +89,11 @@ func (s *ProjectAPIKeysOp) Create(ctx context.Context, groupID string, createReq
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/api-keys/project/assign-one-org-apiKey-to-one-project/
 func (s *ProjectAPIKeysOp) Assign(ctx context.Context, groupID, keyID string, assignAPIKeyRequest *atlas.AssignAPIKey) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	if keyID == "" {
-		return nil, atlas.NewArgError("keyID", "must be set")
+		return nil, NewArgError("keyID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(projectAPIKeysPath, groupID)
@@ -115,11 +115,11 @@ func (s *ProjectAPIKeysOp) Assign(ctx context.Context, groupID, keyID string, as
 // See more: https://docs.cloudmanager.mongodb.com/reference/api/api-keys/project/delete-one-apiKey-in-one-project/
 func (s *ProjectAPIKeysOp) Unassign(ctx context.Context, groupID, keyID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, NewArgError("apiKeyID", "must be set")
 	}
 
 	if keyID == "" {
-		return nil, atlas.NewArgError("keyID", "must be set")
+		return nil, NewArgError("keyID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(projectAPIKeysPath, groupID)

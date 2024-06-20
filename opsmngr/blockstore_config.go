@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const backupAdministratorBlockstoreBasePath = "api/public/v1.0/admin/backup/snapshot/mongoConfigs"
@@ -53,7 +51,7 @@ type BackupStore struct {
 
 // BackupStores represents a paginated collection of BackupStore.
 type BackupStores struct {
-	Links      []*atlas.Link  `json:"links"`
+	Links      []*Link        `json:"links"`
 	Results    []*BackupStore `json:"results"`
 	TotalCount int            `json:"totalCount"`
 }
@@ -63,7 +61,7 @@ type BackupStores struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/get-one-blockstore-configuration-by-id/
 func (s *BlockstoreConfigServiceOp) Get(ctx context.Context, blockstoreID string) (*BackupStore, *Response, error) {
 	if blockstoreID == "" {
-		return nil, nil, atlas.NewArgError("blockstoreID", "must be set")
+		return nil, nil, NewArgError("blockstoreID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorBlockstoreBasePath, blockstoreID)
@@ -117,7 +115,7 @@ func (s *BlockstoreConfigServiceOp) Create(ctx context.Context, blockstore *Back
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/update-one-blockstore-configuration/
 func (s *BlockstoreConfigServiceOp) Update(ctx context.Context, blockstoreID string, blockstore *BackupStore) (*BackupStore, *Response, error) {
 	if blockstoreID == "" {
-		return nil, nil, atlas.NewArgError("blockstoreID", "must be set")
+		return nil, nil, NewArgError("blockstoreID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorBlockstoreBasePath, blockstoreID)
@@ -137,7 +135,7 @@ func (s *BlockstoreConfigServiceOp) Update(ctx context.Context, blockstoreID str
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/mongoConfigs/delete-one-blockstore-configuration/
 func (s *BlockstoreConfigServiceOp) Delete(ctx context.Context, blockstoreID string) (*Response, error) {
 	if blockstoreID == "" {
-		return nil, atlas.NewArgError("blockstoreID", "must be set")
+		return nil, NewArgError("blockstoreID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorBlockstoreBasePath, blockstoreID)

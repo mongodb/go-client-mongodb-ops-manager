@@ -51,7 +51,7 @@ var _ LiveDataMigrationService = &LiveDataMigrationServiceOp{}
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/return-the-status-of-the-organization-link/
 func (s *LiveDataMigrationServiceOp) ConnectionStatus(ctx context.Context, orgID string) (*ConnectionStatus, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(liveMigrationBasePath, orgID)
@@ -73,11 +73,11 @@ func (s *LiveDataMigrationServiceOp) ConnectionStatus(ctx context.Context, orgID
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/link-the-organization-with-atlas/
 func (s *LiveDataMigrationServiceOp) ConnectOrganizations(ctx context.Context, orgID string, linkToken *LinkToken) (*ConnectionStatus, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 
 	if linkToken == nil {
-		return nil, nil, atlas.NewArgError("linkToken", "must be set")
+		return nil, nil, NewArgError("linkToken", "must be set")
 	}
 
 	path := fmt.Sprintf(liveMigrationBasePath, orgID)
@@ -97,7 +97,7 @@ func (s *LiveDataMigrationServiceOp) ConnectOrganizations(ctx context.Context, o
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
 func (s *LiveDataMigrationServiceOp) DeleteConnection(ctx context.Context, orgID string) (*Response, error) {
 	if orgID == "" {
-		return nil, atlas.NewArgError("orgID", "must be set")
+		return nil, NewArgError("orgID", "must be set")
 	}
 
 	path := fmt.Sprintf(liveMigrationBasePath, orgID)

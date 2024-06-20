@@ -29,7 +29,7 @@ const projectInvitationBasePath = projectBasePath + "/%s/invites"
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/get-all-invitations/
 func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opts *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(projectInvitationBasePath, groupID)
@@ -57,11 +57,11 @@ func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opt
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/get-one-invitation/
 func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationID string) (*atlas.Invitation, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if invitationID == "" {
-		return nil, nil, atlas.NewArgError("invitationID", "must be set")
+		return nil, nil, NewArgError("invitationID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(projectInvitationBasePath, groupID)
@@ -86,7 +86,7 @@ func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationI
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/create-one-invitation/
 func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(projectInvitationBasePath, groupID)
@@ -110,7 +110,7 @@ func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invi
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation/
 func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, groupID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	return s.updateInvitation(ctx, groupID, "", invitation)
@@ -121,11 +121,11 @@ func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, groupID string
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation-by-id/
 func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, groupID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if invitationID == "" {
-		return nil, nil, atlas.NewArgError("invitationID", "must be set")
+		return nil, nil, NewArgError("invitationID", "must be set")
 	}
 
 	return s.updateInvitation(ctx, groupID, invitationID, invitation)
@@ -136,11 +136,11 @@ func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, groupID, i
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/delete-one-invitation/
 func (s *ProjectsServiceOp) DeleteInvitation(ctx context.Context, groupID, invitationID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	if invitationID == "" {
-		return nil, atlas.NewArgError("invitationID", "must be set")
+		return nil, NewArgError("invitationID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(projectInvitationBasePath, groupID)

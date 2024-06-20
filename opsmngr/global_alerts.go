@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -41,16 +39,16 @@ type GlobalAlertsServiceOp service
 // GlobalAlert configuration struct.
 type GlobalAlert struct {
 	Alert
-	SourceTypeName string        `json:"sourceTypeName,omitempty"`
-	Tags           []string      `json:"tags,omitempty"`
-	Links          []*atlas.Link `json:"links,omitempty"`
-	HostID         string        `json:"hostId,omitempty"`
-	ClusterID      string        `json:"clusterId,omitempty"`
+	SourceTypeName string   `json:"sourceTypeName,omitempty"`
+	Tags           []string `json:"tags,omitempty"`
+	Links          []*Link  `json:"links,omitempty"`
+	HostID         string   `json:"hostId,omitempty"`
+	ClusterID      string   `json:"clusterId,omitempty"`
 }
 
 // GlobalAlerts collection of configurations.
 type GlobalAlerts struct {
-	Links      []*atlas.Link  `json:"links"`
+	Links      []*Link        `json:"links"`
 	Results    []*GlobalAlert `json:"results"`
 	TotalCount int            `json:"totalCount"`
 }
@@ -60,7 +58,7 @@ type GlobalAlerts struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 func (s *GlobalAlertsServiceOp) Get(ctx context.Context, alertID string) (*GlobalAlert, *Response, error) {
 	if alertID == "" {
-		return nil, nil, atlas.NewArgError("alertID", "must be set")
+		return nil, nil, NewArgError("alertID", "must be set")
 	}
 	path := fmt.Sprintf("%s/%s", globalAlertsBasePath, alertID)
 
@@ -100,7 +98,7 @@ func (s *GlobalAlertsServiceOp) List(ctx context.Context, opts *AlertsListOption
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/global-alerts/
 func (s *GlobalAlertsServiceOp) Acknowledge(ctx context.Context, alertID string, body *AcknowledgeRequest) (*GlobalAlert, *Response, error) {
 	if alertID == "" {
-		return nil, nil, atlas.NewArgError("alertID", "must be set")
+		return nil, nil, NewArgError("alertID", "must be set")
 	}
 	path := fmt.Sprintf("%s/%s", globalAlertsBasePath, alertID)
 

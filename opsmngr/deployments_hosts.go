@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -28,46 +26,46 @@ const (
 
 // Host represents a MongoDB host process in Ops Manager.
 type Host struct {
-	Aliases            []string      `json:"aliases,omitempty"`
-	AuthMechanismName  string        `json:"authMechanismName,omitempty"`
-	ClusterID          string        `json:"clusterId,omitempty"`
-	Created            string        `json:"created,omitempty"`
-	GroupID            string        `json:"groupId,omitempty"`
-	Hostname           string        `json:"hostname"`
-	ID                 string        `json:"id,omitempty"`
-	IPAddress          string        `json:"ipAddress,omitempty"`
-	LastPing           string        `json:"lastPing,omitempty"`
-	LastRestart        string        `json:"lastRestart,omitempty"`
-	ReplicaSetName     string        `json:"replicaSetName,omitempty"`
-	ReplicaStateName   string        `json:"replicaStateName,omitempty"`
-	ShardName          string        `json:"shardName,omitempty"`
-	TypeName           string        `json:"typeName,omitempty"`
-	Version            string        `json:"version,omitempty"`
-	Username           string        `json:"username,omitempty"`
-	Password           string        `json:"password,omitempty"`
-	Deactivated        bool          `json:"deactivated,omitempty"`
-	HasStartupWarnings bool          `json:"hasStartupWarnings,omitempty"`
-	Hidden             bool          `json:"hidden,omitempty"`
-	HiddenSecondary    bool          `json:"hiddenSecondary,omitempty"`
-	HostEnabled        bool          `json:"hostEnabled,omitempty"`
-	JournalingEnabled  bool          `json:"journalingEnabled,omitempty"`
-	LowUlimit          bool          `json:"lowUlimit,omitempty"`
-	LogsEnabled        *bool         `json:"logsEnabled,omitempty"`
-	AlertsEnabled      *bool         `json:"alertsEnabled,omitempty"`
-	ProfilerEnabled    *bool         `json:"profilerEnabled,omitempty"`
-	SSLEnabled         *bool         `json:"sslEnabled,omitempty"`
-	LastDataSizeBytes  float64       `json:"lastDataSizeBytes,omitempty"`
-	LastIndexSizeBytes float64       `json:"lastIndexSizeBytes,omitempty"`
-	Port               int32         `json:"port"`
-	SlaveDelaySec      int64         `json:"slaveDelaySec,omitempty"`
-	UptimeMsec         int64         `json:"uptimeMsec,omitempty"`
-	Links              []*atlas.Link `json:"links,omitempty"`
+	Aliases            []string `json:"aliases,omitempty"`
+	AuthMechanismName  string   `json:"authMechanismName,omitempty"`
+	ClusterID          string   `json:"clusterId,omitempty"`
+	Created            string   `json:"created,omitempty"`
+	GroupID            string   `json:"groupId,omitempty"`
+	Hostname           string   `json:"hostname"`
+	ID                 string   `json:"id,omitempty"`
+	IPAddress          string   `json:"ipAddress,omitempty"`
+	LastPing           string   `json:"lastPing,omitempty"`
+	LastRestart        string   `json:"lastRestart,omitempty"`
+	ReplicaSetName     string   `json:"replicaSetName,omitempty"`
+	ReplicaStateName   string   `json:"replicaStateName,omitempty"`
+	ShardName          string   `json:"shardName,omitempty"`
+	TypeName           string   `json:"typeName,omitempty"`
+	Version            string   `json:"version,omitempty"`
+	Username           string   `json:"username,omitempty"`
+	Password           string   `json:"password,omitempty"`
+	Deactivated        bool     `json:"deactivated,omitempty"`
+	HasStartupWarnings bool     `json:"hasStartupWarnings,omitempty"`
+	Hidden             bool     `json:"hidden,omitempty"`
+	HiddenSecondary    bool     `json:"hiddenSecondary,omitempty"`
+	HostEnabled        bool     `json:"hostEnabled,omitempty"`
+	JournalingEnabled  bool     `json:"journalingEnabled,omitempty"`
+	LowUlimit          bool     `json:"lowUlimit,omitempty"`
+	LogsEnabled        *bool    `json:"logsEnabled,omitempty"`
+	AlertsEnabled      *bool    `json:"alertsEnabled,omitempty"`
+	ProfilerEnabled    *bool    `json:"profilerEnabled,omitempty"`
+	SSLEnabled         *bool    `json:"sslEnabled,omitempty"`
+	LastDataSizeBytes  float64  `json:"lastDataSizeBytes,omitempty"`
+	LastIndexSizeBytes float64  `json:"lastIndexSizeBytes,omitempty"`
+	Port               int32    `json:"port"`
+	SlaveDelaySec      int64    `json:"slaveDelaySec,omitempty"`
+	UptimeMsec         int64    `json:"uptimeMsec,omitempty"`
+	Links              []*Link  `json:"links,omitempty"`
 }
 
 type Hosts struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*Host       `json:"results"`
-	TotalCount int           `json:"totalCount"`
+	Links      []*Link `json:"links"`
+	Results    []*Host `json:"results"`
+	TotalCount int     `json:"totalCount"`
 }
 
 type HostListOptions struct {
@@ -80,7 +78,7 @@ type HostListOptions struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-all-hosts-in-group/
 func (s *DeploymentsServiceOp) ListHosts(ctx context.Context, groupID string, opts *HostListOptions) (*Hosts, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsBasePath, groupID)
 	path, err := setQueryParams(basePath, opts)
@@ -104,10 +102,10 @@ func (s *DeploymentsServiceOp) ListHosts(ctx context.Context, groupID string, op
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-one-host-by-id/
 func (s *DeploymentsServiceOp) GetHost(ctx context.Context, groupID, hostID string) (*Host, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsBasePath, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, hostID)
@@ -128,10 +126,10 @@ func (s *DeploymentsServiceOp) GetHost(ctx context.Context, groupID, hostID stri
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/get-one-host-by-hostname-port/
 func (s *DeploymentsServiceOp) GetHostByHostname(ctx context.Context, groupID, hostname string, port int) (*Host, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if hostname == "" {
-		return nil, nil, atlas.NewArgError("hostname", "must be set")
+		return nil, nil, NewArgError("hostname", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsBasePath, groupID)
 	path := fmt.Sprintf("%s/byName/%s:%d", basePath, hostname, port)
@@ -152,7 +150,7 @@ func (s *DeploymentsServiceOp) GetHostByHostname(ctx context.Context, groupID, h
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/create-one-host/
 func (s *DeploymentsServiceOp) StartMonitoring(ctx context.Context, groupID string, host *Host) (*Host, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	path := fmt.Sprintf(hostsBasePath, groupID)
 
@@ -172,10 +170,10 @@ func (s *DeploymentsServiceOp) StartMonitoring(ctx context.Context, groupID stri
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/update-one-host/
 func (s *DeploymentsServiceOp) UpdateMonitoring(ctx context.Context, groupID, hostID string, host *Host) (*Host, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsBasePath, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, hostID)
@@ -195,10 +193,10 @@ func (s *DeploymentsServiceOp) UpdateMonitoring(ctx context.Context, groupID, ho
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/hosts/delete-one-host/
 func (s *DeploymentsServiceOp) StopMonitoring(ctx context.Context, groupID, hostID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 	if hostID == "" {
-		return nil, atlas.NewArgError("hostID", "must be set")
+		return nil, NewArgError("hostID", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsBasePath, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, hostID)

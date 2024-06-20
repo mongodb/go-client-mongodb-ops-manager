@@ -36,10 +36,10 @@ type (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disks-get-all/
 func (s *DeploymentsServiceOp) ListPartitions(ctx context.Context, groupID, hostID string, opts *ListOptions) (*ProcessDisksResponse, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsDisksBasePath, groupID, hostID)
 	path, err := setQueryParams(basePath, opts)
@@ -63,13 +63,13 @@ func (s *DeploymentsServiceOp) ListPartitions(ctx context.Context, groupID, host
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
 func (s *DeploymentsServiceOp) GetPartition(ctx context.Context, groupID, hostID, name string) (*ProcessDisk, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 	if name == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsDisksBasePath, groupID, hostID)
 	path := fmt.Sprintf("%s/%s", basePath, name)

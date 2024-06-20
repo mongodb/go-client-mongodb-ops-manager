@@ -27,7 +27,7 @@ import (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-the-automation-configuration
 func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*AutomationConfig, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
 
@@ -52,7 +52,7 @@ func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*A
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#update-the-automation-configuration
 func (s *AutomationServiceOp) UpdateConfig(ctx context.Context, groupID string, updateRequest *AutomationConfig) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 	basePath := fmt.Sprintf(automationConfigBasePath, groupID)
 

@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const backupAdministratorOplogBasePath = "api/public/v1.0/admin/backup/oplog/mongoConfigs"
@@ -46,7 +44,7 @@ var _ OplogStoreConfigService = &OplogStoreConfigServiceOp{}
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/get-one-oplog-configuration-by-id/
 func (s *OplogStoreConfigServiceOp) Get(ctx context.Context, oplogID string) (*BackupStore, *Response, error) {
 	if oplogID == "" {
-		return nil, nil, atlas.NewArgError("oplogID", "must be set")
+		return nil, nil, NewArgError("oplogID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplogID)
@@ -100,7 +98,7 @@ func (s *OplogStoreConfigServiceOp) Create(ctx context.Context, oplog *BackupSto
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/oplog/mongoConfigs/update-one-oplog-configuration/
 func (s *OplogStoreConfigServiceOp) Update(ctx context.Context, oplogID string, oplog *BackupStore) (*BackupStore, *Response, error) {
 	if oplogID == "" {
-		return nil, nil, atlas.NewArgError("oplogID", "must be set")
+		return nil, nil, NewArgError("oplogID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplogID)
@@ -120,7 +118,7 @@ func (s *OplogStoreConfigServiceOp) Update(ctx context.Context, oplogID string, 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/s3Configs/delete-one-s3-blockstore-configuration/
 func (s *OplogStoreConfigServiceOp) Delete(ctx context.Context, oplogID string) (*Response, error) {
 	if oplogID == "" {
-		return nil, atlas.NewArgError("oplogID", "must be set")
+		return nil, NewArgError("oplogID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorOplogBasePath, oplogID)

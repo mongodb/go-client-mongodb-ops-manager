@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestDeployments_ListHosts(t *testing.T) {
@@ -105,7 +104,7 @@ func TestDeployments_ListHosts(t *testing.T) {
 				LastDataSizeBytes:  633208918,
 				LastIndexSizeBytes: 101420524,
 				LastPing:           "2016-08-18T11:23:41Z",
-				Links:              []*atlas.Link{},
+				Links:              []*Link{},
 				LogsEnabled:        &logsEnabled,
 				LowUlimit:          false,
 				Port:               26000,
@@ -201,7 +200,7 @@ func TestDeployments_GetHost(t *testing.T) {
 		LastDataSizeBytes:  633208918,
 		LastIndexSizeBytes: 101420524,
 		LastPing:           "2016-08-18T11:23:41Z",
-		Links:              []*atlas.Link{},
+		Links:              []*Link{},
 		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		Port:               26000,
@@ -296,7 +295,7 @@ func TestDeployments_GetHostByHostname(t *testing.T) {
 		LastDataSizeBytes:  633208918,
 		LastIndexSizeBytes: 101420524,
 		LastPing:           "2016-08-18T11:23:41Z",
-		Links:              []*atlas.Link{},
+		Links:              []*Link{},
 		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		Port:               26000,
@@ -374,7 +373,7 @@ func TestDeployments_StartMonitoring(t *testing.T) {
 		Hostname:           hostname,
 		ID:                 "22",
 		JournalingEnabled:  false,
-		Links:              []*atlas.Link{},
+		Links:              []*Link{},
 		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		Port:               port,
@@ -446,7 +445,7 @@ func TestDeployments_UpdateMonitoring(t *testing.T) {
 		Hostname:           hostname,
 		ID:                 "22",
 		JournalingEnabled:  false,
-		Links:              []*atlas.Link{},
+		Links:              []*Link{},
 		LogsEnabled:        &logsEnabled,
 		LowUlimit:          false,
 		Port:               port,

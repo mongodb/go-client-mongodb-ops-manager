@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -72,7 +70,7 @@ type Build struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/version-manifest/view-version-manifest/
 func (s *VersionManifestServiceOp) Get(ctx context.Context, version string) (*VersionManifest, *Response, error) {
 	if version == "" {
-		return nil, nil, atlas.NewArgError("version", "must be set")
+		return nil, nil, NewArgError("version", "must be set")
 	}
 
 	path := fmt.Sprintf(versionManifestStaticPath, version)
@@ -92,7 +90,7 @@ func (s *VersionManifestServiceOp) Get(ctx context.Context, version string) (*Ve
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/version-manifest/update-version-manifest/
 func (s *VersionManifestServiceOp) Update(ctx context.Context, versionManifest *VersionManifest) (*VersionManifest, *Response, error) {
 	if versionManifest == nil {
-		return nil, nil, atlas.NewArgError("versionManifest", "must be set")
+		return nil, nil, NewArgError("versionManifest", "must be set")
 	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPut, versionManifestBasePath, versionManifest)

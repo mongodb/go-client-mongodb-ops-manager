@@ -42,10 +42,10 @@ type (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-create-config/
 func (s *AlertConfigurationsServiceOp) Create(ctx context.Context, groupID string, createReq *AlertConfiguration) (*AlertConfiguration, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if createReq == nil {
-		return nil, nil, atlas.NewArgError("createReq", "cannot be nil")
+		return nil, nil, NewArgError("createReq", "cannot be nil")
 	}
 
 	path := fmt.Sprintf(alertConfigurationPath, groupID)
@@ -69,10 +69,10 @@ func (s *AlertConfigurationsServiceOp) Create(ctx context.Context, groupID strin
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-enable-disable-config/
 func (s *AlertConfigurationsServiceOp) EnableAnAlertConfig(ctx context.Context, groupID, alertConfigID string, enabled *bool) (*AlertConfiguration, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if alertConfigID == "" {
-		return nil, nil, atlas.NewArgError("alertConfigID", "must be set")
+		return nil, nil, NewArgError("alertConfigID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(alertConfigurationPath, groupID)
@@ -97,10 +97,10 @@ func (s *AlertConfigurationsServiceOp) EnableAnAlertConfig(ctx context.Context, 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-config/
 func (s *AlertConfigurationsServiceOp) GetAnAlertConfig(ctx context.Context, groupID, alertConfigID string) (*AlertConfiguration, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if alertConfigID == "" {
-		return nil, nil, atlas.NewArgError("alertConfigID", "must be set")
+		return nil, nil, NewArgError("alertConfigID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(alertConfigurationPath, groupID)
@@ -125,10 +125,10 @@ func (s *AlertConfigurationsServiceOp) GetAnAlertConfig(ctx context.Context, gro
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-open-alerts/
 func (s *AlertConfigurationsServiceOp) GetOpenAlertsConfig(ctx context.Context, groupID, alertConfigID string) ([]AlertConfiguration, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if alertConfigID == "" {
-		return nil, nil, atlas.NewArgError("alertConfigID", "must be set")
+		return nil, nil, NewArgError("alertConfigID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(alertConfigurationPath, groupID)
@@ -156,7 +156,7 @@ func (s *AlertConfigurationsServiceOp) GetOpenAlertsConfig(ctx context.Context, 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-get-all-configs/
 func (s *AlertConfigurationsServiceOp) List(ctx context.Context, groupID string, listOptions *ListOptions) ([]AlertConfiguration, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(alertConfigurationPath, groupID)
@@ -190,13 +190,13 @@ func (s *AlertConfigurationsServiceOp) List(ctx context.Context, groupID string,
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-update-config/
 func (s *AlertConfigurationsServiceOp) Update(ctx context.Context, groupID, alertConfigID string, updateReq *AlertConfiguration) (*AlertConfiguration, *Response, error) {
 	if updateReq == nil {
-		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
+		return nil, nil, NewArgError("updateRequest", "cannot be nil")
 	}
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if alertConfigID == "" {
-		return nil, nil, atlas.NewArgError("alertConfigID", "must be set")
+		return nil, nil, NewArgError("alertConfigID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(alertConfigurationPath, groupID)
@@ -221,10 +221,10 @@ func (s *AlertConfigurationsServiceOp) Update(ctx context.Context, groupID, aler
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alert-configurations-delete-config/
 func (s *AlertConfigurationsServiceOp) Delete(ctx context.Context, groupID, alertConfigID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 	if alertConfigID == "" {
-		return nil, atlas.NewArgError("alertConfigID", "must be set")
+		return nil, NewArgError("alertConfigID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(alertConfigurationPath, groupID)

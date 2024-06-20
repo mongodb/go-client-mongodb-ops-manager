@@ -41,10 +41,10 @@ type (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-get-alert/
 func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*Alert, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if alertID == "" {
-		return nil, nil, atlas.NewArgError("alertID", "must be set")
+		return nil, nil, NewArgError("alertID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(alertPath, groupID)
@@ -69,7 +69,7 @@ func (s *AlertsServiceOp) Get(ctx context.Context, groupID, alertID string) (*Al
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-get-all-alerts/
 func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions *AlertsListOptions) (*AlertsResponse, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(alertPath, groupID)
@@ -103,15 +103,15 @@ func (s *AlertsServiceOp) List(ctx context.Context, groupID string, listOptions 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/alerts-acknowledge-alert/
 func (s *AlertsServiceOp) Acknowledge(ctx context.Context, groupID, alertID string, params *AcknowledgeRequest) (*Alert, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if alertID == "" {
-		return nil, nil, atlas.NewArgError("alertID", "must be set")
+		return nil, nil, NewArgError("alertID", "must be set")
 	}
 
 	if params == nil {
-		return nil, nil, atlas.NewArgError("params", "must be set")
+		return nil, nil, NewArgError("params", "must be set")
 	}
 
 	basePath := fmt.Sprintf(alertPath, groupID)

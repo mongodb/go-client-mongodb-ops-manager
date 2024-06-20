@@ -32,10 +32,10 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/measures/get-host-process-system-measurements/
 func (s *MeasurementsServiceOp) Host(ctx context.Context, projectID, hostID string, listOptions *ProcessMeasurementListOptions) (*ProcessMeasurements, *Response, error) {
 	if projectID == "" {
-		return nil, nil, atlas.NewArgError("projectID", "must be set")
+		return nil, nil, NewArgError("projectID", "must be set")
 	}
 	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(hostMeasurementsBasePath, projectID, hostID)

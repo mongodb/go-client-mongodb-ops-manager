@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const backupAdministratorS3BlockstoreBasePath = "api/public/v1.0/admin/backup/snapshot/s3Configs"
@@ -58,7 +56,7 @@ type S3Blockstore struct {
 
 // S3Blockstores represents a paginated collection of S3Blockstore.
 type S3Blockstores struct {
-	Links      []*atlas.Link   `json:"links"`
+	Links      []*Link         `json:"links"`
 	Results    []*S3Blockstore `json:"results"`
 	TotalCount int             `json:"totalCount"`
 }
@@ -68,7 +66,7 @@ type S3Blockstores struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/s3Configs/get-one-s3-blockstore-configuration-by-id/
 func (s *S3BlockstoreConfigServiceOp) Get(ctx context.Context, s3BlockstoreID string) (*S3Blockstore, *Response, error) {
 	if s3BlockstoreID == "" {
-		return nil, nil, atlas.NewArgError("s3BlockstoreID", "must be set")
+		return nil, nil, NewArgError("s3BlockstoreID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorS3BlockstoreBasePath, s3BlockstoreID)
@@ -122,7 +120,7 @@ func (s *S3BlockstoreConfigServiceOp) Create(ctx context.Context, blockstore *S3
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/s3Configs/update-one-s3-blockstore-configuration/
 func (s *S3BlockstoreConfigServiceOp) Update(ctx context.Context, s3BlockstoreID string, blockstore *S3Blockstore) (*S3Blockstore, *Response, error) {
 	if s3BlockstoreID == "" {
-		return nil, nil, atlas.NewArgError("s3BlockstoreID", "must be set")
+		return nil, nil, NewArgError("s3BlockstoreID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorS3BlockstoreBasePath, s3BlockstoreID)
@@ -142,7 +140,7 @@ func (s *S3BlockstoreConfigServiceOp) Update(ctx context.Context, s3BlockstoreID
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/snapshot/s3Configs/delete-one-s3-blockstore-configuration/
 func (s *S3BlockstoreConfigServiceOp) Delete(ctx context.Context, s3BlockstoreID string) (*Response, error) {
 	if s3BlockstoreID == "" {
-		return nil, atlas.NewArgError("s3BlockstoreID", "must be set")
+		return nil, NewArgError("s3BlockstoreID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorS3BlockstoreBasePath, s3BlockstoreID)

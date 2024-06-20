@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -52,7 +50,7 @@ type MaintenanceWindow struct {
 
 // MaintenanceWindows is the response from the MaintenanceWindowsService.List.
 type MaintenanceWindows struct {
-	Links      []*atlas.Link        `json:"links,omitempty"`
+	Links      []*Link              `json:"links,omitempty"`
 	Results    []*MaintenanceWindow `json:"results,omitempty"`
 	TotalCount int                  `json:"totalCount,omitempty"`
 }
@@ -68,7 +66,7 @@ var _ MaintenanceWindowsService = &MaintenanceWindowsServiceOp{}
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-get-all/
 func (s *MaintenanceWindowsServiceOp) List(ctx context.Context, groupID string) (*MaintenanceWindows, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(maintenanceWindowsBasePath, groupID)
@@ -89,11 +87,11 @@ func (s *MaintenanceWindowsServiceOp) List(ctx context.Context, groupID string) 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-get-one/
 func (s *MaintenanceWindowsServiceOp) Get(ctx context.Context, groupID, maintenanceWindowID string) (*MaintenanceWindow, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if maintenanceWindowID == "" {
-		return nil, nil, atlas.NewArgError("maintenanceWindowID", "must be set")
+		return nil, nil, NewArgError("maintenanceWindowID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(maintenanceWindowsBasePath, groupID)
@@ -114,7 +112,7 @@ func (s *MaintenanceWindowsServiceOp) Get(ctx context.Context, groupID, maintena
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-create-one/
 func (s *MaintenanceWindowsServiceOp) Create(ctx context.Context, groupID string, maintenanceWindow *MaintenanceWindow) (*MaintenanceWindow, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(maintenanceWindowsBasePath, groupID)
@@ -134,11 +132,11 @@ func (s *MaintenanceWindowsServiceOp) Create(ctx context.Context, groupID string
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-update-one/
 func (s *MaintenanceWindowsServiceOp) Update(ctx context.Context, groupID, maintenanceWindowID string, maintenanceWindow *MaintenanceWindow) (*MaintenanceWindow, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if maintenanceWindowID == "" {
-		return nil, nil, atlas.NewArgError("maintenanceWindowID", "must be set")
+		return nil, nil, NewArgError("maintenanceWindowID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(maintenanceWindowsBasePath, groupID)
@@ -160,11 +158,11 @@ func (s *MaintenanceWindowsServiceOp) Update(ctx context.Context, groupID, maint
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/maintenance-windows-delete-one/
 func (s *MaintenanceWindowsServiceOp) Delete(ctx context.Context, groupID, maintenanceWindowID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	if maintenanceWindowID == "" {
-		return nil, atlas.NewArgError("maintenanceWindowID", "must be set")
+		return nil, NewArgError("maintenanceWindowID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(maintenanceWindowsBasePath, groupID)

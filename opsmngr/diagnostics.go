@@ -50,7 +50,7 @@ type DiagnosticsListOpts struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/diagnostics/get-project-diagnostic-archive/
 func (s *DiagnosticsServiceOp) Get(ctx context.Context, groupID string, opts *DiagnosticsListOpts, out io.Writer) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(diagnosticsBasePath, groupID)

@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestAgentsServiceOp_ListAgentLinks(t *testing.T) {
@@ -67,7 +66,7 @@ func TestAgentsServiceOp_ListAgentLinks(t *testing.T) {
 	}
 
 	expected := &Agents{
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5e66185d917b220fbd8bb4d1/agents",
@@ -138,7 +137,7 @@ func TestAgentsServiceOp_ListAgentsByType(t *testing.T) {
 	}
 
 	expected := &Agents{
-		Links: []*atlas.Link{},
+		Links: []*Link{},
 		Results: []*Agent{
 			{
 				TypeName:  "MONITORING",
@@ -191,7 +190,7 @@ func TestAgentsServiceOp_GlobalVersions(t *testing.T) {
 		BiConnectorVersion:        "2.3.4",
 		BiConnectorMinimumVersion: "2.3.1",
 		MongoDBToolsVersion:       "100.0.1",
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "http://mms:9080/api/public/v1.0/softwareComponents/versions",
@@ -246,7 +245,7 @@ func TestAgentsServiceOp_ProjectVersions(t *testing.T) {
 		IsAnyAgentNotManaged:        false,
 		IsAnyAgentVersionDeprecated: false,
 		IsAnyAgentVersionOld:        false,
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Href: "http://mms:9080/api/public/v1.0/groups/5e66185d917b220fbd8bb4d1/agents/current",
 				Rel:  "self",
