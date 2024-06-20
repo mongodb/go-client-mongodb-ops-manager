@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -67,7 +65,7 @@ type Policy struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/controlled-features/get-controlled-features-for-one-project/
 func (s *FeatureControlPoliciesServiceOp) List(ctx context.Context, groupID string, opts *ListOptions) (*FeaturePolicy, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	path := fmt.Sprintf(controlledFeaturesBasePath, groupID)
 
@@ -95,7 +93,7 @@ func (s *FeatureControlPoliciesServiceOp) List(ctx context.Context, groupID stri
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/controlled-features/update-controlled-features-for-one-project/
 func (s *FeatureControlPoliciesServiceOp) Update(ctx context.Context, groupID string, policy *FeaturePolicy) (*FeaturePolicy, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	path := fmt.Sprintf(controlledFeaturesBasePath, groupID)
 

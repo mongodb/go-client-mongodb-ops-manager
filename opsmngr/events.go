@@ -44,7 +44,7 @@ type (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-all-events-for-org/
 func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID string, listOptions *EventListOptions) (*EventResponse, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 	path := fmt.Sprintf(eventsPathOrganization, orgID)
 
@@ -73,10 +73,10 @@ func (s *EventsServiceOp) ListOrganizationEvents(ctx context.Context, orgID stri
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-one-event-for-org/
 func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, eventID string) (*Event, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 	if eventID == "" {
-		return nil, nil, atlas.NewArgError("eventID", "must be set")
+		return nil, nil, NewArgError("eventID", "must be set")
 	}
 	basePath := fmt.Sprintf(eventsPathOrganization, orgID)
 	path := fmt.Sprintf("%s/%s", basePath, eventID)
@@ -100,7 +100,7 @@ func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, event
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-all-events-for-project/
 func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string, listOptions *atlas.EventListOptions) (*EventResponse, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	path := fmt.Sprintf(eventsPathProjects, groupID)
 
@@ -129,10 +129,10 @@ func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string,
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-one-event-for-project/
 func (s *EventsServiceOp) GetProjectEvent(ctx context.Context, groupID, eventID string) (*Event, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if eventID == "" {
-		return nil, nil, atlas.NewArgError("eventID", "must be set")
+		return nil, nil, NewArgError("eventID", "must be set")
 	}
 	basePath := fmt.Sprintf(eventsPathProjects, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, eventID)

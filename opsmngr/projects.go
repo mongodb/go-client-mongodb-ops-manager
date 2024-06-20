@@ -79,7 +79,7 @@ type LDAPGroupMapping struct {
 type Project struct {
 	HostCounts                *HostCount          `json:"hostCounts,omitempty"`
 	LDAPGroupMappings         []*LDAPGroupMapping `json:"ldapGroupMappings,omitempty"`
-	Links                     []*atlas.Link       `json:"links,omitempty"`
+	Links                     []*Link             `json:"links,omitempty"`
 	Name                      string              `json:"name,omitempty"`
 	OrgID                     string              `json:"orgId,omitempty"`
 	ID                        string              `json:"id,omitempty"`

@@ -41,10 +41,10 @@ var _ atlas.ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/get-all-restore-jobs-for-one-cluster/
 func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clusterID string, opts *ListOptions) (*ContinuousJobs, *Response, error) {
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(continuousRestoreJobsPath, groupID, clusterID)
@@ -70,13 +70,13 @@ func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clus
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/get-one-single-restore-job-for-one-cluster/
 func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clusterID, jobID string) (*ContinuousJob, *Response, error) {
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if jobID == "" {
-		return nil, nil, atlas.NewArgError("jobID", "must be set")
+		return nil, nil, NewArgError("jobID", "must be set")
 	}
 	defaultPath := fmt.Sprintf(continuousRestoreJobsPath, groupID, clusterID)
 
@@ -99,13 +99,13 @@ func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clust
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/create-one-restore-job-for-one-cluster/
 func (s *ContinuousRestoreJobsServiceOp) Create(ctx context.Context, groupID, clusterID string, request *ContinuousJobRequest) (*ContinuousJobs, *Response, error) {
 	if request == nil {
-		return nil, nil, atlas.NewArgError("request", "must be set")
+		return nil, nil, NewArgError("request", "must be set")
 	}
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf(continuousRestoreJobsPath, groupID, clusterID)

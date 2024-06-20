@@ -44,10 +44,10 @@ var _ CheckpointsService = &CheckpointsServiceOp{}
 // See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-all-checkpoints
 func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *ListOptions) (*atlas.Checkpoints, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupId", "must be set")
+		return nil, nil, NewArgError("groupId", "must be set")
 	}
 	if clusterName == "" {
-		return nil, nil, atlas.NewArgError("clusterName", "must be set")
+		return nil, nil, NewArgError("clusterName", "must be set")
 	}
 
 	basePath := fmt.Sprintf(checkpoints, groupID, clusterName)
@@ -72,13 +72,13 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 // See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-one-checkpoint
 func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterID, checkpointID string) (*atlas.Checkpoint, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupId", "must be set")
+		return nil, nil, NewArgError("groupId", "must be set")
 	}
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 	if checkpointID == "" {
-		return nil, nil, atlas.NewArgError("checkpointID", "must be set")
+		return nil, nil, NewArgError("checkpointID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(checkpoints, groupID, clusterID)

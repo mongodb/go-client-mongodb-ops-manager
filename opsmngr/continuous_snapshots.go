@@ -42,10 +42,10 @@ type (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/get-all-snapshots-for-one-cluster/
 func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, clusterID string, listOptions *ListOptions) (*ContinuousSnapshots, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupId", "must be set")
+		return nil, nil, NewArgError("groupId", "must be set")
 	}
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 
 	path := fmt.Sprintf(continuousSnapshotsBasePath, groupID, clusterID)
@@ -72,13 +72,13 @@ func (s *ContinuousSnapshotsServiceOp) List(ctx context.Context, groupID, cluste
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/get-one-snapshot-for-one-cluster/
 func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, clusterID, snapshotID string) (*ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupId", "must be set")
+		return nil, nil, NewArgError("groupId", "must be set")
 	}
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 	if snapshotID == "" {
-		return nil, nil, atlas.NewArgError("snapshotID", "must be set")
+		return nil, nil, NewArgError("snapshotID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(continuousSnapshotsBasePath, groupID, clusterID)
@@ -99,13 +99,13 @@ func (s *ContinuousSnapshotsServiceOp) Get(ctx context.Context, groupID, cluster
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/change-expiry-for-one-snapshot/
 func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID, clusterID, snapshotID string, updateRequest *ContinuousSnapshot) (*ContinuousSnapshot, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupId", "must be set")
+		return nil, nil, NewArgError("groupId", "must be set")
 	}
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 	if snapshotID == "" {
-		return nil, nil, atlas.NewArgError("snapshotID", "must be set")
+		return nil, nil, NewArgError("snapshotID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(continuousSnapshotsBasePath, groupID, clusterID)
@@ -127,13 +127,13 @@ func (s *ContinuousSnapshotsServiceOp) ChangeExpiry(ctx context.Context, groupID
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/snapshots/remove-one-snapshot-from-one-cluster/
 func (s *ContinuousSnapshotsServiceOp) Delete(ctx context.Context, groupID, clusterID, snapshotID string) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupId", "must be set")
+		return nil, NewArgError("groupId", "must be set")
 	}
 	if clusterID == "" {
-		return nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, NewArgError("clusterID", "must be set")
 	}
 	if snapshotID == "" {
-		return nil, atlas.NewArgError("snapshotID", "must be set")
+		return nil, NewArgError("snapshotID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(continuousSnapshotsBasePath, groupID, clusterID)

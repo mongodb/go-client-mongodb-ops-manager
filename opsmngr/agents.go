@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -60,19 +58,19 @@ type Agent struct {
 
 // Agents is a paginated collection of Agent.
 type Agents struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*Agent      `json:"results"`
-	TotalCount int           `json:"totalCount"`
+	Links      []*Link  `json:"links"`
+	Results    []*Agent `json:"results"`
+	TotalCount int      `json:"totalCount"`
 }
 
 // SoftwareVersions is a set of software components and their expected current and minimum versions.
 type SoftwareVersions struct {
-	AutomationVersion         string        `json:"automationVersion"`
-	AutomationMinimumVersion  string        `json:"automationMinimumVersion"`
-	BiConnectorVersion        string        `json:"biConnectorVersion"`
-	BiConnectorMinimumVersion string        `json:"biConnectorMinimumVersion"`
-	Links                     []*atlas.Link `json:"links"`
-	MongoDBToolsVersion       string        `json:"mongoDbToolsVersion"`
+	AutomationVersion         string  `json:"automationVersion"`
+	AutomationMinimumVersion  string  `json:"automationMinimumVersion"`
+	BiConnectorVersion        string  `json:"biConnectorVersion"`
+	BiConnectorMinimumVersion string  `json:"biConnectorMinimumVersion"`
+	Links                     []*Link `json:"links"`
+	MongoDBToolsVersion       string  `json:"mongoDbToolsVersion"`
 }
 
 // AgentVersions is a set of available agents and agent versions for a project.
@@ -82,7 +80,7 @@ type AgentVersions struct {
 	IsAnyAgentNotManaged        bool            `json:"isAnyAgentNotManaged"`
 	IsAnyAgentVersionDeprecated bool            `json:"isAnyAgentVersionDeprecated"`
 	IsAnyAgentVersionOld        bool            `json:"isAnyAgentVersionOld"`
-	Links                       []*atlas.Link   `json:"links"`
+	Links                       []*Link         `json:"links"`
 	MinimumAgentVersionDetected string          `json:"minimumAgentVersionDetected"`
 	MinimumVersion              string          `json:"minimumVersion"`
 }
@@ -112,7 +110,7 @@ type AgentVersion struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-all/
 func (s *AgentsServiceOp) ListAgentLinks(ctx context.Context, groupID string) (*Agents, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	path := fmt.Sprintf(agentsBasePath, groupID)
 
@@ -135,10 +133,10 @@ func (s *AgentsServiceOp) ListAgentLinks(ctx context.Context, groupID string) (*
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents-get-by-type/
 func (s *AgentsServiceOp) ListAgentsByType(ctx context.Context, groupID, agentType string, listOptions *ListOptions) (*Agents, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if agentType == "" {
-		return nil, nil, atlas.NewArgError("agentType", "must be set")
+		return nil, nil, NewArgError("agentType", "must be set")
 	}
 	basePath := fmt.Sprintf(agentsBasePath, groupID)
 	path, err := setQueryParams(fmt.Sprintf("%s/%s", basePath, agentType), listOptions)
@@ -183,7 +181,7 @@ func (s *AgentsServiceOp) GlobalVersions(ctx context.Context) (*SoftwareVersions
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agents/get-agent-versions-per-project/
 func (s *AgentsServiceOp) ProjectVersions(ctx context.Context, groupID string) (*AgentVersions, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	basePath := fmt.Sprintf(agentsBasePath, groupID)
 	path := fmt.Sprintf("%s/versions", basePath)

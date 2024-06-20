@@ -111,7 +111,7 @@ func TestProject_GetAllProjects(t *testing.T) {
 				},
 				ID:              "56a10a80e4b0fd3b9a9bb0c2",
 				LastActiveAgent: "2016-03-09T18:19:37Z",
-				Links: []*mongodbatlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
 						Rel:  "self",
@@ -137,7 +137,7 @@ func TestProject_GetAllProjects(t *testing.T) {
 				},
 				ID:              "56aa691ce4b0a0e8c4be51f7",
 				LastActiveAgent: "2016-01-29T19:02:56Z",
-				Links: []*mongodbatlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56aa691ce4b0a0e8c4be51f7",
 						Rel:  "self",
@@ -297,7 +297,7 @@ func TestProject_GetOneProject(t *testing.T) {
 		},
 		ID:              "5c8100bcf2a30b12ff88258f",
 		LastActiveAgent: "2016-03-09T18:19:37Z",
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
 				Rel:  "self",
@@ -368,7 +368,7 @@ func TestProject_GetOneProjectByName(t *testing.T) {
 		},
 		ID:              "56a10a80e4b0fd3b9a9bb0c2",
 		LastActiveAgent: "2016-03-09T18:19:37Z",
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
 				Rel:  "self",
@@ -443,7 +443,7 @@ func TestProject_Create(t *testing.T) {
 		},
 		ID:              "56a10a80e4b0fd3b9a9bb0c2",
 		LastActiveAgent: "2016-03-09T18:19:37Z",
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
 				Rel:  "self",
@@ -516,7 +516,7 @@ func TestProject_Create_without_opts(t *testing.T) {
 		},
 		ID:              "56a10a80e4b0fd3b9a9bb0c2",
 		LastActiveAgent: "2016-03-09T18:19:37Z",
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
 				Rel:  "self",

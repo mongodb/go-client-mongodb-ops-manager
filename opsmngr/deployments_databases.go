@@ -36,10 +36,10 @@ type (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/databases-get-all-on-host/
 func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostID string, opts *ListOptions) (*ProcessDatabasesResponse, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsDatabasesBasePath, groupID, hostID)
 	path, err := setQueryParams(basePath, opts)
@@ -63,13 +63,13 @@ func (s *DeploymentsServiceOp) ListDatabases(ctx context.Context, groupID, hostI
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/disk-get-one/
 func (s *DeploymentsServiceOp) GetDatabase(ctx context.Context, groupID, hostID, name string) (*ProcessDatabase, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	if hostID == "" {
-		return nil, nil, atlas.NewArgError("hostID", "must be set")
+		return nil, nil, NewArgError("hostID", "must be set")
 	}
 	if name == "" {
-		return nil, nil, atlas.NewArgError("name", "must be set")
+		return nil, nil, NewArgError("name", "must be set")
 	}
 	basePath := fmt.Sprintf(hostsDatabasesBasePath, groupID, hostID)
 	path := fmt.Sprintf("%s/%s", basePath, name)

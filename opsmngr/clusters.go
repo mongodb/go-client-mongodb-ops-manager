@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -43,7 +41,7 @@ type ClustersServiceOp service
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/#get-all-clusters
 func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOptions *ListOptions) (*Clusters, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupId", "must be set")
+		return nil, nil, NewArgError("groupId", "must be set")
 	}
 	basePath := fmt.Sprintf(clustersBasePath, groupID)
 	path, err := setQueryParams(basePath, listOptions)
@@ -66,10 +64,10 @@ func (s *ClustersServiceOp) List(ctx context.Context, groupID string, listOption
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/clusters/#get-a-cluster
 func (s *ClustersServiceOp) Get(ctx context.Context, groupID, clusterID string) (*Cluster, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupId", "must be set")
+		return nil, nil, NewArgError("groupId", "must be set")
 	}
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 	basePath := fmt.Sprintf(clustersBasePath, groupID)
 	path := fmt.Sprintf("%s/%s", basePath, clusterID)
@@ -87,21 +85,21 @@ func (s *ClustersServiceOp) Get(ctx context.Context, groupID, clusterID string) 
 
 // Cluster represents a cluster in Ops Manager.
 type Cluster struct {
-	ClusterName    string        `json:"clusterName,omitempty"`
-	GroupID        string        `json:"groupId,omitempty"`
-	ID             string        `json:"id,omitempty"`
-	LastHeartbeat  string        `json:"lastHeartbeat,omitempty"`
-	Links          []*atlas.Link `json:"links,omitempty"`
-	ReplicaSetName string        `json:"replicaSetName,omitempty"`
-	ShardName      string        `json:"shardName,omitempty"`
-	TypeName       string        `json:"typeName,omitempty"`
+	ClusterName    string  `json:"clusterName,omitempty"`
+	GroupID        string  `json:"groupId,omitempty"`
+	ID             string  `json:"id,omitempty"`
+	LastHeartbeat  string  `json:"lastHeartbeat,omitempty"`
+	Links          []*Link `json:"links,omitempty"`
+	ReplicaSetName string  `json:"replicaSetName,omitempty"`
+	ShardName      string  `json:"shardName,omitempty"`
+	TypeName       string  `json:"typeName,omitempty"`
 }
 
 // Clusters is a list of clusters.
 type Clusters struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*Cluster    `json:"results"`
-	TotalCount int           `json:"totalCount"`
+	Links      []*Link    `json:"links"`
+	Results    []*Cluster `json:"results"`
+	TotalCount int        `json:"totalCount"`
 }
 
 // ListAll list all clusters available to the user.
@@ -143,7 +141,7 @@ type AllClustersCluster struct {
 }
 
 type AllClustersProjects struct {
-	Links      []*atlas.Link         `json:"links"`
+	Links      []*Link               `json:"links"`
 	Results    []*AllClustersProject `json:"results"`
 	TotalCount int                   `json:"totalCount"`
 }

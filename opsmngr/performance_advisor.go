@@ -49,11 +49,11 @@ var _ PerformanceAdvisorService = &PerformanceAdvisorServiceOp{}
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/pa-namespaces-get-all/
 func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID, processName string, opts *atlas.NamespaceOptions) (*atlas.Namespaces, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if processName == "" {
-		return nil, nil, atlas.NewArgError("processName", "must be set")
+		return nil, nil, NewArgError("processName", "must be set")
 	}
 
 	path := fmt.Sprintf(performanceAdvisorNamespacesPath, groupID, processName)
@@ -81,11 +81,11 @@ func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/get-slow-queries/
 func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupID, processName string, opts *atlas.SlowQueryOptions) (*atlas.SlowQueries, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if processName == "" {
-		return nil, nil, atlas.NewArgError("processName", "must be set")
+		return nil, nil, NewArgError("processName", "must be set")
 	}
 
 	path := fmt.Sprintf(performanceAdvisorSlowQueryLogsPath, groupID, processName)
@@ -113,11 +113,11 @@ func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupI
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/get-suggested-indexes/
 func (s *PerformanceAdvisorServiceOp) GetSuggestedIndexes(ctx context.Context, groupID, processName string, opts *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if processName == "" {
-		return nil, nil, atlas.NewArgError("processName", "must be set")
+		return nil, nil, NewArgError("processName", "must be set")
 	}
 
 	path := fmt.Sprintf(performanceAdvisorSuggestedIndexesLogsPath, groupID, processName)

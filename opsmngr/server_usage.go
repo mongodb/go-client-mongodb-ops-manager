@@ -153,7 +153,7 @@ func (s *ServerUsageServiceOp) ListAllHostAssignment(ctx context.Context, option
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/list-all-host-assignments-in-one-project/
 func (s *ServerUsageServiceOp) ProjectHostAssignments(ctx context.Context, groupID string, options *ServerTypeOptions) (*HostAssignments, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageGroupPath, groupID)
@@ -178,7 +178,7 @@ func (s *ServerUsageServiceOp) ProjectHostAssignments(ctx context.Context, group
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/list-all-host-assignments-in-one-organization/
 func (s *ServerUsageServiceOp) OrganizationHostAssignments(ctx context.Context, orgID string, options *ServerTypeOptions) (*HostAssignments, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageOrgPath, orgID)
@@ -203,7 +203,7 @@ func (s *ServerUsageServiceOp) OrganizationHostAssignments(ctx context.Context, 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/get-default-server-type-for-one-project/
 func (s *ServerUsageServiceOp) GetServerTypeProject(ctx context.Context, groupID string) (*ServerType, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageGroupPath, groupID)
@@ -225,7 +225,7 @@ func (s *ServerUsageServiceOp) GetServerTypeProject(ctx context.Context, groupID
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/get-default-server-type-for-one-organization/
 func (s *ServerUsageServiceOp) GetServerTypeOrganization(ctx context.Context, orgID string) (*ServerType, *Response, error) {
 	if orgID == "" {
-		return nil, nil, atlas.NewArgError("orgID", "must be set")
+		return nil, nil, NewArgError("orgID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageOrgPath, orgID)
@@ -247,7 +247,7 @@ func (s *ServerUsageServiceOp) GetServerTypeOrganization(ctx context.Context, or
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-project/
 func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, groupID string, serverType *ServerTypeRequest) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageGroupPath, groupID)
@@ -268,7 +268,7 @@ func (s *ServerUsageServiceOp) UpdateProjectServerType(ctx context.Context, grou
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/usage/update-default-server-type-for-one-organization/
 func (s *ServerUsageServiceOp) UpdateOrganizationServerType(ctx context.Context, groupID string, serverType *ServerTypeRequest) (*Response, error) {
 	if groupID == "" {
-		return nil, atlas.NewArgError("groupID", "must be set")
+		return nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(serverUsageOrgPath, groupID)

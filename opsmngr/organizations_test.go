@@ -289,7 +289,7 @@ func TestOrganizations_Projects(t *testing.T) {
 				},
 				ID:              "56a10a80e4b0fd3b9a9bb0c2",
 				LastActiveAgent: "2016-03-09T18:19:37Z",
-				Links: []*mongodbatlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/56a10a80e4b0fd3b9a9bb0c2",
 						Rel:  "self",

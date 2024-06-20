@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -31,7 +29,7 @@ const (
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-monitoring-attributes
 func (s *AutomationServiceOp) GetMonitoringAgentConfig(ctx context.Context, groupID string) (*AgentConfig, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	basePath := fmt.Sprintf(monitoringAgentConfigBasePath, groupID)
 

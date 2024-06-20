@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestClusters_List(t *testing.T) {
@@ -58,10 +57,10 @@ func TestClusters_List(t *testing.T) {
 				TypeName:      "SHARDED_REPLICA_SET",
 				ClusterName:   "Animals",
 				LastHeartbeat: "2014-04-03T15:26:58Z",
-				Links:         []*atlas.Link{},
+				Links:         []*Link{},
 			},
 		},
-		Links:      []*atlas.Link{},
+		Links:      []*Link{},
 		TotalCount: 1,
 	}
 
@@ -99,7 +98,7 @@ func TestClusters_Get(t *testing.T) {
 		TypeName:      "SHARDED_REPLICA_SET",
 		ClusterName:   "Animals",
 		LastHeartbeat: "2014-04-03T15:26:58Z",
-		Links:         []*atlas.Link{},
+		Links:         []*Link{},
 	}
 
 	if diff := deep.Equal(cluster, expected); diff != nil {
@@ -225,7 +224,7 @@ func TestClusters_ListAll(t *testing.T) {
 	}
 
 	expected := &AllClustersProjects{
-		Links: []*atlas.Link{},
+		Links: []*Link{},
 		Results: []*AllClustersProject{
 			{
 				GroupName: "AtlasGroup1",

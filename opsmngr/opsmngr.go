@@ -45,7 +45,6 @@ type (
 	ResponseProcessedCallback = atlas.ResponseProcessedCallback
 	ServiceVersion            = atlas.ServiceVersion
 	ListOptions               = atlas.ListOptions
-	Link                      = atlas.Link
 	APIKey                    = atlas.APIKey
 	APIKeyInput               = atlas.APIKeyInput
 	AssignAPIKey              = atlas.AssignAPIKey

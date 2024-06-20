@@ -59,11 +59,11 @@ type SnapshotSchedule struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/get-snapshot-schedule/
 func (s *SnapshotScheduleServiceOp) Get(ctx context.Context, groupID, clusterID string) (*SnapshotSchedule, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 
 	path := fmt.Sprintf(snapshotScheduleBasePath, groupID, clusterID)
@@ -86,11 +86,11 @@ func (s *SnapshotScheduleServiceOp) Get(ctx context.Context, groupID, clusterID 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/update-one-snapshot-schedule-by-cluster-id/
 func (s *SnapshotScheduleServiceOp) Update(ctx context.Context, groupID, clusterID string, snapshot *SnapshotSchedule) (*SnapshotSchedule, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 
 	path := fmt.Sprintf(snapshotScheduleBasePath, groupID, clusterID)

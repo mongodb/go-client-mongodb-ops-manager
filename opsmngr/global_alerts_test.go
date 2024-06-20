@@ -67,7 +67,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 
 	currentValueNumber := 143.4739833843463
 	expected := &GlobalAlerts{
-		Links: []*atlas.Link{},
+		Links: []*Link{},
 		Results: []*GlobalAlert{
 			{
 				Alert: atlas.Alert{
@@ -89,7 +89,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 					ReplicaSetName: "replicaSet-shard-0",
 				},
 				Tags:   []string{},
-				Links:  []*atlas.Link{},
+				Links:  []*Link{},
 				HostID: "63f42376fb735471fe40ec54a7",
 			},
 		},
@@ -149,7 +149,7 @@ func TestGlobalAlerts_Get(t *testing.T) {
 			Notifications:   nil,
 		},
 		Tags:           []string{},
-		Links:          []*atlas.Link{},
+		Links:          []*Link{},
 		SourceTypeName: "REPLICA_SET",
 		ClusterID:      "572a00f2e4b051814b144e90",
 	}
@@ -212,7 +212,7 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 			AcknowledgingUsername: "admin@example.com",
 		},
 		Tags:           []string{},
-		Links:          []*atlas.Link{},
+		Links:          []*Link{},
 		SourceTypeName: "REPLICA_SET",
 		ClusterID:      "572a00f2e4b051814b144e90",
 	}

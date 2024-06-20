@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const backupAdministratorProjectJobBasePath = "api/public/v1.0/admin/backup/groups"
@@ -71,7 +69,7 @@ type StoreFilter struct {
 
 // ProjectJobs represents a paginated collection of ProjectJob.
 type ProjectJobs struct {
-	Links      []*atlas.Link `json:"links"`
+	Links      []*Link       `json:"links"`
 	Results    []*ProjectJob `json:"results"`
 	TotalCount int           `json:"totalCount"`
 }
@@ -100,7 +98,7 @@ func (s *ProjectJobConfigServiceOp) List(ctx context.Context, options *ListOptio
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/groups/get-one-backup-group-configuration-by-id/
 func (s *ProjectJobConfigServiceOp) Get(ctx context.Context, projectJobID string) (*ProjectJob, *Response, error) {
 	if projectJobID == "" {
-		return nil, nil, atlas.NewArgError("projectJobID", "must be set")
+		return nil, nil, NewArgError("projectJobID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorProjectJobBasePath, projectJobID)
@@ -120,7 +118,7 @@ func (s *ProjectJobConfigServiceOp) Get(ctx context.Context, projectJobID string
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/groups/update-one-backup-group-configuration/
 func (s *ProjectJobConfigServiceOp) Update(ctx context.Context, projectJobID string, projectJob *ProjectJob) (*ProjectJob, *Response, error) {
 	if projectJobID == "" {
-		return nil, nil, atlas.NewArgError("projectJobID", "must be set")
+		return nil, nil, NewArgError("projectJobID", "must be set")
 	}
 	path := fmt.Sprintf("%s/%s", backupAdministratorProjectJobBasePath, projectJobID)
 	req, err := s.Client.NewRequest(ctx, http.MethodPut, path, projectJob)

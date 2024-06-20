@@ -76,7 +76,7 @@ type UsersResponse struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-id/
 func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *Response, error) {
 	if userID == "" {
-		return nil, nil, atlas.NewArgError("userID", "must be set")
+		return nil, nil, NewArgError("userID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", usersBasePath, userID)
@@ -100,7 +100,7 @@ func (s *UsersServiceOp) Get(ctx context.Context, userID string) (*User, *Respon
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-get-by-name/
 func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User, *Response, error) {
 	if username == "" {
-		return nil, nil, atlas.NewArgError("username", "must be set")
+		return nil, nil, NewArgError("username", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/byName/%s", usersBasePath, username)
@@ -124,7 +124,7 @@ func (s *UsersServiceOp) GetByName(ctx context.Context, username string) (*User,
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/user-create/
 func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User, *Response, error) {
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, usersBasePath, createRequest)
@@ -146,7 +146,7 @@ func (s *UsersServiceOp) Create(ctx context.Context, createRequest *User) (*User
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/users/delete-one-user/
 func (s *UsersServiceOp) Delete(ctx context.Context, userID string) (*Response, error) {
 	if userID == "" {
-		return nil, atlas.NewArgError("userID", "must be set")
+		return nil, NewArgError("userID", "must be set")
 	}
 
 	basePath := fmt.Sprintf("%s/%s", usersBasePath, userID)

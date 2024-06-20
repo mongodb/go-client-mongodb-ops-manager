@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -47,7 +45,7 @@ type AgentAPIKeysRequest struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/create-one-agent-api-key/
 func (s *AgentsServiceOp) CreateAgentAPIKey(ctx context.Context, projectID string, agent *AgentAPIKeysRequest) (*AgentAPIKey, *Response, error) {
 	if projectID == "" {
-		return nil, nil, atlas.NewArgError("projectID", "must be set")
+		return nil, nil, NewArgError("projectID", "must be set")
 	}
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
@@ -70,7 +68,7 @@ func (s *AgentsServiceOp) CreateAgentAPIKey(ctx context.Context, projectID strin
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/get-all-agent-api-keys-for-project/
 func (s *AgentsServiceOp) ListAgentAPIKeys(ctx context.Context, projectID string) ([]*AgentAPIKey, *Response, error) {
 	if projectID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 	path := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 
@@ -94,10 +92,10 @@ func (s *AgentsServiceOp) ListAgentAPIKeys(ctx context.Context, projectID string
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/agentapikeys/delete-one-agent-api-key/
 func (s *AgentsServiceOp) DeleteAgentAPIKey(ctx context.Context, projectID, agentAPIKey string) (*Response, error) {
 	if projectID == "" {
-		return nil, atlas.NewArgError("projectID", "must be set")
+		return nil, NewArgError("projectID", "must be set")
 	}
 	if agentAPIKey == "" {
-		return nil, atlas.NewArgError("agentAPIKey", "must be set")
+		return nil, NewArgError("agentAPIKey", "must be set")
 	}
 	basePath := fmt.Sprintf(agentAPIKeysBasePath, projectID)
 	path := fmt.Sprintf("%s/%s", basePath, agentAPIKey)

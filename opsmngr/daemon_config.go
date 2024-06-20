@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const backupAdministratorDaemonBasePath = "api/public/v1.0/admin/backup/daemon/configs"
@@ -60,9 +58,9 @@ type Machine struct {
 
 // Daemons represents a paginated collection of Daemon.
 type Daemons struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*Daemon     `json:"results"`
-	TotalCount int           `json:"totalCount"`
+	Links      []*Link   `json:"links"`
+	Results    []*Daemon `json:"results"`
+	TotalCount int       `json:"totalCount"`
 }
 
 // Get retrieves a Daemon.
@@ -70,7 +68,7 @@ type Daemons struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/get-one-backup-daemon-configuration-by-host/
 func (s *DaemonConfigServiceOp) Get(ctx context.Context, daemonID string) (*Daemon, *Response, error) {
 	if daemonID == "" {
-		return nil, nil, atlas.NewArgError("daemonID", "must be set")
+		return nil, nil, NewArgError("daemonID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorDaemonBasePath, daemonID)
@@ -109,7 +107,7 @@ func (s *DaemonConfigServiceOp) List(ctx context.Context, options *ListOptions) 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/update-one-backup-daemon-configuration/
 func (s *DaemonConfigServiceOp) Update(ctx context.Context, daemonID string, daemon *Daemon) (*Daemon, *Response, error) {
 	if daemonID == "" {
-		return nil, nil, atlas.NewArgError("daemonID", "must be set")
+		return nil, nil, NewArgError("daemonID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorDaemonBasePath, daemonID)
@@ -129,7 +127,7 @@ func (s *DaemonConfigServiceOp) Update(ctx context.Context, daemonID string, dae
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/admin/backup/daemonConfigs/delete-one-backup-daemon-configuration/
 func (s *DaemonConfigServiceOp) Delete(ctx context.Context, daemonID string) (*Response, error) {
 	if daemonID == "" {
-		return nil, atlas.NewArgError("daemonID", "must be set")
+		return nil, NewArgError("daemonID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", backupAdministratorDaemonBasePath, daemonID)

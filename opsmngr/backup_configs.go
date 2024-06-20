@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -60,7 +58,7 @@ type BackupConfig struct {
 
 // BackupConfigs represents a paginated collection of BackupConfig.
 type BackupConfigs struct {
-	Links      []*atlas.Link   `json:"links"`
+	Links      []*Link         `json:"links"`
 	Results    []*BackupConfig `json:"results"`
 	TotalCount int             `json:"totalCount"`
 }
@@ -70,7 +68,7 @@ type BackupConfigs struct {
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/get-all-backup-configs-for-group/
 func (s *BackupConfigsServiceOp) List(ctx context.Context, groupID string, opts *ListOptions) (*BackupConfigs, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(backupConfigsBasePath, groupID)
@@ -95,11 +93,11 @@ func (s *BackupConfigsServiceOp) List(ctx context.Context, groupID string, opts 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/get-one-backup-config-by-cluster-id/
 func (s *BackupConfigsServiceOp) Get(ctx context.Context, groupID, clusterID string) (*BackupConfig, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(backupConfigsBasePath, groupID)
@@ -121,11 +119,11 @@ func (s *BackupConfigsServiceOp) Get(ctx context.Context, groupID, clusterID str
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/backup/update-backup-config/
 func (s *BackupConfigsServiceOp) Update(ctx context.Context, groupID, clusterID string, backupConfig *BackupConfig) (*BackupConfig, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	if clusterID == "" {
-		return nil, nil, atlas.NewArgError("clusterID", "must be set")
+		return nil, nil, NewArgError("clusterID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(backupConfigsBasePath, groupID)
