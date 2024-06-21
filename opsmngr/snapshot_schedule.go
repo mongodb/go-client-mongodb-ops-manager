@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const snapshotScheduleBasePath = "api/public/v1.0/groups/%s/backupConfigs/%s/snapshotSchedule"
@@ -39,19 +37,19 @@ type SnapshotScheduleServiceOp service
 var _ SnapshotScheduleService = &SnapshotScheduleServiceOp{}
 
 type SnapshotSchedule struct {
-	ClusterID                      string        `json:"clusterId"`
-	GroupID                        string        `json:"groupId"`
-	ReferenceTimeZoneOffset        string        `json:"referenceTimeZoneOffset,omitempty"`
-	DailySnapshotRetentionDays     *int          `json:"dailySnapshotRetentionDays,omitempty"`
-	ClusterCheckpointIntervalMin   int           `json:"clusterCheckpointIntervalMin,omitempty"`
-	Links                          []*atlas.Link `json:"links,omitempty"`
-	MonthlySnapshotRetentionMonths *int          `json:"monthlySnapshotRetentionMonths,omitempty"`
-	PointInTimeWindowHours         *int          `json:"pointInTimeWindowHours,omitempty"`
-	ReferenceHourOfDay             *int          `json:"referenceHourOfDay,omitempty"`
-	ReferenceMinuteOfHour          *int          `json:"referenceMinuteOfHour,omitempty"`
-	SnapshotIntervalHours          int           `json:"snapshotIntervalHours,omitempty"`
-	SnapshotRetentionDays          int           `json:"snapshotRetentionDays,omitempty"`
-	WeeklySnapshotRetentionWeeks   *int          `json:"weeklySnapshotRetentionWeeks,omitempty"`
+	ClusterID                      string  `json:"clusterId"`
+	GroupID                        string  `json:"groupId"`
+	ReferenceTimeZoneOffset        string  `json:"referenceTimeZoneOffset,omitempty"`
+	DailySnapshotRetentionDays     *int    `json:"dailySnapshotRetentionDays,omitempty"`
+	ClusterCheckpointIntervalMin   int     `json:"clusterCheckpointIntervalMin,omitempty"`
+	Links                          []*Link `json:"links,omitempty"`
+	MonthlySnapshotRetentionMonths *int    `json:"monthlySnapshotRetentionMonths,omitempty"`
+	PointInTimeWindowHours         *int    `json:"pointInTimeWindowHours,omitempty"`
+	ReferenceHourOfDay             *int    `json:"referenceHourOfDay,omitempty"`
+	ReferenceMinuteOfHour          *int    `json:"referenceMinuteOfHour,omitempty"`
+	SnapshotIntervalHours          int     `json:"snapshotIntervalHours,omitempty"`
+	SnapshotRetentionDays          int     `json:"snapshotRetentionDays,omitempty"`
+	WeeklySnapshotRetentionWeeks   *int    `json:"weeklySnapshotRetentionWeeks,omitempty"`
 }
 
 // Get gets the snapshot schedule for an instance.

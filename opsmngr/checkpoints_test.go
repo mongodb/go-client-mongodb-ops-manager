@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const clusterID = "6b8cd61180eef547110159d9" //nolint:gosec // not a credential
@@ -145,27 +144,27 @@ func TestCheckpoints_List(t *testing.T) {
 		t.Fatalf("Checkpoints.List returned error: %v", err)
 	}
 
-	expected := &atlas.Checkpoints{
-		Results: []*atlas.Checkpoint{
+	expected := &Checkpoints{
+		Results: []*Checkpoint{
 			{
 				ClusterID: clusterID,
 				Completed: "2018-02-08T23:20:25Z",
 				GroupID:   projectID,
 				ID:        "5a7cdb3980eef53de5bffdcf",
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints",
 					},
 				},
-				Parts: []*atlas.Part{
+				Parts: []*Part{
 					{
 						ReplicaSetName: "Cluster0-shard-1",
 						TypeName:       "REPLICA_SET",
-						CheckpointPart: atlas.CheckpointPart{
+						CheckpointPart: CheckpointPart{
 							ShardName:       "Cluster0-shard-1",
 							TokenDiscovered: true,
-							TokenTimestamp: atlas.SnapshotTimestamp{
+							TokenTimestamp: SnapshotTimestamp{
 								Date:      "2018-02-08T23:20:25Z",
 								Increment: 1,
 							}},
@@ -173,10 +172,10 @@ func TestCheckpoints_List(t *testing.T) {
 					{
 						ReplicaSetName: "Cluster0-shard-0",
 						TypeName:       "REPLICA_SET",
-						CheckpointPart: atlas.CheckpointPart{
+						CheckpointPart: CheckpointPart{
 							ShardName:       "Cluster0-shard-0",
 							TokenDiscovered: true,
-							TokenTimestamp: atlas.SnapshotTimestamp{
+							TokenTimestamp: SnapshotTimestamp{
 								Date:      "2018-02-08T23:20:25Z",
 								Increment: 1,
 							}},
@@ -184,9 +183,9 @@ func TestCheckpoints_List(t *testing.T) {
 					{
 						ReplicaSetName: "Cluster0-config-0",
 						TypeName:       "CONFIG_SERVER_REPLICA_SET",
-						CheckpointPart: atlas.CheckpointPart{
+						CheckpointPart: CheckpointPart{
 							TokenDiscovered: true,
-							TokenTimestamp: atlas.SnapshotTimestamp{
+							TokenTimestamp: SnapshotTimestamp{
 								Date:      "2018-02-08T23:20:25Z",
 								Increment: 2,
 							}},
@@ -201,20 +200,20 @@ func TestCheckpoints_List(t *testing.T) {
 				Completed: "2018-02-09T14:50:33Z",
 				GroupID:   projectID,
 				ID:        "5a7db53987d9d64fe298ff46",
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints?pretty=true",
 					},
 				},
-				Parts: []*atlas.Part{
+				Parts: []*Part{
 					{
 						ReplicaSetName: "Cluster0-shard-1",
 						TypeName:       "REPLICA_SET",
-						CheckpointPart: atlas.CheckpointPart{
+						CheckpointPart: CheckpointPart{
 							ShardName:       "Cluster0-shard-1",
 							TokenDiscovered: true,
-							TokenTimestamp: atlas.SnapshotTimestamp{
+							TokenTimestamp: SnapshotTimestamp{
 								Date:      "2018-02-09T14:50:33Z",
 								Increment: 1,
 							}},
@@ -222,10 +221,10 @@ func TestCheckpoints_List(t *testing.T) {
 					{
 						ReplicaSetName: "Cluster0-shard-0",
 						TypeName:       "REPLICA_SET",
-						CheckpointPart: atlas.CheckpointPart{
+						CheckpointPart: CheckpointPart{
 							ShardName:       "Cluster0-shard-0",
 							TokenDiscovered: true,
-							TokenTimestamp: atlas.SnapshotTimestamp{
+							TokenTimestamp: SnapshotTimestamp{
 								Date:      "2018-02-09T14:50:33Z",
 								Increment: 2,
 							}},
@@ -233,9 +232,9 @@ func TestCheckpoints_List(t *testing.T) {
 					{
 						ReplicaSetName: "Cluster0-config-0",
 						TypeName:       "CONFIG_SERVER_REPLICA_SET",
-						CheckpointPart: atlas.CheckpointPart{
+						CheckpointPart: CheckpointPart{
 							TokenDiscovered: true,
-							TokenTimestamp: atlas.SnapshotTimestamp{
+							TokenTimestamp: SnapshotTimestamp{
 								Date:      "2018-02-09T14:50:33Z",
 								Increment: 4,
 							}},
@@ -246,7 +245,7 @@ func TestCheckpoints_List(t *testing.T) {
 				Timestamp:  "2018-02-09T14:50:18Z",
 			},
 		},
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints?pageNum=1&itemsPerPage=100",
 				Rel:  "self",
@@ -322,26 +321,26 @@ func TestCheckpoints_Get(t *testing.T) {
 		t.Fatalf("Checkpoints.Get returned error: %v", err)
 	}
 
-	expected := &atlas.Checkpoint{
+	expected := &Checkpoint{
 		ClusterID: clusterID,
 		Completed: "2018-02-08T23:20:25Z",
 		GroupID:   projectID,
 		ID:        "5a7cdb3980eef53de5bffdcf",
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups/5c8100bcf2a30b12ff88258f/clusters/Cluster0/checkpoints",
 			},
 		},
-		Parts: []*atlas.Part{
+		Parts: []*Part{
 
 			{
 				ReplicaSetName: "Cluster0-shard-1",
 				TypeName:       "REPLICA_SET",
-				CheckpointPart: atlas.CheckpointPart{
+				CheckpointPart: CheckpointPart{
 					ShardName:       "Cluster0-shard-1",
 					TokenDiscovered: true,
-					TokenTimestamp: atlas.SnapshotTimestamp{
+					TokenTimestamp: SnapshotTimestamp{
 						Date:      "2018-02-08T23:20:25Z",
 						Increment: 1,
 					},
@@ -350,10 +349,10 @@ func TestCheckpoints_Get(t *testing.T) {
 			{
 				ReplicaSetName: "Cluster0-shard-0",
 				TypeName:       "REPLICA_SET",
-				CheckpointPart: atlas.CheckpointPart{
+				CheckpointPart: CheckpointPart{
 					ShardName:       "Cluster0-shard-0",
 					TokenDiscovered: true,
-					TokenTimestamp: atlas.SnapshotTimestamp{
+					TokenTimestamp: SnapshotTimestamp{
 						Date:      "2018-02-08T23:20:25Z",
 						Increment: 1,
 					}},
@@ -361,9 +360,9 @@ func TestCheckpoints_Get(t *testing.T) {
 			{
 				ReplicaSetName: "Cluster0-config-0",
 				TypeName:       "CONFIG_SERVER_REPLICA_SET",
-				CheckpointPart: atlas.CheckpointPart{
+				CheckpointPart: CheckpointPart{
 					TokenDiscovered: true,
-					TokenTimestamp: atlas.SnapshotTimestamp{
+					TokenTimestamp: SnapshotTimestamp{
 						Date:      "2018-02-08T23:20:25Z",
 						Increment: 2,
 					}},

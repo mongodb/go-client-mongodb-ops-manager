@@ -18,24 +18,80 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
 	continuousSnapshotsBasePath = "api/public/v1.0/groups/%s/clusters/%s/snapshots"
 )
 
+// ContinuousSnapshotsService is an interface for interfacing with the Continuous Snapshots.
+type ContinuousSnapshotsService interface {
+	List(context.Context, string, string, *ListOptions) (*ContinuousSnapshots, *Response, error)
+	Get(context.Context, string, string, string) (*ContinuousSnapshot, *Response, error)
+	ChangeExpiry(context.Context, string, string, string, *ContinuousSnapshot) (*ContinuousSnapshot, *Response, error)
+	Delete(context.Context, string, string, string) (*Response, error)
+}
+
 // ContinuousSnapshotsServiceOp handles communication with the Continuous Snapshots related methods of the
 // MongoDB Ops Manager API.
 type ContinuousSnapshotsServiceOp service
 
-var _ atlas.ContinuousSnapshotsService = &ContinuousSnapshotsServiceOp{}
+// ContinuousSnapshot represents a cloud provider snapshot.
+type ContinuousSnapshot struct {
+	ClusterID                 string             `json:"clusterId,omitempty"`
+	Complete                  bool               `json:"complete,omitempty"`
+	Created                   *SnapshotTimestamp `json:"created,omitempty"`
+	DoNotDelete               *bool              `json:"doNotDelete,omitempty"`
+	Expires                   string             `json:"expires,omitempty"`
+	GroupID                   string             `json:"groupId,omitempty"`
+	ID                        string             `json:"id,omitempty"` // Unique identifier of the snapshot.
+	IsPossiblyInconsistent    *bool              `json:"isPossiblyInconsistent,omitempty"`
+	LastOplogAppliedTimestamp *SnapshotTimestamp `json:"lastOplogAppliedTimestamp,omitempty"`
+	Links                     []*Link            `json:"links,omitempty"` // One or more links to sub-resources and/or related resources.
+	NamespaceFilterList       *NamespaceFilter   `json:"namespaceFilterList,omitempty"`
+	MissingShards             []*MissingShard    `json:"missingShards,omitempty"`
+	Parts                     []*Part            `json:"parts,omitempty"`
+}
 
-type (
-	ContinuousSnapshots = atlas.ContinuousSnapshots
-	ContinuousSnapshot  = atlas.ContinuousSnapshot
-)
+// ContinuousSnapshots represents all cloud provider snapshots.
+type ContinuousSnapshots struct {
+	Results    []*ContinuousSnapshot `json:"results,omitempty"`    // Includes one ContinuousSnapshots object for each item detailed in the results array section.
+	Links      []*Link               `json:"links,omitempty"`      // One or more links to sub-resources and/or related resources.
+	TotalCount int                   `json:"totalCount,omitempty"` // Count of the total number of items in the result set. It may be greater than the number of objects in the results array if the entire result set is paginated.
+}
+
+type Part struct {
+	ReplicaSetName string `json:"replicaSetName"`
+	TypeName       string `json:"typeName"`
+	SnapshotPart
+	CheckpointPart
+}
+
+type NamespaceFilter struct {
+	FilterList []string `json:"filterList"`
+	FilterType string   `json:"filterType"`
+}
+
+type MissingShard struct {
+	ID             string `json:"id"`
+	GroupID        string `json:"groupId"`
+	TypeName       string `json:"typeName"`
+	ClusterName    string `json:"clusterName,omitempty"`
+	ShardName      string `json:"shardName,omitempty"`
+	ReplicaSetName string `json:"replicaSetName"`
+	LastHeartbeat  string `json:"lastHeartbeat"`
+}
+
+type SnapshotPart struct {
+	ClusterID          string `json:"clusterId"`
+	CompressionSetting string `json:"compressionSetting"`
+	DataSizeBytes      int64  `json:"dataSizeBytes"`
+	EncryptionEnabled  bool   `json:"encryptionEnabled"`
+	FileSizeBytes      int64  `json:"fileSizeBytes"`
+	MasterKeyUUID      string `json:"masterKeyUUID,omitempty"` //nolint:all
+	MongodVersion      string `json:"mongodVersion"`
+	StorageSizeBytes   int64  `json:"storageSizeBytes"`
+}
 
 // List lists continuous snapshots for the given cluster
 //

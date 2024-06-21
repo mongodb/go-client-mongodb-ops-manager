@@ -34,6 +34,11 @@ type (
 	ContinuousJobRequest = atlas.ContinuousJobRequest
 )
 
+type SnapshotTimestamp struct {
+	Date      string `json:"date"`
+	Increment int64  `json:"increment"`
+}
+
 var _ atlas.ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
 
 // List lists all continuous backup jobs in Atlas

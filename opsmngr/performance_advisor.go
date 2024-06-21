@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -34,20 +32,104 @@ const (
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/index.html
 type PerformanceAdvisorService interface {
-	GetNamespaces(context.Context, string, string, *atlas.NamespaceOptions) (*atlas.Namespaces, *Response, error)
-	GetSlowQueries(context.Context, string, string, *atlas.SlowQueryOptions) (*atlas.SlowQueries, *Response, error)
-	GetSuggestedIndexes(context.Context, string, string, *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *Response, error)
+	GetNamespaces(context.Context, string, string, *NamespaceOptions) (*Namespaces, *Response, error)
+	GetSlowQueries(context.Context, string, string, *SlowQueryOptions) (*SlowQueries, *Response, error)
+	GetSuggestedIndexes(context.Context, string, string, *SuggestedIndexOptions) (*SuggestedIndexes, *Response, error)
 }
 
-// PerformanceAdvisorServiceOp handles communication with the Performance Advisor related methods of the MongoDB Atlas API.
+// PerformanceAdvisorServiceOp handles communication with the Performance Advisor related methods of the MongoDB OpsManager API.
 type PerformanceAdvisorServiceOp service
 
 var _ PerformanceAdvisorService = &PerformanceAdvisorServiceOp{}
 
+// NamespaceOptions contains the request query parameters for the API request.
+type NamespaceOptions struct {
+	Since    int64 `url:"since,omitempty"`    // Point in time, specified as milliseconds since the Unix Epoch, from which you want to receive results.
+	Duration int64 `url:"duration,omitempty"` // 	Length of time from the since parameter, in milliseconds, for which you want to receive results.
+}
+
+// Namespace represents a Namespace.
+type Namespace struct {
+	Namespace string `json:"namespace,omitempty"` // A namespace on the specified host.
+	Type      string `json:"type,omitempty"`      // The type of namespace.
+}
+
+// Namespaces represents a list of Namespace.
+type Namespaces struct {
+	Namespaces []*Namespace `json:"namespaces,omitempty"`
+}
+
+// SlowQueryOptions contains the request query parameters for the API request.
+type SlowQueryOptions struct {
+	Namespaces string `url:"namespaces,omitempty"` // Namespaces from which to retrieve slow query logs. A namespace consists of the database and collection resource separated by a ., such as <database>.<collection>.
+	NLogs      int64  `url:"nLogs,omitempty"`      // Maximum number of log lines to return. Defaults to 20000.
+	NamespaceOptions
+}
+
+// SlowQuery represents a slow query.
+type SlowQuery struct {
+	Namespace string `json:"namespace,omitempty"` // The namespace in which the slow query ran.
+	Line      string `json:"line,omitempty"`      // The raw log line pertaining to the slow query.
+}
+
+// SlowQueries represents a list of SlowQuery.
+type SlowQueries struct {
+	SlowQuery []*SlowQuery `json:"slowQueries,omitempty"` //nolint:all // A list of documents with information about slow queries as detected by the Performance Advisor.
+}
+
+// SuggestedIndexOptions contains the request query parameters for the API request.
+type SuggestedIndexOptions struct {
+	Namespaces string `url:"namespaces,omitempty"` // Namespaces from which to retrieve slow query logs. A namespace consists of the database and collection resource separated by a ., such as <database>.<collection>.
+	NIndexes   int64  `url:"nIndexes,omitempty"`   // Maximum number of indexes to suggest. Defaults to unlimited.
+	NExamples  int64  `url:"NExamples,omitempty"`  // Maximum number of examples queries to provide that will be improved by a suggested index. Defaults to 5.
+	NamespaceOptions
+}
+
+// SuggestedIndexes represents an array of suggested indexes.
+type SuggestedIndexes struct {
+	SuggestedIndexes []*SuggestedIndex `json:"suggestedIndexes,omitempty"` // Documents with information about the indexes suggested by the Performance Advisor.
+	Shapes           []*Shape          `json:"shapes,omitempty"`           // Documents with information about the query shapes that are served by the suggested indexes.
+
+}
+
+// SuggestedIndex represents a suggested index.
+type SuggestedIndex struct {
+	ID        string           `json:"id,omitempty"`        // Unique id for this suggested index.
+	Impact    []string         `json:"impact,omitempty"`    // List of unique identifiers which correspond the query shapes in this response which pertain to this suggested index.
+	Namespace string           `json:"namespace,omitempty"` // 	Namespace of the suggested index.
+	Weight    float64          `json:"weight,omitempty"`    // Estimated percentage performance improvement that the suggested index would provide.
+	Index     []map[string]int `json:"index,omitempty"`     // Array of documents that specifies a key in the index and its sort order, ascending or descending.
+}
+
+// Shape represents a document with information about the query shapes that are served by the suggested indexes.
+type Shape struct {
+	AvgMs             float64      `json:"avgMs,omitempty"`             // Average duration in milliseconds for the queries examined that match this shape.
+	Count             int64        `json:"count,omitempty"`             // Number of queries examined that match this shape.
+	ID                string       `json:"id,omitempty"`                // Unique id for this shape. Exists only for the duration of the API request.
+	InefficiencyScore int64        `json:"inefficiencyScore,omitempty"` //  Average number of documents read for every document returned by the query.
+	Namespace         string       `json:"namespace,omitempty"`         // The namespace in which the slow query ran.
+	Operations        []*Operation `json:"operations,omitempty"`        // It represents documents with specific information and log lines for individual queries.
+}
+
+// Operation represents a document with specific information and log lines for individual queries.
+type Operation struct {
+	Raw        string                   `json:"raw,omitempty"`        // Raw log line produced by the query.
+	Stats      Stats                    `json:"stats,omitempty"`      // Query statistics.
+	Predicates []map[string]interface{} `json:"predicates,omitempty"` // Documents containing the search criteria used by the query.
+}
+
+// Stats represents query statistics.
+type Stats struct {
+	MS        float64 `json:"ms,omitempty"`        // Duration in milliseconds of the query.
+	NReturned int64   `json:"nReturned,omitempty"` // Number of results returned by the query.
+	NScanned  int64   `json:"nScanned,omitempty"`  // Number of documents read by the query.
+	TS        int64   `json:"ts,omitempty"`        // Query timestamp, in seconds since epoch.
+}
+
 // GetNamespaces retrieves the namespaces for collections experiencing slow queries for a specified host.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/pa-namespaces-get-all/
-func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID, processName string, opts *atlas.NamespaceOptions) (*atlas.Namespaces, *Response, error) {
+func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID, processName string, opts *NamespaceOptions) (*Namespaces, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -67,7 +149,7 @@ func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID
 		return nil, nil, err
 	}
 
-	root := new(atlas.Namespaces)
+	root := new(Namespaces)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -79,7 +161,7 @@ func (s *PerformanceAdvisorServiceOp) GetNamespaces(ctx context.Context, groupID
 // GetSlowQueries gets log lines for slow queries as determined by the Performance Advisor.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/get-slow-queries/
-func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupID, processName string, opts *atlas.SlowQueryOptions) (*atlas.SlowQueries, *Response, error) {
+func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupID, processName string, opts *SlowQueryOptions) (*SlowQueries, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -99,7 +181,7 @@ func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupI
 		return nil, nil, err
 	}
 
-	root := new(atlas.SlowQueries)
+	root := new(SlowQueries)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -111,7 +193,7 @@ func (s *PerformanceAdvisorServiceOp) GetSlowQueries(ctx context.Context, groupI
 // GetSuggestedIndexes gets suggested indexes as determined by the Performance Advisor.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/performance-advisor/get-suggested-indexes/
-func (s *PerformanceAdvisorServiceOp) GetSuggestedIndexes(ctx context.Context, groupID, processName string, opts *atlas.SuggestedIndexOptions) (*atlas.SuggestedIndexes, *Response, error) {
+func (s *PerformanceAdvisorServiceOp) GetSuggestedIndexes(ctx context.Context, groupID, processName string, opts *SuggestedIndexOptions) (*SuggestedIndexes, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -131,7 +213,7 @@ func (s *PerformanceAdvisorServiceOp) GetSuggestedIndexes(ctx context.Context, g
 		return nil, nil, err
 	}
 
-	root := new(atlas.SuggestedIndexes)
+	root := new(SuggestedIndexes)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

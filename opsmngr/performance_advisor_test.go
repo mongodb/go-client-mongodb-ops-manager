@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 const processName = "test:27017"
@@ -42,7 +41,7 @@ func TestPerformanceAdvisor_GetNamespaces(t *testing.T) {
 		}`)
 	})
 
-	opts := &mongodbatlas.NamespaceOptions{
+	opts := &NamespaceOptions{
 		Since:    2,
 		Duration: 2,
 	}
@@ -52,8 +51,8 @@ func TestPerformanceAdvisor_GetNamespaces(t *testing.T) {
 		t.Fatalf("PerformanceAdvisor.GetNamespaces returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.Namespaces{
-		Namespaces: []*mongodbatlas.Namespace{
+	expected := &Namespaces{
+		Namespaces: []*Namespace{
 			{
 				Namespace: "data.zips",
 				Type:      "COLLECTION",
@@ -87,8 +86,8 @@ func TestPerformanceAdvisor_GetSlowQueries(t *testing.T) {
 		}`)
 	})
 
-	opts := &mongodbatlas.SlowQueryOptions{
-		NamespaceOptions: mongodbatlas.NamespaceOptions{Since: 2, Duration: 2},
+	opts := &SlowQueryOptions{
+		NamespaceOptions: NamespaceOptions{Since: 2, Duration: 2},
 		Namespaces:       "test",
 		NLogs:            2,
 	}
@@ -98,8 +97,8 @@ func TestPerformanceAdvisor_GetSlowQueries(t *testing.T) {
 		t.Fatalf("PerformanceAdvisor.GetSlowQueries returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.SlowQueries{
-		SlowQuery: []*mongodbatlas.SlowQuery{
+	expected := &SlowQueries{
+		SlowQuery: []*SlowQuery{
 			{
 				Namespace: "myDb.users",
 				Line:      "2018-08-16T22:53:43.447+0000 I COMMAND  [conn10614] command myDb.users appName: \"MongoDB Shell\" command: find { find: \"users\", filter: { emails: \"tocde@fijoow.to\" }, lsid: { id: UUID(\"832b4b0e-085a-480e-b470-16a0994dc7cb\") }, $clusterTime: { clusterTime: Timestamp(1534460016, 1)...",
@@ -169,8 +168,8 @@ func TestPerformanceAdvisor_GetSuggestedIndexes(t *testing.T) {
 		}`)
 	})
 
-	opts := &mongodbatlas.SuggestedIndexOptions{
-		NamespaceOptions: mongodbatlas.NamespaceOptions{Since: 2, Duration: 2},
+	opts := &SuggestedIndexOptions{
+		NamespaceOptions: NamespaceOptions{Since: 2, Duration: 2},
 		Namespaces:       "test",
 		NIndexes:         55,
 		NExamples:        4,
@@ -181,8 +180,8 @@ func TestPerformanceAdvisor_GetSuggestedIndexes(t *testing.T) {
 		t.Fatalf("PerformanceAdvisor.GetSuggestedIndexes returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.SuggestedIndexes{
-		SuggestedIndexes: []*mongodbatlas.SuggestedIndex{
+	expected := &SuggestedIndexes{
+		SuggestedIndexes: []*SuggestedIndex{
 			{
 				ID:        "5b74689a80eef53f3388897f",
 				Impact:    []string{"5b74689a80eef53f3388897e"},
@@ -202,17 +201,17 @@ func TestPerformanceAdvisor_GetSuggestedIndexes(t *testing.T) {
 				},
 			},
 		},
-		Shapes: []*mongodbatlas.Shape{
+		Shapes: []*Shape{
 			{
 				AvgMs:             42,
 				Count:             2,
 				ID:                "5b74689a80eef53f3388897e",
 				InefficiencyScore: 50000,
 				Namespace:         "test.users",
-				Operations: []*mongodbatlas.Operation{
+				Operations: []*Operation{
 					{
 						Raw: "2018-08-15T17:14:11.115+0000 I COMMAND  [conn4576] command test.users appName: \"MongoDB Shell\" command: find { find: \"users\", filter: { emails: \"la@sa.kp\" }, lsid: { id: UUID(\"1a4e71d3-9b67-4e9c-b078-9fdf3fae9091\") }, $clusterTime: { clusterTime: Timestamp(1534353241, 1), signature: { hash: BinData(0, AB91938B7CF7BC87994A2909A98D87F29101EFA0), keyId: 6589681559618453505 } }, $db: \"test\" } planSummary: COLLSCAN keysExamined:0 docsExamined:50000 cursorExhausted:1 numYields:391 nreturned:1 reslen:339 locks:{ Global: { acquireCount: { r: 784 } }, Database: { acquireCount: { r: 392 } }, Collection: { acquireCount: { r: 392 } } } protocol:op_msg 34ms",
-						Stats: mongodbatlas.Stats{
+						Stats: Stats{
 							MS:        34,
 							NReturned: 1,
 							NScanned:  50000,
@@ -224,7 +223,7 @@ func TestPerformanceAdvisor_GetSuggestedIndexes(t *testing.T) {
 					},
 					{
 						Raw: "2018-08-15T17:14:18.665+0000 I COMMAND  [conn4576] command test.users appName: \"MongoDB Shell\" command: find { find: \"users\", filter: { emails: \"tocde@fijoow.to\" }, lsid: { id: UUID(\"1a4e71d3-9b67-4e9c-b078-9fdf3fae9091\") }, $clusterTime: { clusterTime: Timestamp(1534353241, 1), signature: { hash: BinData(0, AB91938B7CF7BC87994A2909A98D87F29101EFA0), keyId: 6589681559618453505 } }, $db: \"test\" } planSummary: COLLSCAN keysExamined:0 docsExamined:50000 cursorExhausted:1 numYields:390 nreturned:1 reslen:342 locks:{ Global: { acquireCount: { r: 782 } }, Database: { acquireCount: { r: 391 } }, Collection: { acquireCount: { r: 391 } } } protocol:op_msg 36ms",
-						Stats: mongodbatlas.Stats{
+						Stats: Stats{
 							MS:        36,
 							NReturned: 1,
 							NScanned:  50000,
