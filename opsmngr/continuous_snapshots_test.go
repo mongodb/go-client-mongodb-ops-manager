@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -83,7 +82,7 @@ func TestContinuousSnapshots_List(t *testing.T) {
 	}
 
 	expected := &ContinuousSnapshots{
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/6c7498dg87d9e6526801572b/clusters/Cluster0/snapshots?pageNum=1&itemsPerPage=100",
 				Rel:  "self",
@@ -93,7 +92,7 @@ func TestContinuousSnapshots_List(t *testing.T) {
 			{
 				ClusterID: "7c2487d833e9e75286093696",
 				Complete:  true,
-				Created: &atlas.SnapshotTimestamp{
+				Created: &SnapshotTimestamp{
 					Date:      "2017-12-26T16:32:16Z",
 					Increment: 1,
 				},
@@ -101,21 +100,21 @@ func TestContinuousSnapshots_List(t *testing.T) {
 				Expires:     "2018-12-25T16:32:16Z",
 				GroupID:     "6c7498dg87d9e6526801572b",
 				ID:          "5a4279d4fcc178500596745a",
-				LastOplogAppliedTimestamp: &atlas.SnapshotTimestamp{
+				LastOplogAppliedTimestamp: &SnapshotTimestamp{
 					Date:      "2017-12-26T16:32:15Z",
 					Increment: 1,
 				},
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/6c7498dg87d9e6526801572b/clusters/Cluster0/snapshots/5a4279d4fcc178500596745a",
 						Rel:  "self",
 					},
 				},
-				Parts: []*atlas.Part{
+				Parts: []*Part{
 					{
 						ReplicaSetName: "Cluster0-shard-0",
 						TypeName:       "REPLICA_SET",
-						SnapshotPart: atlas.SnapshotPart{
+						SnapshotPart: SnapshotPart{
 							ClusterID:          "7c2487d833e9e75286093696",
 							CompressionSetting: "GZIP",
 							DataSizeBytes:      4502,
@@ -184,7 +183,7 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 	expected := &ContinuousSnapshot{
 		ClusterID: "7c2487d833e9e75286093696",
 		Complete:  true,
-		Created: &atlas.SnapshotTimestamp{
+		Created: &SnapshotTimestamp{
 			Date:      "2017-12-26T16:32:16Z",
 			Increment: 1,
 		},
@@ -192,21 +191,21 @@ func TestContinuousSnapshots_Get(t *testing.T) {
 		Expires:     "2018-12-25T16:32:16Z",
 		GroupID:     "6c7498dg87d9e6526801572b",
 		ID:          "6b5380e6jvn128560506942b",
-		LastOplogAppliedTimestamp: &atlas.SnapshotTimestamp{
+		LastOplogAppliedTimestamp: &SnapshotTimestamp{
 			Date:      "2017-12-26T16:32:15Z",
 			Increment: 1,
 		},
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/6c7498dg87d9e6526801572b/clusters/Cluster0/snapshots/6b5380e6jvn128560506942b",
 				Rel:  "self",
 			},
 		},
-		Parts: []*atlas.Part{
+		Parts: []*Part{
 			{
 				ReplicaSetName: "Cluster0-shard-0",
 				TypeName:       "REPLICA_SET",
-				SnapshotPart: atlas.SnapshotPart{
+				SnapshotPart: SnapshotPart{
 					ClusterID:          "7c2487d833e9e75286093696",
 					CompressionSetting: "GZIP",
 					DataSizeBytes:      4502,
@@ -227,7 +226,7 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	updateRequest := &atlas.ContinuousSnapshot{
+	updateRequest := &ContinuousSnapshot{
 		Expires: "2018-12-01",
 	}
 
@@ -290,10 +289,10 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 		t.Fatalf("ContinuousSnapshots.ChangeExpiry returned error: %v", err)
 	}
 
-	expected := &atlas.ContinuousSnapshot{
+	expected := &ContinuousSnapshot{
 		ClusterID: "57c2487d833e9e75286093696",
 		Complete:  true,
-		Created: &atlas.SnapshotTimestamp{
+		Created: &SnapshotTimestamp{
 			Date:      "2017-12-26T16:32:16Z",
 			Increment: 1,
 		},
@@ -301,21 +300,21 @@ func TestContinuousSnapshots_ChangeExpiry(t *testing.T) {
 		Expires:     "2018-12-01T00:00:00Z",
 		GroupID:     "6c7498dg87d9e6526801572b",
 		ID:          "6b5380e6jvn128560506942b",
-		LastOplogAppliedTimestamp: &atlas.SnapshotTimestamp{
+		LastOplogAppliedTimestamp: &SnapshotTimestamp{
 			Date:      "2017-12-26T16:32:15Z",
 			Increment: 1,
 		},
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/6c7498dg87d9e6526801572b/clusters/Cluster0/snapshots/6b5380e6jvn128560506942b",
 				Rel:  "self",
 			},
 		},
-		Parts: []*atlas.Part{
+		Parts: []*Part{
 			{
 				ReplicaSetName: "Cluster0-shard-0",
 				TypeName:       "REPLICA_SET",
-				SnapshotPart: atlas.SnapshotPart{
+				SnapshotPart: SnapshotPart{
 					ClusterID:          "57c2487d833e9e75286093696",
 					CompressionSetting: "GZIP",
 					DataSizeBytes:      4502,

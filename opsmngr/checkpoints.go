@@ -18,20 +18,45 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
 	checkpoints = "api/public/v1.0/groups/%s/clusters/%s/checkpoints"
 )
 
+// Checkpoint represents MongoDB Checkpoint.
+type Checkpoint struct {
+	ClusterID  string  `json:"clusterId"`
+	Completed  string  `json:"completed,omitempty"`
+	GroupID    string  `json:"groupId"`
+	ID         string  `json:"id,omitempty"`    // Unique identifier of the checkpoint.
+	Links      []*Link `json:"links,omitempty"` // One or more links to sub-resources and/or related resources.
+	Parts      []*Part `json:"parts,omitempty"`
+	Restorable bool    `json:"restorable"`
+	Started    string  `json:"started"`
+	Timestamp  string  `json:"timestamp"`
+}
+
+// CheckpointPart represents the individual parts that comprise the complete checkpoint.
+type CheckpointPart struct {
+	ShardName       string            `json:"shardName"`
+	TokenDiscovered bool              `json:"tokenDiscovered"`
+	TokenTimestamp  SnapshotTimestamp `json:"tokenTimestamp"`
+}
+
+// Checkpoints represents all the backup checkpoints related to a cluster.
+type Checkpoints struct {
+	Results    []*Checkpoint `json:"results,omitempty"`    // Includes one Checkpoint object for each item detailed in the results array section.
+	Links      []*Link       `json:"links,omitempty"`      // One or more links to sub-resources and/or related resources.
+	TotalCount int           `json:"totalCount,omitempty"` // Count of the total number of items in the result set. It may be greater than the number of objects in the results array if the entire result set is paginated.
+}
+
 // CheckpointsService provides access to the backup related functions in the Ops Manager API.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/
 type CheckpointsService interface {
-	List(context.Context, string, string, *ListOptions) (*atlas.Checkpoints, *Response, error)
-	Get(context.Context, string, string, string) (*atlas.Checkpoint, *Response, error)
+	List(context.Context, string, string, *ListOptions) (*Checkpoints, *Response, error)
+	Get(context.Context, string, string, string) (*Checkpoint, *Response, error)
 }
 
 // CheckpointsServiceOp provides an implementation of the CheckpointsService interface.
@@ -42,7 +67,7 @@ var _ CheckpointsService = &CheckpointsServiceOp{}
 // List lists checkpoints.
 //
 // See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-all-checkpoints
-func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *ListOptions) (*atlas.Checkpoints, *Response, error) {
+func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName string, listOptions *ListOptions) (*Checkpoints, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupId", "must be set")
 	}
@@ -61,7 +86,7 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 		return nil, nil, err
 	}
 
-	root := new(atlas.Checkpoints)
+	root := new(Checkpoints)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
@@ -70,7 +95,7 @@ func (s *CheckpointsServiceOp) List(ctx context.Context, groupID, clusterName st
 // Get gets a checkpoint.
 //
 // See https://docs.opsmanager.mongodb.com/current/reference/api/checkpoints/#get-one-checkpoint
-func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterID, checkpointID string) (*atlas.Checkpoint, *Response, error) {
+func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterID, checkpointID string) (*Checkpoint, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupId", "must be set")
 	}
@@ -89,7 +114,7 @@ func (s *CheckpointsServiceOp) Get(ctx context.Context, groupID, clusterID, chec
 		return nil, nil, err
 	}
 
-	root := new(atlas.Checkpoint)
+	root := new(Checkpoint)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err

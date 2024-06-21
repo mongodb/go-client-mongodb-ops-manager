@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -36,7 +34,7 @@ type DiagnosticsService interface {
 
 // DiagnosticsServiceOp provides an implementation of the DiagnosticsService interface.
 type DiagnosticsServiceOp struct {
-	Client atlas.GZipRequestDoer
+	Client GZipRequestDoer
 }
 
 // DiagnosticsListOpts query options for getting the archive.

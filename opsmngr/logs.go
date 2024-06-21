@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -56,7 +54,7 @@ type LogsService interface {
 // LogsServiceOp handles communication with the Log Collection Jobs download method of the
 // MongoDB Ops Manager API.
 type LogsServiceOp struct {
-	Client atlas.GZipRequestDoer
+	Client GZipRequestDoer
 }
 
 var _ LogsService = &LogsServiceOp{}

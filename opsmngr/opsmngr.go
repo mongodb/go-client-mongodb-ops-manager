@@ -48,10 +48,6 @@ type (
 	APIKey                    = atlas.APIKey
 	APIKeyInput               = atlas.APIKeyInput
 	AssignAPIKey              = atlas.AssignAPIKey
-	Part                      = atlas.Part
-	Checkpoint                = atlas.Checkpoint
-	Checkpoints               = atlas.Checkpoints
-	SnapshotTimestamp         = atlas.SnapshotTimestamp
 	IndexOptions              = atlas.IndexOptions
 	CollationOptions          = atlas.CollationOptions
 	Team                      = atlas.Team
@@ -62,12 +58,6 @@ type (
 	TeamRoles                 = atlas.TeamRoles
 	Invitation                = atlas.Invitation
 	InvitationOptions         = atlas.InvitationOptions
-	NamespaceOptions          = atlas.NamespaceOptions
-	Namespaces                = atlas.Namespaces
-	SlowQueryOptions          = atlas.SlowQueryOptions
-	SlowQueries               = atlas.SlowQueries
-	SuggestedIndexOptions     = atlas.SuggestedIndexOptions
-	SuggestedIndexes          = atlas.SuggestedIndexes
 	Notification              = atlas.Notification
 	CurrentValue              = atlas.CurrentValue
 	MetricThreshold           = atlas.MetricThreshold
@@ -76,6 +66,23 @@ type (
 
 type HTTPClient interface {
 	Do(req *http.Request) (*http.Response, error)
+}
+
+// Doer basic interface of a client to be able to do a request.
+type Doer interface {
+	Do(context.Context, *http.Request, interface{}) (*Response, error)
+}
+
+// Completer interface for clients with callback.
+type Completer interface {
+	OnRequestCompleted(RequestCompletionCallback)
+}
+
+// GZipRequestDoer minimum interface for any service of the client that should handle gzip downloads.
+type GZipRequestDoer interface {
+	Doer
+	Completer
+	NewGZipRequest(context.Context, string, string) (*http.Request, error)
 }
 
 // Client manages communication with Ops Manager API.
@@ -95,7 +102,7 @@ type Client struct {
 	UnauthUsers            UnauthUsersService
 	AlertConfigurations    atlas.AlertConfigurationsService
 	Alerts                 atlas.AlertsService
-	ContinuousSnapshots    atlas.ContinuousSnapshotsService
+	ContinuousSnapshots    ContinuousSnapshotsService
 	ContinuousRestoreJobs  atlas.ContinuousRestoreJobsService
 	Events                 atlas.EventsService
 	OrganizationAPIKeys    atlas.APIKeysService
