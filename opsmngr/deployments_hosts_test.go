@@ -466,7 +466,7 @@ func TestDeployments_StopMonitoring(t *testing.T) {
 	hostID := "22"
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/hosts/%s", projectID, hostID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

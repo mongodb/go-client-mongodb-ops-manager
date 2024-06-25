@@ -111,7 +111,7 @@ func TestClusters_ListAll(t *testing.T) {
 
 	defer teardown()
 
-	mux.HandleFunc("/api/public/v1.0/clusters", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/clusters", func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprintf(w, `{
 				 "results": [
 				{

@@ -337,7 +337,7 @@ func TestContinuousSnapshots_Delete(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/snapshots/%s", projectID, clusterName, snapshotID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

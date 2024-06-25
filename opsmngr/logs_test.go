@@ -332,7 +332,7 @@ func TestLogs_Extend(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s", projectID, ID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
 	})
 
@@ -354,7 +354,7 @@ func TestLogs_Retry(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s/retry", projectID, ID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPut)
 	})
 
@@ -370,7 +370,7 @@ func TestLogs_Delete(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/logCollectionJobs/%s", projectID, ID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

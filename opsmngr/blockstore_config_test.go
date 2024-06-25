@@ -267,7 +267,7 @@ func TestBlockstoreConfigServiceOp_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/snapshot/mongoConfigs/%s", ID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/admin/backup/snapshot/mongoConfigs/%s", ID), func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

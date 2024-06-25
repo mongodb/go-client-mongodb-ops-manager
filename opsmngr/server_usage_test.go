@@ -27,7 +27,7 @@ func TestServerUsageServiceOp_GenerateDailyUsageSnapshot(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/api/public/v1.0/usage/dailyCapture", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/usage/dailyCapture", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPost)
 	})
 

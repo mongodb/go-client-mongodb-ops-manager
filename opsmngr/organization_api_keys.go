@@ -73,7 +73,7 @@ func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-one-org-api-key/
 func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*APIKey, *Response, error) {
 	if apiKeyID == "" {
-		return nil, nil, atlas.NewArgError("name", "must be set")
+		return nil, nil, NewArgError("name", "must be set")
 	}
 
 	basePath := fmt.Sprintf(apiKeysOrgPath, orgID)
@@ -99,7 +99,7 @@ func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*AP
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/create-one-org-api-key/
 func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createRequest *APIKeyInput) (*APIKey, *Response, error) {
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	path := fmt.Sprintf(apiKeysOrgPath, orgID)
@@ -123,7 +123,7 @@ func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createReque
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/update-one-org-api-key/
 func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, updateRequest *APIKeyInput) (*APIKey, *Response, error) {
 	if updateRequest == nil {
-		return nil, nil, atlas.NewArgError("updateRequest", "cannot be nil")
+		return nil, nil, NewArgError("updateRequest", "cannot be nil")
 	}
 
 	basePath := fmt.Sprintf(apiKeysOrgPath, orgID)
@@ -148,7 +148,7 @@ func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, u
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/delete-one-api-key/
 func (s *APIKeysServiceOp) Delete(ctx context.Context, orgID, apiKeyID string) (*Response, error) {
 	if apiKeyID == "" {
-		return nil, atlas.NewArgError("apiKeyID", "must be set")
+		return nil, NewArgError("apiKeyID", "must be set")
 	}
 
 	basePath := fmt.Sprintf(apiKeysOrgPath, orgID)

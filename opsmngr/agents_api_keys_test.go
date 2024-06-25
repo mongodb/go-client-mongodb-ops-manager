@@ -33,7 +33,7 @@ func TestAgentsServiceOp_ListAgentAPIKeys(t *testing.T) {
 		t.Error("expected an error but got nil")
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprint(w, `
 						[{
 						  "_id" : "1",
@@ -114,7 +114,7 @@ func TestAgentsServiceOp_CreateAgentAPIKey(t *testing.T) {
 		t.Error("expected an error but got nil")
 	}
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agentapikeys", projectID), func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 						  "_id" : "1",
 						  "createdBy" : "PUBLIC_API",
@@ -158,7 +158,7 @@ func TestAgentsServiceOp_DeleteAgentAPIKey(t *testing.T) {
 
 	agentAPIKey := "1"
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agentapikeys/%s", projectID, agentAPIKey), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/agentapikeys/%s", projectID, agentAPIKey), func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

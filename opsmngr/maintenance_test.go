@@ -230,7 +230,7 @@ func TestMaintenanceWindows_Delete(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/maintenanceWindows/%s", projectID, ID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 
