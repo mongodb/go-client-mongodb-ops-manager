@@ -23,7 +23,7 @@ import (
 const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList" //nolint:gosec // This is a path
 
 // AccessListAPIKeysService is an interface for interfacing with the AccessList API Keys
-// endpoints of the MongoDB Atlas API.
+// endpoints of the MongoDB Ops Manager API.
 type AccessListAPIKeysService interface {
 	List(context.Context, string, string, *ListOptions) (*AccessListAPIKeys, *Response, error)
 	Get(context.Context, string, string, string) (*AccessListAPIKey, *Response, error)
@@ -32,7 +32,7 @@ type AccessListAPIKeysService interface {
 }
 
 // AccessListAPIKeysServiceOp handles communication with the AccessList API keys related methods of the
-// MongoDB Atlas API.
+// MongoDB Ops Manager API.
 type AccessListAPIKeysServiceOp service
 
 var _ AccessListAPIKeysService = &AccessListAPIKeysServiceOp{}

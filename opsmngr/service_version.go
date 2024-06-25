@@ -21,7 +21,7 @@ import (
 
 const versionPath = "api/private/unauth/version"
 
-// ServiceVersionService is an interface for the version private endpoint of the MongoDB Atlas API.
+// ServiceVersionService is an interface for the version private endpoint of the MongoDB Ops Manager API.
 //
 // We currently make no promise to support or document this service or endpoint
 // beyond what can be seen here.

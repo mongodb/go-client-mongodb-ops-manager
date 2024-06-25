@@ -56,7 +56,7 @@ type MaintenanceWindows struct {
 }
 
 // MaintenanceWindowsServiceOp handles communication with the MaintenanceWindows related methods
-// of the OpsManager Atlas API.
+// of the Ops Manager API.
 type MaintenanceWindowsServiceOp service
 
 var _ MaintenanceWindowsService = &MaintenanceWindowsServiceOp{}

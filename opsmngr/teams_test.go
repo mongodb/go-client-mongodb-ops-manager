@@ -496,12 +496,12 @@ func TestTeams_AddUsersToTeam(t *testing.T) {
 		}`)
 	})
 
-	atlasUsers, _, err := client.Teams.AddUsersToTeam(ctx, orgID, teamID, usersID)
+	users, _, err := client.Teams.AddUsersToTeam(ctx, orgID, teamID, usersID)
 	if err != nil {
 		t.Fatalf("Teams.AddUsersToTeam returned error: %v", err)
 	}
 
-	if userCount := len(atlasUsers); userCount != 2 {
+	if userCount := len(users); userCount != 2 {
 		t.Errorf("expected userCount '%d', received '%d'", 2, userCount)
 	}
 }

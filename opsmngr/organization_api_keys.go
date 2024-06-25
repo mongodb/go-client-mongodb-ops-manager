@@ -33,7 +33,7 @@ type APIKeysService interface {
 }
 
 // APIKeysServiceOp handles communication with the APIKey related methods
-// of the MongoDB Atlas API.
+// of the MongoDB Ops Manager API.
 type APIKeysServiceOp service
 
 var _ APIKeysService = &APIKeysServiceOp{}

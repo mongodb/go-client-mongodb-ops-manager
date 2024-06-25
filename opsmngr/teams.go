@@ -265,7 +265,7 @@ func (s *TeamsServiceOp) Rename(ctx context.Context, orgID, teamID, teamName str
 	return root, resp, err
 }
 
-// UpdateTeamRoles Update the roles of a team in an Atlas project.
+// UpdateTeamRoles Update the roles of a team in an Ops Manager project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/teams/teams-update-roles/
 func (s *TeamsServiceOp) UpdateTeamRoles(ctx context.Context, orgID, teamID string, updateTeamRolesRequest *TeamUpdateRoles) ([]TeamRoles, *Response, error) {

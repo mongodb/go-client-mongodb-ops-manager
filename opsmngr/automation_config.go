@@ -21,8 +21,6 @@ import (
 )
 
 // GetConfig retrieves the current automation configuration for a project.
-// atlas
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-the-automation-configuration
 func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*AutomationConfig, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")

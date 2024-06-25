@@ -23,7 +23,7 @@ import (
 const liveMigrationBasePath = "api/public/v1.0/orgs/%s/liveExport/migrationLink"
 
 type LinkToken struct {
-	LinkToken string `json:"linkToken,omitempty"` // Atlas-generated token that links the source (Cloud Manager or Ops Manager) and destination (Atlas) clusters for migration.
+	LinkToken string `json:"linkToken,omitempty"` // Ops Manager-generated token that links the source (Cloud Manager or Ops Manager) and destination (Atlas) clusters for migration.
 }
 
 // LiveDataMigrationService is an interface for interfacing with the Live Migration
@@ -38,7 +38,7 @@ type LiveDataMigrationService interface {
 
 // ConnectionStatus represents the response of LiveDataMigrationService.ConnectOrganizations and LiveDataMigrationService.ConnectionStatus.
 type ConnectionStatus struct {
-	Status string `json:"status,omitempty"` // Status represents the state of the connection that exists between this organization and the target cluster in the MongoDB Atlas organization.
+	Status string `json:"status,omitempty"` // Status represents the state of the connection that exists between this organization and the target cluster in the MongoDB Ops Manager organization.
 }
 
 // LiveDataMigrationServiceOp provides an implementation of the LiveDataMigrationService interface.
@@ -46,7 +46,7 @@ type LiveDataMigrationServiceOp service
 
 var _ LiveDataMigrationService = &LiveDataMigrationServiceOp{}
 
-// ConnectionStatus returns the status of the connection between the specified source Ops Manager organization and the target MongoDB Atlas organization.
+// ConnectionStatus returns the status of the connection between the specified source Ops Manager organization and the target MongoDB Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/return-the-status-of-the-organization-link/
 func (s *LiveDataMigrationServiceOp) ConnectionStatus(ctx context.Context, orgID string) (*ConnectionStatus, *Response, error) {
@@ -68,9 +68,7 @@ func (s *LiveDataMigrationServiceOp) ConnectionStatus(ctx context.Context, orgID
 	return root, resp, err
 }
 
-// ConnectOrganizations connects the source Ops Manager organization with a target MongoDB Atlas organization.
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/cloud-migration/link-the-organization-with-atlas/
+// ConnectOrganizations connects the source Ops Manager organization with a target MongoDB Ops Manager organization.
 func (s *LiveDataMigrationServiceOp) ConnectOrganizations(ctx context.Context, orgID string, linkToken *LinkToken) (*ConnectionStatus, *Response, error) {
 	if orgID == "" {
 		return nil, nil, NewArgError("orgID", "must be set")
@@ -92,9 +90,7 @@ func (s *LiveDataMigrationServiceOp) ConnectOrganizations(ctx context.Context, o
 	return root, resp, err
 }
 
-// DeleteConnection removes the connection between the source Ops Manager organization and the target MongoDB Atlas organization.
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/log-collections/log-collections-delete-one/
+// DeleteConnection removes the connection between the source Ops Manager organization and the target MongoDB Ops Manager organization.
 func (s *LiveDataMigrationServiceOp) DeleteConnection(ctx context.Context, orgID string) (*Response, error) {
 	if orgID == "" {
 		return nil, NewArgError("orgID", "must be set")

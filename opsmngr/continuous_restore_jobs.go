@@ -30,7 +30,7 @@ type ContinuousRestoreJobsService interface {
 }
 
 // ContinuousRestoreJobsServiceOp handles communication with the Continuous Backup Restore Jobs related methods
-// of the MongoDB Atlas API.
+// of the MongoDB Ops Manager API.
 type ContinuousRestoreJobsServiceOp service
 
 var _ ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
@@ -91,9 +91,7 @@ type ContinuousJobRequest struct {
 	SnapshotID           string   `json:"snapshotId,omitempty"`
 }
 
-// List lists all continuous backup jobs in Atlas
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/get-all-restore-jobs-for-one-cluster/
+// List lists all continuous backup jobs in Ops Manager.
 func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clusterID string, opts *ListOptions) (*ContinuousJobs, *Response, error) {
 	if clusterID == "" {
 		return nil, nil, NewArgError("clusterID", "must be set")
@@ -120,9 +118,7 @@ func (s *ContinuousRestoreJobsServiceOp) List(ctx context.Context, groupID, clus
 	return root, resp, err
 }
 
-// Get gets a continuous backup job in Atlas
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/get-one-single-restore-job-for-one-cluster/
+// Get gets a continuous backup job in Ops Manager.
 func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clusterID, jobID string) (*ContinuousJob, *Response, error) {
 	if clusterID == "" {
 		return nil, nil, NewArgError("clusterID", "must be set")
@@ -149,9 +145,7 @@ func (s *ContinuousRestoreJobsServiceOp) Get(ctx context.Context, groupID, clust
 	return root, resp, err
 }
 
-// Create creates a continuous backup job in Atlas
-//
-// See more: https://docs.opsmanager.mongodb.com/current/reference/api/restorejobs/create-one-restore-job-for-one-cluster/
+// Create creates a continuous backup job in Ops Manager.
 func (s *ContinuousRestoreJobsServiceOp) Create(ctx context.Context, groupID, clusterID string, request *ContinuousJobRequest) (*ContinuousJobs, *Response, error) {
 	if request == nil {
 		return nil, nil, NewArgError("request", "must be set")

@@ -31,7 +31,7 @@ type ProjectAPIKeysService interface {
 }
 
 // ProjectAPIKeysOp handles communication with the APIKey related methods
-// of the MongoDB Atlas API.
+// of the MongoDB Ops Manager API.
 type ProjectAPIKeysOp service
 
 var _ ProjectAPIKeysService = &ProjectAPIKeysOp{}

@@ -31,7 +31,7 @@ type ProjectsListOptions struct {
 }
 
 type CreateProjectOptions struct {
-	ProjectOwnerID string `url:"projectOwnerId,omitempty"` // Unique 24-hexadecimal digit string that identifies the Atlas user account to be granted the Project Owner role on the specified project.
+	ProjectOwnerID string `url:"projectOwnerId,omitempty"` // Unique 24-hexadecimal digit string that identifies the Ops Manager user account to be granted the Project Owner role on the specified project.
 }
 
 // ProjectTeam represents the kind of role that has the team.
