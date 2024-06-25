@@ -78,7 +78,7 @@ func TestLiveMigration_DeleteConnection(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/orgs/%s/liveExport/migrationLink", orgID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

@@ -118,7 +118,7 @@ func TestProjectAPIKeys_Assign(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", projectID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", projectID, apiKeyID), func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodPatch)
 	})
 
@@ -132,7 +132,7 @@ func TestProjectAPIKeys_Unassign(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", projectID, apiKeyID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", projectID, apiKeyID), func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

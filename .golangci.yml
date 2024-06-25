@@ -80,7 +80,6 @@ linters:
     - gosec # Inspects source code for security problems [fast: false, auto-fix: false]
     - gosimple # Linter for Go source code that specializes in simplifying a code [fast: false, auto-fix: false]
     - govet # Vet examines Go source code and reports suspicious constructs, such as Printf calls whose arguments do not align with the format string [fast: false, auto-fix: false]
-    - ifshort # Checks that your code uses short syntax for if-statements whenever possible [fast: true, auto-fix: false]
     - ineffassign # Detects when assignments to existing variables are not used [fast: true, auto-fix: false]
     - misspell # Finds commonly misspelled English words in comments [fast: true, auto-fix: true]
     - nakedret # Finds naked returns in functions greater than a specified function length [fast: true, auto-fix: false]

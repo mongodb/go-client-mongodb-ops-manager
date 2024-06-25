@@ -28,7 +28,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 
 	defer teardown()
 
-	mux.HandleFunc("/api/public/v1.0/globalAlerts", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/globalAlerts", func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 			  "links" : [],
 			  "results" : [ {
@@ -108,7 +108,7 @@ func TestGlobalAlerts_Get(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/globalAlerts/%s", alertID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 			    	  "alertConfigId" : "5730f5e1e4b030a9634a3f69",
 					  "clusterId" : "572a00f2e4b051814b144e90",
@@ -165,7 +165,7 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 
 	path := fmt.Sprintf("/api/public/v1.0/globalAlerts/%s", alertID)
 
-	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(path, func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 					  "alertConfigId" : "5730f5e1e4b030a9634a3f69",
 					  "clusterId" : "572a00f2e4b051814b144e90",

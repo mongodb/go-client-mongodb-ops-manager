@@ -289,7 +289,7 @@ func TestOrganizations_DeleteInvitation(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s/invites/%s", orgID, invitationID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s/invites/%s", orgID, invitationID), func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

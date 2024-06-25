@@ -51,7 +51,7 @@ type User struct {
 	Links        []*atlas.Link `json:"links,omitempty"`
 	MobileNumber string        `json:"mobileNumber,omitempty"`
 	Password     string        `json:"password,omitempty"`
-	TeamIds      []string      `json:"teamIds,omitempty"`
+	TeamIds      []string      `json:"teamIds,omitempty"` //nolint
 	Roles        []*UserRole   `json:"roles,omitempty"`
 	Username     string        `json:"username"`
 	Country      string        `json:"country,omitempty"`

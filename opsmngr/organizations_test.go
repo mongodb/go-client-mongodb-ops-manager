@@ -319,7 +319,7 @@ func TestOrganizations_Create(t *testing.T) {
 		Name: "OrgFoobar",
 	}
 
-	mux.HandleFunc("/api/public/v1.0/orgs", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/orgs", func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 			"id": "5a0a1e7e0f2912c554081adc",
 			"links": [{
@@ -355,7 +355,7 @@ func TestOrganizations_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s", orgID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/orgs/%s", orgID), func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

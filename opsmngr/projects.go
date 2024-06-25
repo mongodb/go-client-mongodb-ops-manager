@@ -160,7 +160,7 @@ func (s *ProjectsServiceOp) ListUsers(ctx context.Context, projectID string, opt
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-one-group-by-id/
 func (s *ProjectsServiceOp) Get(ctx context.Context, groupID string) (*Project, *Response, error) {
 	if groupID == "" {
-		return nil, nil, atlas.NewArgError("groupID", "must be set")
+		return nil, nil, NewArgError("groupID", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/%s", projectBasePath, groupID)
@@ -184,7 +184,7 @@ func (s *ProjectsServiceOp) Get(ctx context.Context, groupID string) (*Project, 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/get-one-group-by-name/
 func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*Project, *Response, error) {
 	if groupName == "" {
-		return nil, nil, atlas.NewArgError("groupName", "must be set")
+		return nil, nil, NewArgError("groupName", "must be set")
 	}
 
 	path := fmt.Sprintf("%s/byName/%s", projectBasePath, groupName)
@@ -208,7 +208,7 @@ func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*P
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/create-one-group/
 func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project, opts *atlas.CreateProjectOptions) (*Project, *Response, error) {
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	path, err := setQueryParams(projectBasePath, opts)
@@ -235,7 +235,7 @@ func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project, 
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/delete-one-group/
 func (s *ProjectsServiceOp) Delete(ctx context.Context, projectID string) (*Response, error) {
 	if projectID == "" {
-		return nil, atlas.NewArgError("projectID", "must be set")
+		return nil, NewArgError("projectID", "must be set")
 	}
 
 	basePath := fmt.Sprintf("%s/%s", projectBasePath, projectID)
@@ -255,11 +255,11 @@ func (s *ProjectsServiceOp) Delete(ctx context.Context, projectID string) (*Resp
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/remove-one-user-from-one-group/
 func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID string) (*Response, error) {
 	if projectID == "" {
-		return nil, atlas.NewArgError("projectID", "must be set")
+		return nil, NewArgError("projectID", "must be set")
 	}
 
 	if userID == "" {
-		return nil, atlas.NewArgError("userID", "must be set")
+		return nil, NewArgError("userID", "must be set")
 	}
 
 	basePath := fmt.Sprintf("%s/%s/users/%s", projectBasePath, projectID, userID)
@@ -279,7 +279,7 @@ func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID st
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-add-team/
 func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID string, createRequest []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *Response, error) {
 	if createRequest == nil {
-		return nil, nil, atlas.NewArgError("createRequest", "cannot be nil")
+		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
 
 	path := fmt.Sprintf("%s/%s/teams", projectBasePath, projectID)
@@ -303,7 +303,7 @@ func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID str
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-get-teams/
 func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *ListOptions) (*atlas.TeamsAssigned, *Response, error) {
 	if projectID == "" {
-		return nil, nil, atlas.NewArgError("projectID", "cannot be empty")
+		return nil, nil, NewArgError("projectID", "cannot be empty")
 	}
 
 	path := fmt.Sprintf("%s/%s/teams", projectBasePath, projectID)

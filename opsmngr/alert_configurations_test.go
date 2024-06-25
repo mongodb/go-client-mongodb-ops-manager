@@ -610,7 +610,7 @@ func TestAlertConfiguration_Delete(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", projectID, alertConfigID), func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s", projectID, alertConfigID), func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, http.MethodDelete)
 	})
 

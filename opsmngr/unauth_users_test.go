@@ -34,7 +34,7 @@ func TestUnauth_CreateFirstUser(t *testing.T) {
 		LastName:     "Doe",
 	}
 
-	mux.HandleFunc("/api/public/v1.0/unauth/users", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/public/v1.0/unauth/users", func(w http.ResponseWriter, _ *http.Request) {
 		_, _ = fmt.Fprint(w, `{
 			"apiKey": "1234abcd-ab12-cd34-ef56-1234abcd1234",
 			"user": {
