@@ -18,17 +18,41 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
 	projectBasePath = "api/public/v1.0/groups"
 )
 
-type (
-	ProjectsListOptions = atlas.ProjectsListOptions
-)
+// ProjectsListOptions filtering options for projects.
+type ProjectsListOptions struct {
+	Name string `url:"name,omitempty"`
+	ListOptions
+}
+
+type CreateProjectOptions struct {
+	ProjectOwnerID string `url:"projectOwnerId,omitempty"` // Unique 24-hexadecimal digit string that identifies the Atlas user account to be granted the Project Owner role on the specified project.
+}
+
+// ProjectTeam represents the kind of role that has the team.
+type ProjectTeam struct {
+	TeamID    string   `json:"teamId,omitempty"`
+	RoleNames []string `json:"roleNames,omitempty"`
+}
+
+// TeamsAssigned represents the one team assigned to the project.
+type TeamsAssigned struct {
+	Links      []*Link   `json:"links"`
+	Results    []*Result `json:"results"`
+	TotalCount int       `json:"totalCount"`
+}
+
+// Result is part og TeamsAssigned structure.
+type Result struct {
+	Links     []*Link  `json:"links"`
+	RoleNames []string `json:"roleNames"`
+	TeamID    string   `json:"teamId"`
+}
 
 // ProjectsService provides access to the project related functions in the Ops Manager API.
 //
@@ -38,16 +62,16 @@ type ProjectsService interface {
 	ListUsers(context.Context, string, *ListOptions) ([]*User, *Response, error)
 	Get(context.Context, string) (*Project, *Response, error)
 	GetByName(context.Context, string) (*Project, *Response, error)
-	Create(context.Context, *Project, *atlas.CreateProjectOptions) (*Project, *Response, error)
+	Create(context.Context, *Project, *CreateProjectOptions) (*Project, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	RemoveUser(context.Context, string, string) (*Response, error)
-	AddTeamsToProject(context.Context, string, []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *Response, error)
-	GetTeams(context.Context, string, *ListOptions) (*atlas.TeamsAssigned, *Response, error)
-	Invitations(context.Context, string, *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error)
-	Invitation(context.Context, string, string) (*atlas.Invitation, *Response, error)
-	InviteUser(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
-	UpdateInvitation(context.Context, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
-	UpdateInvitationByID(context.Context, string, string, *atlas.Invitation) (*atlas.Invitation, *Response, error)
+	AddTeamsToProject(context.Context, string, []*ProjectTeam) (*TeamsAssigned, *Response, error)
+	GetTeams(context.Context, string, *ListOptions) (*TeamsAssigned, *Response, error)
+	Invitations(context.Context, string, *InvitationOptions) ([]*Invitation, *Response, error)
+	Invitation(context.Context, string, string) (*Invitation, *Response, error)
+	InviteUser(context.Context, string, *Invitation) (*Invitation, *Response, error)
+	UpdateInvitation(context.Context, string, *Invitation) (*Invitation, *Response, error)
+	UpdateInvitationByID(context.Context, string, string, *Invitation) (*Invitation, *Response, error)
 	DeleteInvitation(context.Context, string, string) (*Response, error)
 }
 
@@ -95,9 +119,9 @@ type Project struct {
 
 // Projects represents a array of project.
 type Projects struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*Project    `json:"results"`
-	TotalCount int           `json:"totalCount"`
+	Links      []*Link    `json:"links"`
+	Results    []*Project `json:"results"`
+	TotalCount int        `json:"totalCount"`
 }
 
 // List gets all projects.
@@ -206,7 +230,7 @@ func (s *ProjectsServiceOp) GetByName(ctx context.Context, groupName string) (*P
 // Create creates a project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/create-one-group/
-func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project, opts *atlas.CreateProjectOptions) (*Project, *Response, error) {
+func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project, opts *CreateProjectOptions) (*Project, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
@@ -277,7 +301,7 @@ func (s *ProjectsServiceOp) RemoveUser(ctx context.Context, projectID, userID st
 // AddTeamsToProject adds teams to a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-add-team/
-func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID string, createRequest []*atlas.ProjectTeam) (*atlas.TeamsAssigned, *Response, error) {
+func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID string, createRequest []*ProjectTeam) (*TeamsAssigned, *Response, error) {
 	if createRequest == nil {
 		return nil, nil, NewArgError("createRequest", "cannot be nil")
 	}
@@ -289,7 +313,7 @@ func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID str
 		return nil, nil, err
 	}
 
-	root := new(atlas.TeamsAssigned)
+	root := new(TeamsAssigned)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -301,7 +325,7 @@ func (s *ProjectsServiceOp) AddTeamsToProject(ctx context.Context, projectID str
 // GetTeams gets all teams in a project
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/project-get-teams/
-func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *ListOptions) (*atlas.TeamsAssigned, *Response, error) {
+func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts *ListOptions) (*TeamsAssigned, *Response, error) {
 	if projectID == "" {
 		return nil, nil, NewArgError("projectID", "cannot be empty")
 	}
@@ -313,7 +337,7 @@ func (s *ProjectsServiceOp) GetTeams(ctx context.Context, projectID string, opts
 		return nil, nil, err
 	}
 
-	root := new(atlas.TeamsAssigned)
+	root := new(TeamsAssigned)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

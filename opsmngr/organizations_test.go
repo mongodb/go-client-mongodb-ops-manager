@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 const orgID = "5a0a1e7e0f2912c554081adc" //nolint:gosec // not a credential
@@ -55,22 +54,22 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 		}`)
 	})
 
-	orgs, _, err := client.Organizations.List(ctx, &mongodbatlas.OrganizationsListOptions{Name: "foo"})
+	orgs, _, err := client.Organizations.List(ctx, &OrganizationsListOptions{Name: "foo"})
 	if err != nil {
 		t.Fatalf("Organizations.List returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.Organizations{
-		Links: []*mongodbatlas.Link{
+	expected := &Organizations{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/orgs",
 				Rel:  "self",
 			},
 		},
-		Results: []*mongodbatlas.Organization{
+		Results: []*Organization{
 			{
 				ID: "56a10a80e4b0fd3b9a9bb0c2",
-				Links: []*mongodbatlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/public/v1.0/orgs/56a10a80e4b0fd3b9a9bb0c2",
 						Rel:  "self",
@@ -80,7 +79,7 @@ func TestOrganizations_GetAllOrganizations(t *testing.T) {
 			},
 			{
 				ID: "56aa691ce4b0a0e8c4be51f7",
-				Links: []*mongodbatlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/public/v1.0/orgs/56aa691ce4b0a0e8c4be51f7",
 						Rel:  "self",
@@ -156,7 +155,7 @@ func TestOrganizations_ListUsers(t *testing.T) {
 				FirstName:    "John",
 				ID:           "59db8d1d87d9d6420df0613a",
 				LastName:     "Smith",
-				Links:        []*mongodbatlas.Link{},
+				Links:        []*Link{},
 				Roles: []*UserRole{
 					{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 					{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
@@ -169,7 +168,7 @@ func TestOrganizations_ListUsers(t *testing.T) {
 				FirstName:    "Jill",
 				ID:           "59db8d1d87d9d6420df0613a",
 				LastName:     "Smith",
-				Links:        []*mongodbatlas.Link{},
+				Links:        []*Link{},
 				Roles: []*UserRole{
 					{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 					{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
@@ -208,9 +207,9 @@ func TestOrganizations_Get(t *testing.T) {
 		t.Fatalf("Organizations.Get returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.Organization{
+	expected := &Organization{
 		ID: orgID,
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/orgs/56a10a80e4b0fd3b9a9bb0c2",
 				Rel:  "self",
@@ -269,7 +268,7 @@ func TestOrganizations_Projects(t *testing.T) {
 	}
 
 	expected := &Projects{
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/orgs/5980cfdf0b6d97029d82f86e/groups",
 				Rel:  "self",
@@ -315,7 +314,7 @@ func TestOrganizations_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &mongodbatlas.Organization{
+	createRequest := &Organization{
 		Name: "OrgFoobar",
 	}
 
@@ -335,9 +334,9 @@ func TestOrganizations_Create(t *testing.T) {
 		t.Fatalf("Organizations.Create returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.Organization{
+	expected := &Organization{
 		ID: orgID,
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/orgs/5a0a1e7e0f2912c554080adc",
 				Rel:  "self",

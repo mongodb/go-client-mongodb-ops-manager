@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestMeasurements_Database(t *testing.T) {
@@ -62,7 +61,7 @@ func TestMeasurements_Database(t *testing.T) {
 				}`)
 	})
 
-	opts := &atlas.ProcessMeasurementListOptions{
+	opts := &ProcessMeasurementListOptions{
 		Granularity: "PT1M",
 		Period:      "PT1M",
 	}
@@ -72,13 +71,13 @@ func TestMeasurements_Database(t *testing.T) {
 		t.Fatalf("Measurements.Database returned error: %v", err)
 	}
 
-	expected := &atlas.ProcessDatabaseMeasurements{
-		ProcessMeasurements: &atlas.ProcessMeasurements{
+	expected := &ProcessDatabaseMeasurements{
+		ProcessMeasurements: &ProcessMeasurements{
 			End:         "2017-08-22T20:31:14Z",
 			Granularity: "PT1M",
 			GroupID:     "12345678",
 			HostID:      "1",
-			Links: []*atlas.Link{
+			Links: []*Link{
 				{
 					Rel:  "self",
 					Href: "https://cloud.mongodb.com/api/public/v1.0/groups/12345678/hosts/1/databases/xvdb/measurements?granularity=PT1M&period=PT1M",
@@ -88,9 +87,9 @@ func TestMeasurements_Database(t *testing.T) {
 					Rel:  "http://mms.mongodb.com/hostID",
 				},
 			},
-			Measurements: []*atlas.Measurements{
+			Measurements: []*Measurements{
 				{
-					DataPoints: []*atlas.DataPoints{
+					DataPoints: []*DataPoints{
 						{
 							Timestamp: "2017-08-22T20:31:12Z",
 							Value:     nil,

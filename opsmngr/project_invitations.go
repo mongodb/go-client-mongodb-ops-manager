@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const projectInvitationBasePath = projectBasePath + "/%s/invites"
@@ -27,7 +25,7 @@ const projectInvitationBasePath = projectBasePath + "/%s/invites"
 // Invitations gets all unaccepted invitations to the specified Ops Manager project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/get-all-invitations/
-func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opts *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error) {
+func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opts *InvitationOptions) ([]*Invitation, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -43,7 +41,7 @@ func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opt
 		return nil, nil, err
 	}
 
-	var root []*atlas.Invitation
+	var root []*Invitation
 	resp, err := s.Client.Do(ctx, req, &root)
 	if err != nil {
 		return nil, resp, err
@@ -55,7 +53,7 @@ func (s *ProjectsServiceOp) Invitations(ctx context.Context, groupID string, opt
 // Invitation gets details for one unaccepted invitation to the specified Ops Manager project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/get-one-invitation/
-func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationID string) (*atlas.Invitation, *Response, error) {
+func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationID string) (*Invitation, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -72,7 +70,7 @@ func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationI
 		return nil, nil, err
 	}
 
-	root := new(atlas.Invitation)
+	root := new(Invitation)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -84,7 +82,7 @@ func (s *ProjectsServiceOp) Invitation(ctx context.Context, groupID, invitationI
 // InviteUser invites one user to the Ops Manager project that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/create-one-invitation/
-func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invitation *Invitation) (*Invitation, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -96,7 +94,7 @@ func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invi
 		return nil, nil, err
 	}
 
-	root := new(atlas.Invitation)
+	root := new(Invitation)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -108,7 +106,7 @@ func (s *ProjectsServiceOp) InviteUser(ctx context.Context, groupID string, invi
 // UpdateInvitation updates one pending invitation to the Ops Manager project that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation/
-func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, groupID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, groupID string, invitation *Invitation) (*Invitation, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -119,7 +117,7 @@ func (s *ProjectsServiceOp) UpdateInvitation(ctx context.Context, groupID string
 // UpdateInvitationByID updates one invitation to the Ops Manager project.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/projects/update-one-invitation-by-id/
-func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, groupID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *ProjectsServiceOp) UpdateInvitationByID(ctx context.Context, groupID, invitationID string, invitation *Invitation) (*Invitation, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}
@@ -156,7 +154,7 @@ func (s *ProjectsServiceOp) DeleteInvitation(ctx context.Context, groupID, invit
 	return resp, err
 }
 
-func (s *ProjectsServiceOp) updateInvitation(ctx context.Context, groupID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *ProjectsServiceOp) updateInvitation(ctx context.Context, groupID, invitationID string, invitation *Invitation) (*Invitation, *Response, error) {
 	path := fmt.Sprintf(projectInvitationBasePath, groupID)
 
 	if invitationID != "" {
@@ -168,7 +166,7 @@ func (s *ProjectsServiceOp) updateInvitation(ctx context.Context, groupID, invit
 		return nil, nil, err
 	}
 
-	root := new(atlas.Invitation)
+	root := new(Invitation)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

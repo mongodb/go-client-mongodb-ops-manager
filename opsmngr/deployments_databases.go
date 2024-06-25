@@ -18,18 +18,24 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
 	hostsDatabasesBasePath = "api/public/v1.0/groups/%s/hosts/%s/databases"
 )
 
-type (
-	ProcessDatabasesResponse = atlas.ProcessDatabasesResponse
-	ProcessDatabase          = atlas.ProcessDatabase
-)
+// ProcessDatabasesResponse is the response from the ProcessDatabasesService.List.
+type ProcessDatabasesResponse struct {
+	Links      []*Link            `json:"links"`
+	Results    []*ProcessDatabase `json:"results"`
+	TotalCount int                `json:"totalCount"`
+}
+
+// ProcessDatabase is the database information of a process.
+type ProcessDatabase struct {
+	Links        []*Link `json:"links"`
+	DatabaseName string  `json:"databaseName"`
+}
 
 // ListDatabases retrieve all databases running on the specified host.
 //

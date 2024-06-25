@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 const teamID = "6b720e1087d9d66b272f1c86" //nolint:gosec // not a credential
@@ -57,7 +56,7 @@ func TestTeams_List(t *testing.T) {
 		t.Fatalf("Teams.List returned error: %v", err)
 	}
 
-	expected := []mongodbatlas.Team{
+	expected := []Team{
 		{
 			ID:   "b5cfec387d9d63926b9189g",
 			Name: "Finance",
@@ -102,7 +101,7 @@ func TestTeams_Get(t *testing.T) {
 		t.Fatalf("Teams.Get returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.Team{
+	expected := &Team{
 		ID:   "1",
 		Name: teamName,
 	}
@@ -135,7 +134,7 @@ func TestTeams_GetOneTeamByName(t *testing.T) {
 		t.Fatalf("Teams.Get returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.Team{
+	expected := &Team{
 		ID:   "1",
 		Name: "myNewTeam",
 	}
@@ -211,7 +210,7 @@ func TestProject_GetTeamUsersAssigned(t *testing.T) {
 					RoleName: "ORG_OWNER",
 				},
 			},
-			Links: []*mongodbatlas.Link{
+			Links: []*Link{
 				{
 					Rel:  "self",
 					Href: "https://cloud.mongodb.com/api/public/v1.0/users/{USER-ID}",
@@ -233,7 +232,7 @@ func TestTeams_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &mongodbatlas.Team{
+	createRequest := &Team{
 		Name:      "myNewTeam",
 		Usernames: []string{"user1", "user2", "user3"},
 	}
@@ -342,7 +341,7 @@ func TestTeams_UpdateTeamRoles(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	updateTeamRolesRequest := &mongodbatlas.TeamUpdateRoles{
+	updateTeamRolesRequest := &TeamUpdateRoles{
 		RoleNames: []string{"GROUP_OWNER"},
 	}
 

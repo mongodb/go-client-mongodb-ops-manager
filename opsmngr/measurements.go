@@ -16,17 +16,54 @@ package opsmngr
 
 import (
 	"context"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
-type (
-	ProcessMeasurements           = atlas.ProcessMeasurements
-	ProcessDiskMeasurements       = atlas.ProcessDiskMeasurements
-	ProcessDatabaseMeasurements   = atlas.ProcessDatabaseMeasurements
-	ProcessMeasurementListOptions = atlas.ProcessMeasurementListOptions
-	Measurements                  = atlas.Measurements
-)
+// ProcessMeasurements represents a MongoDB Process Measurements.
+type ProcessMeasurements struct {
+	End          string          `json:"end"`
+	Granularity  string          `json:"granularity"`
+	GroupID      string          `json:"groupId"`
+	HostID       string          `json:"hostId"`
+	Links        []*Link         `json:"links,omitempty"`
+	Measurements []*Measurements `json:"measurements"`
+	ProcessID    string          `json:"processId"`
+	Start        string          `json:"start"`
+}
+
+// ProcessDiskMeasurements represents a MongoDB Process Disk Measurements.
+type ProcessDiskMeasurements struct {
+	*ProcessMeasurements
+	PartitionName string `json:"partitionName"`
+}
+
+// ProcessDatabaseMeasurements represents a MongoDB process database measurements.
+type ProcessDatabaseMeasurements struct {
+	*ProcessMeasurements
+	DatabaseName string `json:"databaseName"`
+}
+
+// ProcessMeasurementListOptions contains the list of options for Process Measurements.
+type ProcessMeasurementListOptions struct {
+	*ListOptions
+	Granularity string   `url:"granularity"`
+	Period      string   `url:"period,omitempty"`
+	Start       string   `url:"start,omitempty"`
+	End         string   `url:"end,omitempty"`
+	M           []string `url:"m,omitempty"`
+}
+
+// Measurements represents a MongoDB Measurement.
+type Measurements struct {
+	DataPoints []*DataPoints `json:"dataPoints,omitempty"`
+	Name       string        `json:"name"`
+	Units      string        `json:"units"`
+}
+
+// DataPoints represents a MongoDB DataPoints.
+type DataPoints struct {
+	Timestamp string   `json:"timestamp"`
+	Value     *float32 `json:"value"`
+}
 
 // MeasurementsService provides access to the measurement related functions in the Ops Manager API.
 //

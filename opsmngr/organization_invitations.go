@@ -18,16 +18,34 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const invitationBasePath = orgsBasePath + "/%s/invites"
 
+// InvitationOptions filtering options for invitations.
+type InvitationOptions struct {
+	Username string `url:"username,omitempty"`
+}
+
+// Invitation represents the structure of an Invitation.
+type Invitation struct {
+	ID              string   `json:"id,omitempty"`
+	OrgID           string   `json:"orgId,omitempty"`
+	OrgName         string   `json:"orgName,omitempty"`
+	GroupID         string   `json:"groupId,omitempty"`
+	GroupName       string   `json:"groupName,omitempty"`
+	CreatedAt       string   `json:"createdAt,omitempty"`
+	ExpiresAt       string   `json:"expiresAt,omitempty"`
+	InviterUsername string   `json:"inviterUsername,omitempty"`
+	Username        string   `json:"username,omitempty"`
+	Roles           []string `json:"roles,omitempty"`
+	TeamIDs         []string `json:"teamIds,omitempty"` //nolint:tagliatelle // used as in the API
+}
+
 // Invitations gets all unaccepted invitations to the specified Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/get-all-invitations/
-func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, opts *atlas.InvitationOptions) ([]*atlas.Invitation, *Response, error) {
+func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, opts *InvitationOptions) ([]*Invitation, *Response, error) {
 	if orgID == "" {
 		return nil, nil, NewArgError("orgID", "must be set")
 	}
@@ -43,7 +61,7 @@ func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, 
 		return nil, nil, err
 	}
 
-	var root []*atlas.Invitation
+	var root []*Invitation
 	resp, err := s.Client.Do(ctx, req, &root)
 	if err != nil {
 		return nil, resp, err
@@ -55,7 +73,7 @@ func (s *OrganizationsServiceOp) Invitations(ctx context.Context, orgID string, 
 // Invitation gets details for one unaccepted invitation to the specified Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/get-one-invitation/
-func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitationID string) (*atlas.Invitation, *Response, error) {
+func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitationID string) (*Invitation, *Response, error) {
 	if orgID == "" {
 		return nil, nil, NewArgError("orgID", "must be set")
 	}
@@ -72,7 +90,7 @@ func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitati
 		return nil, nil, err
 	}
 
-	root := new(atlas.Invitation)
+	root := new(Invitation)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -84,7 +102,7 @@ func (s *OrganizationsServiceOp) Invitation(ctx context.Context, orgID, invitati
 // InviteUser invites one user to the Ops Manager organization that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/create-one-invitation/
-func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, orgID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, orgID string, invitation *Invitation) (*Invitation, *Response, error) {
 	if orgID == "" {
 		return nil, nil, NewArgError("orgID", "must be set")
 	}
@@ -96,7 +114,7 @@ func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, orgID string, i
 		return nil, nil, err
 	}
 
-	root := new(atlas.Invitation)
+	root := new(Invitation)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -108,7 +126,7 @@ func (s *OrganizationsServiceOp) InviteUser(ctx context.Context, orgID string, i
 // UpdateInvitation updates one pending invitation to the Ops Manager organization that you specify.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation/
-func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, orgID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, orgID string, invitation *Invitation) (*Invitation, *Response, error) {
 	if orgID == "" {
 		return nil, nil, NewArgError("orgID", "must be set")
 	}
@@ -119,7 +137,7 @@ func (s *OrganizationsServiceOp) UpdateInvitation(ctx context.Context, orgID str
 // UpdateInvitationByID updates one invitation to the Ops Manager organization.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/invitations/organizations/update-one-invitation-by-id/
-func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, orgID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *OrganizationsServiceOp) UpdateInvitationByID(ctx context.Context, orgID, invitationID string, invitation *Invitation) (*Invitation, *Response, error) {
 	if orgID == "" {
 		return nil, nil, NewArgError("orgID", "must be set")
 	}
@@ -156,7 +174,7 @@ func (s *OrganizationsServiceOp) DeleteInvitation(ctx context.Context, orgID, in
 	return resp, err
 }
 
-func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, orgID, invitationID string, invitation *atlas.Invitation) (*atlas.Invitation, *Response, error) {
+func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, orgID, invitationID string, invitation *Invitation) (*Invitation, *Response, error) {
 	path := fmt.Sprintf(invitationBasePath, orgID)
 
 	if invitationID != "" {
@@ -168,7 +186,7 @@ func (s *OrganizationsServiceOp) updateInvitation(ctx context.Context, orgID, in
 		return nil, nil, err
 	}
 
-	root := new(atlas.Invitation)
+	root := new(Invitation)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

@@ -19,8 +19,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -59,7 +57,7 @@ type ServerUsageReportService interface {
 // ServerUsageReportServiceOp handles communication with the Log Collection Jobs download method of the
 // MongoDB Ops Manager API.
 type ServerUsageReportServiceOp struct {
-	Client atlas.GZipRequestDoer
+	Client GZipRequestDoer
 }
 
 var _ ServerUsageReportService = &ServerUsageReportServiceOp{}
@@ -76,7 +74,7 @@ type ServerTypeOptions struct {
 
 // HostAssignments represents a paginated collection of HostAssignment.
 type HostAssignments struct {
-	Links      []*atlas.Link     `json:"links"`
+	Links      []*Link           `json:"links"`
 	Results    []*HostAssignment `json:"results"`
 	TotalCount int               `json:"totalCount"`
 }

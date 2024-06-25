@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -81,14 +80,14 @@ func TestAccessListAPIKeys_List(t *testing.T) {
 		t.Fatalf("AccessListAPIKeys.List returned error: %v", err)
 	}
 
-	expected := &atlas.AccessListAPIKeys{
-		Links: []*atlas.Link{
+	expected := &AccessListAPIKeys{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/599c510c80eef518f3b63fe1/apiKeys/5c49e72980eef544a218f8f8/accessList/?pretty=true&pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*atlas.AccessListAPIKey{
+		Results: []*AccessListAPIKey{
 			{
 				CidrBlock:       "147.58.184.16/32",
 				Count:           0,
@@ -96,7 +95,7 @@ func TestAccessListAPIKeys_List(t *testing.T) {
 				IPAddress:       "147.58.184.16",
 				LastUsed:        "2019-01-24T20:18:25Z",
 				LastUsedAddress: "147.58.184.16",
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/{ORG-ID}/apiKeys/{API-KEY-ID}/accessList/147.58.184.16",
 						Rel:  "self",
@@ -110,7 +109,7 @@ func TestAccessListAPIKeys_List(t *testing.T) {
 				IPAddress:       "84.255.48.125",
 				LastUsed:        "2019-01-24T20:18:25Z",
 				LastUsedAddress: "84.255.48.125",
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/{ORG-ID}/apiKeys/{API-KEY-ID}/accessList/206.252.195.126",
 						Rel:  "self",
@@ -151,12 +150,12 @@ func TestAccessListAPIKeys_Get(t *testing.T) {
 		t.Fatalf("AccessListAPIKeys.Get returned error: %v", err)
 	}
 
-	expected := &atlas.AccessListAPIKey{
+	expected := &AccessListAPIKey{
 		CidrBlock: "147.58.184.16/32",
 		Count:     0,
 		Created:   "2019-01-24T16:34:57Z",
 		IPAddress: "147.58.184.16",
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/{ORG-ID}/apiKeys/{API-KEY-ID}/accessList/147.58.184.16",
 				Rel:  "self",
@@ -173,7 +172,7 @@ func TestAccessListAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := []*atlas.AccessListAPIKeysReq{
+	createRequest := []*AccessListAPIKeysReq{
 		{
 			IPAddress: "77.54.32.11",
 			CidrBlock: "77.54.32.11/32",
@@ -244,14 +243,14 @@ func TestAccessListAPIKeys_Create(t *testing.T) {
 		t.Fatalf("AccessListAPIKeys.Create returned error: %v", err)
 	}
 
-	expected := &atlas.AccessListAPIKeys{
-		Links: []*atlas.Link{
+	expected := &AccessListAPIKeys{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/599c510c80eef518f3b63fe1/apiKeys/5c49e72980eef544a218f8f8/accessList/?pretty=true&pageNum=1&itemsPerPage=100",
 				Rel:  "self",
 			},
 		},
-		Results: []*atlas.AccessListAPIKey{
+		Results: []*AccessListAPIKey{
 			{
 				CidrBlock:       "147.58.184.16/32",
 				Count:           0,
@@ -259,7 +258,7 @@ func TestAccessListAPIKeys_Create(t *testing.T) {
 				IPAddress:       "147.58.184.16",
 				LastUsed:        "2019-01-24T20:18:25Z",
 				LastUsedAddress: "147.58.184.16",
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/{ORG-ID}/apiKeys/{API-KEY-ID}/accessList/147.58.184.16",
 						Rel:  "self",
@@ -273,7 +272,7 @@ func TestAccessListAPIKeys_Create(t *testing.T) {
 				IPAddress:       "77.54.32.11",
 				LastUsed:        "2019-01-24T20:18:25Z",
 				LastUsedAddress: "77.54.32.11",
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/{ORG-ID}/apiKeys/{API-KEY-ID}/accessList/77.54.32.11",
 						Rel:  "self",

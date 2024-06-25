@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestMeasurements_Host(t *testing.T) {
@@ -75,15 +74,15 @@ func TestMeasurements_Host(t *testing.T) {
 
 	var value float32 = 5.0
 
-	expected := &atlas.ProcessMeasurements{
+	expected := &ProcessMeasurements{
 		End:         "2018-07-31T16:29:24Z",
 		Granularity: "P1T12H",
 		GroupID:     projectID,
 		HostID:      "hostID",
-		Links:       []*atlas.Link{},
-		Measurements: []*atlas.Measurements{
+		Links:       []*Link{},
+		Measurements: []*Measurements{
 			{
-				DataPoints: []*atlas.DataPoints{
+				DataPoints: []*DataPoints{
 					{
 						Timestamp: "2018-07-31T16:29:24Z",
 						Value:     &value,
@@ -93,7 +92,7 @@ func TestMeasurements_Host(t *testing.T) {
 				Units: "SCALAR",
 			},
 			{
-				DataPoints: []*atlas.DataPoints{
+				DataPoints: []*DataPoints{
 					{
 						Timestamp: "2018-07-31T16:29:24Z",
 						Value:     &value,
@@ -103,7 +102,7 @@ func TestMeasurements_Host(t *testing.T) {
 				Units: "BYTES_PER_SECOND",
 			},
 			{
-				DataPoints: []*atlas.DataPoints{
+				DataPoints: []*DataPoints{
 					{
 						Timestamp: "2018-07-31T16:29:24Z",
 						Value:     &value,

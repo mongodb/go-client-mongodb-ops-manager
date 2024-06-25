@@ -18,28 +18,78 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const continuousRestoreJobsPath = "api/public/v1.0/groups/%s/clusters/%s/restoreJobs"
 
+// ContinuousRestoreJobsService provides access to the restore jobs related functions in the Ops Manager API.
+type ContinuousRestoreJobsService interface {
+	List(context.Context, string, string, *ListOptions) (*ContinuousJobs, *Response, error)
+	Get(context.Context, string, string, string) (*ContinuousJob, *Response, error)
+	Create(context.Context, string, string, *ContinuousJobRequest) (*ContinuousJobs, *Response, error)
+}
+
 // ContinuousRestoreJobsServiceOp handles communication with the Continuous Backup Restore Jobs related methods
-// of the MongoDB Ops Manager API.
+// of the MongoDB Atlas API.
 type ContinuousRestoreJobsServiceOp service
 
-type (
-	ContinuousJob        = atlas.ContinuousJob
-	ContinuousJobs       = atlas.ContinuousJobs
-	ContinuousJobRequest = atlas.ContinuousJobRequest
-)
+var _ ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
+
+type ContinuousJob struct {
+	BatchID           string            `json:"batchId,omitempty"`
+	ClusterID         string            `json:"clusterId,omitempty"`
+	Created           string            `json:"created"`
+	ClusterName       string            `json:"clusterName,omitempty"`
+	Delivery          *Delivery         `json:"delivery,omitempty"`
+	EncryptionEnabled bool              `json:"encryptionEnabled"`
+	GroupID           string            `json:"groupId"`
+	Hashes            []*Hash           `json:"hashes,omitempty"`
+	ID                string            `json:"id"`
+	Links             []*Link           `json:"links,omitempty"`
+	MasterKeyUUID     string            `json:"masterKeyUUID,omitempty"` //nolint:tagliatelle // used as in the API
+	SnapshotID        string            `json:"snapshotId"`
+	StatusName        string            `json:"statusName"`
+	PointInTime       *bool             `json:"pointInTime,omitempty"`
+	Timestamp         SnapshotTimestamp `json:"timestamp"`
+}
+
+type ContinuousJobs struct {
+	Results    []*ContinuousJob `json:"results,omitempty"`
+	Links      []*Link          `json:"links,omitempty"`
+	TotalCount int64            `json:"totalCount,omitempty"`
+}
 
 type SnapshotTimestamp struct {
 	Date      string `json:"date"`
 	Increment int64  `json:"increment"`
 }
 
-var _ atlas.ContinuousRestoreJobsService = &ContinuousRestoreJobsServiceOp{}
+type Delivery struct {
+	Expires           string `json:"expires,omitempty"`
+	ExpirationHours   int64  `json:"expirationHours,omitempty"`
+	MaxDownloads      int64  `json:"maxDownloads,omitempty"`
+	MethodName        string `json:"methodName"`
+	StatusName        string `json:"statusName,omitempty"`
+	URL               string `json:"url,omitempty"`
+	TargetClusterID   string `json:"targetClusterId,omitempty"`
+	TargetClusterName string `json:"targetClusterName,omitempty"`
+	TargetGroupID     string `json:"targetGroupId,omitempty"`
+}
+
+type Hash struct {
+	TypeName string `json:"typeName"`
+	FileName string `json:"fileName"`
+	Hash     string `json:"hash"`
+}
+
+type ContinuousJobRequest struct {
+	CheckPointID         string   `json:"checkPointId,omitempty"`
+	Delivery             Delivery `json:"delivery"`
+	OplogTS              string   `json:"oplogTs,omitempty"`
+	OplogInc             int64    `json:"oplogInc,omitempty"`
+	PointInTimeUTCMillis float64  `json:"pointInTimeUTCMillis,omitempty"` //nolint:tagliatelle // used as in the API
+	SnapshotID           string   `json:"snapshotId,omitempty"`
+}
 
 // List lists all continuous backup jobs in Atlas
 //

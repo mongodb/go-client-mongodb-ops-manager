@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestProjectAPIKeys_ListAPIKeys(t *testing.T) {
@@ -75,13 +74,13 @@ func TestProjectAPIKeys_ListAPIKeys(t *testing.T) {
 		t.Fatalf("APIKeys.List returned error: %v", err)
 	}
 
-	expected := []atlas.APIKey{
+	expected := []APIKey{
 		{
 			ID:         "5c47503320eef5699e1cce8d",
 			Desc:       "test-apikey",
 			PrivateKey: "********-****-****-db2c132ca78d",
 			PublicKey:  "ewmaqvdo",
-			Roles: []atlas.AtlasRole{
+			Roles: []OMRole{
 				{
 					GroupID:  "1",
 					RoleName: "GROUP_OWNER",
@@ -97,7 +96,7 @@ func TestProjectAPIKeys_ListAPIKeys(t *testing.T) {
 			Desc:       "test-apikey-2",
 			PrivateKey: "********-****-****-db2c132ca78f",
 			PublicKey:  "ewmaqvde",
-			Roles: []atlas.AtlasRole{
+			Roles: []OMRole{
 				{
 					GroupID:  "1",
 					RoleName: "GROUP_OWNER",
@@ -122,7 +121,7 @@ func TestProjectAPIKeys_Assign(t *testing.T) {
 		testMethod(t, r, http.MethodPatch)
 	})
 
-	_, err := client.ProjectAPIKeys.Assign(ctx, projectID, apiKeyID, &atlas.AssignAPIKey{})
+	_, err := client.ProjectAPIKeys.Assign(ctx, projectID, apiKeyID, &AssignAPIKey{})
 	if err != nil {
 		t.Errorf("ProjectAPIKeys.Assign returned error: %v", err)
 	}
@@ -146,7 +145,7 @@ func TestProjectAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &atlas.APIKeyInput{
+	createRequest := &APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GROUP_OWNER"},
 	}

@@ -18,18 +18,24 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
 	hostsDisksBasePath = "api/public/v1.0/groups/%s/hosts/%s/disks"
 )
 
-type (
-	ProcessDisksResponse = atlas.ProcessDisksResponse
-	ProcessDisk          = atlas.ProcessDisk
-)
+// ProcessDisksResponse is the response from the ProcessDisksService.List.
+type ProcessDisksResponse struct {
+	Links      []*Link        `json:"links"`
+	Results    []*ProcessDisk `json:"results"`
+	TotalCount int            `json:"totalCount"`
+}
+
+// ProcessDisk is the partition information of a process.
+type ProcessDisk struct {
+	Links         []*Link `json:"links"`
+	PartitionName string  `json:"partitionName"`
+}
 
 // ListPartitions retrieves all disk partitions on the specified host.
 //

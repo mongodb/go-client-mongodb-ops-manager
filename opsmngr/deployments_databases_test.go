@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestDeployments_GetDatabase(t *testing.T) {
@@ -44,8 +43,8 @@ func TestDeployments_GetDatabase(t *testing.T) {
 		t.Fatalf("Deployments.GetDatabase returned error: %v", err)
 	}
 
-	expected := &atlas.ProcessDatabase{
-		Links: []*atlas.Link{
+	expected := &ProcessDatabase{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/databases/xvdb",
@@ -91,16 +90,16 @@ func TestDeployments_ListDatabases(t *testing.T) {
 		t.Fatalf("Deployments.ListDatabases returned error: %v", err)
 	}
 
-	expected := &atlas.ProcessDatabasesResponse{
-		Links: []*atlas.Link{
+	expected := &ProcessDatabasesResponse{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/databases?pageNum=1&itemsPerPage=100",
 			},
 		},
-		Results: []*atlas.ProcessDatabase{
+		Results: []*ProcessDatabase{
 			{
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/databases/xvdb",

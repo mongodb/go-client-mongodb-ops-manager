@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestDeployments_GetPartition(t *testing.T) {
@@ -44,8 +43,8 @@ func TestDeployments_GetPartition(t *testing.T) {
 		t.Fatalf("Deployments.GetPartition returned error: %v", err)
 	}
 
-	expected := &atlas.ProcessDisk{
-		Links: []*atlas.Link{
+	expected := &ProcessDisk{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/disks/xvdb",
@@ -91,16 +90,16 @@ func TestDeployments_ListPartitions(t *testing.T) {
 		t.Fatalf("Deployments.ListPartitions returned error: %v", err)
 	}
 
-	expected := &atlas.ProcessDisksResponse{
-		Links: []*atlas.Link{
+	expected := &ProcessDisksResponse{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/disks?pageNum=1&itemsPerPage=100",
 			},
 		},
-		Results: []*atlas.ProcessDisk{
+		Results: []*ProcessDisk{
 			{
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://local/api/public/v1.0/groups/12345678/hosts/1/disks/xvdb",

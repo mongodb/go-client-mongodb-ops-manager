@@ -18,13 +18,13 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const liveMigrationBasePath = "api/public/v1.0/orgs/%s/liveExport/migrationLink"
 
-type LinkToken = atlas.LinkToken
+type LinkToken struct {
+	LinkToken string `json:"linkToken,omitempty"` // Atlas-generated token that links the source (Cloud Manager or Ops Manager) and destination (Atlas) clusters for migration.
+}
 
 // LiveDataMigrationService is an interface for interfacing with the Live Migration
 // endpoints of the MongoDB Ops Manager API.

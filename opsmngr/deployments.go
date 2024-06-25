@@ -16,8 +16,6 @@ package opsmngr
 
 import (
 	"context"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 // DeploymentsService provides access to the deployment related functions in the Ops Manager API.
@@ -30,10 +28,10 @@ type DeploymentsService interface {
 	StartMonitoring(context.Context, string, *Host) (*Host, *Response, error)
 	UpdateMonitoring(context.Context, string, string, *Host) (*Host, *Response, error)
 	StopMonitoring(context.Context, string, string) (*Response, error)
-	ListPartitions(context.Context, string, string, *ListOptions) (*atlas.ProcessDisksResponse, *Response, error)
-	GetPartition(context.Context, string, string, string) (*atlas.ProcessDisk, *Response, error)
-	ListDatabases(context.Context, string, string, *ListOptions) (*atlas.ProcessDatabasesResponse, *Response, error)
-	GetDatabase(context.Context, string, string, string) (*atlas.ProcessDatabase, *Response, error)
+	ListPartitions(context.Context, string, string, *ListOptions) (*ProcessDisksResponse, *Response, error)
+	GetPartition(context.Context, string, string, string) (*ProcessDisk, *Response, error)
+	ListDatabases(context.Context, string, string, *ListOptions) (*ProcessDatabasesResponse, *Response, error)
+	GetDatabase(context.Context, string, string, string) (*ProcessDatabase, *Response, error)
 }
 
 // DeploymentsServiceOp provides an implementation of the DeploymentsService interface.

@@ -18,12 +18,10 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 // GetConfig retrieves the current automation configuration for a project.
-//
+// atlas
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/#get-the-automation-configuration
 func (s *AutomationServiceOp) GetConfig(ctx context.Context, groupID string) (*AutomationConfig, *Response, error) {
 	if groupID == "" {
@@ -128,12 +126,49 @@ type Shard struct {
 //
 // See: https://docs.opsmanager.mongodb.com/current/reference/api/automation-config/automation-config-parameters/#indexes
 type IndexConfig struct {
-	DBName         string                  `json:"dbName"`              // DBName of the database that is indexed
-	CollectionName string                  `json:"collectionName"`      // CollectionName that is indexed
-	RSName         string                  `json:"rsName"`              // RSName that the index is built on
-	Key            [][]string              `json:"key"`                 // Key array of keys to index and their type, sorting of keys is important for an index
-	Options        *atlas.IndexOptions     `json:"options,omitempty"`   // Options MongoDB index options
-	Collation      *atlas.CollationOptions `json:"collation,omitempty"` // Collation Mongo collation index options
+	DBName         string            `json:"dbName"`              // DBName of the database that is indexed
+	CollectionName string            `json:"collectionName"`      // CollectionName that is indexed
+	RSName         string            `json:"rsName"`              // RSName that the index is built on
+	Key            [][]string        `json:"key"`                 // Key array of keys to index and their type, sorting of keys is important for an index
+	Options        *IndexOptions     `json:"options,omitempty"`   // Options MongoDB index options
+	Collation      *CollationOptions `json:"collation,omitempty"` // Collation Mongo collation index options
+}
+
+// IndexOptions represents mongodb index options.
+//
+// See: https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/#options
+type IndexOptions struct {
+	Background              bool                    `json:"background,omitempty"`
+	PartialFilterExpression *map[string]interface{} `json:"partialFilterExpression,omitempty"`
+	StorageEngine           *map[string]interface{} `json:"storageEngine,omitempty"`
+	Weights                 *map[string]int         `json:"weights,omitempty"`
+	DefaultLanguage         string                  `json:"default_language,omitempty"`  //nolint:tagliatelle // used as in the API
+	LanguageOverride        string                  `json:"language_override,omitempty"` //nolint:tagliatelle // used as in the API
+	TextIndexVersion        int                     `json:"textIndexVersion,omitempty"`
+	TwodsphereIndexVersion  int                     `json:"2dsphereIndexVersion,omitempty"` //nolint:tagliatelle // used as in the API
+	Bits                    int                     `json:"bits,omitempty"`
+	Unique                  bool                    `json:"unique,omitempty"`
+	Sparse                  bool                    `json:"sparse,omitempty"`
+	GeoMin                  int                     `json:"min,omitempty"` //nolint:tagliatelle // used as in the API
+	GeoMax                  int                     `json:"max,omitempty"` //nolint:tagliatelle // used as in the API
+	BucketSize              int                     `json:"bucketSize,omitempty"`
+	Name                    string                  `json:"name,omitempty"`
+	ExpireAfterSeconds      int                     `json:"expireAfterSeconds,omitempty"`
+}
+
+// CollationOptions represents options for collation indexes.
+//
+// See: https://docs.mongodb.com/manual/reference/method/db.collection.createIndex/#option-for-collation
+type CollationOptions struct {
+	Locale          string `json:"locale,omitempty"`
+	CaseLevel       bool   `json:"caseLevel,omitempty"`
+	CaseFirst       string `json:"caseFirst,omitempty"`
+	Strength        int    `json:"strength,omitempty"`
+	NumericOrdering bool   `json:"numericOrdering,omitempty"`
+	Alternate       string `json:"alternate,omitempty"`
+	MaxVariable     string `json:"maxVariable,omitempty"`
+	Normalization   bool   `json:"normalization,omitempty"`
+	Backwards       bool   `json:"backwards,omitempty"`
 }
 
 // SSL config properties.

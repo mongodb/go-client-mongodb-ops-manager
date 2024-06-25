@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestProjects_Invitations(t *testing.T) {
@@ -61,7 +60,7 @@ func TestProjects_Invitations(t *testing.T) {
 		t.Fatalf("Projects.Invitations returned error: %v", err)
 	}
 
-	expected := []*atlas.Invitation{
+	expected := []*Invitation{
 		{
 			ID:              "5a0a1e7e0f2912c554080adc",
 			GroupID:         projectID,
@@ -115,7 +114,7 @@ func TestProjects_Invitation(t *testing.T) {
 		t.Fatalf("Projects.Invitation returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		GroupID:         projectID,
 		GroupName:       "jww-12-16",
@@ -151,7 +150,7 @@ func TestProjects_InviteUser(t *testing.T) {
 		}`, projectID)
 	})
 
-	body := &atlas.Invitation{
+	body := &Invitation{
 		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
@@ -166,7 +165,7 @@ func TestProjects_InviteUser(t *testing.T) {
 		t.Fatalf("Projects.InviteUser returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		GroupID:         projectID,
 		GroupName:       "jww-12-16",
@@ -202,7 +201,7 @@ func TestProjects_UpdateInvitation(t *testing.T) {
 		}`, projectID)
 	})
 
-	body := &atlas.Invitation{
+	body := &Invitation{
 		GroupID:         projectID,
 		GroupName:       "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
@@ -217,7 +216,7 @@ func TestProjects_UpdateInvitation(t *testing.T) {
 		t.Fatalf("Projects.UpdateInvitation returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		GroupID:         projectID,
 		GroupName:       "jww-12-16",
@@ -253,7 +252,7 @@ func TestProjects_UpdateInvitationByID(t *testing.T) {
 		}`, projectID)
 	})
 
-	body := &atlas.Invitation{
+	body := &Invitation{
 		ID:              invitationID,
 		GroupID:         projectID,
 		GroupName:       "jww-12-16",
@@ -269,7 +268,7 @@ func TestProjects_UpdateInvitationByID(t *testing.T) {
 		t.Fatalf("Projects.UpdateInvitationByID returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		GroupID:         projectID,
 		GroupName:       "jww-12-16",
