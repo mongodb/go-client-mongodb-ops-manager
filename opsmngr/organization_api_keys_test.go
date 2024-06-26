@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const jsonBlobOrg = `
@@ -94,13 +93,13 @@ func TestOrganizationAPIKeys_ListAPIKeys(t *testing.T) {
 		t.Fatalf("OrganizationAPIKeys.List returned error: %v", err)
 	}
 
-	expected := []atlas.APIKey{
+	expected := []APIKey{
 		{
 			ID:         "5c47503320eef5699e1cce8d",
 			Desc:       testAPIKey,
 			PrivateKey: "********-****-****-db2c132ca78d",
 			PublicKey:  ewmaqvdo,
-			Roles: []atlas.AtlasRole{
+			Roles: []OMRole{
 				{
 					GroupID:  "1",
 					RoleName: "GROUP_OWNER",
@@ -116,7 +115,7 @@ func TestOrganizationAPIKeys_ListAPIKeys(t *testing.T) {
 			Desc:       "test-apikey-2",
 			PrivateKey: "********-****-****-db2c132ca78f",
 			PublicKey:  "ewmaqvde",
-			Roles: []atlas.AtlasRole{
+			Roles: []OMRole{
 				{
 					GroupID:  "1",
 					RoleName: "GROUP_OWNER",
@@ -141,13 +140,13 @@ func TestOrganizationAPIKeys_ListAPIKeysMultiplePages(t *testing.T) {
 		testMethod(t, r, http.MethodGet)
 
 		dr := APIKeysResponse{
-			Results: []atlas.APIKey{
+			Results: []APIKey{
 				{
 					ID:         "5c47503320eef5699e1cce8d",
 					Desc:       testAPIKey,
 					PrivateKey: "********-****-****-db2c132ca78d",
 					PublicKey:  ewmaqvdo,
-					Roles: []atlas.AtlasRole{
+					Roles: []OMRole{
 						{
 							GroupID:  "1",
 							RoleName: "GROUP_OWNER",
@@ -163,7 +162,7 @@ func TestOrganizationAPIKeys_ListAPIKeysMultiplePages(t *testing.T) {
 					Desc:       "test-apikey-2",
 					PrivateKey: "********-****-****-db2c132ca78f",
 					PublicKey:  "ewmaqvde",
-					Roles: []atlas.AtlasRole{
+					Roles: []OMRole{
 						{
 							GroupID:  "1",
 							RoleName: "GROUP_OWNER",
@@ -175,7 +174,7 @@ func TestOrganizationAPIKeys_ListAPIKeysMultiplePages(t *testing.T) {
 					},
 				},
 			},
-			Links: []*atlas.Link{
+			Links: []*Link{
 				{Href: "http://example.com/api/atlas/v1.0/orgs/1/apiKeys?pageNum=2&itemsPerPage=2", Rel: "self"},
 				{Href: "http://example.com/api/atlas/v1.0/orgs/1/apiKeys?pageNum=2&itemsPerPage=2", Rel: "previous"},
 			},
@@ -255,7 +254,7 @@ func TestOrganizationAPIKeys_Create(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := &atlas.APIKeyInput{
+	createRequest := &APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GROUP_OWNER"},
 	}
@@ -307,7 +306,7 @@ func TestOrganizationAPIKeys_GetAPIKey(t *testing.T) {
 		t.Errorf("OrganizationAPIKeys.Get returned error: %v", err)
 	}
 
-	expected := &atlas.APIKey{Desc: "test-desc"}
+	expected := &APIKey{Desc: "test-desc"}
 
 	if diff := deep.Equal(apiKeys, expected); diff != nil {
 		t.Errorf("Clusters.Get = %v", diff)
@@ -318,7 +317,7 @@ func TestOrganizationAPIKeys_Update(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	updateRequest := &atlas.APIKeyInput{
+	updateRequest := &APIKeyInput{
 		Desc:  "test-apiKey",
 		Roles: []string{"GROUP_OWNER"},
 	}

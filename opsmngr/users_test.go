@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 const userID = "56a10a80e4b0fd3b9a9bb0c2" //nolint:gosec // not a credential
@@ -62,7 +61,7 @@ func TestUsers_Get(t *testing.T) {
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links:        []*mongodbatlas.Link{},
+		Links:        []*Link{},
 		Roles: []*UserRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
@@ -112,7 +111,7 @@ func TestUsers_GetByName(t *testing.T) {
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links:        []*mongodbatlas.Link{},
+		Links:        []*Link{},
 		Roles: []*UserRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
@@ -174,7 +173,7 @@ func TestUsers_Create(t *testing.T) {
 		FirstName:    "John",
 		ID:           "59db8d1d87d9d6420df0613a",
 		LastName:     "Smith",
-		Links:        []*mongodbatlas.Link{},
+		Links:        []*Link{},
 		Roles: []*UserRole{
 			{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 			{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},

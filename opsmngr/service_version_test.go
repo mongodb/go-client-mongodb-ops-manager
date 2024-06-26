@@ -14,22 +14,24 @@
 
 package opsmngr
 
-import "net/url"
+import (
+	"fmt"
+	"net/http"
+	"testing"
+)
 
-// Link is the link to sub-resources and/or related resources.
-type Link struct {
-	Rel  string `json:"rel,omitempty"`
-	Href string `json:"href,omitempty"`
-}
+func TestServiceVersionService_Get(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
 
-func (l *Link) getHrefURL() (*url.URL, error) {
-	return url.Parse(l.Href)
-}
+	mux.HandleFunc("/api/private/unauth/version", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		fmt.Fprint(w, "someGitHash")
+	})
 
-func (l *Link) getHrefQueryParam(param string) (string, error) {
-	hrefURL, err := l.getHrefURL()
+	_, _, err := client.ServiceVersion.Get(ctx)
+
 	if err != nil {
-		return "", err
+		t.Fatalf("ServiceVersion.Get returned error: %v", err)
 	}
-	return hrefURL.Query().Get(param), nil
 }

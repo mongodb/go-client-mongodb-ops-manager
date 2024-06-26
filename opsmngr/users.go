@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -44,17 +42,17 @@ var _ UsersService = &UsersServiceOp{}
 
 // User wrapper for a user response, augmented with a few extra fields.
 type User struct {
-	ID           string        `json:"id,omitempty"`
-	EmailAddress string        `json:"emailAddress,omitempty"`
-	FirstName    string        `json:"firstName,omitempty"`
-	LastName     string        `json:"lastName,omitempty"`
-	Links        []*atlas.Link `json:"links,omitempty"`
-	MobileNumber string        `json:"mobileNumber,omitempty"`
-	Password     string        `json:"password,omitempty"`
-	TeamIds      []string      `json:"teamIds,omitempty"` //nolint
-	Roles        []*UserRole   `json:"roles,omitempty"`
-	Username     string        `json:"username"`
-	Country      string        `json:"country,omitempty"`
+	ID           string      `json:"id,omitempty"`
+	EmailAddress string      `json:"emailAddress,omitempty"`
+	FirstName    string      `json:"firstName,omitempty"`
+	LastName     string      `json:"lastName,omitempty"`
+	Links        []*Link     `json:"links,omitempty"`
+	MobileNumber string      `json:"mobileNumber,omitempty"`
+	Password     string      `json:"password,omitempty"`
+	TeamIds      []string    `json:"teamIds,omitempty"`
+	Roles        []*UserRole `json:"roles,omitempty"`
+	Username     string      `json:"username"`
+	Country      string      `json:"country,omitempty"`
 }
 
 // UserRole denotes a single user role.
@@ -66,9 +64,9 @@ type UserRole struct {
 
 // UsersResponse represents a array of users.
 type UsersResponse struct {
-	Links      []*atlas.Link `json:"links"`
-	Results    []*User       `json:"results"`
-	TotalCount int           `json:"totalCount"`
+	Links      []*Link `json:"links"`
+	Results    []*User `json:"results"`
+	TotalCount int     `json:"totalCount"`
 }
 
 // Get gets a single user by ID.

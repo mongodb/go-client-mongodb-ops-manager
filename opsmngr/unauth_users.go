@@ -20,7 +20,6 @@ import (
 	"net/http"
 
 	"github.com/google/go-querystring/query"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -71,7 +70,7 @@ type WhitelistOpts struct {
 
 // CreateUserResponse API response for the CreateFirstUser() call.
 type CreateUserResponse struct {
-	APIKey             string       `json:"apiKey,omitempty"`
-	ProgrammaticAPIKey atlas.APIKey `json:"programmaticApiKey,omitempty"`
-	User               *User        `json:"user"`
+	APIKey             string `json:"apiKey,omitempty"`
+	ProgrammaticAPIKey APIKey `json:"programmaticApiKey,omitempty"`
+	User               *User  `json:"user"`
 }

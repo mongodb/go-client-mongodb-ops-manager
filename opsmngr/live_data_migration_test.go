@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestLiveMigration_ConnectOrganizations(t *testing.T) {
@@ -34,7 +33,7 @@ func TestLiveMigration_ConnectOrganizations(t *testing.T) {
 		_, _ = fmt.Fprint(w, `{"status": "SYNCED"}`)
 	})
 
-	linkToken := &atlas.LinkToken{LinkToken: "test"}
+	linkToken := &LinkToken{LinkToken: "test"}
 	response, _, err := client.LiveMigration.ConnectOrganizations(ctx, orgID, linkToken)
 	if err != nil {
 		t.Fatalf("LiveMigration.ConnectOrganizations returned error: %v", err)

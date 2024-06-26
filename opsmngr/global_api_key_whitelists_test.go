@@ -21,7 +21,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const accessListID = "5f3cf81b89034c6b3c0a528e" //nolint:gosec // not a credential
@@ -59,7 +58,7 @@ func TestWhitelistAPIKeys_List(t *testing.T) {
 	}
 
 	expected := &GlobalWhitelistAPIKeys{
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Href: "http://mms:8080/api/public/v1.0/admin/whitelist?pageNum=1&itemsPerPage=100",
 				Rel:  "self",

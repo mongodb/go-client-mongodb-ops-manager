@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -49,7 +47,7 @@ func (s *MeasurementsServiceOp) Host(ctx context.Context, projectID, hostID stri
 		return nil, nil, err
 	}
 
-	root := new(atlas.ProcessMeasurements)
+	root := new(ProcessMeasurements)
 	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err

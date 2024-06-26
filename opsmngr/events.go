@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
@@ -27,17 +25,67 @@ const (
 	eventsPathOrganization = "api/public/v1.0/orgs/%s/events"
 )
 
+// EventsService is an interface for interfacing with the Events.
+type EventsService interface {
+	ListOrganizationEvents(context.Context, string, *EventListOptions) (*EventResponse, *Response, error)
+	GetOrganizationEvent(context.Context, string, string) (*Event, *Response, error)
+	ListProjectEvents(context.Context, string, *EventListOptions) (*EventResponse, *Response, error)
+	GetProjectEvent(context.Context, string, string) (*Event, *Response, error)
+}
+
 // EventsServiceOp handles communication with the Event related methods
 // of the MongoDB Ops Manager API.
 type EventsServiceOp service
 
-var _ atlas.EventsService = &EventsServiceOp{}
+var _ EventsService = &EventsServiceOp{}
 
-type (
-	EventListOptions = atlas.EventListOptions
-	EventResponse    = atlas.EventResponse
-	Event            = atlas.Event
-)
+// Event represents an event of the MongoDB Ops Manager API.
+type Event struct {
+	AlertID         string        `json:"alertId"`
+	AlertConfigID   string        `json:"alertConfigId"`
+	APIKeyID        string        `json:"apiKeyId,omitempty"`
+	Collection      string        `json:"collection,omitempty"`
+	Created         string        `json:"created"`
+	CurrentValue    *CurrentValue `json:"currentValue,omitempty"`
+	Database        string        `json:"database,omitempty"`
+	EventTypeName   string        `json:"eventTypeName"`
+	GroupID         string        `json:"groupId,omitempty"`
+	Hostname        string        `json:"hostname"`
+	ID              string        `json:"id"`
+	InvoiceID       string        `json:"invoiceId,omitempty"`
+	IsGlobalAdmin   bool          `json:"isGlobalAdmin,omitempty"`
+	Links           []*Link       `json:"links"`
+	MetricName      string        `json:"metricName,omitempty"`
+	OpType          string        `json:"opType,omitempty"`
+	OrgID           string        `json:"orgId,omitempty"`
+	PaymentID       string        `json:"paymentId,omitempty"`
+	Port            int           `json:"Port,omitempty"` //nolint:tagliatelle // used as in the API
+	PublicKey       string        `json:"publicKey,omitempty"`
+	RemoteAddress   string        `json:"remoteAddress,omitempty"`
+	ReplicaSetName  string        `json:"replicaSetName,omitempty"`
+	ShardName       string        `json:"shardName,omitempty"`
+	TargetPublicKey string        `json:"targetPublicKey,omitempty"`
+	TargetUsername  string        `json:"targetUsername,omitempty"`
+	TeamID          string        `json:"teamId,omitempty"`
+	UserID          string        `json:"userId,omitempty"`
+	Username        string        `json:"username,omitempty"`
+	WhitelistEntry  string        `json:"whitelistEntry,omitempty"`
+}
+
+// EventResponse is the response from the EventsService.List.
+type EventResponse struct {
+	Links      []*Link  `json:"links,omitempty"`
+	Results    []*Event `json:"results,omitempty"`
+	TotalCount int      `json:"totalCount,omitempty"`
+}
+
+// EventListOptions specifies the optional parameters to the Event List methods.
+type EventListOptions struct {
+	ListOptions
+	EventType []string `url:"eventType,omitempty"`
+	MinDate   string   `url:"minDate,omitempty"`
+	MaxDate   string   `url:"maxDate,omitempty"`
+}
 
 // ListOrganizationEvents lists all events in the organization associated to {ORG-ID}.
 //
@@ -98,7 +146,7 @@ func (s *EventsServiceOp) GetOrganizationEvent(ctx context.Context, orgID, event
 // ListProjectEvents lists all events in the project associated to {PROJECT-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/events/get-all-events-for-project/
-func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string, listOptions *atlas.EventListOptions) (*EventResponse, *Response, error) {
+func (s *EventsServiceOp) ListProjectEvents(ctx context.Context, groupID string, listOptions *EventListOptions) (*EventResponse, *Response, error) {
 	if groupID == "" {
 		return nil, nil, NewArgError("groupID", "must be set")
 	}

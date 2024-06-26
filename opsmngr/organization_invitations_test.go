@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const invitationID = "1"
@@ -61,7 +60,7 @@ func TestOrganizations_Invitations(t *testing.T) {
 		t.Fatalf("Organizations.Invitations returned error: %v", err)
 	}
 
-	expected := []*atlas.Invitation{
+	expected := []*Invitation{
 		{
 			ID:              "5a0a1e7e0f2912c554080adc",
 			OrgID:           "5df7a168f10fab3a149357fb",
@@ -115,7 +114,7 @@ func TestOrganizations_Invitation(t *testing.T) {
 		t.Fatalf("Organizations.Invitation returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		OrgID:           "5df7a168f10fab3a149357fb",
 		OrgName:         "jww-12-16",
@@ -151,7 +150,7 @@ func TestOrganizations_InviteUser(t *testing.T) {
 		}`)
 	})
 
-	body := &atlas.Invitation{
+	body := &Invitation{
 		OrgID:           orgID,
 		OrgName:         "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
@@ -166,7 +165,7 @@ func TestOrganizations_InviteUser(t *testing.T) {
 		t.Fatalf("Organizations.InviteUser returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		OrgID:           "5df7a168f10fab3a149357fb",
 		OrgName:         "jww-12-16",
@@ -202,7 +201,7 @@ func TestOrganizations_UpdateInvitation(t *testing.T) {
 		}`)
 	})
 
-	body := &atlas.Invitation{
+	body := &Invitation{
 		OrgID:           orgID,
 		OrgName:         "jww-12-16",
 		CreatedAt:       "2021-02-18T21:05:40Z",
@@ -217,7 +216,7 @@ func TestOrganizations_UpdateInvitation(t *testing.T) {
 		t.Fatalf("Organizations.UpdateInvitation returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		OrgID:           "5df7a168f10fab3a149357fb",
 		OrgName:         "jww-12-16",
@@ -253,7 +252,7 @@ func TestOrganizations_UpdateInvitationByID(t *testing.T) {
 		}`)
 	})
 
-	body := &atlas.Invitation{
+	body := &Invitation{
 		OrgID:           orgID,
 		ID:              invitationID,
 		OrgName:         "jww-12-16",
@@ -269,7 +268,7 @@ func TestOrganizations_UpdateInvitationByID(t *testing.T) {
 		t.Fatalf("Organizations.UpdateInvitationByID returned error: %v", err)
 	}
 
-	expected := &atlas.Invitation{
+	expected := &Invitation{
 		ID:              "5a0a1e7e0f2912c554080adc",
 		OrgID:           "5df7a168f10fab3a149357fb",
 		OrgName:         "jww-12-16",

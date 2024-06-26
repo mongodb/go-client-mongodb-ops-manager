@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const eventID = "b3ad04e680eef540be141abe" //nolint:gosec // not a credential
@@ -78,27 +77,27 @@ func TestEvents_ListOrganizationEvents(t *testing.T) {
 					}`)
 	})
 
-	opts := &atlas.EventListOptions{}
+	opts := &EventListOptions{}
 
 	cluster, _, err := client.Events.ListOrganizationEvents(ctx, orgID, opts)
 	if err != nil {
 		t.Fatalf("Events.ListOrganizationEvents returned error: %v", err)
 	}
 
-	expected := &atlas.EventResponse{
-		Links: []*atlas.Link{
+	expected := &EventResponse{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/5b478b3afc4625789ce616a3/events?pageNum=1&itemsPerPage=100",
 			},
 		},
-		Results: []*atlas.Event{
+		Results: []*Event{
 			{
 				Created:       "2018-07-12T16:30:05Z",
 				EventTypeName: "JOINED_TEAM",
 				ID:            "b3ad04e680eef540be141abe",
 				IsGlobalAdmin: true,
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/5b478b3afc4625789ce616a3/events/5b47820d80eef5264e12514a",
@@ -116,7 +115,7 @@ func TestEvents_ListOrganizationEvents(t *testing.T) {
 				GroupID:       "5b43d04087d9d6357de591a2",
 				ID:            "5b478b3afc49d6357de591af",
 				IsGlobalAdmin: false,
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/5b478b3afc4625789ce616a3/events/5b43d04087d9d6357de591af",
@@ -166,12 +165,12 @@ func TestEvents_GetOrganizationEvent(t *testing.T) {
 		t.Fatalf("Events.GetOrganizationEvent returned error: %v", err)
 	}
 
-	expected := &atlas.Event{
+	expected := &Event{
 		Created:       "2018-07-12T16:30:05Z",
 		EventTypeName: "JOINED_TEAM",
 		ID:            "b3ad04e680eef540be141abe",
 		IsGlobalAdmin: true,
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/orgs/5b478b3afc4625789ce616a3/events/5b47820d80eef5264e12514a",
@@ -247,20 +246,20 @@ func TestEvents_ListProjectEvents(t *testing.T) {
 		t.Fatalf("Events.ListOrganizationEvents returned error: %v", err)
 	}
 
-	expected := &atlas.EventResponse{
-		Links: []*atlas.Link{
+	expected := &EventResponse{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/5b43d04087d9d6357de591a2/events?pageNum=1&itemsPerPage=100",
 			},
 		},
-		Results: []*atlas.Event{
+		Results: []*Event{
 			{
 				Created:       "2018-07-12T16:30:05Z",
 				EventTypeName: "JOINED_TEAM",
 				ID:            "b3ad04e680eef540be141abe",
 				IsGlobalAdmin: true,
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/5b43d04087d9d6357de591a2/events/5b47820d80eef5264e12514a",
@@ -278,7 +277,7 @@ func TestEvents_ListProjectEvents(t *testing.T) {
 				GroupID:       "5b43d04087d9d6357de591a2",
 				ID:            "5b478b3afc49d6357de591af",
 				IsGlobalAdmin: false,
-				Links: []*atlas.Link{
+				Links: []*Link{
 					{
 						Rel:  "self",
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/5b43d04087d9d6357de591a2/events/5b43d04087d9d6357de591af",
@@ -328,12 +327,12 @@ func TestEvents_GetProjectEvent(t *testing.T) {
 		t.Fatalf("Events.GetOrganizationEvent returned error: %v", err)
 	}
 
-	expected := &atlas.Event{
+	expected := &Event{
 		Created:       "2018-07-12T16:30:05Z",
 		EventTypeName: "JOINED_TEAM",
 		ID:            "b3ad04e680eef540be141abe",
 		IsGlobalAdmin: true,
-		Links: []*atlas.Link{
+		Links: []*Link{
 			{
 				Rel:  "self",
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/5b43d04087d9d6357de591a2/events/5b43d04087d9d6357de591af",

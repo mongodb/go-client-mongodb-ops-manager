@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const hostDatabaseMeasurementsPath = "api/public/v1.0/groups/%s/hosts/%s/databases/%s/measurements"
@@ -54,7 +52,7 @@ func (s *MeasurementsServiceOp) Database(ctx context.Context, groupID, hostID, d
 		return nil, nil, err
 	}
 
-	root := new(atlas.ProcessDatabaseMeasurements)
+	root := new(ProcessDatabaseMeasurements)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

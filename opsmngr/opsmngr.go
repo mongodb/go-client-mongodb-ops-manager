@@ -21,47 +21,22 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/google/go-querystring/query"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const (
-	defaultBaseURL = atlas.CloudURL
+	defaultBaseURL = "https://cloud.mongodb.com/"
 	userAgent      = "go-ops-manager"
 	jsonMediaType  = "application/json"
 	gzipMediaType  = "application/gzip"
 	plainMediaType = "text/plain"
-)
-
-type (
-	Response                  = atlas.Response
-	ErrorResponse             = atlas.ErrorResponse
-	RequestCompletionCallback = atlas.RequestCompletionCallback
-	ResponseProcessedCallback = atlas.ResponseProcessedCallback
-	ServiceVersion            = atlas.ServiceVersion
-	ListOptions               = atlas.ListOptions
-	APIKey                    = atlas.APIKey
-	APIKeyInput               = atlas.APIKeyInput
-	AssignAPIKey              = atlas.AssignAPIKey
-	IndexOptions              = atlas.IndexOptions
-	CollationOptions          = atlas.CollationOptions
-	Team                      = atlas.Team
-	TeamsAssigned             = atlas.TeamsAssigned
-	TeamUpdateRoles           = atlas.TeamUpdateRoles
-	CreateProjectOptions      = atlas.CreateProjectOptions
-	ProjectTeam               = atlas.ProjectTeam
-	TeamRoles                 = atlas.TeamRoles
-	Invitation                = atlas.Invitation
-	InvitationOptions         = atlas.InvitationOptions
-	Notification              = atlas.Notification
-	CurrentValue              = atlas.CurrentValue
-	MetricThreshold           = atlas.MetricThreshold
-	Matcher                   = atlas.Matcher
 )
 
 type HTTPClient interface {
@@ -78,11 +53,25 @@ type Completer interface {
 	OnRequestCompleted(RequestCompletionCallback)
 }
 
+// RequestDoer minimum interface for any service of the client.
+type RequestDoer interface {
+	Doer
+	Completer
+	NewRequest(context.Context, string, string, interface{}) (*http.Request, error)
+}
+
 // GZipRequestDoer minimum interface for any service of the client that should handle gzip downloads.
 type GZipRequestDoer interface {
 	Doer
 	Completer
 	NewGZipRequest(context.Context, string, string) (*http.Request, error)
+}
+
+// PlainRequestDoer minimum interface for any service of the client that should handle plain text.
+type PlainRequestDoer interface {
+	Doer
+	Completer
+	NewPlainRequest(context.Context, string, string) (*http.Request, error)
 }
 
 // Client manages communication with Ops Manager API.
@@ -100,14 +89,14 @@ type Client struct {
 	Teams                  TeamsService
 	Automation             AutomationService
 	UnauthUsers            UnauthUsersService
-	AlertConfigurations    atlas.AlertConfigurationsService
-	Alerts                 atlas.AlertsService
+	AlertConfigurations    AlertConfigurationsService
+	Alerts                 AlertsService
 	ContinuousSnapshots    ContinuousSnapshotsService
-	ContinuousRestoreJobs  atlas.ContinuousRestoreJobsService
-	Events                 atlas.EventsService
-	OrganizationAPIKeys    atlas.APIKeysService
-	ProjectAPIKeys         atlas.ProjectAPIKeysService
-	AccessListAPIKeys      atlas.AccessListAPIKeysService
+	ContinuousRestoreJobs  ContinuousRestoreJobsService
+	Events                 EventsService
+	OrganizationAPIKeys    APIKeysService
+	ProjectAPIKeys         ProjectAPIKeysService
+	AccessListAPIKeys      AccessListAPIKeysService
 	Agents                 AgentsService
 	Checkpoints            CheckpointsService
 	GlobalAlerts           GlobalAlertsService
@@ -135,14 +124,80 @@ type Client struct {
 	ServerUsage            ServerUsageService
 	ServerUsageReport      ServerUsageReportService
 	LiveMigration          LiveDataMigrationService
-	ServiceVersion         atlas.ServiceVersionService
+	ServiceVersion         ServiceVersionService
 
 	onRequestCompleted  RequestCompletionCallback
 	onResponseProcessed ResponseProcessedCallback
 }
 
+// RequestCompletionCallback defines the type of the request callback function.
+type RequestCompletionCallback func(*http.Request, *http.Response)
+
+// ResponseProcessedCallback defines the type of the after request completion callback function.
+type ResponseProcessedCallback func(*Response)
+
 type service struct {
-	Client atlas.RequestDoer
+	Client RequestDoer
+}
+
+// Response is a MongoDB Ops Manager response. This wraps the standard http.Response returned from MongoDB Ops Manager  API.
+type Response struct {
+	*http.Response
+
+	// Links that were returned with the response.
+	Links []*Link `json:"links"`
+
+	// Raw data from server response
+	Raw []byte `json:"-"`
+}
+
+// ListOptions specifies the optional parameters to List methods that
+// support pagination.
+type ListOptions struct {
+	// For paginated result sets, page of results to retrieve.
+	PageNum int `url:"pageNum,omitempty"`
+
+	// For paginated result sets, the number of results to include per page.
+	ItemsPerPage int `url:"itemsPerPage,omitempty"`
+
+	// Flag that indicates whether Ops Manager returns the totalCount parameter in the response body.
+	IncludeCount bool `url:"includeCount,omitempty"`
+}
+
+func (resp *Response) getLinkByRef(ref string) *Link {
+	for i := range resp.Links {
+		if resp.Links[i].Rel == ref {
+			return resp.Links[i]
+		}
+	}
+	return nil
+}
+
+func (resp *Response) getCurrentPageLink() (*Link, error) {
+	if link := resp.getLinkByRef("self"); link != nil {
+		return link, nil
+	}
+	return nil, errors.New("no self link found")
+}
+
+// CurrentPage gets the current page for list pagination request.
+func (resp *Response) CurrentPage() (int, error) {
+	link, err := resp.getCurrentPageLink()
+	if err != nil {
+		return 0, err
+	}
+
+	pageNumStr, err := link.getHrefQueryParam("pageNum")
+	if err != nil {
+		return 0, err
+	}
+
+	pageNum, err := strconv.Atoi(pageNumStr)
+	if err != nil {
+		return 0, fmt.Errorf("error getting current page: %w", err)
+	}
+
+	return pageNum, nil
 }
 
 // NewClient returns a new Ops Manager API client. If a nil httpClient is
@@ -203,7 +258,7 @@ func NewClient(httpClient HTTPClient) *Client {
 	c.ServerUsage = &ServerUsageServiceOp{Client: c}
 	c.ServerUsageReport = &ServerUsageReportServiceOp{Client: c}
 	c.LiveMigration = &LiveDataMigrationServiceOp{Client: c}
-	c.ServiceVersion = &atlas.ServiceVersionServiceOp{Client: c}
+	c.ServiceVersion = &ServiceVersionServiceOp{Client: c}
 
 	return c
 }
@@ -248,7 +303,7 @@ func SetBaseURL(bu string) ClientOpt {
 	}
 }
 
-// SetWithRaw is a client option for getting raw atlas server response within Response structure.
+// SetWithRaw is a client option for getting raw Ops Manager server response within Response structure.
 func SetWithRaw() ClientOpt {
 	return func(c *Client) error {
 		c.withRaw = true
@@ -350,13 +405,63 @@ func newEncodedBody(body interface{}) (io.Reader, error) {
 }
 
 // OnRequestCompleted sets the DO API request completion callback.
-func (c *Client) OnRequestCompleted(rc atlas.RequestCompletionCallback) {
+func (c *Client) OnRequestCompleted(rc RequestCompletionCallback) {
 	c.onRequestCompleted = rc
 }
 
-// OnRequestCompleted sets the DO API request completion callback.
-func (c *Client) OnResponseProcessed(rc atlas.ResponseProcessedCallback) {
+// OnResponseProcessed sets the DO API request completion callback.
+func (c *Client) OnResponseProcessed(rc ResponseProcessedCallback) {
 	c.onResponseProcessed = rc
+}
+
+// ErrorResponse reports the error caused by an API request.
+type ErrorResponse struct {
+	// Response that caused this error
+	Response *http.Response
+	// ErrorCode is the error code
+	ErrorCode string `json:"errorCode"`
+	// HTTPCode status code.
+	HTTPCode int `json:"error"` //nolint:tagliatelle // used as in the API
+	// Reason is short description of the error, which is simply the HTTP status phrase.
+	Reason string `json:"reason"`
+	// Detail is more detailed description of the error.
+	Detail string `json:"detail,omitempty"`
+}
+
+func (r *ErrorResponse) Error() string {
+	return fmt.Sprintf("%v %v: %d (request %q) %v",
+		r.Response.Request.Method, r.Response.Request.URL, r.Response.StatusCode, r.ErrorCode, r.Detail)
+}
+
+func (r *ErrorResponse) Is(target error) bool {
+	var v *ErrorResponse
+
+	return errors.As(target, &v) &&
+		r.ErrorCode == v.ErrorCode &&
+		r.HTTPCode == v.HTTPCode &&
+		r.Reason == v.Reason &&
+		r.Detail == v.Detail
+}
+
+// CheckResponse checks the API response for errors, and returns them if present. A response is considered an
+// error if it has a status code outside the 200 range. API error responses are expected to have either no response
+// body, or a JSON response body that maps to ErrorResponse. Any other response body will be silently ignored.
+func (resp *Response) CheckResponse(body io.ReadCloser) error {
+	if c := resp.StatusCode; c >= 200 && c <= 299 {
+		return nil
+	}
+
+	errorResponse := &ErrorResponse{Response: resp.Response}
+	data, err := io.ReadAll(body)
+	if err == nil && len(data) > 0 {
+		err := json.Unmarshal(data, errorResponse)
+		if err != nil {
+			log.Printf("[DEBUG] unmarshal error response: %s", err)
+			errorResponse.Reason = string(data)
+		}
+	}
+
+	return errorResponse
 }
 
 // Do sends an API request and returns the API response. The API response is JSON decoded and stored in the value
@@ -456,6 +561,50 @@ func setQueryParams(s string, opt interface{}) (string, error) {
 
 	origURL.RawQuery = origValues.Encode()
 	return origURL.String(), nil
+}
+
+// DoRequestWithClient submits an HTTP request using the specified client.
+func DoRequestWithClient(
+	ctx context.Context,
+	client *http.Client,
+	req *http.Request) (*http.Response, error) {
+	req = req.WithContext(ctx)
+	return client.Do(req)
+}
+
+// ServiceVersion represents version information.
+type ServiceVersion struct {
+	GitHash string
+	Version string
+}
+
+// String serializes VersionInfo into string.
+func (v *ServiceVersion) String() string {
+	return fmt.Sprintf("gitHash=%s; versionString=%s", v.GitHash, v.Version)
+}
+
+func parseVersionInfo(s string) *ServiceVersion {
+	if s == "" {
+		return nil
+	}
+
+	var result ServiceVersion
+	pairs := strings.Split(s, ";")
+	for _, pair := range pairs {
+		keyvalue := strings.Split(strings.TrimSpace(pair), "=")
+		switch keyvalue[0] {
+		case "gitHash":
+			result.GitHash = keyvalue[1]
+		case "versionString":
+			result.Version = keyvalue[1]
+		}
+	}
+	return &result
+}
+
+// ServiceVersion parses version information returned in the response.
+func (resp *Response) ServiceVersion() *ServiceVersion {
+	return parseVersionInfo(resp.Header.Get("X-MongoDB-Service-Version"))
 }
 
 func pointer[T any](x T) *T {

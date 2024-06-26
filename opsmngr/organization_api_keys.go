@@ -19,23 +19,52 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys" //nolint:gosec // This is a path
+
+// APIKeysService is an interface for interfacing with the APIKeys.
+type APIKeysService interface {
+	List(context.Context, string, *ListOptions) ([]APIKey, *Response, error)
+	Get(context.Context, string, string) (*APIKey, *Response, error)
+	Create(context.Context, string, *APIKeyInput) (*APIKey, *Response, error)
+	Update(context.Context, string, string, *APIKeyInput) (*APIKey, *Response, error)
+	Delete(context.Context, string, string) (*Response, error)
+}
 
 // APIKeysServiceOp handles communication with the APIKey related methods
 // of the MongoDB Ops Manager API.
 type APIKeysServiceOp service
 
-var _ atlas.APIKeysService = &APIKeysServiceOp{}
+var _ APIKeysService = &APIKeysServiceOp{}
+
+// APIKeyInput represents MongoDB API key input request for Create.
+type APIKeyInput struct {
+	Desc  string   `json:"desc,omitempty"`
+	Roles []string `json:"roles,omitempty"`
+}
+
+// APIKey represents MongoDB API Key.
+type APIKey struct {
+	ID         string   `json:"id,omitempty"`
+	Desc       string   `json:"desc,omitempty"`
+	Roles      []OMRole `json:"roles,omitempty"`
+	PrivateKey string   `json:"privateKey,omitempty"`
+	PublicKey  string   `json:"publicKey,omitempty"`
+}
+
+// OMRole represents a role name of API key.
+type OMRole struct {
+	GroupID  string `json:"groupId,omitempty"`
+	OrgID    string `json:"orgId,omitempty"`
+	RoleName string `json:"roleName,omitempty"`
+}
 
 // APIKeysResponse is the response from the APIKeysService.List.
 type APIKeysResponse struct {
-	Links      []*atlas.Link  `json:"links,omitempty"`
-	Results    []atlas.APIKey `json:"results,omitempty"`
-	TotalCount int            `json:"totalCount,omitempty"`
+	Links      []*Link  `json:"links,omitempty"`
+	Results    []APIKey `json:"results,omitempty"`
+	TotalCount int      `json:"totalCount,omitempty"`
 }
 
 // List all API-KEY in the organization associated to {ORG-ID}.
@@ -85,7 +114,7 @@ func (s *APIKeysServiceOp) Get(ctx context.Context, orgID, apiKeyID string) (*AP
 		return nil, nil, err
 	}
 
-	root := new(atlas.APIKey)
+	root := new(APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -109,7 +138,7 @@ func (s *APIKeysServiceOp) Create(ctx context.Context, orgID string, createReque
 		return nil, nil, err
 	}
 
-	root := new(atlas.APIKey)
+	root := new(APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err
@@ -134,7 +163,7 @@ func (s *APIKeysServiceOp) Update(ctx context.Context, orgID, apiKeyID string, u
 		return nil, nil, err
 	}
 
-	root := new(atlas.APIKey)
+	root := new(APIKey)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

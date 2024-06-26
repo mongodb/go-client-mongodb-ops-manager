@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const hostDiskMeasurementsPath = "api/public/v1.0/groups/%s/hosts/%s/disks/%s/measurements"
@@ -54,7 +52,7 @@ func (s *MeasurementsServiceOp) Disk(ctx context.Context, groupID, hostID, diskN
 		return nil, nil, err
 	}
 
-	root := new(atlas.ProcessDiskMeasurements)
+	root := new(ProcessDiskMeasurements)
 	resp, err := s.Client.Do(ctx, req, root)
 	if err != nil {
 		return nil, resp, err

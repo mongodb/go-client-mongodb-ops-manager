@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestUnauth_CreateFirstUser(t *testing.T) {
@@ -66,7 +65,7 @@ func TestUnauth_CreateFirstUser(t *testing.T) {
 		User: &User{
 			EmailAddress: "jane.doe@example.com",
 			ID:           "1234abcd-ab12-cd34-ef56-1234abcd1235",
-			Links: []*mongodbatlas.Link{
+			Links: []*Link{
 				{
 					Href: "https://cloud.mongodb.com/api/public/v1.0/users/1234abcd-ab12-cd34-ef56-1234abcd1235",
 					Rel:  "self",

@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestGlobalAlerts_List(t *testing.T) {
@@ -56,7 +55,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 		}`)
 	})
 
-	opts := atlas.AlertsListOptions{
+	opts := AlertsListOptions{
 		Status: "CLOSED",
 	}
 
@@ -70,7 +69,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 		Links: []*Link{},
 		Results: []*GlobalAlert{
 			{
-				Alert: atlas.Alert{
+				Alert: Alert{
 					ID:              "573b7d2de4b02fd2c93423a6",
 					GroupID:         "1",
 					AlertConfigID:   "573b7d12e4b0979a262467c1",
@@ -82,7 +81,7 @@ func TestGlobalAlerts_List(t *testing.T) {
 					LastNotified:    "2016-10-18T19:29:54Z",
 					HostnameAndPort: "replicaset-shard-00-02:27017",
 					MetricName:      "OPCOUNTER_CMD",
-					CurrentValue: &atlas.CurrentValue{
+					CurrentValue: &CurrentValue{
 						Number: &currentValueNumber,
 						Units:  "RAW",
 					},
@@ -133,7 +132,7 @@ func TestGlobalAlerts_Get(t *testing.T) {
 	}
 
 	expected := &GlobalAlert{
-		Alert: atlas.Alert{
+		Alert: Alert{
 			ID:              alertID,
 			GroupID:         "1",
 			AlertConfigID:   "5730f5e1e4b030a9634a3f69",
@@ -187,7 +186,7 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 	})
 
 	until := "2016-11-01T00:00:00-0400"
-	body := &atlas.AcknowledgeRequest{
+	body := &AcknowledgeRequest{
 		AcknowledgedUntil: &until,
 	}
 
@@ -197,7 +196,7 @@ func TestGlobalAlerts_Acknowledge(t *testing.T) {
 	}
 
 	expected := &GlobalAlert{
-		Alert: atlas.Alert{
+		Alert: Alert{
 			ID:                    alertID,
 			GroupID:               "1",
 			AlertConfigID:         "5730f5e1e4b030a9634a3f69",

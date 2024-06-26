@@ -20,7 +20,6 @@ import (
 	"testing"
 
 	"github.com/go-test/deep"
-	"go.mongodb.org/atlas/mongodbatlas"
 )
 
 func TestProject_GetAllProjects(t *testing.T) {
@@ -91,7 +90,7 @@ func TestProject_GetAllProjects(t *testing.T) {
 	}
 
 	expected := &Projects{
-		Links: []*mongodbatlas.Link{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/public/v1.0/groups",
 				Rel:  "self",
@@ -219,7 +218,7 @@ func TestProjects_ListUsers(t *testing.T) {
 			FirstName:    "John",
 			ID:           "59db8d1d87d9d6420df0613a",
 			LastName:     "Smith",
-			Links:        []*mongodbatlas.Link{},
+			Links:        []*Link{},
 			Roles: []*UserRole{
 				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
@@ -232,7 +231,7 @@ func TestProjects_ListUsers(t *testing.T) {
 			FirstName:    "Jill",
 			ID:           "59db8d1d87d9d6420df0613a",
 			LastName:     "Smith",
-			Links:        []*mongodbatlas.Link{},
+			Links:        []*Link{},
 			Roles: []*UserRole{
 				{GroupID: "59ea02e087d9d636b587a967", RoleName: "GROUP_OWNER"},
 				{GroupID: "59db8d1d87d9d6420df70902", RoleName: "GROUP_OWNER"},
@@ -424,7 +423,7 @@ func TestProject_Create(t *testing.T) {
 		}`)
 	})
 
-	opts := &mongodbatlas.CreateProjectOptions{ProjectOwnerID: "1"}
+	opts := &CreateProjectOptions{ProjectOwnerID: "1"}
 	project, _, err := client.Projects.Create(ctx, createRequest, opts)
 	if err != nil {
 		t.Fatalf("Projects.Create returned error: %v", err)
@@ -570,7 +569,7 @@ func TestProject_AddTeamsToProject(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	createRequest := []*mongodbatlas.ProjectTeam{{
+	createRequest := []*ProjectTeam{{
 		TeamID:    "{TEAM-ID}",
 		RoleNames: []string{"GROUP_OWNER", "GROUP_READ_ONLY"},
 	}}
@@ -598,16 +597,16 @@ func TestProject_AddTeamsToProject(t *testing.T) {
 		t.Errorf("Projects.AddTeamsToProject returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.TeamsAssigned{
-		Links: []*mongodbatlas.Link{
+	expected := &TeamsAssigned{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",
 				Rel:  "self",
 			},
 		},
-		Results: []*mongodbatlas.Result{
+		Results: []*Result{
 			{
-				Links: []*mongodbatlas.Link{
+				Links: []*Link{
 					{
 						Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams/{TEAM-ID}",
 						Rel:  "self",
@@ -650,14 +649,14 @@ func TestProject_GetTeams(t *testing.T) {
 		t.Errorf("Projects.GetTeams returned error: %v", err)
 	}
 
-	expected := &mongodbatlas.TeamsAssigned{
-		Links: []*mongodbatlas.Link{
+	expected := &TeamsAssigned{
+		Links: []*Link{
 			{
 				Href: "https://cloud.mongodb.com/api/atlas/v1.0/groups/{GROUP-ID}/teams",
 				Rel:  "self",
 			},
 		},
-		Results: []*mongodbatlas.Result{
+		Results: []*Result{
 			{
 				RoleNames: []string{"GROUP_READ_ONLY"},
 				TeamID:    "{TEAM-ID}",

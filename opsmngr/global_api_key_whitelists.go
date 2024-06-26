@@ -18,8 +18,6 @@ import (
 	"context"
 	"fmt"
 	"net/http"
-
-	atlas "go.mongodb.org/atlas/mongodbatlas"
 )
 
 const whitelistAPIKeysPath = "api/public/v1.0/admin/whitelist" //nolint:gosec // This is a path
@@ -52,7 +50,7 @@ type GlobalWhitelistAPIKey struct {
 // GlobalWhitelistAPIKeys represents all Whitelist API keys.
 type GlobalWhitelistAPIKeys struct {
 	Results    []*GlobalWhitelistAPIKey `json:"results,omitempty"`    // Includes one GlobalWhitelistAPIKey object for each item detailed in the results array section.
-	Links      []*atlas.Link            `json:"links,omitempty"`      // One or more links to sub-resources and/or related resources.
+	Links      []*Link                  `json:"links,omitempty"`      // One or more links to sub-resources and/or related resources.
 	TotalCount int                      `json:"totalCount,omitempty"` // Count of the total number of items in the result set. It may be greater than the number of objects in the results array if the entire result set is paginated.
 }
 
