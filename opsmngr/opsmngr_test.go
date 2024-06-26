@@ -98,8 +98,8 @@ func testURLParseError(t *testing.T, err error) {
 
 func testClientDefaultBaseURL(t *testing.T, c *Client) {
 	t.Helper()
-	if c.BaseURL == nil || c.BaseURL.String() != defaultBaseURL {
-		t.Errorf("NewClient AuthURL = %v, expected %v", c.BaseURL, defaultBaseURL)
+	if c.BaseURL == nil || c.BaseURL.String() != DefaultBaseURL {
+		t.Errorf("NewClient AuthURL = %v, expected %v", c.BaseURL, DefaultBaseURL)
 	}
 }
 
@@ -139,7 +139,7 @@ type testRequestBody struct {
 func TestNewRequest_withUserData(t *testing.T) {
 	c := NewClient(nil)
 
-	inURL, outURL := requestPath, defaultBaseURL+requestPath
+	inURL, outURL := requestPath, DefaultBaseURL+requestPath
 	inBody, outBody := &testRequestBody{TestName: "l", TestUserData: "u"},
 		`{"testName":"l","testCounter":0,`+
 			`"testUserData":"u"}`+"\n"
@@ -293,7 +293,7 @@ func TestNewPlainRequest_badURL(t *testing.T) {
 func TestNewPlainRequest(t *testing.T) {
 	c := NewClient(nil)
 
-	inURL, outURL := requestPath, defaultBaseURL+requestPath
+	inURL, outURL := requestPath, DefaultBaseURL+requestPath
 	req, _ := c.NewPlainRequest(ctx, http.MethodGet, inURL)
 
 	// test relative URL was expanded

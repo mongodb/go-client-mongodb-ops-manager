@@ -32,11 +32,13 @@ import (
 )
 
 const (
-	defaultBaseURL = "https://cloud.mongodb.com/"
+	DefaultBaseURL = "https://cloud.mongodb.com/"
 	userAgent      = "go-ops-manager"
 	jsonMediaType  = "application/json"
 	gzipMediaType  = "application/gzip"
 	plainMediaType = "text/plain"
+	// ClientVersion of the current API client. Should be set to the next version planned to be released.
+	ClientVersion = "0.56.0"
 )
 
 type HTTPClient interface {
@@ -209,7 +211,7 @@ func NewClient(httpClient HTTPClient) *Client {
 		httpClient = http.DefaultClient
 	}
 
-	baseURL, _ := url.Parse(defaultBaseURL)
+	baseURL, _ := url.Parse(DefaultBaseURL)
 
 	c := &Client{
 		client:    httpClient,
