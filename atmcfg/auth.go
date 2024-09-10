@@ -15,7 +15,7 @@
 package atmcfg
 
 import (
-	"crypto/sha1" //nolint:gosec // mongodb scram-sha-1 supports this tho is not recommended
+	"crypto/sha1" // #nosec G101 // #nosec G505 // mongodb scram-sha-1 supports this tho is not recommended
 	"crypto/sha256"
 	"encoding/base64"
 	"errors"

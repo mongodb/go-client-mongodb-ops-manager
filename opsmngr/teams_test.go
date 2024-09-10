@@ -23,7 +23,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const teamID = "6b720e1087d9d66b272f1c86" //nolint:gosec // not a credential
+const teamID = "6b720e1087d9d66b272f1c86" // #nosec G101 // not a credential
 
 func TestTeams_List(t *testing.T) {
 	client, mux, teardown := setup()

@@ -20,7 +20,7 @@ import (
 	"net/http"
 )
 
-const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList" //nolint:gosec // This is a path
+const accessListAPIKeysPath = "api/public/v1.0/orgs/%s/apiKeys/%s/accessList" // #nosec G101 // This is a path
 
 // AccessListAPIKeysService is an interface for interfacing with the AccessList API Keys
 // endpoints of the MongoDB Ops Manager API.

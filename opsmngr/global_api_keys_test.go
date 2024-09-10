@@ -27,7 +27,7 @@ const (
 	apiDesc        = "test-apikeye"
 	ewmaqvdo       = "ewmaqvdo"
 	testAPIKey     = "test-apikey"
-	globalAPIKeyID = "5c47503320eef5699e1cce8d" //nolint:gosec // ID and not an actual key
+	globalAPIKeyID = "5c47503320eef5699e1cce8d" // #nosec G101 // ID and not an actual key
 )
 
 func TestAPIKeys_ListAPIKeys(t *testing.T) {

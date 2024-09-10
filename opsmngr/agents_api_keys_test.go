@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const projectID = "5e66185d917b220fbd8bb4d1" //nolint:gosec // not a credential
+const projectID = "5e66185d917b220fbd8bb4d1" // not a credential
 
 func TestAgentsServiceOp_ListAgentAPIKeys(t *testing.T) {
 	client, mux, teardown := setup()

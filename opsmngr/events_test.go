@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const eventID = "b3ad04e680eef540be141abe" //nolint:gosec // not a credential
+const eventID = "b3ad04e680eef540be141abe" // #nosec G101 // not a credential
 
 func TestEvents_ListOrganizationEvents(t *testing.T) {
 	client, mux, teardown := setup()

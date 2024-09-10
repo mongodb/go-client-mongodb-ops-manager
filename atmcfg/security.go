@@ -16,7 +16,7 @@ package atmcfg
 
 import (
 	"crypto/hmac"
-	"crypto/md5" //nolint:gosec // used as part of the sha1 standard
+	"crypto/md5" // #nosec G101 // #nosec G501 // used as part of the sha1 standard
 	"encoding/base64"
 	"encoding/hex"
 	"fmt"
@@ -165,7 +165,7 @@ func generateSalt(hashConstructor func() hash.Hash) ([]byte, error) {
 }
 
 func md5Hex(s string) (string, error) {
-	h := md5.New() //nolint:gosec // used as part of the sha1 standard
+	h := md5.New() // #nosec G101 // #nosec G401 // used as part of the sha1 standard
 
 	if _, err := h.Write([]byte(s)); err != nil {
 		return "", err

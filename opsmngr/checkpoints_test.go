@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const clusterID = "6b8cd61180eef547110159d9" //nolint:gosec // not a credential
+const clusterID = "6b8cd61180eef547110159d9" // #nosec G101 // not a credential
 
 func TestCheckpoints_List(t *testing.T) {
 	client, mux, teardown := setup()
@@ -263,7 +263,7 @@ func TestCheckpoints_Get(t *testing.T) {
 	client, mux, teardown := setup()
 	defer teardown()
 
-	const checkpointID = "6b8cd61180eef547110159d9" //nolint:gosec // not a credential
+	const checkpointID = "6b8cd61180eef547110159d9" // #nosec G101 // not a credential
 	path := fmt.Sprintf("/api/public/v1.0/groups/%s/clusters/%s/checkpoints/%s", projectID, clusterID, checkpointID)
 
 	mux.HandleFunc(path, func(w http.ResponseWriter, r *http.Request) {

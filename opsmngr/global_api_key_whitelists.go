@@ -20,7 +20,7 @@ import (
 	"net/http"
 )
 
-const whitelistAPIKeysPath = "api/public/v1.0/admin/whitelist" //nolint:gosec // This is a path
+const whitelistAPIKeysPath = "api/public/v1.0/admin/whitelist" // #nosec G101 // This is a path
 
 // GlobalAPIKeyWhitelistsService provides access to the global alerts related functions in the Ops Manager API.
 //

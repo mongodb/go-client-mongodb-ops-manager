@@ -20,7 +20,7 @@ import (
 	"net/http"
 )
 
-const projectAPIKeysPath = "api/public/v1.0/groups/%s/apiKeys" //nolint:gosec // This is a path
+const projectAPIKeysPath = "api/public/v1.0/groups/%s/apiKeys" // #nosec G101 // This is a path
 
 // ProjectAPIKeysService is an interface for interfacing with the APIKeys.
 type ProjectAPIKeysService interface {
