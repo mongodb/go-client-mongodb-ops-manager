@@ -23,7 +23,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const accessListID = "5f3cf81b89034c6b3c0a528e" //nolint:gosec // not a credential
+const accessListID = "5f3cf81b89034c6b3c0a528e" // #nosec G101 // not a credential
 
 func TestWhitelistAPIKeys_List(t *testing.T) {
 	client, mux, teardown := setup()

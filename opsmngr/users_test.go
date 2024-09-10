@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const userID = "56a10a80e4b0fd3b9a9bb0c2" //nolint:gosec // not a credential
+const userID = "56a10a80e4b0fd3b9a9bb0c2" // #nosec G101 // not a credential
 const userName = "someone@example.com"
 
 func TestUsers_Get(t *testing.T) {

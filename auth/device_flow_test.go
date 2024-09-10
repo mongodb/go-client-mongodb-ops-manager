@@ -173,7 +173,7 @@ func TestConfig_RevokeToken(t *testing.T) {
 	config, mux, teardown := setup()
 	defer teardown()
 
-	mux.HandleFunc("/api/private/unauth/account/device/revoke", func(w http.ResponseWriter, r *http.Request) {
+	mux.HandleFunc("/api/private/unauth/account/device/revoke", func(_ http.ResponseWriter, r *http.Request) {
 		testMethod(t, r)
 	})
 

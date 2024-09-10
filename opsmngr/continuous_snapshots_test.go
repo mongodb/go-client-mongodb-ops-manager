@@ -25,7 +25,7 @@ import (
 
 const (
 	clusterName = "Cluster0"
-	snapshotID  = "6b5380e6jvn128560506942b" //nolint:gosec // not a credential
+	snapshotID  = "6b5380e6jvn128560506942b" // #nosec G101 // not a credential
 )
 
 func TestContinuousSnapshots_List(t *testing.T) {

@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const ID = "5628faffd4c606594adaa3b2" //nolint:gosec // not a credential
+const ID = "5628faffd4c606594adaa3b2" // #nosec G101 // not a credential
 
 func TestMaintenanceWindows_List(t *testing.T) {
 	client, mux, teardown := setup()

@@ -22,7 +22,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const orgID = "5a0a1e7e0f2912c554081adc" //nolint:gosec // not a credential
+const orgID = "5a0a1e7e0f2912c554081adc" // #nosec G101 // not a credential
 
 func TestOrganizations_GetAllOrganizations(t *testing.T) {
 	client, mux, teardown := setup()

@@ -21,7 +21,7 @@ import (
 	"net/url"
 )
 
-const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys" //nolint:gosec // This is a path
+const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys" // #nosec G101 // This is a path
 
 // APIKeysService is an interface for interfacing with the APIKeys.
 type APIKeysService interface {

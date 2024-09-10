@@ -15,7 +15,7 @@
 package atmcfg
 
 import (
-	"crypto/sha1" //nolint:gosec // used as part of the sha1 standard
+	"crypto/sha1" // #nosec G101 // #nosec G505 // used as part of the sha1 standard
 	"testing"
 
 	"github.com/stretchr/testify/assert"

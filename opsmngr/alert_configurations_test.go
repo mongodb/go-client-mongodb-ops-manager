@@ -23,7 +23,7 @@ import (
 	"github.com/go-test/deep"
 )
 
-const alertConfigID = "57b76ddc96e8215c017ceafb" //nolint:gosec // not a credential
+const alertConfigID = "57b76ddc96e8215c017ceafb" // #nosec G101 // not a credential
 
 func TestAlertConfiguration_Create(t *testing.T) {
 	client, mux, teardown := setup()
