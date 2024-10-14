@@ -88,6 +88,7 @@ type AutomationConfig struct {
 	Mongots                   []*map[string]interface{} `json:"mongots"`
 	Options                   *map[string]interface{}   `json:"options"`
 	Processes                 []*Process                `json:"processes"`
+	Prometheus                *Prometheus               `json:"prometheus,omitempty"`
 	ReplicaSets               []*ReplicaSet             `json:"replicaSets"`
 	Roles                     []*map[string]interface{} `json:"roles"`
 	Sharding                  []*ShardingConfig         `json:"sharding"`
@@ -441,4 +442,18 @@ type Process struct {
 	Plan                                       []string           `json:"plan,omitempty"`
 	ProcessType                                string             `json:"processType,omitempty"`
 	Version                                    string             `json:"version,omitempty"`
+}
+
+type Prometheus struct {
+	Enabled        bool   `json:"enabled"`
+	Username       string `json:"username"`
+	Password       string `json:"password,omitempty"`
+	PasswordHash   string `json:"passwordHash,omitempty"`
+	PasswordSalt   string `json:"passwordSalt,omitempty"`
+	Scheme         string `json:"scheme"`
+	TLSPemPath     string `json:"tlsPemPath"`
+	TLSPemPassword string `json:"tlsPemPassword"`
+	Mode           string `json:"mode"`
+	ListenAddress  string `json:"listenAddress"`
+	MetricsPath    string `json:"metricsPath"`
 }
