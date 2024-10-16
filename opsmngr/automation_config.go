@@ -445,15 +445,16 @@ type Process struct {
 }
 
 type Prometheus struct {
-	Enabled        bool   `json:"enabled"`
-	Username       string `json:"username"`
-	Password       string `json:"password,omitempty"`
-	PasswordHash   string `json:"passwordHash,omitempty"`
-	PasswordSalt   string `json:"passwordSalt,omitempty"`
-	Scheme         string `json:"scheme"`
-	TLSPemPath     string `json:"tlsPemPath"`
-	TLSPemPassword string `json:"tlsPemPassword"`
-	Mode           string `json:"mode"`
-	ListenAddress  string `json:"listenAddress"`
-	MetricsPath    string `json:"metricsPath"`
+	Enabled              bool   `json:"enabled"`
+	Username             string `json:"username"`
+	PasswordHash         string `json:"passwordHash,omitempty"`
+	PasswordSalt         string `json:"passwordSalt,omitempty"`
+	Scheme               string `json:"scheme"`
+	TLSPemPath           string `json:"tlsPemPath"`
+	TLSPemPassword       string `json:"tlsPemPassword"`
+	Mode                 string `json:"mode"`
+	ListenAddress        string `json:"listenAddress"`
+	MetricsPath          string `json:"metricsPath"`
+	TokenFillRateSeconds int    `json:"tokenFillRateSeconds"`
+	BurstTokenCount      int    `json:"burstTokenCount"`
 }

@@ -896,12 +896,14 @@ func TestAutomation_UpdatePrometheusConfig(t *testing.T) {
 
 	updateRequest := &AutomationConfig{
 		Prometheus: &Prometheus{
-			Enabled:       true,
-			ListenAddress: "0.0.0.0:9216",
-			MetricsPath:   "/metrics",
-			Mode:          "opsManager",
-			Scheme:        "http",
-			Username:      "user",
+			Enabled:              true,
+			ListenAddress:        "0.0.0.0:9216",
+			MetricsPath:          "/metrics",
+			Mode:                 "opsManager",
+			Scheme:               "http",
+			Username:             "user",
+			TokenFillRateSeconds: 1,
+			BurstTokenCount:      1,
 		},
 		Auth: Auth{
 			AuthoritativeSet:  false,
@@ -917,14 +919,16 @@ func TestAutomation_UpdatePrometheusConfig(t *testing.T) {
 	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
 		expected := map[string]interface{}{
 			"prometheus": map[string]interface{}{
-				"enabled":        true,
-				"listenAddress":  "0.0.0.0:9216",
-				"metricsPath":    "/metrics",
-				"mode":           "opsManager",
-				"scheme":         "http",
-				"tlsPemPassword": "",
-				"tlsPemPath":     "",
-				"username":       "user",
+				"enabled":              true,
+				"listenAddress":        "0.0.0.0:9216",
+				"metricsPath":          "/metrics",
+				"mode":                 "opsManager",
+				"scheme":               "http",
+				"tlsPemPassword":       "",
+				"tlsPemPath":           "",
+				"username":             "user",
+				"tokenFillRateSeconds": 1.0,
+				"burstTokenCount":      1.0,
 			},
 			"auth": map[string]interface{}{
 				"authoritativeSet":     false,
