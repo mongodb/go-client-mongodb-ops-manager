@@ -13,4 +13,4 @@ updates:
       interval: weekly
       day: tuesday
     reviewers:
-      - "mongodb/apix"
+      - "mongodb/enterprise-advanced"
