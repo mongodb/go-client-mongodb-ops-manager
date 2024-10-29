@@ -848,3 +848,130 @@ func TestAutomation_Sharding(t *testing.T) {
 		t.Error(diff)
 	}
 }
+
+func TestAutomation_GetPrometheusConfig(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodGet)
+		_, _ = fmt.Fprint(w, `{
+  "prometheus" : {
+    "enabled": true,
+    "listenAddress": "0.0.0.0:9216",
+    "metricsPath": "/metrics",
+    "mode": "opsManager",
+    "passwordHash": "",
+    "passwordSalt": "",
+    "scheme": "http",
+    "tlsPemPassword": "",
+    "tlsPemPath": "",
+    "username": "user"
+  }}`)
+	})
+
+	config, _, err := client.Automation.GetConfig(ctx, projectID)
+	if err != nil {
+		t.Fatalf("Automation.GetConfig returned error: %v", err)
+	}
+
+	expected := &AutomationConfig{
+		Prometheus: &Prometheus{
+			Enabled:       true,
+			ListenAddress: "0.0.0.0:9216",
+			MetricsPath:   "/metrics",
+			Mode:          "opsManager",
+			Scheme:        "http",
+			Username:      "user",
+		},
+	}
+	if diff := deep.Equal(config, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestAutomation_UpdatePrometheusConfig(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	updateRequest := &AutomationConfig{
+		Prometheus: &Prometheus{
+			Enabled:              true,
+			ListenAddress:        "0.0.0.0:9216",
+			MetricsPath:          "/metrics",
+			Mode:                 "opsManager",
+			Scheme:               "http",
+			Username:             "user",
+			TokenFillRateSeconds: 1,
+			BurstTokenCount:      1,
+		},
+		Auth: Auth{
+			AuthoritativeSet:  false,
+			AutoAuthMechanism: "MONGODB-CR",
+			Disabled:          true,
+			UsersWanted: []*MongoDBUser{
+				{
+					Database: "admin",
+				},
+			},
+		},
+	}
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/automationConfig", projectID), func(w http.ResponseWriter, r *http.Request) {
+		expected := map[string]interface{}{
+			"prometheus": map[string]interface{}{
+				"enabled":              true,
+				"listenAddress":        "0.0.0.0:9216",
+				"metricsPath":          "/metrics",
+				"mode":                 "opsManager",
+				"scheme":               "http",
+				"tlsPemPassword":       "",
+				"tlsPemPath":           "",
+				"username":             "user",
+				"tokenFillRateSeconds": 1.0,
+				"burstTokenCount":      1.0,
+			},
+			"auth": map[string]interface{}{
+				"authoritativeSet":     false,
+				"autoAuthMechanism":    "MONGODB-CR",
+				"autoAuthRestrictions": interface{}(nil),
+				"disabled":             true,
+				"usersDeleted":         interface{}(nil),
+				"usersWanted": []interface{}{
+					map[string]interface{}{
+						"authenticationRestrictions": interface{}(nil),
+						"db":                         "admin",
+						"roles":                      interface{}(nil),
+						"user":                       "",
+					},
+				},
+			},
+			"backupVersions":       interface{}(nil),
+			"balancer":             interface{}(nil),
+			"cpsModules":           interface{}(nil),
+			"indexConfigs":         interface{}(nil),
+			"mongosqlds":           interface{}(nil),
+			"mongots":              interface{}(nil),
+			"onlineArchiveModules": interface{}(nil),
+			"options":              interface{}(nil),
+			"processes":            interface{}(nil),
+			"replicaSets":          interface{}(nil),
+			"roles":                interface{}(nil),
+			"sharding":             interface{}(nil),
+		}
+		var v map[string]interface{}
+		err := json.NewDecoder(r.Body).Decode(&v)
+		if err != nil {
+			t.Fatalf("decode json: %v", err)
+		}
+		t.Logf("v=%#v\n", v)
+		if diff := deep.Equal(v, expected); diff != nil {
+			t.Error(diff)
+		}
+		_, _ = fmt.Fprint(w, `{}`)
+	})
+
+	_, err := client.Automation.UpdateConfig(ctx, projectID, updateRequest)
+	if err != nil {
+		t.Fatalf("Automation.UpdateConfig returned error: %v", err)
+	}
+}
