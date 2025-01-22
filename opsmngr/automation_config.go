@@ -411,7 +411,7 @@ type Process struct {
 	BackupRestoreFilterList                    interface{}        `json:"backupRestoreFilterList,omitempty"`
 	BackupRestoreJobID                         string             `json:"backupRestoreJobId,omitempty"`
 	BackupRestoreURL                           string             `json:"backupRestoreUrl,omitempty"`
-	BackupRestoreIsSuccessiveUpgrade           bool               `json:"backupRestoreIsSuccessiveUpgrade,omitempty"`
+	BackupRestoreIsSuccessiveUpgrade           *bool              `json:"backupRestoreIsSuccessiveUpgrade,omitempty"`
 	BackupRestoreOplogBaseURL                  string             `json:"backupRestoreOplogBaseUrl,omitempty"`
 	BackupRestoreOplog                         interface{}        `json:"backupRestoreOplog,omitempty"`
 	BackupRestoreRsVersion                     *int               `json:"backupRestoreRsVersion,omitempty"`
