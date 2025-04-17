@@ -154,10 +154,12 @@ func newScramShaCreds(salt []byte, username, password, mechanism string) (*opsmn
 	}
 	var hashConstructor hashingFunc
 	iterations := 0
-	if mechanism == scramSha256 {
+
+	switch mechanism {
+	case scramSha256:
 		hashConstructor = sha256.New
 		iterations = scramSha256Iterations
-	} else if mechanism == mongoCR {
+	case mongoCR:
 		hashConstructor = sha1.New
 		iterations = scramSha1Iterations
 
@@ -169,6 +171,7 @@ func newScramShaCreds(salt []byte, username, password, mechanism string) (*opsmn
 			return nil, err
 		}
 	}
+
 	base64EncodedSalt := base64.StdEncoding.EncodeToString(salt)
 	return computeScramCredentials(hashConstructor, iterations, base64EncodedSalt, password)
 }
