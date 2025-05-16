@@ -127,6 +127,7 @@ type Client struct {
 	ServerUsageReport      ServerUsageReportService
 	LiveMigration          LiveDataMigrationService
 	ServiceVersion         ServiceVersionService
+	Advisor                AdvisorService
 
 	onRequestCompleted  RequestCompletionCallback
 	onResponseProcessed ResponseProcessedCallback
@@ -261,6 +262,7 @@ func NewClient(httpClient HTTPClient) *Client {
 	c.ServerUsageReport = &ServerUsageReportServiceOp{Client: c}
 	c.LiveMigration = &LiveDataMigrationServiceOp{Client: c}
 	c.ServiceVersion = &ServiceVersionServiceOp{Client: c}
+	c.Advisor = &AdvisorServiceOp{Client: c}
 
 	return c
 }
