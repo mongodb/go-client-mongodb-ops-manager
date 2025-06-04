@@ -73,6 +73,8 @@ type LogCollectionJob struct {
 	RootResourceType           string      `json:"rootResourceType,omitempty"`
 	DownloadURL                string      `json:"downloadUrl,omitempty"`
 	Redacted                   *bool       `json:"redacted,omitempty"`
+	LogCollectionFromDate      int64       `json:"logCollectionFromDate,omitempty"`
+	LogCollectionToDate        int64       `json:"logCollectionToDate,omitempty"`
 	LogTypes                   []string    `json:"logTypes,omitempty"`
 	SizeRequestedPerFileBytes  int64       `json:"sizeRequestedPerFileBytes,omitempty"`
 	UncompressedSizeTotalBytes int64       `json:"uncompressedSizeTotalBytes,omitempty"`
