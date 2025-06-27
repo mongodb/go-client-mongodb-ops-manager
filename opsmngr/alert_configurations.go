@@ -23,6 +23,7 @@ import (
 const (
 	alertConfigurationPath = "api/public/v1.0/groups/%s/alertConfigs"
 	fieldNamesPath         = "api/public/v1.0/alertConfigs/matchers/fieldNames"
+	testNotificationPath   = alertConfigurationPath + "/%s/%s/test"
 )
 
 // AlertConfigurationsService provides access to the alert configuration related functions in the Ops Manager API.
@@ -35,6 +36,7 @@ type AlertConfigurationsService interface {
 	ListMatcherFields(ctx context.Context) ([]string, *Response, error)
 	Update(context.Context, string, string, *AlertConfiguration) (*AlertConfiguration, *Response, error)
 	Delete(context.Context, string, string) (*Response, error)
+	TestExistingNotification(context.Context, string, string, string) (*Response, error)
 }
 
 // AlertConfigurationsServiceOp handles communication with the AlertConfiguration related methods.
@@ -124,6 +126,8 @@ type Notification struct {
 	MicrosoftTeamsWebhookURL string   `json:"microsoftTeamsWebhookUrl,omitempty"` // Microsoft Teams Wewbhook URL
 	WebhookSecret            string   `json:"webhookSecret,omitempty"`            // Webhook Secret
 	WebhookURL               string   `json:"webhookUrl,omitempty"`               // Webhook URL
+	WebhookHeadersTemplate   string   `json:"webhookHeadersTemplate,omitempty"`   // Freemarker-syntax template to customize webhook request headers.
+	WebhookBodyTemplate      string   `json:"webhookBodyTemplate,omitempty"`      // Freemarker-syntax template to customize webhook request body.
 }
 
 // AlertConfigurationsResponse is the response from the AlertConfigurationsService.List.
@@ -358,4 +362,35 @@ func (s *AlertConfigurationsServiceOp) ListMatcherFields(ctx context.Context) ([
 	}
 
 	return root, resp, err
+}
+
+// TestAlertConfiguration fires a test notification to the alert configuration.
+//
+// TODO: Update this when documentation is published. See more: https://docs.opsmanager.mongodb.com/current/reference/api/TBD
+func (s *AlertConfigurationsServiceOp) TestExistingNotification(ctx context.Context, groupID, alertConfigID, notificationID string) (*Response, error) {
+	if groupID == "" {
+		return nil, NewArgError("groupID", "must be set")
+	}
+
+	if alertConfigID == "" {
+		return nil, NewArgError("alertConfigID", "must be set")
+	}
+
+	if notificationID == "" {
+		return nil, NewArgError("notificationID", "must be set")
+	}
+
+	path := fmt.Sprintf(testNotificationPath, groupID, alertConfigID, notificationID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	resp, err := s.Client.Do(ctx, req, nil)
+	if err != nil {
+		return resp, err
+	}
+
+	return resp, err
 }

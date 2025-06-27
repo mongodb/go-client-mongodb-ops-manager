@@ -23,7 +23,8 @@ import (
 	"github.com/go-test/deep"
 )
 
-const alertConfigID = "57b76ddc96e8215c017ceafb" // #nosec G101 // not a credential
+const alertConfigID = "57b76ddc96e8215c017ceafb"       // #nosec G101 // not a credential
+const alertNotificationID = "685d2e7e10ea5a42f0fb9905" // #nosec G101 // not a credential
 
 func TestAlertConfiguration_Create(t *testing.T) {
 	client, mux, teardown := setup()
@@ -654,6 +655,32 @@ func TestAlertConfiguration_ListMatcherFields(t *testing.T) {
 	}
 
 	if diff := deep.Equal(alertConfigurations, expected); diff != nil {
+		t.Error(diff)
+	}
+}
+
+func TestAlertConfiguration_TestExistingNotification(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/alertConfigs/%s/%s/test", projectID, alertConfigID, alertNotificationID), func(_ http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, http.MethodPost)
+	})
+
+	_, err := client.AlertConfigurations.TestExistingNotification(ctx, projectID, alertConfigID, alertNotificationID)
+	if err != nil {
+		t.Fatalf("AlertConfigurations.TestExistingNotification returned error: %v", err)
+	}
+
+	expectedError := NewArgError("alertConfigID", "must be set")
+	_, err = client.AlertConfigurations.TestExistingNotification(ctx, projectID, "", alertNotificationID)
+	if diff := deep.Equal(err, expectedError); diff != nil {
+		t.Error(diff)
+	}
+
+	expectedError = NewArgError("notificationID", "must be set")
+	_, err = client.AlertConfigurations.TestExistingNotification(ctx, projectID, alertConfigID, "")
+	if diff := deep.Equal(err, expectedError); diff != nil {
 		t.Error(diff)
 	}
 }
