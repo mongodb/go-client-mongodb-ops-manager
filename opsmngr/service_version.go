@@ -19,7 +19,7 @@ import (
 	"net/http"
 )
 
-const versionPath = "api/private/unauth/version"
+const versionPath = "api/public/v1.0/software/version"
 
 // ServiceVersionService is an interface for the version private endpoint of the MongoDB Ops Manager API.
 //
