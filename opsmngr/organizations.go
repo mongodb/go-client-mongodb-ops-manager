@@ -33,6 +33,7 @@ type OrganizationsService interface {
 	Get(context.Context, string) (*Organization, *Response, error)
 	Projects(context.Context, string, *ProjectsListOptions) (*Projects, *Response, error)
 	Create(context.Context, *Organization) (*Organization, *Response, error)
+	Update(context.Context, string, *Organization) (*Organization, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	Invitations(context.Context, string, *InvitationOptions) ([]*Invitation, *Response, error)
 	Invitation(context.Context, string, string) (*Invitation, *Response, error)
@@ -232,4 +233,31 @@ func (s *OrganizationsServiceOp) Delete(ctx context.Context, orgID string) (*Res
 	resp, err := s.Client.Do(ctx, req, nil)
 
 	return resp, err
+}
+
+// Update updates an organization.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/organizations/organization-rename/
+func (s *OrganizationsServiceOp) Update(ctx context.Context, orgID string, updateRequest *Organization) (*Organization, *Response, error) {
+	if orgID == "" {
+		return nil, nil, NewArgError("orgID", "must be set")
+	}
+	if updateRequest == nil {
+		return nil, nil, NewArgError("updateRequest", "cannot be nil")
+	}
+
+	path := fmt.Sprintf("%s/%s", orgsBasePath, orgID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, updateRequest)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Organization)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return root, resp, err
 }
