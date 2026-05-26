@@ -63,6 +63,7 @@ type ProjectsService interface {
 	Get(context.Context, string) (*Project, *Response, error)
 	GetByName(context.Context, string) (*Project, *Response, error)
 	Create(context.Context, *Project, *CreateProjectOptions) (*Project, *Response, error)
+	Update(context.Context, string, *Project) (*Project, *Response, error)
 	Delete(context.Context, string) (*Response, error)
 	RemoveUser(context.Context, string, string) (*Response, error)
 	AddTeamsToProject(context.Context, string, []*ProjectTeam) (*TeamsAssigned, *Response, error)
@@ -250,6 +251,28 @@ func (s *ProjectsServiceOp) Create(ctx context.Context, createRequest *Project, 
 	if err != nil {
 		return nil, resp, err
 	}
+
+	return root, resp, err
+}
+
+// Update updates a project's mutable fields (e.g. ldapGroupMappings).
+// Only the fields set in updateRequest are changed; pass a partial Project struct.
+//
+// See more: https://docs.opsmanager.mongodb.com/current/reference/api/groups/update-one-group/
+func (s *ProjectsServiceOp) Update(ctx context.Context, projectID string, updateRequest *Project) (*Project, *Response, error) {
+	if projectID == "" {
+		return nil, nil, NewArgError("projectID", "must be set")
+	}
+
+	path := fmt.Sprintf("%s/%s", projectBasePath, projectID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, updateRequest)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(Project)
+	resp, err := s.Client.Do(ctx, req, root)
 
 	return root, resp, err
 }
