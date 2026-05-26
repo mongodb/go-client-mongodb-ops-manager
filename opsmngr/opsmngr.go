@@ -118,6 +118,7 @@ type Client struct {
 	BlockstoreConfig       BlockstoreConfigService
 	FileSystemStoreConfig  FileSystemStoreConfigService
 	S3BlockstoreConfig     S3BlockstoreConfigService
+	S3OplogStoreConfig     S3OplogStoreConfigService
 	OplogStoreConfig       OplogStoreConfigService
 	SyncStoreConfig        SyncStoreConfigService
 	DaemonConfig           DaemonConfigService
@@ -252,6 +253,7 @@ func NewClient(httpClient HTTPClient) *Client {
 	c.BlockstoreConfig = &BlockstoreConfigServiceOp{Client: c}
 	c.FileSystemStoreConfig = &FileSystemStoreConfigServiceOp{Client: c}
 	c.S3BlockstoreConfig = &S3BlockstoreConfigServiceOp{Client: c}
+	c.S3OplogStoreConfig = &S3OplogStoreConfigServiceOp{Client: c}
 	c.OplogStoreConfig = &OplogStoreConfigServiceOp{Client: c}
 	c.SyncStoreConfig = &SyncStoreConfigServiceOp{Client: c}
 	c.DaemonConfig = &DaemonConfigServiceOp{Client: c}
