@@ -26,6 +26,7 @@ const projectAPIKeysPath = "api/public/v1.0/groups/%s/apiKeys" // #nosec G101 //
 type ProjectAPIKeysService interface {
 	List(context.Context, string, *ListOptions) ([]APIKey, *Response, error)
 	Create(context.Context, string, *APIKeyInput) (*APIKey, *Response, error)
+	Update(context.Context, string, string, *APIKeyInput) (*APIKey, *Response, error)
 	Assign(context.Context, string, string, *AssignAPIKey) (*Response, error)
 	Unassign(context.Context, string, string) (*Response, error)
 }
@@ -82,6 +83,31 @@ func (s *ProjectAPIKeysOp) Create(ctx context.Context, groupID string, createReq
 	path := fmt.Sprintf(projectAPIKeysPath, groupID)
 
 	req, err := s.Client.NewRequest(ctx, http.MethodPost, path, createRequest)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	root := new(APIKey)
+	resp, err := s.Client.Do(ctx, req, root)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return root, resp, err
+}
+
+// Update an API Key in the project associated to {GROUP-ID}.
+//
+// See more: https://www.mongodb.com/docs/ops-manager/current/reference/api/api-keys/project/update-one-apiKey-in-one-project/
+func (s *ProjectAPIKeysOp) Update(ctx context.Context, groupID, keyID string, updateRequest *APIKeyInput) (*APIKey, *Response, error) {
+	if updateRequest == nil {
+		return nil, nil, NewArgError("updateRequest", "cannot be nil")
+	}
+
+	basePath := fmt.Sprintf(projectAPIKeysPath, groupID)
+	path := fmt.Sprintf("%s/%s", basePath, keyID)
+
+	req, err := s.Client.NewRequest(ctx, http.MethodPatch, path, updateRequest)
 	if err != nil {
 		return nil, nil, err
 	}

@@ -201,3 +201,62 @@ func TestProjectAPIKeys_Create(t *testing.T) {
 		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
 	}
 }
+
+func TestProjectAPIKeys_Update(t *testing.T) {
+	client, mux, teardown := setup()
+	defer teardown()
+
+	updateRequest := &APIKeyInput{
+		Desc:  "test-apiKey",
+		Roles: []string{"GROUP_OWNER"},
+	}
+
+	mux.HandleFunc(fmt.Sprintf("/api/public/v1.0/groups/%s/apiKeys/%s", projectID, "5c47503320eef5699e1cce8d"), func(w http.ResponseWriter, r *http.Request) {
+		expected := map[string]interface{}{
+			"desc":  "test-apiKey",
+			"roles": []interface{}{"GROUP_OWNER"},
+		}
+
+		testMethod(t, r, http.MethodPatch)
+
+		var v map[string]interface{}
+		err := json.NewDecoder(r.Body).Decode(&v)
+		if err != nil {
+			t.Fatalf("decode json: %v", err)
+		}
+
+		if diff := deep.Equal(v, expected); diff != nil {
+			t.Error(diff)
+		}
+
+		fmt.Fprint(w, `{
+			"desc": "test-apikey",
+			"id": "5c47503320eef5699e1cce8d",
+			"privateKey": "********-****-****-db2c132ca78d",
+			"publicKey": "ewmaqvdo",
+			"roles": [
+				{
+					"groupId": "1",
+					"roleName": "GROUP_OWNER"
+				},
+				{
+					"orgId": "1",
+					"roleName": "ORG_MEMBER"
+				}
+			]
+		}`)
+	})
+
+	apiKey, _, err := client.ProjectAPIKeys.Update(ctx, projectID, "5c47503320eef5699e1cce8d", updateRequest)
+	if err != nil {
+		t.Fatalf("ProjectAPIKeys.Update returned error: %v", err)
+	}
+
+	if desc := apiKey.Desc; desc != "test-apikey" {
+		t.Errorf("expected username '%s', received '%s'", "test-apikeye", desc)
+	}
+
+	if pk := apiKey.PublicKey; pk != "ewmaqvdo" {
+		t.Errorf("expected publicKey '%s', received '%s'", orgID, pk)
+	}
+}
