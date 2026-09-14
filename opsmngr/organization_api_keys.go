@@ -25,7 +25,7 @@ const apiKeysOrgPath = "api/public/v1.0/orgs/%s/apiKeys" // #nosec G101 // This 
 
 // APIKeysService is an interface for interfacing with the APIKeys.
 type APIKeysService interface {
-	List(context.Context, string, *ListOptions) ([]APIKey, *Response, error)
+	List(context.Context, string, *ListOptions) (*APIKeysResponse, *Response, error)
 	Get(context.Context, string, string) (*APIKey, *Response, error)
 	Create(context.Context, string, *APIKeyInput) (*APIKey, *Response, error)
 	Update(context.Context, string, string, *APIKeyInput) (*APIKey, *Response, error)
@@ -70,7 +70,7 @@ type APIKeysResponse struct {
 // List all API-KEY in the organization associated to {ORG-ID}.
 //
 // See more: https://docs.opsmanager.mongodb.com/current/reference/api/api-keys/org/get-all-org-api-keys/
-func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *ListOptions) ([]APIKey, *Response, error) {
+func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *ListOptions) (*APIKeysResponse, *Response, error) {
 	path := fmt.Sprintf(apiKeysOrgPath, orgID)
 
 	// Add query params from listOptions
@@ -94,7 +94,7 @@ func (s *APIKeysServiceOp) List(ctx context.Context, orgID string, listOptions *
 		resp.Links = l
 	}
 
-	return root.Results, resp, nil
+	return root, resp, nil
 }
 
 // Get gets the APIKey specified to {API-KEY-ID} from the organization associated to {ORG-ID}.
