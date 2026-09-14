@@ -88,41 +88,43 @@ func TestOrganizationAPIKeys_ListAPIKeys(t *testing.T) {
 	})
 
 	apiKeys, _, err := client.OrganizationAPIKeys.List(ctx, "1", nil)
-
 	if err != nil {
 		t.Fatalf("OrganizationAPIKeys.List returned error: %v", err)
 	}
 
-	expected := []APIKey{
-		{
-			ID:         "5c47503320eef5699e1cce8d",
-			Desc:       testAPIKey,
-			PrivateKey: "********-****-****-db2c132ca78d",
-			PublicKey:  ewmaqvdo,
-			Roles: []OMRole{
-				{
-					GroupID:  "1",
-					RoleName: "GROUP_OWNER",
-				},
-				{
-					OrgID:    "1",
-					RoleName: "ORG_MEMBER",
+	expected := &APIKeysResponse{
+		TotalCount: 2,
+		Results: []APIKey{
+			{
+				ID:         "5c47503320eef5699e1cce8d",
+				Desc:       testAPIKey,
+				PrivateKey: "********-****-****-db2c132ca78d",
+				PublicKey:  ewmaqvdo,
+				Roles: []OMRole{
+					{
+						GroupID:  "1",
+						RoleName: "GROUP_OWNER",
+					},
+					{
+						OrgID:    "1",
+						RoleName: "ORG_MEMBER",
+					},
 				},
 			},
-		},
-		{
-			ID:         "5c47503320eef5699e1cce8f",
-			Desc:       "test-apikey-2",
-			PrivateKey: "********-****-****-db2c132ca78f",
-			PublicKey:  "ewmaqvde",
-			Roles: []OMRole{
-				{
-					GroupID:  "1",
-					RoleName: "GROUP_OWNER",
-				},
-				{
-					OrgID:    "1",
-					RoleName: "ORG_MEMBER",
+			{
+				ID:         "5c47503320eef5699e1cce8f",
+				Desc:       "test-apikey-2",
+				PrivateKey: "********-****-****-db2c132ca78f",
+				PublicKey:  "ewmaqvde",
+				Roles: []OMRole{
+					{
+						GroupID:  "1",
+						RoleName: "GROUP_OWNER",
+					},
+					{
+						OrgID:    "1",
+						RoleName: "ORG_MEMBER",
+					},
 				},
 			},
 		},
